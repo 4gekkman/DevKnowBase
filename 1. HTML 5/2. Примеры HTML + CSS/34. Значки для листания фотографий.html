@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Значки для листания фотографий</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+   .s1, .s2, .s3, .s4, .s5 {
+    position: absolute;
+    top: 364px;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border: solid 2px white;
+    border-radius: 10px;
+   }
+   .s1:hover, .s2:hover, .s3:hover, .s4:hover, .s5:hover
+   {
+    background-color: red;
+    box-shadow: 0px 0px 10px white; 
+    cursor: pointer;
+   } 
+   .s1 {
+    left: 240px;
+   }
+   .s2 {
+    left: 270px;
+   }
+   .s3 {
+    left: 300px;
+   }
+   .s4 {
+    left: 330px;
+   }
+   .s5 {
+    left: 360px;
+   }   
+  </style>   
+ </head>
+ <body>
+  <img src="http://htmlbook.ru/sites/default/files/river.jpg" width="600px" height="380px"/>
+  <section class="s1"></section>
+  <section class="s2"></section>
+  <section class="s3"></section>
+  <section class="s4"></section>
+  <section class="s5"></section>
+ </body>
+</html>

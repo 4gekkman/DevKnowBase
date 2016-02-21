@@ -1,0 +1,72 @@
+
+body {
+	font: 1em 'PT Sans', Arial, Helvetica, sans-serif;
+	height: 1000px;
+}
+
+#red {
+	position: relative;
+	top: 40px;
+	height: 200px;
+	border: 1px solid #bbb;
+	background: #554c4c;
+	box-shadow: 2px 2px 5px RGBA(0,0,0,.5);
+	line-height: 200px;
+	text-align: center;
+	font-size: 3em;
+	font-weight: bold;
+	color: #f88;
+	cursor: default;
+}
+
+#blue {
+	position: absolute;
+	top: 25px;
+	width: 300px;
+	height: 150px;
+	background: #4c4c88;
+	line-height: 150px;
+	font-size: 0.7em;
+	color: #88f;
+}
+
+#yellow {
+	position: absolute;
+	height: 50px;
+	width: 150px;
+	top: 95px;
+	left: 150px;
+	background: #88884c;
+	font-size: 0.8em;
+	line-height: 50px;
+	color: #ffa;
+}
+
+#green {
+	position: absolute;
+	right: 0;
+	top: 10px;
+	width: 100px;
+	height: 180px;
+	background: #4c884c;
+	line-height: 180px;
+	font-size: 0.5em;
+	color: #8f8;
+}
+
+#tooltip {
+	position: absolute;
+	padding: 15px;
+	border-radius: 5px;
+	box-shadow: 2px 2px 5px RGBA(5,5,5,.4);
+	top: 300px;
+	left: 100px;
+	background: #eee;
+	border: 1px solid #aaa;
+
+	visibility: hidden;
+}
+
+html {
+	border: 1px solid #000;
+}

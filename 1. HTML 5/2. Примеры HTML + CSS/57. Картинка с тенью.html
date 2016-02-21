@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Картинка с тенью</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+   }
+   .in {
+    display: none;
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display: block; 
+   }
+   
+   .foto {
+    width: 200px;
+    height: 150px;
+    margin: 50px 50px;
+    position: relative;
+    border: 0;
+    background: gray;
+   }
+   .foto:after {
+    position: absolute;
+    content: "";
+    left: 0;
+    width: 110%;
+    height: 110%;
+    z-index: -1;
+    padding: 0;
+    background: white;
+    
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.4);
+    
+    -webkit-transform: translate(-5%,-5%);
+    -moz-transform: translate(-5%,-5%);
+    -o-transform: translate(-5%,-5%);
+    transform: translate(-5%,-5%);
+   }
+   .foto:before {
+    position: absolute;
+    content: "";
+    left: 0;
+    width: 90%;
+    height: 80%;
+    z-index: -2;
+    
+    -webkit-border-radius: 40%;
+    -moz-border-radius: 40%x;
+    border-radius: 40%;
+    border: 1px solid rgba(0,0,0,0.4);   
+    
+    -webkit-transform: translate(5%,30%);
+    -moz-transform: translate(5%,30%);
+    -o-transform: translate(5%,30%);
+    transform: translate(5%,30%);    
+    
+    box-shadow: 0 0 50px rgba(0,0,0,1);
+    -moz-box-shadow: 0 0 50px rgba(0,0,0,1);
+    -webkit-box-shadow: 0 0 50px rgba(0,0,0,1);
+   }
+  </style>   
+ </head>
+ <body>
+  <section class="foto"><img src="57. ranetka.jpg"></section>
+ </body>
+</html>
+
+

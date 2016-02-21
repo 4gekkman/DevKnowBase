@@ -1,0 +1,430 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+HTML 5.
+Appendix 1 - использование Emmet.
+
+
+	> Примеры работы генератора текста lorem
+
+
+	> Синтаксис сокращений
+
+		>									|	вложенный
+		+									| сосед
+		^									|	на уровень вверх
+		()								|	группировка
+		*									| умножение кол-ва элементов
+		$									|	нумерация элементов
+		ID и CLASS				|	работа с атрибутами ID и CLASS
+		[]								| указать любой атрибут
+		{}								| текст
+		Неявное имя тега  | см. "Неявная подстановка тегов"
+
+
+	> HTML-сокращения
+
+		>
+		>
+		>
+		>
+		>
+		>
+		>
+
+
+	> CSS-сокращения
+
+		>
+		>
+		>
+		>
+		>
+		>
+		>
+		>
+
+
+
+
+
+
+
+-------------------------------------------------- -->
+
+<!-- Подготовка документа  -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Заголовок страницы - 3. Формы</title>
+</head>
+<body>
+
+
+
+
+
+<!--Примеры работы генератора текста lorem-->
+
+	<!--	p>lorem		-->
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem labore nihil pariatur. Accusantium animi culpa dicta
+		dolorum hic inventore laboriosam natus, non, obcaecati officiis placeat possimus provident sunt tempore veniam?</p>
+
+	<!--	p>lorem100	-->
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet asperiores, aspernatur aut autem consectetur corporis
+		deleniti dignissimos dolor dolorum ducimus error facilis illo ipsa maiores non numquam odit pariatur perspiciatis
+		porro quas quia repellat repudiandae similique soluta unde velit, vitae voluptatibus. Accusamus culpa cum dolore
+		doloribus inventore maiores, maxime omnis optio, reiciendis reprehenderit repudiandae sit voluptas voluptate!
+		Accusamus accusantium ad aspernatur atque aut culpa debitis deleniti dicta dolorem eligendi esse, et eveniet expedita
+		facilis fuga fugiat illo ipsum iusto laboriosam laudantium molestias officia omnis perspiciatis possimus quisquam quos
+		recusandae reprehenderit saepe sapiente similique tenetur unde ut vel veritatis voluptas voluptatibus!</p>
+
+
+<!--Синтаксис сокращений-->
+
+	<!--  div>div		|	вложенный-->
+	<div>
+		<div>
+			sfsdfsdf
+			sfsdfsdf
+		</div>
+	</div>
+
+	<!--  div+div		| сосед-->
+	<div></div>
+	<div></div>
+
+	<!--  div>div^p		|	на уровень вверх-->
+	<div>
+		<div></div>
+	</div>
+	<p></p>
+
+	<!--  div>(div+p)>div>div		|	группировка-->
+	<div>
+		<div>
+			<div>
+				<div></div>
+			</div>
+		</div>
+		<p>
+		<div>
+			<div></div>
+		</div>
+		</p>
+	</div>
+
+
+	<!--  ul>li*3		| умножение кол-ва элементов-->
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+
+
+	<!--  $		|	нумерация элементов-->
+
+		<!--	ul>li.item$*5		-->
+		<ul>
+			<li class="item1"></li>
+			<li class="item2"></li>
+			<li class="item3"></li>
+			<li class="item4"></li>
+			<li class="item5"></li>
+		</ul>
+
+		<!--	ul>li*5>a.item-${item text $@}	-->
+		<ul>
+			<li><a class="item-1" href="">item text 1</a></li>
+			<li><a class="item-2" href="">item text 2</a></li>
+			<li><a class="item-3" href="">item text 3</a></li>
+			<li><a class="item-4" href="">item text 4</a></li>
+			<li><a class="item-5" href="">item text 5</a></li>
+		</ul>
+
+		<!--	ul>li*5>a.item-${item text $@-5}	-->
+		<ul>
+			<li><a class="item-1" href="">item text 5</a></li>
+			<li><a class="item-2" href="">item text 4</a></li>
+			<li><a class="item-3" href="">item text 3</a></li>
+			<li><a class="item-4" href="">item text 2</a></li>
+			<li><a class="item-5" href="">item text 1</a></li>
+		</ul>
+
+
+	<!--  ID и CLASS				|	работа с атрибутами ID и CLASS-->
+		<!--	.myClass		-->
+		<div class="myClass"></div>
+
+		<!--	.myClass1.myClass2.myClass3		-->
+		<div class="myClass1 myClass2 myClass3"></div>
+
+		<!--#myId-->
+		<div id="myId"></div>
+
+	<!-- 	table>tr>td[rowspan=2 colspan=3 title]		| указать любой атрибут-->
+	<table>
+		<tr>
+			<td rowspan="2" colspan="3" title=""></td>
+		</tr>
+	</table>
+
+	<!--  a{clickMe}		| текст-->
+	<a href="">clickMe</a>
+
+	<!--  Неявное имя тега  | см. "Неявная подстановка тегов"-->
+		<!--	.class	-->
+		<div class="class"></div>
+
+		<!--	div>.class	-->
+		<div>
+			<div class="class"></div>
+		</div>
+
+		<!--	span>.class		-->
+		<span>
+			<span class="class"></span>
+		</span>
+
+		<!--	table>.class>.class2*2	-->
+		<table>
+			<tr class="class">
+				<td class="class2"></td>
+				<td class="class2"></td>
+			</tr>
+		</table>
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+
+Ссылки:
+
+> Официальный сайт Emmet:
+		http://docs.emmet.io/
+
+> Весь синтаксис Emmet для HTML и CSS в одном документе:
+		http://docs.emmet.io//cheat-sheet/
+
+
+*****************************************************
+Оглавление:
+
+	> Что такое Emmet?
+	> Установка Emmet в PHPStorm?
+	> Настройка Emmet в PHPStorm
+	> Синтаксис Emmet
+		> Общая информация
+			> Синтаксис Emmet состоит из 4 основных частей
+			> Неявная подстановка тегов
+			>	Генератор текста lorem
+		> Действия (15 шт.)
+		> Синтаксис сокращений
+		> HTML-сокращения
+		> CSS-сокращения
+	> !!! Предостережение по поводу операции умножения *
+
+
+
+*****************************************************
+
+
+
+> Что такое Emmet?
+	> Emmet - это инструментарий для веб-разработчиков, который может
+		помочь существенно ускорить работу над HTML и CSS кодом.
+	> Работа Emmet напоминает работу т.н. сниппетов - кусков кода,
+		заранее определенных и закрепленных за какой-нибудь горячей клавишей.
+		> Однако, в отличие от сниппетов, Emmet срабатываен не в ответ на
+			нажание горячей клавиши. Он парсит в реальном времени то, что ты
+			пишешь - ищет сокращения из своего синтаксиса. Написав такое
+			сокращение, можно нажать TAB, и Emmet превратит сокращение
+			в соответствующий код.
+		> Например, если написать это и нажать TAB:
+				.title
+			... то Emmet превратит это в:
+				<div class="title"></div>
+	> Ранее возможно ты слышал что-нибудь о Zen-Coding. Так вот, это
+		предшественник Emmet. Последний является расширенной и улучшенной
+		версией первого.
+
+
+> Установка Emmet в PHPStorm?
+	> По умолчанию Emmet есть и включен в PHPStorm >= 6 из коробки.
+	> Чтобы настроить его, можно пройти по следующему адресу:
+			File -> Settings -> Emmet
+
+
+> Настройка Emmet в PHPStorm
+	> Окно настройки находится по адресу:
+			File -> Settings -> Emmet
+	> Настройки:
+		# Expand abbreviation with:
+			> Указать как раз ту самую горячую клавишу, по которой будет
+				срабатывать действие expand abbreviation. По умолчанию - TAB.
+		# Enable XML Emmet
+			> Вкл/выкл HTML-Emmet.
+		# Enable CSS Emmet
+			> Вкл/выкл CSS-Emmet.
+		# Enable BEM filter
+			> Вкл/выкл BEM фильтры.
+			> Подробнее читать здесь: http://docs.emmet.io/filters/bem/
+		# Auto insert CSS vendor prefixes
+			> Если включено, то PHPStorm при написании некоторых CSS-свойств
+				среди прочих вариантов будет предлагать автозавершение кода,
+				содержащее одновременно и варианты этого свойства с вендорными
+				префиксами. Более того, можно будет написать значение свойства
+				1 раз, и оно будет присвоено всем его копиям с префиксами, что
+				очень похоже на работу множественных курсоров в SublimeText 2.
+			> Конкретные свойства, для которых это будет работать, можно указать
+				тут же, выбрав их из списка. Также можно настроить вендорные
+				префиксы, используемые для этого свойства.
+		# Enable fuzzy search among CSS abbreviations
+			> Делает синтаксис сокращений не строгим. В нем можно делать произвольные отклонения,
+				и Emmet для этого выражения будет угадывать, что имел в виду программист, взвешивать
+				разные варианты по очкам, и выбирать наиболее вероятный.
+		# Enable abbreviation preview
+			> Очень полезная опция, по умолчанию отключена
+			> Позволяет прямо в процессе написания сокращения, в режиме онлайн, в окне-подсказке
+				видеть, что получится вот прямо сейчас из этого сокращения, если вызвать действие
+				expand abbreviation.
+	> Live Templates
+		> Все EMMET-сокращения находятся по адресу:
+				Settings -> Live Templates
+		> Здесь они разбиты на категории - HTML, CSS, JavaScript, PHP, ...
+		> Существующие сокращения можно редактировать.
+		> Можно добавлять новые сокращения, и удалять старые.
+		> Все сокращения будут развернуты в код в файлах соответствующего типа,
+			после применения действия Expand Abbreviation (TAB по умолчанию).
+
+
+> Синтаксис Emmet
+	> Общая информация
+		> Синтаксис Emmet состоит из 4 основных частей:
+				- Действия
+				- Синтаксис сокращений
+				- HTML-сокращения
+				- CSS-сокращения
+			> Подробнее о действиях
+				> Действия - это, можно сказать, функции Emmet.
+				> Основным действием Emmet является Expand Abbreviation - оно заменяет
+					сокращение кодом, и по умолчанию вызывается горячей клавишей TAB.
+				> Всего в Emmet на данный момент (02.11.2013) есть 15 действий, которые
+					могут существенно упростить работу с HTML и CSS кодом.
+				> Большинство действий встроено в функциональность PHPStorm, и их горячие
+					клавиши можно найти на hot keys list для PHPStorm. Хотя некоторых действий
+					Emmit я в PHPStorm не нашел, и никакой информации в интернете об этом тоже.
+			> Подробнее о сокращениях
+				> Это сердце набора инструментов Emmet - он отслеживает в режиме реального
+					времени появление в коде сокращений, и разворачивает их в HTML или CSS
+					код при вызове действия Expand Abbreviation.
+		>	Неявная подстановка тегов
+			> Когда пишешь сокращение, то можешь опускать во многих случаях имена тегов.
+				Emmet смотрит на имя родительского тега и вычисляет, какой тег надо подставить
+				вместо пропущенного тобой.
+				> Пример 1.
+						<div>  .content                      </div>  превратится в:
+						<div>  <div class='content'></div>   </div>
+				> Пример 2.
+						<span> .content                      </span>  превратится в:
+						<span> <span class='content'></span> </span>
+				> Пример 3.
+						<ul>   .content                      </ul>  превратится в:
+						<ul> <li class='content'></li>       </ul>
+		> Генератор текста lorem
+			> В Emmet есть встроенный генератор текста-заполнителя lorem ipsum.
+			> Работает он по тому же принципу, по которому и все остальные сокращения.
+			> Примеры:
+				> Сокращение lorem дает при развертке 30 слов текста lorem ipsum.
+				> Сокращение lorem100 дает при развертке 100 слов текста lorem ipsum.
+				> Сокращение loremN дает при развертке N слов текста lorem ipsum.
+
+
+
+	> Действия (15 шт.)
+		> Действия, аналоги которых я нашел в PHPStorm
+			# Expand Abbreviation								|	развернуть сокращение в код (клавиша TAB по умолчанию)
+																							"TAB"
+			# Match Tag Pair										|	расширять от курсора/сужать к курсору выделение
+																							"CTRL + W" / "CTRL + SHIFT + W"
+			# Wrap with Abbreviation						|	обернуть с помощью сокращения, "ALT + CTRL + T" по умолчанию
+																							"ALT + CTRL + T"
+			# Increment/Decrement Number				|	Инкрементирует / декрементирует число (и не только, см. описание к плагину)
+																							Плагин Shifter, 'CTRL + SHIFT + ALT + , / .' - убавлять/прибавлять
+			# Toggle Comment										|	закомментировать/раскомментировать выделение или строку под курсором
+																							'CTRL + /' - одиночный, 'CTRL + SHIFT + /' - многострочный комментарий
+			# Remove Tag												|	удаляет HTML-элемент, вставляя на его место код, который был внутри
+																							'CTRL + SHIFT + DELETE'
+			# Merge Lines												|	объединить выделенные строки в одну
+																							'CTRL + SHIFT + J'
+			# Go to Matching Pair								|	навести курсор на HTML тег, и перейти к его открывающему/закрывающему тегу
+																							'CTRL + ]' - вперед, 'CTRL + [' - назад
+
+		> Действия, аналоги которых я НЕ нашел в PHPStorm
+			# Split/Join Tag										|	конвернирует <tag/> в <tag></tag> и наоборот
+			# Select Item												|	аналог Go to Edit Point, только скачет по еще более важным участкам
+			# Update Image Size									|	автоматически вписывает атрибуты width и height в элемент img
+			# Evaluate Math Expression					|	считает написанное мат. выражение и заменяет его его результатом
+			# Go to Edit Point									|	позволяет перескакивать вперед/назад по важным местам кода
+			# Reflect CSS Value									|	Присваивает значение CSS-свойства под курсором его собратьям с вендорными префиксами в этом CSS-блоке
+																							Похоже вместо этого в PHPStorm придется использовать механизм find-replace
+			# Encode/Decode Image to data:URL		|	Закодировать/раскодировать URL картинки алгоритмом base64
+
+
+	> Синтаксис сокращений
+		> См. ссылку "Весь синтаксис Emmet для HTML и CSS в одном документе"
+		> См. примеры выше.
+
+
+	> HTML-сокращения
+		> См. ссылку "Весь синтаксис Emmet для HTML и CSS в одном документе"
+		> См. примеры выше.
+
+	> CSS-сокращения
+		> См. ссылку "Весь синтаксис Emmet для HTML и CSS в одном документе"
+		> См. примеры выше.
+
+
+> !!! Предостережение по поводу операции умножения *
+	> В Emmet в PHPStorm у операции умножения есть некоторая особенность.
+		Вот пример:
+
+			Следующий код вернет помимо всего прочего 6 блоков span10, хотя ожидался всего 1:
+				.row>.thumb.span2*6>ph140^^^
+				.row>.sidebar.span2>nav>ul>(li*6>a{Item $})^^.content.span10>h2>lorem5^p*5>lorem70
+
+			В то время, как этот вернет 1 блок span10 помимо всего прочего:
+				.row>.sidebar.span2>nav>ul>(li*6>a{Item $})^^.content.span10>h2>lorem5^p*5>lorem70
+
+			Таким образом проблема находится в этом блоке:
+				.row>.thumb.span2*6>ph140^^^
+
+			Она заключается в умножении. Чтобы проблемы не возникала, умножаемый блок и его
+			содержимое следует брать в скобки. Вот так:
+				.row>(.thumb.span2*6>ph140)^^
+
+			И итоговый код первоначального примера, из которого исключена проблема, выглядит так:
+				.row>(.thumb.span2*6>ph140)^
+				.row>.sidebar.span2>nav>ul>(li*6>a{Item $})^^.content.span10>h2>lorem5^p*5>lorem70
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

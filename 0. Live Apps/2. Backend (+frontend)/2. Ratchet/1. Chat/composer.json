@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-0": {
+            "myChat": "server"
+        }
+    },
+    "require": {
+        "cboden/ratchet": "dev-master"
+    }
+}

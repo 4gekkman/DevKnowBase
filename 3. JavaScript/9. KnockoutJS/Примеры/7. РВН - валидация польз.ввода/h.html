@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+	<link rel="stylesheet" href="c.css"/>
+
+</head>
+<body>
+<mark>Редактируемое вычисляемое наблюдаемое св-во - валидация польз. ввода</mark>
+
+<ul>
+	<li>Попробуй ввести не число, и щёлкни где-нибудь, чтобы поле потеряло фокус.</li>
+	<li>А теперь, попробуй изменить значение обратно на число.</li>
+</ul>
+
+
+	<div>Введите число: <input type="text" data-bind="value: attemptedValue"/></div>
+	<div class="error" data-bind="visible: !lastInputWasValid()">Это не число!</div>
+	<div>(Принятое значение: <span data-bind="text: acceptedNumericValue"></span>)</div>
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

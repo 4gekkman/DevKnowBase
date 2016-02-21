@@ -1,0 +1,21 @@
+
+-- ------------------ Этот файл создан для тестирования работы с MySQL в пакетном режиме
+-- см. "4. Вводный tutorial в MySQL", пункт №4.5
+
+
+-- Создать БД для тестирования пакетного режима
+CREATE DATABASE IF NOT EXISTS batch_mode_test;
+
+-- Указать, какую БД использовать по умолчанию
+USE batch_mode_test;
+
+-- Создать таблицу
+CREATE TABLE IF NOT EXISTS batch_table (name VARCHAR(20), owner VARCHAR(20),
+                  species VARCHAR(20), sex CHAR(1), birth DATE, death DATE);
+
+-- Загрузить данные в таблицу
+LOAD DATA LOCAL INFILE "C:/Users/Administrator/Desktop/Practice/4. SQL Library/supply/data_to_load_in_table"
+INTO TABLE batch_table COLUMNS TERMINATED BY ';';
+
+-- Извлечь все содержимое таблицы
+SELECT * FROM batch_table;

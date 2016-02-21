@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>Связка style - управление стилями связанного DOM-элемента</mark><br><br>
+
+<ul>
+	<li>Попробуй включить чекбокс</li>
+	<li>Фон связанного DIV станет серым</li>
+	<li>Попробуй выключить чекбокс</li>
+	<li>Фон связанного DIV станет обратно светлым</li>
+</ul>
+
+
+	<p><input type="checkbox" data-bind="checked: class1State"> - Сделать фон связанного эл-та DIV серым</p>
+	<div data-bind="style: cssObject" style="width: 300px; height: 250px; background-color: #eee; font-size: 20px; text-align: center; line-height: 250px; box-shadow: 0 0 10px RGBA(0,0,0,.3)"></div>
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

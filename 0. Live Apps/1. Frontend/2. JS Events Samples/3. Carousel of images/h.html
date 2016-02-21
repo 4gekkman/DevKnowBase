@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<script src='http://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js'></script>
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+		.carousel {
+			position: relative;
+
+			width: 390px;
+			padding: 10px 40px;
+
+			margin: 50px;
+			border-radius: 10px;
+			background: #eee;
+			border: 1px solid #ccc;
+		}
+
+		.gallery {
+			width: 390px;
+			margin: 0;
+			padding: 0;
+
+			overflow: hidden;
+		}
+
+		#images {
+			position: relative;
+			left: 0;
+
+			margin: 0;
+			padding: 0;
+			height: 130px;
+			width: 9999px;
+
+			list-style: none;
+
+			transition: left 1s ease-in-out;
+		}
+
+		#images li {
+			display: list-item;
+			float: left;
+		}
+
+		.arrow {
+			position: absolute;
+
+			text-align: center;
+			line-height: 60px;
+
+			font-size: 1.7em;
+			color: #444;
+
+			width: 24px;
+			height: 60px;
+			background: #ddd;
+			border-radius: 10px;
+		}
+
+		.arrow:hover {
+			background: #ccc;
+			cursor: pointer;
+		}
+
+		.arrow-left {
+			top: 47px;
+			left: 15px;
+		}
+
+		.arrow-right {
+			top: 47px;
+			right: 15px;
+		}
+
+	</style>
+</head>
+<body>
+
+<div class="carousel">
+
+	<!-- кнопка-влево -->
+	<div class="arrow arrow-left">&#8249</div>
+
+	<div class="gallery">
+		<ul id="images" data-shift="0">
+			<li><img src="images/1.png"></li>
+			<li><img src="images/2.png"></li>
+			<li><img src="images/3.png"></li>
+			<li><img src="images/4.png"></li>
+			<li><img src="images/5.png"></li>
+			<li><img src="images/6.png"></li>
+			<li><img src="images/7.png"></li>
+			<li><img src="images/8.png"></li>
+			<li><img src="images/9.png"></li>
+			<li><img src="images/10.png"></li>
+		</ul>
+
+	<!-- кнопка-вправо -->
+	<div class="arrow arrow-right">&#8250</div>
+
+	</div>
+</div>
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

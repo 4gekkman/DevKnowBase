@@ -1,0 +1,244 @@
+/* Стиль блока для испытания градиентов */
+.box {
+  width: 150px;
+  height: 100px;
+  margin: 10px;
+  background: #999;
+  display: inline-block;
+  vertical-align: top;
+
+  border-radius: 5px;
+  box-shadow: 0 8px 15px rgba(0,0,0,.6);
+}
+
+
+/* Параметр angle градиентов (на примере linear-gradient): */
+
+  /* angle, заданный в градусах */
+  .c1 {
+    background:
+      linear-gradient(0deg, #000BFF, #fff);
+  }
+  .c2 {
+    background:
+      linear-gradient(45deg, #000bff, #fff);
+  }
+  .c3 {
+    background:
+      linear-gradient(90deg, #000BFF, #fff);
+  }
+  .c4 {
+    background:
+      linear-gradient(135deg, #000BFF, #fff);
+  }
+  .c5 {
+    background:
+      linear-gradient(180deg, #000BFF, #fff);
+  }
+
+  /* angle, заданный предназначенными значениями */
+  .c6 {
+    background:
+      linear-gradient(to left, #dbca00, #fff);
+  }
+  .c7 {
+    background:
+      linear-gradient(to right, #dbca00, #fff);
+  }
+  .c8 {
+    background:
+      linear-gradient(to top, #dbca00, #fff);
+  }
+  .c9 {
+    background:
+      linear-gradient(to bottom, #dbca00, #fff);
+  }
+  .c10 {
+    background:
+      linear-gradient(to left bottom, #dbca00, #fff);
+  }
+  .c11 {
+    background:
+      linear-gradient(to top right, #dbca00, #fff);
+  }
+
+
+  /* Параметры color-stop градиентов (на примере linear-gradient): */
+
+    .c12 {
+      background:
+        linear-gradient(90deg, #ff836f 0%,
+                               #529214 50%,
+                               #fff 100%);
+    }
+    .c13 {
+      background:
+        linear-gradient(90deg, #ff836f 0px,
+        #529214 75px,
+        #fff 150px);
+    }
+    .c25 {
+      background:
+        linear-gradient(20deg,
+        #333 50%,
+        #bbb 60%);
+    }
+  .c26 {
+    background:
+      linear-gradient(-20deg,
+      #333 50%,
+      #bbb 51%);
+  }
+
+/* Радиальный градиент c пояснениями: */
+
+.c14 {
+  background:
+    radial-gradient(circle 50px at 50% 50%, #fff, #9d1e1b);
+}
+
+
+/* Size радиального градиента: */
+
+  /* Круглые градиенты */
+  .c15 {
+    background:
+      radial-gradient(circle closest-side at 50% 50%, #fff, #dbb91d);
+  }
+  .c16 {
+    background:
+      radial-gradient(circle farthest-side at 50% 50%, #fff, #54e654);
+  }
+  .c17 {
+    background:
+      radial-gradient(circle closest-corner at 50% 50%, #fff, #ea53e4);
+  }
+  .c18 {
+    background:
+      radial-gradient(circle farthest-corner at 50% 50%, #fff, #4b45e2);
+  }
+
+  /* Эллиптические градиенты */
+  .c19 {
+    background:
+       radial-gradient(ellipse 100px 40px at 50% 50%, #fff, #db6b50);
+  }
+  .c20 {
+    background:
+      radial-gradient(ellipse closest-side at 50% 50%, #fff, #db6b50);
+  }
+  .c21 {
+    background:
+      radial-gradient(ellipse farthest-side at 50% 50%, #fff, #db6b50);
+  }
+  .c22 {
+    background:
+      radial-gradient(ellipse closest-corner at 50% 50%, #fff, #db6b50);
+  }
+  .c23 {
+    background:
+      radial-gradient(ellipse farthest-corner at 50% 50%, #fff, #db6b50);
+  }
+
+
+/* Эксперименты с color-stop радиального градиента: */
+.c24 {
+  background:
+    radial-gradient(ellipse 100px 40px at 50% 50%, #fff 0%, #3fa7f6 30%, #003333 70%, #db6b50 100%);
+}
+.c27 {
+  width: 300px;
+  height: 200px;
+  background:
+    radial-gradient(ellipse farthest-corner at 50% 50%, #333 70%, #bbb 100%);
+}
+
+
+/* Пример оформления фотографии с помощью градиента: */
+.fotoBox {
+  width: 600px;
+  height: 400px;
+  margin: 40px;
+  border-radius: 5px;
+  box-shadow: 0 8px 15px rgba(0,0,0,.6);
+  position: relative;
+  cursor: pointer;
+
+  /* чтобы углы картинки не выпирали за скругленные в углах рамки */
+  overflow: hidden;
+}
+.fotoBox:after {
+  content: '';
+  width: 600px;
+  height: 400px;
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+
+  /* градиент непрозрачности */
+  background: -webkit-radial-gradient(transparent, rgba(0,0,0,.6));
+  background: -moz-radial-gradient(transparent, rgba(0,0,0,.6));
+  background: -ms-radial-gradient(transparent, rgba(0,0,0,.6));
+  background: -o-radial-gradient(transparent, rgba(0,0,0,.6));
+  background: radial-gradient(transparent, rgba(0,0,0,.6));
+
+  /* переход для непрозрачности */
+  -webkit-transition: opacity 0.3s ease-out;
+  -moz-transition: opacity 0.3s ease-out;
+  -ms-transition: opacity 0.3s ease-out;
+  -o-transition: opacity 0.3s ease-out;
+  transition: opacity 0.3s ease-out;
+}
+.fotoBox:hover:after {
+  opacity: 0;
+}
+
+
+/* Как нарисовать линии с помощью повторяющегося градиента: */
+.fotoBox1 {
+  width: 600px;
+  height: 400px;
+  margin: 40px;
+  border-radius: 5px;
+  box-shadow: 0 8px 15px rgba(0,0,0,.6);
+  position: relative;
+  cursor: pointer;
+
+  /* чтобы углы картинки не выпирали за скругленные в углах рамки */
+  overflow: hidden;
+}
+.fotoBox1:after {
+  content: '';
+  width: 600px;
+  height: 400px;
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+
+  /* градиент непрозрачности */
+  background: repeating-linear-gradient(-45deg,
+    rgba(0,0,0,.3) 4px,
+    rgba(0,0,0,.3) 8px,
+    transparent 8px,
+    transparent 12px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

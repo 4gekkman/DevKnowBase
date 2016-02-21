@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+		li {
+			/*border: 1px solid #0bb;*/
+		}
+
+		ul {
+			/*border: 1px solid #bbb;*/
+		}
+
+		span {
+			border: 1px solid #eee;
+			cursor: pointer;
+		}
+		span:hover {
+			font-weight: bold;
+		}
+
+	</style>
+</head>
+<body>
+
+<mark>Данные, представленные в виде интерактивного дерева</mark>
+
+<ul id="tree">
+    <li><span>Животные</span>
+        <ul>
+            <li><span>Млекопитающие</span>
+                <ul>
+                    <li><span>Коровы</span></li>
+                    <li><span>Ослы</span></li>
+                    <li><span>Собаки</span></li>
+                    <li><span>Тигры</span></li>
+                </ul>
+            </li>
+            <li><span>Другие</span>
+                <ul>
+                    <li><span>Змеи</span></li>
+                    <li><span>Птицы</span></li>
+                    <li><span>Ящерицы</span></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li><span>Рыбы</span>
+        <ul>
+            <li><span>Аквариумные</span>
+                <ul>
+                    <li><span>Гуппи</span></li>
+                    <li><span>Скалярии</span></li>
+                </ul>
+
+            </li>
+            <li><span>Морские</span>
+                <ul>
+                    <li><span>Морская форель</span></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

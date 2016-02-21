@@ -1,0 +1,202 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+CSS 3.
+
+8. Font  | шрифт
+  > @font-face        | директива, которая позволяет сайтам скачивать и использовать шрифты не из группы web safe fonts
+  > font              | все-в-одном font- свойства
+    > font-family       | семейство шрифта
+    > font-size         | размер шрифта
+    > font-style        | стиль шрифта
+    > font-variant      | вкл/выключить капитель (когда строчные буквы выглядят как прописные)
+    > font-weight       | жирность шрифта
+    > font-size-adjust  | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+    > font-stretch      | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+
+
+
+Подробнее о некоторых свойствах (их значения, единицы измерения ... ):
+
+  > @font-face        | директива, которая позволяет сайтам скачивать и использовать шрифты не из группы web safe fonts
+    - Синтаксис:
+        @font-face
+        {
+          font-properties
+        }
+    - font-properties
+      - font-family    | (требуется) Имя шрифта
+      - url            | (требуется) Локация шрифта
+      - font-stretch   | (опция) По умолчанию normal. Как фон должен быть растянут (stretched)
+                          normal
+                          condensed
+                          ultra-condensed
+                          extra-condensed
+                          semi-condensed
+                          expanded
+                          semi-expanded
+                          extra-expanded
+                          ultra-expanded
+      - font-style     | (опция) По умолчанию normal. Стиль шрифта
+                          normal
+                          italic
+                          oblique
+      - font-weight    | (опция) По умолчанию normal. Жирность шрифта.
+                          normal
+                          bold
+                          100, 200, ..., 900
+      - unicode-range  | ?
+
+
+  > font              | все-в-одном font- свойства
+    - Синтаксис:
+      font-style font-variant font-weight font-size/line-height font-family
+    - Свойства
+      - font-style              | стиль шрифта
+      - font-variant            | вкл/выключить капитель (когда строчные буквы выглядят как прописные)
+      - font-weight             | жирность шрифта
+      - font-size/line-height   | (требуется) размер шрифта и высота строки
+      - font-family             | (требуется) шрифт
+      - caption                 | использует шрифт, который используется управляющими элементами (button, drop-down, ...)
+      - small-caption           | меньшая версия шрифта caption
+      - icon                    | использует шрифт, который используется иконками
+      - menu                    | использует шрифт, который используется в drop-down меню
+      - message-box             | использует шрифт, который используется в диалоговых окнах
+      - status-bar              | использует шрифт, который используется в status bar
+      - inherit                 | Наследует это свойство у родителя
+
+
+    > font-style        | стиль шрифта
+      - normal   | (по умолчанию)
+      - italic   | италик
+      - oblique  | наклонный
+      - inherit  | Наследует это свойство у родителя
+
+    > font-family       | семейство шрифта
+      - Имя шрифта
+      - inherit  | Наследует это свойство у родителя
+
+    > font-size         | размер шрифта
+      - xx-small
+      - x-small
+      - small
+      - medium
+      - large
+      - x-large
+      - xx-large
+      - smaller   | меньше, чем у родительского элемента
+      - larger    | меньше, чем у родительского элемента
+      - length    | px, pt ...
+      - %         | % от шрифта родительского элемента
+      - inherit   | Наследует это свойство у родителя
+
+    > font-variant      | вкл/выключить капитель (когда строчные буквы выглядят как прописные)
+      - normal       | (по умолчанию) выключить капитель
+      - small-caps   | включить капетель
+      - inherit      | Наследует это свойство у родителя
+
+    > font-weight       | жирность шрифта
+      - normal
+      - bold
+      - bolder
+      - lighter
+      - 100, 200, ..., 900
+      - inherit      | Наследует это свойство у родителя
+
+    > font-size-adjust  | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+    > font-stretch      | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+
+
+
+-------------------------------------------------- -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>1. Вводный tutorial в CSS + общая информация</title>
+  <link rel="stylesheet" type="text/css" href="8.%20Font.css">
+</head>
+<body>
+
+
+<mark>@font-face</mark>
+  <div class="c1">
+    Note: Internet Explorer 9 only supports .eot fonts.
+      <br>
+    With CSS3, websites can finally use fonts other than the pre selected "web-safe" fonts.
+      <br>
+    There is CSS code to get this font for document:
+    <xmp>
+      @font-face {
+      font-family: myFont;
+      src: url('Files/Sansation_Light.ttf');
+      src: url('Files/Sansation_Light.eot');  /* IE9 */
+      }
+    </xmp>
+  </div>
+
+<mark>font</mark>
+  <p>
+    Веб-безопасные шрифты с зачечками:<br>
+    <span class="c2">- Georgia, serif</span><br>
+    <span class="c3">- "Palatino Linotype", "Book Antiqua", Palatino, serif</span><br>
+    <span class="c4">- "Times New Roman", Times, serif</span><br>
+  </p>
+<p>
+  Веб-безопасные шрифты без засечек:<br>
+  <span class="c5">- Arial, Helvetica, sans-serif</span><br>
+  <span class="c6">- "Arial Black", Gadget, sans-serif</span><br>
+  <span class="c7">- "Comic Sans MS", cursive, sans-serif</span><br>
+  <span class="c8">- Impact, Charcoal, sans-serif</span><br>
+  <span class="c9">- "Lucida Sans Unicode", "Lucida Grande", sans-serif</span><br>
+  <span class="c10">- Tahoma, Geneva, sans-serif</span><br>
+  <span class="c11">- "Trebuchet MS", Helvetica, sans-serif</span><br>
+  <span class="c12">- Verdana, Geneva, sans-serif</span><br>
+</p>
+<p>
+  Веб-безопасные моноширинные шрифты:<br>
+  <span class="c13">- "Courier New", Courier, monospace</span><br>
+  <span class="c14">- "Lucida Console", Monaco, monospace</span><br>
+</p>
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+Ссылки:
+
+  > Справочное руководство по всем CSS-свойствам:
+      http://www.w3schools.com/cssref/default.asp
+
+  > Список веб-безопасных шрифтов:
+      http://www.w3schools.com/cssref/css_websafe_fonts.asp
+
+*****************************************************
+Оглавление:
+
+  >
+
+
+
+*****************************************************
+
+>
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

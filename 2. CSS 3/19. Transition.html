@@ -1,0 +1,185 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+CSS 3.
+
+19. Transition  | переходы
+  > transition                 | все-в-одном transition- свойства
+    > transition-property        | указывает имя CSS-свойства, которому предназначается эффект transition
+    > transition-duration        | сколько будет длиться эффект перехода
+    > transition-timing-function | кривая скорости эффекта перехода
+    > transition-delay           | когда начнется эффект перехода
+
+
+
+Подробнее о некоторых свойствах (их значения, единицы измерения ... ):
+
+  > transition                 | все-в-одном transition- свойства
+    - Синтаксис:
+        transition: property duration timing-function delay;
+
+    > transition-property        | указывает имя CSS-свойства, которому предназначается эффект transition
+      - none      | никакое свойство не будет преобразовано
+      - all       | все свойства будут преобразованы
+      - property  | имя свойства, которое будет преобразовано
+
+    > transition-duration        | сколько будет длиться эффект перехода
+      - time  | как много секунд или миллисекунд занимает переход (по умолчанию 0)
+
+    > transition-timing-function | кривая скорости (от t) эффекта перехода
+      - linear                 | линейно
+      - ease                   | быстро-медленно-быстро
+      - ease-in                | медленно-быстро
+      - ease-out               | быстро-медленно
+      - ease-in-out            | (по умолчанию) быстро-медленно-быстро
+      - cubic-bezier(n,n,n,n)  | настроить вручную ( http://matthewlein.com/ceaser/ )
+
+    > transition-delay           | когда начнется эффект перехода
+      - time  | задержка в секундах или миллисикундах перед началом перехода
+
+
+
+
+-------------------------------------------------- -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>1. Вводный tutorial в CSS + общая информация</title>
+  <link rel="stylesheet" type="text/css" href="19.%20Transition.css">
+  <script src="Files/jquery-2.0.3.js" type="text/javascript"></script>
+</head>
+<body class="preload">
+
+<mark>transition</mark>
+  <div class="c1">Наведи на меня курсор</div>
+
+<br><mark>transition-property, transition-duration</mark>
+  <div class="c2">Наведи на меня курсор</div>
+
+<br><mark>transition-delay</mark>
+  <div class="c3">Наведи на меня курсор и жди 2 секунды</div>
+
+<br><br><mark>transition-timing-function</mark><br>
+  <div class="c4">cubic-bezier(.8,.1,.1,.8)</div>
+  <div class="c5">linear</div>
+  <div class="c6">ease-in-out</div>
+  <div class="c7">ease</div>
+  <div class="c8">ease-in</div>
+  <div class="c9">ease-out</div>
+
+<br>
+
+
+
+<!-- решение проблемы срабатывания перехода при загрузки страницы -->
+<!-- удалить класс preload из элемента body -->
+  <script defer>
+    $(window).load(function() {
+      $("body").removeClass("preload");
+    });
+
+
+</script>
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+Ссылки:
+
+  > Справочное руководство по всем CSS-свойствам:
+      http://www.w3schools.com/cssref/default.asp
+
+
+*****************************************************
+Оглавление:
+
+  > В каких браузерах работвют CSS-свойства transition
+  > Где можно визуально настроить cubic-bezier() функцию?
+  > Ведндорные префиксы и свойства transition
+    > transition-property
+    > transition-duration
+    > transition-timing-function
+    > transition-delay
+  > Как убрать срабатывание перехода во время загрузки страницы
+
+
+
+*****************************************************
+
+
+> В каких браузерах работвют CSS-свойства transition
+  > Internet Explorer 10, Firefox, Opera, Chrome.
+
+> Где можно визуально настроить cubic-bezier() функцию?
+  > Что такое функция cubic-bezier?
+    > Это зависимость скорости перехода от времени перехода.
+    > Применяется с аргументами, как одно из возможных значений CSS-свойства
+      transition-timing-function. На самом деле, прочие значения, которые
+      она принимает, это тоже cubic-bezier, но с заранее заданными аргументами,
+      и эти преднастройки имеют имя (ease, ease-in и т.д.).
+  > Настраивать кривую cubic-bezier удобно в визуальном режиме. В интернете
+    есть ряд сайтов, позволяющих это делать, например:
+    - http://matthewlein.com/ceaser/                     | самый продвинутый
+    - http://www.roblaplaca.com/examples/bezierBuilder/
+    - http://cubic-bezier.com/#.17,.67,.83,.67
+
+> Ведндорные префиксы и свойства transition
+  > transition-property
+        transition-property:width;
+        -moz-transition-property: width; /* Firefox 4 */
+        -webkit-transition-property:width; /* Safari and Chrome */
+        -o-transition-property:width; /* Opera */
+
+  > transition-duration
+        -webkit-transition-duration: 5s; /* Safari */
+
+  > transition-timing-function
+        -webkit-transition-timing-function: linear; /* Safari and Chrome */
+
+  > transition-delay
+        -webkit-transition-delay: 2s; /* Safari */
+
+> Как убрать срабатывание перехода во время загрузки страницы
+  > Описание проблемы:
+    > Когда страница загружается, все переходы срабатывают.
+      Чаще всего, выглядит это некрасиво, потому что так задумано не было.
+      Например, ты хотел, чтобы переход срабатывал при наведении курсора,
+      а он, помимо этого, срабатывает и при загрузке страницы.
+  > Решение:
+    > Описано здесь:
+          http://css-tricks.com/transitions-only-after-page-load/
+    1. Добавить элементу body следующий класс:
+          <body class="preload">
+
+          .preload * {
+            -webkit-transition: none !important;
+            -moz-transition: none !important;
+            -ms-transition: none !important;
+            -o-transition: none !important;
+          }
+    2. С помощью jQuery удалить этот класс со страницы:
+          $(window).load(function() {
+            $("body").removeClass("preload");
+          });
+
+
+
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

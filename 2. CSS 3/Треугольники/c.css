@@ -1,0 +1,181 @@
+
+
+/*--------------------------------
+/* Треугольник вниз
+/*------------------------------*/
+#mydiv1 {
+	width: 200px;
+	height: 100px;
+	background-color: #ddd;
+	position: relative;
+	display: inline-block;
+	margin: 20px;
+}
+#mydiv1::after {
+content: '';
+position: absolute;
+left: 80px; bottom: -40px;
+
+/* Треугольник */
+border: 20px solid transparent;
+border-top: 20px solid green;
+}
+
+
+/*--------------------------------
+/* Треугольник вверх
+/*------------------------------*/
+#mydiv2 {
+	width: 200px;
+	height: 100px;
+	background-color: #ddd;
+	position: relative;
+	display: inline-block;
+	margin: 20px;
+}
+#mydiv2::after {
+content: '';
+position: absolute;
+left: 80px; top: -40px;
+
+/* Треугольник */
+border: 20px solid transparent;
+border-bottom: 20px solid green;
+}
+
+
+/*--------------------------------
+/* Треугольник влево
+/*------------------------------*/
+#mydiv3 {
+	width: 200px;
+	height: 100px;
+	background-color: #ddd;
+	position: relative;
+	display: inline-block;
+	margin: 20px;
+}
+#mydiv3::after {
+content: '';
+position: absolute;
+left: -40px; top: 30px;
+
+/* Треугольник */
+border: 20px solid transparent;
+border-right: 20px solid green;
+}
+
+
+/*--------------------------------
+/* Треугольник вправо
+/*------------------------------*/
+#mydiv4 {
+	width: 200px;
+	height: 100px;
+	background-color: #ddd;
+	position: relative;
+	display: inline-block;
+	margin: 20px;
+}
+#mydiv4::after {
+content: '';
+position: absolute;
+right: -40px; top: 30px;
+
+/* Треугольник */
+border: 20px solid transparent;
+border-left: 20px solid green;
+}
+
+
+/*------------------------------------------
+/* Треугольник в левом верхнем углу
+/*----------------------------------------*/
+#mydiv5 {
+	width: 200px;
+	height: 100px;
+	background-color: #ddd;
+	position: relative;
+	display: inline-block;
+	margin: 20px;
+}
+#mydiv5::after {
+content: '';
+position: absolute; /* Абсолютное позиционирование */
+left: 0; top: 0; /* Положение треугольника */
+
+/* Треугольник */
+border: 20px solid transparent;
+border-left: 20px solid green;
+border-top: 20px solid green;
+}
+
+
+/*------------------------------------------
+/* Треугольник в правом верхнем углу
+/*----------------------------------------*/
+#mydiv6 {
+	width: 200px;
+	height: 100px;
+	background-color: #ddd;
+	position: relative;
+	display: inline-block;
+	margin: 20px;
+}
+#mydiv6::after {
+content: '';
+position: absolute; /* Абсолютное позиционирование */
+right: 0; top: 0; /* Положение треугольника */
+
+/* Треугольник */
+border: 20px solid transparent;
+border-right: 20px solid green;
+border-top: 20px solid green;
+}
+
+
+/*------------------------------------------
+/* Треугольник в правом нижнем углу
+/*----------------------------------------*/
+#mydiv7 {
+	width: 200px;
+	height: 100px;
+	background-color: #ddd;
+	position: relative;
+	display: inline-block;
+	margin: 20px;
+}
+#mydiv7::after {
+content: '';
+position: absolute; /* Абсолютное позиционирование */
+right: 0; bottom: 0; /* Положение треугольника */
+
+/* Треугольник */
+border: 20px solid transparent;
+border-right: 20px solid green;
+border-bottom: 20px solid green;
+}
+
+
+/*------------------------------------------
+/* Треугольник в левом нижнем углу
+/*----------------------------------------*/
+#mydiv8 {
+	width: 200px;
+	height: 100px;
+	background-color: #ddd;
+	position: relative;
+	display: inline-block;
+	margin: 20px;
+}
+#mydiv8::after {
+content: '';
+position: absolute; /* Абсолютное позиционирование */
+left: 0; bottom: 0; /* Положение треугольника */
+
+/* Треугольник */
+border: 20px solid transparent;
+border-left: 20px solid green;
+border-bottom: 20px solid green;
+}
+

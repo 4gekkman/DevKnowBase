@@ -1,0 +1,115 @@
+/* INFO
+--------------> Типы хранилищ данных в MySQL
+ > Движок - это способ хранения информации.
+ > Движок каждый можен написать сам.
+ > Движок назначается при создании таблицы.
+ > У существующей таблицы движок можно изменить только если новый движок
+   поддерживает все, что наворочено в таблице старым. Иначе сначала придется
+   убрать из таблицы вещи, не поддерживаемые новым движком.
+ > Ссылки на статьи про сравнение движков:
+   http://habrahabr.ru/post/64851/
+   http://handynotes.ru/2008/01/mysql.html
+
+Несколько наиболее часто используемых стандартных движков:
+ > MYISAM           | 1 движок MySQL; расчитан на OLTP; хранит данные в файлах .MYD, индексы в .MYI;
+                    | + быстрее чем INNODB * быстро вставляет данные * полнотекстовый поиск
+                    | - нет транзакций * нет внешних ключей * медленно читает данные
+ --------------------
+ > INNODB           | данные он хранит уровнем выше в файлах ibdata..., а журналы транзакций в ib_logfile...; рекомендуется по умолчанию;
+                    | + транзакции * ограничения * внешние ключи
+                    | - нет полнотекстовых индексов
+ --------------------
+ > ARCHIVE          | хранит данные в архиве; использовать для хранения редко изменяемой информации;
+                    | + данные весят гораздо меньше; довольно быстро читает (~MYISAM);
+                    | - медленно изменяет/записывает данные; нет первичных и внешних ключей; нет транзакций;
+ --------------------
+ > CSV              | хранит данные в txt формате .csv, можно вручную дописать;
+                    | + довольно быстро читает (~MYISAM);
+                    | - нет внешнего ключа; нет транзакций;
+ --------------------
+ > MERGE            | Merged ISAM - соединенный ISAM; когда 1 таблица хранится в нескольких файлах;
+                    | +
+                    | -
+ --------------------
+ > BDB (BerkleyDB)  | оставлен для совместимости
+                    | +
+                    | -
+ --------------------
+ > MEMORY           | хранит все данные в оперативке, на диск не пишет; сохранность данных не гарантируется;
+                    | + читает и пишет быстрее всех; хорош для временных таблиц;
+                    | - сохранность данных не гарантирована;
+ --------------------
+ > FEDERATED        | (входит в платную версию) Поддержка ВСЕХ возможностей; несколько серверов MySQL подключаются к серверу,
+                      с FEDERATED и считают, что это их собственная база данных; кластеризация.
+ --------------------
+ > BLACKHOLE        | > все, что записывается в BLACKHOLE исчезает в туне;
+                      > любое чтение из BLACKHOLE дает 0;
+                      > этот движок нужен для отладки;
+
+Рекомендации по выбору движка:
+ > MEMORY   |   для временных таблиц
+ > MYISAM   |   если нужен полнотекстовый поиск; если нужны быстрые операции вставки (турникеты в метро, всякие логи);
+ > INNODB   |   по дефолту
+
+
+*/
+USE test;
+
+-- посмотреть имеющиеся движки
+SHOW ENGINES;
+
+-- задать движок можно при создании таблицы
+CREATE TABLE t(i INT)
+  ENGINE = INNODB;  -- задать движок  | или    TYPE = INNODB;
+
+-- изменить движок у существующей таблицы
+ALTER TABLE t ENGINE = MYISAM;
+
+
+-- ------------------> Проверка быстродействия движков <------------------ --
+-- создание учебной БД
+CREATE DATABASE IF NOT EXISTS engineSpeedTestBD;
+USE engineSpeedTestBD;
+
+-- INNODB
+CREATE TABLE city0 ENGINE = INNODB SELECT * FROM world.city;
+ALTER TABLE city0 ENGINE = INNODB;
+SELECT COUNT(*)  -- тормозной запрос (4.5 sec)
+  FROM city0 c1
+  WHERE EXISTS(SELECT * FROM city0 c2 WHERE c1.name = c2.name);
+
+-- MYISAM
+CREATE TABLE city1 ENGINE = MYISAM SELECT * FROM world.city;
+ALTER TABLE city1 ENGINE = MYISAM;
+SELECT COUNT(*)  -- тормозной запрос (16.76 sec)
+FROM city1 c1
+WHERE EXISTS(SELECT * FROM city1 c2 WHERE c1.name = c2.name);
+
+-- ARCHIVE
+CREATE TABLE city2 ENGINE = ARCHIVE SELECT * FROM world.city;
+ALTER TABLE city2 ENGINE = ARCHIVE;
+SELECT COUNT(*)  -- тормозной запрос (6.9 sec)
+FROM city2 c1
+WHERE EXISTS(SELECT * FROM city2 c2 WHERE c1.name = c2.name);
+
+-- CSV
+CREATE TABLE city3 ENGINE = CSV SELECT * FROM world.city;
+ALTER TABLE city3 ENGINE = CSV;
+SELECT COUNT(*)  -- тормозной запрос (6.6 sec)
+FROM city3 c1
+WHERE EXISTS(SELECT * FROM city3 c2 WHERE c1.name = c2.name);
+
+-- MEMORY
+CREATE TABLE city4 ENGINE = MEMORY SELECT * FROM world.city;
+ALTER TABLE city4 ENGINE = MEMORY;
+SELECT COUNT(*)  -- тормозной запрос (1.1 sec)
+FROM city4 c1
+WHERE EXISTS(SELECT * FROM city4 c2 WHERE c1.name = c2.name);
+
+-- BLACKHOLE
+CREATE TABLE city5 ENGINE = BLACKHOLE SELECT * FROM world.city;
+ALTER TABLE city5 ENGINE = BLACKHOLE;
+SELECT COUNT(*)  -- тормозной запрос
+FROM city5 c1
+WHERE EXISTS(SELECT * FROM city5 c2 WHERE c1.name = c2.name);
+   -- возвращает 0

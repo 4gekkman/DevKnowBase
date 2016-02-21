@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>32. Связка selectedOptions - multi-select</mark><br><br>
+
+<ul>
+	<li>Попробуй выбрать несколько значений (зажав shift)</li>
+	<li>Список выбранных значений отобразится ниже</li>
+</ul>
+
+
+	<hr>
+
+
+
+	<p>
+			Choose some countries you'd like to visit:
+			<select data-bind="options: availableCountries, selectedOptions: chosenCountries" size="5" multiple="true"></select>
+	</p>
+
+	<hr>
+	Выбранные значения:
+	<div data-bind="foreach: chosenCountries">
+		<p data-bind="text: $data"></p>
+	</div>
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

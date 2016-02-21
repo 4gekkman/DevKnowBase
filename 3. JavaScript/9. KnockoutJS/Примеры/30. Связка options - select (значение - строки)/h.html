@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>30. Связка options - select (значение - строки)</mark><br><br>
+
+<ul>
+	<li>Попробуй повыбирать в выпалающем списке разные значения</li>
+</ul>
+
+
+	<hr>
+
+	<p>
+		Выбери страну:
+		<select data-bind="options: countries, value: selected"></select>
+		<p>Выбрано: <span data-bind="text: selected"></span><p>
+
+	</p>
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

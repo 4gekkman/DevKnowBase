@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+	</style>
+
+	<link rel="stylesheet" href="c.css"/>
+</head>
+<body>
+
+
+<!--Шаг 1-->
+<div id="step1">
+	<h3>Шаг 1</h3>
+	<p>Вводите значения, которые будут отправлены на сервер с XHR-запросом:</p>
+
+	<form id="myForm">
+
+		<table>
+			<tr>
+				<td><input name="name" id="name" type="text" value="Иван"/></td>
+				<td>Name</td>
+			</tr>
+			<tr>
+				<td><input name="surname" id="surname" type="text" value="Петров"/></td>
+				<td>Surname</td>
+			</tr>
+			<tr>
+				<td><input name="age" id="age" type="text" value="18"/></td>
+				<td>Age</td>
+			</tr>
+		</table>
+
+	</form>
+</div>
+
+
+<!--Шаг 2-->
+<div id="step2">
+	<h3>Шаг 2</h3>
+	<span>Здесь в режиме реального времени формируется строка-тело в формате JSON:</span>
+	<br>
+	<p id="stringBody">""</p>
+</div>
+
+
+<!--Шаг 3-->
+<div id="step3">
+<h3>Шаг 3</h3>
+<span>Сформированную на этапе "Шаг 2" строку теперь можно отправить на сервер, для этого нажми на кнопку ниже:</span>
+	<ul>
+		<li>Запрос будет сделан методом POST (строку в формате JSON в 99.9% случаев
+		посылают методом POST, поскольку если отправлять методом GET в query string,
+		то JSON-строка подвергнется еще и автоматическому URL-кодированию, что нам не нужно).</li>
+		<li>Сервер получит необработанные POST-данные, распарсит их с помощью функции
+		json_decode, получив массив, и вернёт его клиенту. Массив отобразится ниже, под кнопкой.</li>
+	</ul>
+
+	<table>
+		<tr>
+			<td><button id="send">Отправить XHR-запрос методом POST</button></td>
+		</tr>
+		<tr>
+			<td><div id="divResponse"></div></td>
+		</tr>
+	</table>
+
+</div>
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

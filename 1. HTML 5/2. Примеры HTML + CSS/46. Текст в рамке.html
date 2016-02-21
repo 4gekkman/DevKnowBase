@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Текст в рамке</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+  
+   .section1 {
+    width: 340px;
+    padding: 1px;
+    border: 1px solid black;
+    font: normal 3em sans-serif;
+    float: left;
+   } 
+   .section2 {
+    float: left;
+    width: 170px;
+    border: none;
+    background: white;
+    color: black;
+    margin: 0px;
+    text-align: right;
+   } 
+   .section3 {
+    float: left;
+    width: 170px;
+    border: none;
+    background: black;
+    color: white;
+    margin: 0px;
+    text-align: left;
+   } 
+  </style>   
+ </head>
+ <body>
+  <section class="section1">
+   <section class="section2">BLACK</section><section class="section3">WHITE</section>
+  </section>
+ </body>
+</html>

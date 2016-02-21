@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+		#messages {
+			width: 400px;
+			height: 200px;
+			border: 2px solid black;
+			border-color: RGBA(0,0,0,.3);
+			box-shadow: 0 3px 3px rgba(0,0,0,.4);
+			overflow: auto;
+			padding: 5px;
+		}
+
+		p {
+			margin: 0;
+		}
+
+	</style>
+</head>
+<body>
+<input id="nick" type="text" placeholder="Введите здесь ваш nickname" size="40"><br><br>
+<div id="messages"></div><br>
+<textarea id="input" rows="5" cols="50" placeholder="Введите сообщение"></textarea>
+<br><button onclick="sendMessage();">Отправить</button>
+<br>
+
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

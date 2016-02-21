@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Цветные колонки в таблице</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+
+   table {
+    border-collapse: collapse;
+   }
+
+   th {
+    background: #666666;
+    color: white;
+    font: 1em bold sans-serif;
+    padding: 3px;
+    width: 100px;
+    border: 1px solid black;
+   } 
+   th + th {
+    width: 75px;
+   }
+   th + th + th {
+    width: 200px;
+   }
+   th + th + th + th {
+    width: 100px;
+   }
+   td {
+    padding: 3px;
+    background: #7CDED5;
+    color: black;
+    font: 1em normal sans-serif;
+    border: 1px solid black;
+   }
+   td + td {
+    background: #FFFD7A;
+   }
+   td + td + td {
+    text-align: center;
+    background: #7CDED5;
+   }
+   td + td + td + td {
+    background: #FFFD7A;
+   }
+
+  </style>   
+ </head>
+ <body>
+  <table>
+   <tr>  <!-- заголовок таблицы -->
+    <th>Название</th>
+    <th>Цвет</th>
+    <th>Твердость по Моосу</th>
+    <th>Формула</th>
+   </tr>
+   <tr>  <!-- 1 строка -->
+    <td>Алмаз</td>
+    <td>Белый</td>
+    <td>10</td>
+    <td>С</td>
+   </tr>
+   <tr>  <!-- 2 строка -->
+    <td>Рубин</td>
+    <td>Красный</td>
+    <td>9</td>
+    <td>Al<sub>2</sub>O<sub>3</sub></td>
+   </tr>
+   <tr>  <!-- 3 строка -->
+    <td>Аметист</td>
+    <td>Голубой</td>
+    <td>7</td>
+    <td>SiO<sub>2</sub></td>
+   </tr>
+   <tr>  <!-- 4 строка -->
+    <td>Изумруд</td>
+    <td>Зеленый</td>
+    <td>8</td>
+    <td>Be<sub>2</sub>Al<sub>2</sub>(SiO<sub>2</sub>)<sub>6</sub></td>
+   </tr>
+   <tr>  <!-- 5 строка -->
+    <td>Сапфир</td>
+    <td>Голубой</td>
+    <td>9</td>
+    <td>Al<sub>2</sub>O<sub>3</sub></td>
+   </tr>
+  </table>
+ </body>
+</html>

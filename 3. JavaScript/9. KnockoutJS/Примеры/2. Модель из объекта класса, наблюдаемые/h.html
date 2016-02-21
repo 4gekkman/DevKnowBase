@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>1. Tutorial 1 - демонстрация MVVM</title>
+</head>
+<body>
+<p><mark>Демонстрация реализации шаблона MVVM с помощью KnockoutJS</mark></p>
+
+
+
+
+
+	<label><input type="text" data-bind="value: firstName"></label>
+	<label><input type="text" data-bind="value: lastName"></label>
+
+	<p>First name: <strong data-bind="text: firstName">todo</strong></p>
+	<p>Last name: <strong data-bind="text: lastName">todo</strong></p>
+	<p data-bind="text: fullName"></p>
+
+	<button data-bind="click: capitalizeLastName">Фамилию в верхний регистр</button>
+
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>

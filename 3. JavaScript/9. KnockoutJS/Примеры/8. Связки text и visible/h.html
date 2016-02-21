@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>Связки text и visible: пример использования для валидации</mark><br><br>
+
+<ul>
+	<li>Попробуй ввести число, и предупреждение пропадёт</li>
+	<li>Попробуй ввести не число, и предупреждение появится</li>
+</ul>
+
+	<input type="text" data-bind="value: value">
+	<p style="color: #f00" data-bind="visible: !isVisible()">Введено не число!</p>
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

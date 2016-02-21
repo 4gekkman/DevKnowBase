@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+
+	#container {
+		position: relative;
+		width: 500px;
+		height: 500px;
+		border: 1px solid #000;
+	}
+
+	#mousie {
+		position: relative;
+		width:41px;
+		height:48px;
+		background:url(mousie.gif)
+	}
+  #mousie:focus {
+    outline: none;
+    border: 1px dashed black;
+  }
+
+
+	</style>
+</head>
+<body>
+
+<mark>Возможность двигать элемент, на котором фокус, стрелками клавиатуры</mark>
+<ul>
+	<li>Нажми на мышонка, чтобы отдать ему фокус</li>
+	<li>Нажимай на клавиши клавиатуры вверх/вниз/вправо/влево, чтобы его двигать</li>
+</ul>
+
+	<div id="container">
+		Container
+		<ul>
+			<li>positon: relative</li>
+		</ul>
+		<div tabindex="-1" id="mousie"></div>
+	</div>
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

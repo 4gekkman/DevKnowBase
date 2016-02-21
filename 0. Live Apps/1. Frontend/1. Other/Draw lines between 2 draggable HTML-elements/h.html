@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="c.css">
+	<script src='http://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js'></script>
+</head>
+<body>
+
+
+<fieldset><legend>Div1 - от какого угла рисовать линию</legend>
+	<input type='radio' name="group1" value="1" checked> - 1 - верхний левый<br>
+	<input type='radio' name="group1" value="2"> - 2 - верхний правый<br>
+	<input type='radio' name="group1" value="3"> - 3 - нижний правый<br>
+	<input type='radio' name="group1" value="4"> - 4 - нижний левый<br>
+</fieldset>
+<fieldset><legend>Div2 - к какому углу рисовать линию</legend>
+	<input type='radio' name="group2" value="1"> - 1 - верхний левый<br>
+	<input type='radio' name="group2" value="2"> - 2 - верхний правый<br>
+	<input type='radio' name="group2" value="3" checked> - 3 - нижний правый<br>
+	<input type='radio' name="group2" value="4"> - 4 - нижний левый<br>
+</fieldset>
+
+<input type="button" onclick="drawLine();" value="Нарисовать линию" />
+<input type="button" onclick="deleteLines();" value="Удалить все линии" />
+
+
+<div id="div1" onmousedown="drag(this, event);"></div>
+<div id="div2" onmousedown="drag(this, event);"></div>
+
+
+
+
+
+	<script src="j.js"></script>
+	<script src="drag.js"></script>
+</body>
+</html>
+
+

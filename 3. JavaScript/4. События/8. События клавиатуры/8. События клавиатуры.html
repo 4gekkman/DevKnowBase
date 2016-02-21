@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+
+	</style>
+</head>
+<body>
+
+
+<!--Перевод символа в верхний регистр
+ > Действие браузера по умолчанию для события keypress отменяется
+ > Вместо переданного символа в input вставляется он же, но в верхнем регистре.-->
+<mark>Перевод символа в верхний регистр</mark>
+<ul>
+	<li>Вводи буквы в нижнем регистре в поле ниже</li>
+	<li>Они будут автоматически незаметно преобразовываться в верхний регистр</li>
+</ul>
+<input id="upper" type="text"/><br><br><br>
+
+
+<mark>Фильтрация ввода</mark>
+<ul>
+	<li>Это поле для ввода возраста.</li>
+	<li>Вводить можно только цифры.</li>
+	<li>Если результирующая цифра меньше 0 или больше 150, она автоматически
+  		изменяется на ближайшую допустимую.</li>
+	<li>Здесь не учтена возможность вставки значения, например с помощью ctrl + v.</li>
+</ul>
+<input id="age" type="text"/>
+
+
+
+	<script src="8.%20События%20клавиатуры.js"></script>
+</body>
+</html>
+
+

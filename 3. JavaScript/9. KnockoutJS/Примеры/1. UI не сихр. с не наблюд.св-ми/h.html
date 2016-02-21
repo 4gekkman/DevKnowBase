@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+	<mark>Изменение НЕ наблюдаемых св-в модели не приводит к изменению их UI-подписчиков</mark><br><br>
+
+	<ul>
+		<li>Если менять значения в input'ах, св-ва модели тоже меняются</li>
+		<li>Но при этом модель не сообщает об этом своим подписчикам</li>
+		<li>Как следствие, значения UI-подписчиков на изменённые св-ва модели не меняются</li>
+		<li><b>Вывод: для не наблюдаемых свойств модели, синхронизация МОДЕЛЬ -> UI отсутствует</b></li>
+	</ul>
+	<hr>
+
+	<input id="n" type="text" data-bind="value: name"> Свойство name модели: <mark id="name"></mark><br>
+	<input id="a" type="text" data-bind="value: age"> Свойство age модели: <mark id="age"></mark>
+
+	<p>Подписанный на св-во name модели элемент DOM: <mark data-bind="text: name"></mark></p>
+	<p>Подписанный на св-во age модели элемент DOM: <mark data-bind="text: age"></mark></p>
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

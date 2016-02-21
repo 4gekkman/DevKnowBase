@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>29. Связка checked - радиобутоны</mark><br><br>
+
+<ul>
+	<li>Здесь продемонстрирована работа связки checked c radio-бутонами</li>
+	<li>Попробуй повыбирать разные значения</li>
+	<li>В нижней части документа отражается текущее значение св-ва radioValue</li>
+</ul>
+
+
+	<hr>
+
+	<p><input name="group1" type="radio" value="one" data-bind="checked: radioValue"> - value="one"</p>
+	<p><input name="group1" type="radio" value="two" data-bind="checked: radioValue"> - value="two"</p>
+	<p><input name="group1" type="radio" value="three" data-bind="checked: radioValue"> - value="three"</p>
+	<p><input name="group1" type="radio" value="four" data-bind="checked: radioValue"> - value="four"</p>
+	<p><input name="group1" type="radio" value="five" data-bind="checked: radioValue"> - value="five"</p>
+
+	<hr>
+
+	<p>Содержание св-ва radioValue модели: </p>
+	<span data-bind="text: radioValue"></span>
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

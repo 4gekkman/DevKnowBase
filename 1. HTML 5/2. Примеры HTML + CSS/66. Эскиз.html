@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Эскиз</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+   }
+   .in {
+    display: none;
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display: block; 
+   }
+
+   body {
+    margin: 0; padding: 0;
+   } 
+   
+  /*Центральный блок*/
+  .c {
+   margin-left: 40px;
+   margin-right: 40px;
+   background: #eeeeee;
+   font: 16px serif;
+   padding: 12px 15px;
+   border: 1px solid #cccccc;
+  }
+  /*Верхний блок*/
+  .up {
+   margin: 40px;
+   margin-bottom: 0px;
+   height: 15px;
+  }
+  /*Нижний блок*/
+  .down {
+   margin-left: 40px;
+   margin-right: 40px;
+   height: 15px; 
+  }  
+  /*Стиль углового блока*/
+  .up:before, .down:before, .up:after, .down:after {
+   height: 15px;
+   width: 25px;
+   border: 0px;
+   display: block;
+   position: relative;
+   content: "";
+  } 
+  /*Стиль левого верхнего блока*/ 
+  .up:before {
+   border-bottom: 1px solid #cccccc;
+   border-right: 1px solid #cccccc;  
+   left: -25px;
+   top: 0px;
+  }
+  /*Стиль левого нижнего блока*/ 
+  .down:before {
+   left: -25px;
+   top: -1px;
+   border-top: 1px solid #cccccc;
+   border-right: 1px solid #cccccc;   
+  }
+  /*Стиль правого верхнего блока*/ 
+  .up:after {
+   float: right;
+   right: -25px;
+   top: -16px;
+   border-bottom: 1px solid #cccccc;
+   border-left: 1px solid #cccccc;
+  }
+  /*Стиль правого нижнего блока*/ 
+  .down:after {
+   float: right;
+   right: -25px;
+   top: -17px;
+   border-top: 1px solid #cccccc;
+   border-left: 1px solid #cccccc; 
+  }  
+  </style>   
+ </head>
+ <body>
+  <section class="up"></section>
+  <section class="c">dfsfd</section>
+  <section class="down"></section>
+ </body>
+</html>
+
+

@@ -1,0 +1,61 @@
+/* content: normal */
+.c1:before {
+  color: #529214;
+  content:"Контент! - ";
+}
+.c2:after {
+  color: #529214;
+  content:" - Контент!";
+}
+
+
+/* content: counter|counter-increment|counter-reset */
+.c3 {
+  counter-increment: myIndex;
+}
+.c3:before {
+  content: counter(myIndex);
+}
+.c8 {
+  counter-reset: myIndex;
+}
+.c8:before {
+
+}
+
+
+/* content: attr(attribute) */
+.c4:before {
+  content: attr(href);
+}
+.c5:before {
+  content: attr(class);
+}
+
+
+/* content: open-quote|close-quote|no-open-quote|no-close-quote */
+.c6:before {
+  content:open-quote;
+}
+.c6:after {
+  content:close-quote;
+}
+.c7:before {
+  content: no-open-quote;
+}
+.c7:after {
+  content: no-close-quote;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

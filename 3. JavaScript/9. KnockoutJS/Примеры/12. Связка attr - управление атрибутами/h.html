@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>Связка attr - связь любого атрибута DOM-эл-та со св-вом модели</mark><br><br>
+
+<ul>
+	<li>Попробуй ввести URL любой картинки в input</li>
+	<li>Эта картинка будет автоматически отображена в элементе img ниже</li>
+	<li>Всё потому, что атрибут src эл-та img связан с value этого input</li>
+</ul>
+
+
+	<p><input size="100" type="text" data-bind="value: imageUrl"> - введи URL картинки</p>
+	<img data-bind="attr: attrs" style="width: 800px; height: 500px; box-shadow: 0 0 10px RGBA(0,0,0,.3)">
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

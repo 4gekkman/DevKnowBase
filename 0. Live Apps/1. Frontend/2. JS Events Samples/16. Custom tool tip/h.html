@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+	</style>
+
+	<link rel="stylesheet" href="c.css"/>
+</head>
+<body>
+
+
+<div id="red" data-tooltip="Это HTML-элемент div с id='RED'">RED
+	<div id="blue" data-tooltip="Это длинная подсказка для HTML-элемента div с id='BLUE'">BLUE
+		<div id="yellow" data-tooltip="Это HTML-элемент div с id='YELLOW'">YELLOW</div>
+	</div>
+	<div id="green" data-tooltip="Это HTML-элемент div с id='GREEN'">GREEN</div>
+</div>
+
+<br><br>
+<mark data-tooltip="А это мой любимый элемент mark<br><mark>
+										А это mark внутри подсказки для mark =)</mark>">
+	Всплывающие подсказки
+</mark>
+<ul>
+	<li data-tooltip="Это элемент списка li1">Понаводи курсор на все 4 представленных блока, и наблюдай всплывающие подсказки.</li>
+	<li data-tooltip="Это элемент списка li2">Подсказка должна всплывать в 10px над элементом точно посередине</li>
+	<li data-tooltip="Это элемент списка li3">Размер всплывющей подсказки рассчитывается автоматически по содержимому HTML</li>
+	<li data-tooltip="Это элемент списка li4">Обрати внимание, что всплывает подсказка только для самого вложенного элемента</li>
+	<li data-tooltip="Это элемент списка li5">Обрати внимание, что при наведении на YELLOW подсказка не помещается посередине
+	над элементом по оси X (иначе бы она вылезла за край экрана), и поэтому автоматически
+	смещена вправо.</li>
+	<li data-tooltip="Это элемент списка li6">Обрати внимание, что при наведении на GREEN, подсказка не помещается над элементом
+	по оси Y, иначе бы она вылезла за край экрана. Поэтому она показывается снизу на
+	расстоянии 10px. Также, она не помещается по оси X ровно посередине элемента, поэтому
+	она автоматически смещена влево.</li>
+</ul>
+
+
+<div id="tooltip"></div>
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

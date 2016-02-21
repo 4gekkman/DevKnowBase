@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>Связка css - управление классами</mark><br><br>
+
+<ul>
+	<li>Попробуй пощёлкать по челбоксам</li>
+	<li>Этим самым ты добавляешь/убираешь у связанного эл-та DIV соответствующий класс</li>
+</ul>
+
+
+	<p>Класс ivan: <input type="checkbox" data-bind="checked: class1State"></p>
+	<p>Класс petro: <input type="checkbox" data-bind="checked: class2State"></p>
+
+	<div>
+		<span><i>Классы элемента вот этого div: </i></span>
+		<div class="lena" id="classes" data-bind="css: cssObject, text: text" style="width: 300px; height: 250px; background-color: #eee; font-size: 20px; text-align: center; line-height: 250px; box-shadow: 0 0 10px RGBA(0,0,0,.3)"></div>
+	</div>
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

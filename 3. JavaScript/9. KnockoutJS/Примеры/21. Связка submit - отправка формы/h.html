@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>20. Связка event - появление деталей при наведении</mark><br><br>
+
+<ul>
+	<li>Попробуй нажать мышкой на кнопку, и форма отправится.</li>
+	<li>Попробуй, наведя фокус на любое поле, нажать на enter, и форма отправится</li>
+</ul>
+
+	<form data-bind="submit: someHandler">
+			<input type='text' placeholder="Имя">
+			<input type='text' placeholder="Фамилия">
+			<input type='text' placeholder="Возраст">
+			<button type="submit">Submit</button>
+	</form>
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,2166 @@
+/* --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+8. Синтаксис SQL-выражений
+
+Выражения для работы со структурами данных
+  > CREATE          | создание структур данных
+    > CREATE DATABASE      | создать базу данных
+    > CREATE EVENT         | создать событие и настроить его расписание
+    > CREATE FUNCTION      | создать хранимую функцию или пользовательскую функцию
+    > CREATE INDEX         | создать индекс
+    > CREATE LOGFILE GROUP | создать группу для лог-файлов
+    > CREATE PROCEDURE     | создать хранимую процедуру
+    > CREATE SERVER        | (для FEDERATED engine) создать определение сервера
+    > CREATE TABLE         | создать таблицу
+    > CREATE TABLESPACE    | создать табличное пространство
+    > CREATE TRIGGER       | создать триггер
+    > CREATE VIEW          | создать вьюху
+
+  > ALTER           | изменение структур данных
+    > ALTER DATABASE       | изменить базу данных
+    > ALTER EVENT          | изменить событие
+    > ALTER LOGFILE GROUP  | изменить группу для лог-файлов
+    > ALTER FUNCTION       | изменить хранимую функцию
+    > ALTER PROCEDURE      | изменить хранимую процедуру
+    > ALTER SERVER         | (для FEDERATED engine) изменить сервер
+    > ALTER TABLE          | изменить таблицу
+    > ALTER TABLESPACE     | изменить табличное пространство
+    > ALTER VIEW           | изменить вьюху
+
+  > DROP            | удаление структур данных
+    > DROP DATABASE        | удалить базу данных
+    > DROP EVENT           | удалить событие
+    > DROP FUNCTION        | удалить хранимую функцию
+    > DROP INDEX           | удалить индекс
+    > DROP LOGFILE GROUP   | удалить группу для лог-файлов
+    > DROP PROCEDURE       | удалить хранимую процедуру
+    > DROP SERVER          | (для FEDERATED engine) удалить сервер
+    > DROP TABLE           | удалить таблицу
+    > DROP TABLESPACE      | удалить табличное пространство
+    > DROP TRIGGER         | удалить триггер
+    > DROP VIEW            | удалить вьюху
+
+  > RENAME TABLE           | переименовать 1 или более таблиц
+  > TRANCATE TABLE         | полностью очистить таблицу от данных
+
+
+
+
+-------------------------------------------------- */
+
+-- Для учебных примеров используется тестовая база данных
+USE test_db;
+
+
+
+-- ##########################################
+-- Выражения для работы со структурами данных
+-- ##########################################
+
+-- CREATE          | создание структур данных
+
+  -- ***************
+  -- CREATE DATABASE      | создать базу данных
+  /*
+    CREATE {DATABASE | SCHEMA} [IF NOT EXISTS] db_name
+        [create_specification] ...
+
+    create_specification:
+        [DEFAULT] CHARACTER SET [=] charset_name
+      | [DEFAULT] COLLATE [=] collation_name
+   */
+    -- Создать базу данных и указать для нее CHARACTER SET и COLLATION
+    CREATE DATABASE IF NOT EXISTS test_db CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+  -- ************
+  -- CREATE EVENT         | создать событие и настроить его расписание
+  /*
+      CREATE
+        [DEFINER = { user | CURRENT_USER }]
+        EVENT
+        [IF NOT EXISTS]
+        event_name
+        ON SCHEDULE schedule
+        [ON COMPLETION [NOT] PRESERVE]
+        [ENABLE | DISABLE | DISABLE ON SLAVE]
+        [COMMENT 'comment']
+        DO event_body;
+
+    schedule:
+        AT timestamp [+ INTERVAL interval] ...
+      | EVERY interval
+        [STARTS timestamp [+ INTERVAL interval] ...]
+        [ENDS timestamp [+ INTERVAL interval] ...]
+
+    interval:
+        quantity {YEAR | QUARTER | MONTH | DAY | HOUR | MINUTE |
+                  WEEK | SECOND | YEAR_MONTH | DAY_HOUR | DAY_MINUTE |
+                  DAY_SECOND | HOUR_MINUTE | HOUR_SECOND | MINUTE_SECOND}
+   */
+
+    -- Минимальная комплектация события
+    CREATE EVENT myevent
+      ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 HOUR
+    DO
+      UPDATE myschema.mytable SET mycol = mycol + 1;
+
+
+
+  -- CREATE FUNCTION      | создать хранимую функцию или пользовательскую функцию
+  /*
+    CREATE
+        [DEFINER = { user | CURRENT_USER }]
+        PROCEDURE sp_name ([proc_parameter[,...]])
+        [characteristic ...] routine_body
+
+    CREATE
+        [DEFINER = { user | CURRENT_USER }]
+        FUNCTION sp_name ([func_parameter[,...]])
+        RETURNS type
+        [characteristic ...] routine_body
+
+    proc_parameter:
+        [ IN | OUT | INOUT ] param_name type
+
+    func_parameter:
+        param_name type
+
+    type:
+        Any valid MySQL data type
+
+    characteristic:
+        COMMENT 'string'
+      | LANGUAGE SQL
+      | [NOT] DETERMINISTIC
+      | { CONTAINS SQL | NO SQL | READS SQL DATA | MODIFIES SQL DATA }
+      | SQL SECURITY { DEFINER | INVOKER }
+
+    routine_body:
+        Valid SQL routine statement
+   */
+
+    -- Пример создания процедуры с парамтеров вида OUT
+      -- Создать процедуру (не забыть сменить delimiter)
+      CREATE PROCEDURE simpleproc (OUT param1 INT)
+      BEGIN
+        SELECT COUNT(*) INTO param1 FROM t;  -- считает кол-во строк в таблице y и записывает в param1
+      END;
+
+      -- Вызвать процедуру с переменной @a в кач-ве параметра, и посмотреть результат
+      CALL simpleproc(@a);
+      SELECT @a;  -- 2
+
+    -- Пример создания функции, возвращающей значение
+      -- Создать функцию
+      CREATE FUNCTION hello (s CHAR(20))
+      RETURNS CHAR(50) DETERMINISTIC
+        RETURN CONCAT('Hello, ',s,'!');
+
+      -- Использовать функцию
+      SELECT hello('world');  -- 'Hello, world!'
+
+
+  -- CREATE INDEX         | создать индекс
+        /*
+            CREATE [UNIQUE|FULLTEXT|SPATIAL] INDEX index_name
+              [index_type]
+              ON tbl_name (index_col_name,...)
+              [index_option]
+              [algorithm_option | lock_option] ...
+
+          index_col_name:
+              col_name [(length)] [ASC | DESC]
+
+          index_type:
+              USING {BTREE | HASH}
+
+          index_option:
+              KEY_BLOCK_SIZE [=] value
+            | index_type
+            | WITH PARSER parser_name
+            | COMMENT 'string'
+
+          algorithm_option:
+              ALGORITHM [=] {DEFAULT|INPLACE|COPY}
+
+          lock_option:
+              LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}
+         */
+
+    -- -
+
+
+  -- CREATE LOGFILE GROUP | создать группу для лог-файлов
+        /*
+          CREATE LOGFILE GROUP logfile_group
+            ADD UNDOFILE 'undo_file'
+            [INITIAL_SIZE [=] initial_size]
+            [UNDO_BUFFER_SIZE [=] undo_buffer_size]
+            [REDO_BUFFER_SIZE [=] redo_buffer_size]
+            [NODEGROUP [=] nodegroup_id]
+            [WAIT]
+            [COMMENT [=] comment_text]
+            ENGINE [=] engine_name
+         */
+
+    -- -
+
+
+  -- CREATE PROCEDURE     | создать хранимую процедуру
+
+    -- См. CREATE FUNCTION - там же и про CREATE PROCEDURE
+
+
+  -- CREATE SERVER        | (для FEDERATED engine) создать определение сервера
+        /*
+            CREATE SERVER server_name
+              FOREIGN DATA WRAPPER wrapper_name
+              OPTIONS (option [, option] ...)
+
+          option:
+            { HOST character-literal
+            | DATABASE character-literal
+            | USER character-literal
+            | PASSWORD character-literal
+            | SOCKET character-literal
+            | OWNER character-literal
+            | PORT numeric-literal }
+         */
+
+    -- -
+
+  -- CREATE TABLE         | создать таблицу
+                    /*
+                        CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name
+                            (create_definition,...)
+                            [table_options]
+                            [partition_options]
+                        Or:
+
+                        CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name
+                            [(create_definition,...)]
+                            [table_options]
+                            [partition_options]
+                            select_statement
+                        Or:
+
+                        CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name
+                            { LIKE old_tbl_name | (LIKE old_tbl_name) }
+
+                          create_definition:
+                              col_name column_definition
+                            | [CONSTRAINT [symbol]] PRIMARY KEY [index_type] (index_col_name,...) [index_option] ...
+                            | {INDEX|KEY} [index_name] [index_type] (index_col_name,...) [index_option] ...
+                            | [CONSTRAINT [symbol]] UNIQUE [INDEX|KEY] [index_name] [index_type] (index_col_name,...) [index_option] ...
+                            | {FULLTEXT|SPATIAL} [INDEX|KEY] [index_name] (index_col_name,...) [index_option] ...
+                            | [CONSTRAINT [symbol]] FOREIGN KEY [index_name] (index_col_name,...) reference_definition
+                            | CHECK (expr)
+
+                            column_definition:
+                                data_type [NOT NULL | NULL] [DEFAULT default_value]
+                                  [AUTO_INCREMENT] [UNIQUE [KEY] | [PRIMARY] KEY]
+                                  [COMMENT 'string']
+                                  [COLUMN_FORMAT {FIXED|DYNAMIC|DEFAULT}]
+                                  [STORAGE {DISK|MEMORY|DEFAULT}]
+                                  [reference_definition]
+
+                              data_type:
+                                  BIT[(length)]
+                                | TINYINT[(length)] [UNSIGNED] [ZEROFILL]
+                                | SMALLINT[(length)] [UNSIGNED] [ZEROFILL]
+                                | MEDIUMINT[(length)] [UNSIGNED] [ZEROFILL]
+                                | INT[(length)] [UNSIGNED] [ZEROFILL]
+                                | INTEGER[(length)] [UNSIGNED] [ZEROFILL]
+                                | BIGINT[(length)] [UNSIGNED] [ZEROFILL]
+                                | REAL[(length,decimals)] [UNSIGNED] [ZEROFILL]
+                                | DOUBLE[(length,decimals)] [UNSIGNED] [ZEROFILL]
+                                | FLOAT[(length,decimals)] [UNSIGNED] [ZEROFILL]
+                                | DECIMAL[(length[,decimals])] [UNSIGNED] [ZEROFILL]
+                                | NUMERIC[(length[,decimals])] [UNSIGNED] [ZEROFILL]
+                                | DATE
+                                | TIME
+                                | TIMESTAMP
+                                | DATETIME
+                                | YEAR
+                                | CHAR[(length)]
+                                    [CHARACTER SET charset_name] [COLLATE collation_name]
+                                | VARCHAR(length)
+                                    [CHARACTER SET charset_name] [COLLATE collation_name]
+                                | BINARY[(length)]
+                                | VARBINARY(length)
+                                | TINYBLOB
+                                | BLOB
+                                | MEDIUMBLOB
+                                | LONGBLOB
+                                | TINYTEXT [BINARY]
+                                    [CHARACTER SET charset_name] [COLLATE collation_name]
+                                | TEXT [BINARY]
+                                    [CHARACTER SET charset_name] [COLLATE collation_name]
+                                | MEDIUMTEXT [BINARY]
+                                    [CHARACTER SET charset_name] [COLLATE collation_name]
+                                | LONGTEXT [BINARY]
+                                    [CHARACTER SET charset_name] [COLLATE collation_name]
+                                | ENUM(value1,value2,value3,...)
+                                    [CHARACTER SET charset_name] [COLLATE collation_name]
+                                | SET(value1,value2,value3,...)
+                                    [CHARACTER SET charset_name] [COLLATE collation_name]
+                                | spatial_type
+
+                            index_col_name:
+                                col_name [(length)] [ASC | DESC]
+
+                            index_type:
+                                USING {BTREE | HASH}
+
+                            index_option:
+                                KEY_BLOCK_SIZE [=] value
+                              | index_type
+                              | WITH PARSER parser_name
+                              | COMMENT 'string'
+
+                            reference_definition:
+                                REFERENCES tbl_name (index_col_name,...)
+                                  [MATCH FULL | MATCH PARTIAL | MATCH SIMPLE]
+                                  [ON DELETE reference_option]
+                                  [ON UPDATE reference_option]
+
+                            reference_option:
+                                RESTRICT | CASCADE | SET NULL | NO ACTION
+
+                          table_options:
+                              table_option [[,] table_option] ...
+
+                            table_option:
+                                ENGINE [=] engine_name
+                              | AUTO_INCREMENT [=] value
+                              | AVG_ROW_LENGTH [=] value
+                              | [DEFAULT] CHARACTER SET [=] charset_name
+                              | CHECKSUM [=] {0 | 1}
+                              | [DEFAULT] COLLATE [=] collation_name
+                              | COMMENT [=] 'string'
+                              | CONNECTION [=] 'connect_string'
+                              | DATA DIRECTORY [=] 'absolute path to directory'
+                              | DELAY_KEY_WRITE [=] {0 | 1}
+                              | INDEX DIRECTORY [=] 'absolute path to directory'
+                              | INSERT_METHOD [=] { NO | FIRST | LAST }
+                              | KEY_BLOCK_SIZE [=] value
+                              | MAX_ROWS [=] value
+                              | MIN_ROWS [=] value
+                              | PACK_KEYS [=] {0 | 1 | DEFAULT}
+                              | PASSWORD [=] 'string'
+                              | ROW_FORMAT [=] {DEFAULT|DYNAMIC|FIXED|COMPRESSED|REDUNDANT|COMPACT}
+                              | STATS_AUTO_RECALC [=] {DEFAULT|0|1}
+                              | STATS_PERSISTENT [=] {DEFAULT|0|1}
+                              | TABLESPACE tablespace_name [STORAGE {DISK|MEMORY|DEFAULT}]
+                              | UNION [=] (tbl_name[,tbl_name]...)
+
+                          partition_options:
+                              PARTITION BY
+                                  { [LINEAR] HASH(expr)
+                                  | [LINEAR] KEY [ALGORITHM={1|2}] (column_list)
+                                  | RANGE{(expr) | COLUMNS(column_list)}
+                                  | LIST{(expr) | COLUMNS(column_list)} }
+                              [PARTITIONS num]
+                              [SUBPARTITION BY
+                                  { [LINEAR] HASH(expr)
+                                  | [LINEAR] KEY [ALGORITHM={1|2}] (column_list) }
+                                [SUBPARTITIONS num]
+                              ]
+                              [(partition_definition [, partition_definition] ...)]
+
+                            partition_definition:
+                                PARTITION partition_name
+                                    [VALUES
+                                        {LESS THAN {(expr | value_list) | MAXVALUE}
+                                        |
+                                        IN (value_list)}]
+                                    [[STORAGE] ENGINE [=] engine_name]
+                                    [COMMENT [=] 'comment_text' ]
+                                    [DATA DIRECTORY [=] 'data_dir']
+                                    [INDEX DIRECTORY [=] 'index_dir']
+                                    [MAX_ROWS [=] max_number_of_rows]
+                                    [MIN_ROWS [=] min_number_of_rows]
+                                    [TABLESPACE [=] tablespace_name]
+                                    [NODEGROUP [=] node_group_id]
+                                    [(subpartition_definition [, subpartition_definition] ...)]
+
+                              subpartition_definition:
+                                  SUBPARTITION logical_name
+                                      [[STORAGE] ENGINE [=] engine_name]
+                                      [COMMENT [=] 'comment_text' ]
+                                      [DATA DIRECTORY [=] 'data_dir']
+                                      [INDEX DIRECTORY [=] 'index_dir']
+                                      [MAX_ROWS [=] max_number_of_rows]
+                                      [MIN_ROWS [=] min_number_of_rows]
+                                      [TABLESPACE [=] tablespace_name]
+                                      [NODEGROUP [=] node_group_id]
+
+                            select_statement:
+                                [IGNORE | REPLACE] [AS] SELECT ...   (Some valid select statement)
+                     */
+
+
+
+
+
+  -- CREATE TABLESPACE    | создать табличное пространство
+        /*
+          CREATE TABLESPACE tablespace_name
+              ADD DATAFILE 'file_name'
+              USE LOGFILE GROUP logfile_group
+              [EXTENT_SIZE [=] extent_size]
+              [INITIAL_SIZE [=] initial_size]
+              [AUTOEXTEND_SIZE [=] autoextend_size]
+              [MAX_SIZE [=] max_size]
+              [NODEGROUP [=] nodegroup_id]
+              [WAIT]
+              [COMMENT [=] comment_text]
+              ENGINE [=] engine_name
+         */
+
+    -- -
+
+  -- CREATE TRIGGER       | создать триггер
+        /*
+            CREATE
+              [DEFINER = { user | CURRENT_USER }]
+              TRIGGER trigger_name
+              trigger_time trigger_event
+              ON tbl_name FOR EACH ROW
+              trigger_body
+
+          trigger_time: { BEFORE | AFTER }
+
+          trigger_event: { INSERT | UPDATE | DELETE }
+         */
+
+    -- -
+
+  -- CREATE VIEW          | создать вьюху
+        /*
+          CREATE
+              [OR REPLACE]
+              [ALGORITHM = {UNDEFINED | MERGE | TEMPTABLE}]
+              [DEFINER = { user | CURRENT_USER }]
+              [SQL SECURITY { DEFINER | INVOKER }]
+              VIEW view_name [(column_list)]
+              AS select_statement
+              [WITH [CASCADED | LOCAL] CHECK OPTION]
+         */
+
+    -- -
+
+-- ALTER           | изменение структур данных
+
+  -- ALTER DATABASE       | изменить базу данных
+                        /*
+                          ALTER {DATABASE | SCHEMA} [db_name]
+                              alter_specification ...
+                          ALTER {DATABASE | SCHEMA} db_name
+                              UPGRADE DATA DIRECTORY NAME
+
+                          alter_specification:
+                              [DEFAULT] CHARACTER SET [=] charset_name
+                            | [DEFAULT] COLLATE [=] collation_name
+                         */
+
+
+  -- ALTER EVENT          | изменить событие
+        /*
+        ALTER
+          [DEFINER = { user | CURRENT_USER }]
+          EVENT event_name
+          [ON SCHEDULE schedule]
+          [ON COMPLETION [NOT] PRESERVE]
+          [RENAME TO new_event_name]
+          [ENABLE | DISABLE | DISABLE ON SLAVE]
+          [COMMENT 'comment']
+          [DO event_body]
+         */
+
+  -- ALTER LOGFILE GROUP  | изменить группу для лог-файлов
+        /*
+        ALTER LOGFILE GROUP logfile_group
+          ADD UNDOFILE 'file_name'
+          [INITIAL_SIZE [=] size]
+          [WAIT]
+          ENGINE [=] engine_name
+         */
+
+  -- ALTER FUNCTION       | изменить хранимую функцию
+        /*
+        ALTER FUNCTION func_name [characteristic ...]
+
+      characteristic:
+          COMMENT 'string'
+        | LANGUAGE SQL
+        | { CONTAINS SQL | NO SQL | READS SQL DATA | MODIFIES SQL DATA }
+        | SQL SECURITY { DEFINER | INVOKER }
+         */
+
+  -- ALTER PROCEDURE      | изменить хранимую процедуру
+        /*
+        ALTER PROCEDURE proc_name [characteristic ...]
+
+      characteristic:
+          COMMENT 'string'
+        | LANGUAGE SQL
+        | { CONTAINS SQL | NO SQL | READS SQL DATA | MODIFIES SQL DATA }
+        | SQL SECURITY { DEFINER | INVOKER }
+         */
+
+  -- ALTER SERVER         | (для FEDERATED engine) изменить сервер
+        /*
+        ALTER SERVER  server_name
+          OPTIONS (option [, option] ...)
+         */
+
+  -- ALTER TABLE          | изменить таблицу
+  /*
+        ALTER [IGNORE] TABLE tbl_name
+          [alter_specification [, alter_specification] ...]
+          [partition_options]
+
+      alter_specification:
+          table_options
+        | ADD [COLUMN] col_name column_definition
+              [FIRST | AFTER col_name ]
+        | ADD [COLUMN] (col_name column_definition,...)
+        | ADD {INDEX|KEY} [index_name]
+              [index_type] (index_col_name,...) [index_option] ...
+        | ADD [CONSTRAINT [symbol]] PRIMARY KEY
+              [index_type] (index_col_name,...) [index_option] ...
+        | ADD [CONSTRAINT [symbol]]
+              UNIQUE [INDEX|KEY] [index_name]
+              [index_type] (index_col_name,...) [index_option] ...
+        | ADD FULLTEXT [INDEX|KEY] [index_name]
+              (index_col_name,...) [index_option] ...
+        | ADD SPATIAL [INDEX|KEY] [index_name]
+              (index_col_name,...) [index_option] ...
+        | ADD [CONSTRAINT [symbol]]
+              FOREIGN KEY [index_name] (index_col_name,...)
+              reference_definition
+        | ALGORITHM [=] {DEFAULT|INPLACE|COPY}
+        | ALTER [COLUMN] col_name {SET DEFAULT literal | DROP DEFAULT}
+        | CHANGE [COLUMN] old_col_name new_col_name column_definition
+              [FIRST|AFTER col_name]
+        | LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}
+        | MODIFY [COLUMN] col_name column_definition
+              [FIRST | AFTER col_name]
+        | DROP [COLUMN] col_name
+        | DROP PRIMARY KEY
+        | DROP {INDEX|KEY} index_name
+        | DROP FOREIGN KEY fk_symbol
+        | DISABLE KEYS
+        | ENABLE KEYS
+        | RENAME [TO|AS] new_tbl_name
+        | ORDER BY col_name [, col_name] ...
+        | CONVERT TO CHARACTER SET charset_name [COLLATE collation_name]
+        | [DEFAULT] CHARACTER SET [=] charset_name [COLLATE [=] collation_name]
+        | DISCARD TABLESPACE
+        | IMPORT TABLESPACE
+        | FORCE
+        | ADD PARTITION (partition_definition)
+        | DROP PARTITION partition_names
+        | TRUNCATE PARTITION {partition_names | ALL}
+        | COALESCE PARTITION number
+        | REORGANIZE PARTITION partition_names INTO (partition_definitions)
+        | EXCHANGE PARTITION partition_name WITH TABLE tbl_name
+        | ANALYZE PARTITION {partition_names | ALL}
+        | CHECK PARTITION {partition_names | ALL}
+        | OPTIMIZE PARTITION {partition_names | ALL}
+        | REBUILD PARTITION {partition_names | ALL}
+        | REPAIR PARTITION {partition_names | ALL}
+        | REMOVE PARTITIONING
+
+      index_col_name:
+          col_name [(length)] [ASC | DESC]
+
+      index_type:
+          USING {BTREE | HASH}
+
+      index_option:
+          KEY_BLOCK_SIZE [=] value
+        | index_type
+        | WITH PARSER parser_name
+        | COMMENT 'string'
+
+      table_options:
+          table_option [[,] table_option] ...  (see CREATE TABLE options)
+
+      partition_options:
+          (see CREATE TABLE options)
+   */
+
+  -- ALTER TABLESPACE     | изменить табличное пространство
+  /*
+        ALTER TABLESPACE tablespace_name
+          {ADD|DROP} DATAFILE 'file_name'
+          [INITIAL_SIZE [=] size]
+          [WAIT]
+          ENGINE [=] engine_name
+         */
+
+  -- ALTER VIEW           | изменить вьюху
+        /*
+        ALTER
+          [ALGORITHM = {UNDEFINED | MERGE | TEMPTABLE}]
+          [DEFINER = { user | CURRENT_USER }]
+          [SQL SECURITY { DEFINER | INVOKER }]
+          VIEW view_name [(column_list)]
+          AS select_statement
+          [WITH [CASCADED | LOCAL] CHECK OPTION]
+         */
+
+-- DROP            | удаление структур данных
+
+  -- DROP DATABASE        | удалить базу данных
+
+
+  -- DROP EVENT           | удалить событие
+
+
+  -- DROP FUNCTION        | удалить хранимую функцию
+
+
+  -- DROP INDEX           | удалить индекс
+
+
+  -- DROP LOGFILE GROUP   | удалить группу для лог-файлов
+
+
+  -- DROP PROCEDURE       | удалить хранимую процедуру
+
+
+  -- DROP SERVER          | (для FEDERATED engine) удалить сервер
+
+
+  -- DROP TABLE           | удалить таблицу
+
+
+  -- DROP TABLESPACE      | удалить табличное пространство
+
+
+  -- DROP TRIGGER         | удалить триггер
+
+
+  -- DROP VIEW            | удалить вьюху
+
+
+
+-- RENAME TABLE           | переименовать 1 или более таблиц
+
+
+-- TRANCATE TABLE         | полностью очистить таблицу от данных
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* -----------------------------------------------------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я -------------------------------------------------------------
+
+
+Ссылки:
+
+  > Официальное руководство по синтаксису SQL-выражений - Data Definition Statement:
+        http://dev.mysql.com/doc/refman/5.6/en/sql-syntax.html
+
+
+*****************************************************
+Оглавление:
+
+> Выражения для работы со структурами данных
+  > CREATE          | создание структур данных
+    > CREATE DATABASE      | создать базу данных
+    > CREATE EVENT         | создать событие и настроить его расписание
+    > CREATE FUNCTION      | создать хранимую функцию или пользовательскую функцию
+    > CREATE INDEX         | создать индекс
+    > CREATE LOGFILE GROUP | создать группу для лог-файлов
+    > CREATE PROCEDURE     | создать хранимую процедуру
+    > CREATE SERVER        | (для FEDERATED engine) создать определение сервера
+    > CREATE TABLE         | создать таблицу
+    > CREATE TABLESPACE    | создать табличное пространство
+    > CREATE TRIGGER       | создать триггер
+    > CREATE VIEW          | создать вьюху
+
+  > ALTER           | изменение структур данных
+    > ALTER DATABASE       | изменить базу данных
+    > ALTER EVENT          | изменить событие
+    > ALTER LOGFILE GROUP  | изменить группу для лог-файлов
+    > ALTER FUNCTION       | изменить хранимую функцию
+    > ALTER PROCEDURE      | изменить хранимую процедуру
+    > ALTER SERVER         | (для FEDERATED engine) изменить сервер
+    > ALTER TABLE          | изменить таблицу
+    > ALTER TABLESPACE     | изменить табличное пространство
+    > ALTER VIEW           | изменить вьюху
+
+  > DROP            | удаление структур данных
+    > DROP DATABASE        | удалить базу данных
+    > DROP EVENT           | удалить событие
+    > DROP FUNCTION        | удалить хранимую функцию
+    > DROP INDEX           | удалить индекс
+    > DROP LOGFILE GROUP   | удалить группу для лог-файлов
+    > DROP PROCEDURE       | удалить хранимую процедуру
+    > DROP SERVER          | (для FEDERATED engine) удалить сервер
+    > DROP TABLE           | удалить таблицу
+    > DROP TABLESPACE      | удалить табличное пространство
+    > DROP TRIGGER         | удалить триггер
+    > DROP VIEW            | удалить вьюху
+
+  > RENAME TABLE           | переименовать 1 или более таблиц
+  > TRANCATE TABLE         | полностью очистить таблицу от данных
+
+
+
+
+
+*****************************************************
+
+
+Выражения для работы со структурами данных
+> CREATE          | создание структур данных
+  > CREATE DATABASE      | создать базу данных
+    > Общая информация
+      > Создает базу данных с указанным именем.
+      > В MySQL 5.6 использование CREATE DATABASE запрещено в пределах
+        сессии с активным LOCK TABLE.
+      > В MySQL базы данных реализованы, как директории в которых хранятся файлы,
+        соответствующие таблицам в БД. При создании БД создается только директория
+        и файл db.opt в ней.
+        > Причем, если вручную создать папку в директории data сервера MySQL,
+          то он будет считать, что это база данных.
+    > Права на использование
+      > Для использования этого выражения требуются права CREATE.
+    > Атрибуты и опции
+      > Выражения CREATE SCHEMA и CREATE DATABASE - синонимы.
+      > Атрибут IF NOT EXISTS
+        > Если указан, то БД будет создана только в том случае, если БД с таким именем еще нет.
+      > Группа атрибутов create_specification
+        > Позволяет задать CHARACTER SET и COLLATE для базы данных.
+        > Характеристики базы данных хранятсяв файле db.opt в директории БД.
+    > Сигнатура: см. в примерах.
+
+  > CREATE EVENT         | создать событие и настроить его расписание
+    > Общая информация
+      > Создает новое событие и вставляет его в расписание планировщика событий.
+      > В определении события функция CURRENT_USER() возвращает полное имя аккаунта
+        текущего пользователя в формате 'user_name'@'host_name'.
+    > Права на использование
+      > Для использования этого выражения требуются права EVENT.
+      > Может также потребовать SUPER-права в следующих случаях:
+        > (см. ниже "Атрибут DEFINER")
+    > Атрибуты и опции
+      > Минимальная комплектация атрибутов в выражении CREATE EVENT должна содержать:
+        > event_name - уникальное в этой базе данных имя события.
+        > Атрибут ON SCHEDULE со значениями schedule, назначающий значения для свойств,
+          описывающих размещения этого события в расписании событий.
+        > Атрибут DO и его значение, которое представляет собой тело, состоящии из
+          SQL-выражения, которое исполнится при наступлении события.
+      > Имя события - event_name.
+        > Имя собятия event_name должно быть допустимым в MySQL именем с MAX длиной 64 символа.
+        > Имена в MySQL регистронезависимы.
+        > Событие прикрепляется к конкретной базе данных. Если имя события event_name
+          не квалифицировано именем беза данных - [имя_БД].event_name - то оно прикрепляется
+          к той БД, которая сейчас установлена по умолчанию.
+      > Атрибут DEFINER
+        > Указывает MySQL-аккаунт, права которого будут использоваться при работе с событием.
+          > Значение user должно содержать:
+            > Либо полное имя MySQL аккаунт в формате 'user_name'@'host_name'
+            > Либо CURRENT_USER или CURRENT_USER()  - что означает текущий пользователь.
+          > Если атрибут явно не указывается, значение по умолчанию - тот, кто создал
+            событие, либо тот, кто последний его изменил.
+          > Правила для указаная правильного значения атрибута DEFINER:
+            > Если у тебя нет SUPER-прав, то в качестве значения name ты можешь
+              указать только CURRENT_USER.
+            > Если у тебя есть SUPER-права, то ты можешь указать в качестве значения
+              name любой синтаксически-правильный аккаунт. Если такого аккаунта не
+              существует, будет сгенерировано предупреждение.
+            > Создать событие с несуществующим аккаунтом в качестве значения name
+              атрибута DEFINER возможно. Но делать это бессмысленно, потому что
+              в момент выполнения события будет сгенерирована ошибка, и оно не выполнится.
+        > Атрибут IF NOT EXISTS
+          > Если указан, то событие будет создано только в том случае, если события с таким именем еще нет.
+        > Атрибут ON SCHEDULE - содержит значения группы свойств shedule события,
+          отвечающих за его положение в расписании планировщика событий:
+          > AT timestamp - используется для одноразовых событий. Событие активируется
+            в указанные в timestamp дату и время. Если указать дату и время в прошлом,
+            будет предупреждение, и событие будет мгновенно удалено.
+            > Можно указать CURRENT_TIMESTAMP, тогда событие будет активировано сразу
+              после создания.
+            > Если в определении события используется EVERY - то есть оно многоразовое -
+              то атрибут AT не используется, а вместо него атрибут STARTS внутри атрибута
+              EVERY.
+          > [+ INTERVAL interval] - опциональная возможность еще добавить к указанному
+            timestamp интервал времени.
+            > Синтаксис такойже, как у функции DATE_ADD().
+              http://dev.mysql.com/doc/refman/5.6/en/date-and-time-functions.html#function_date-add
+            > Можно записать несколько интервалов подряд чере + .
+          > В ON SCHEDULE можно использовать SQL-выражения для получения значения для
+            timestamp или interval.
+            > Все ниже указанное верно как для CREATE TABLE, так и для ALTER TABLE.
+            > Что можно использовать:
+              > Можно использовать только встроенные функции.
+              > Можно использовать SELECT FROM DUAL.
+            > Что нельзя использовать:
+              > Нельзя использовать сохраняемые программы.
+              > Нельзя использовать пользовательские функции.
+              > Нельзя использовать таблицы.
+          > Датавременные значения, указываемые в ON SCHEDULE, с помощью системной переменной
+            time_zone переводятся в UTC и в таком виде сохраняются на сервере в таблице
+            mysql.event. Что делает выполнение события независимым от значения time_zone.
+        > Атрибут EVERY - указывает на то, что событие должно выполняться с указанным в
+          значении interval интервалом.
+          > EVERY может содержать (опционально) еще 2 атрибута:
+            > STARTS
+              > Значение STARTS по умолчанию - CURRENT_TIMESTAMP.
+              > Указывает дату и время, с какого момента событие должно начать периодически
+                выполнятсья.
+                > Например, "EVERY 3 MONTH STARTS CURRENT_TIMESTAMP + INTERVAL 1 WEEK" -
+                  означает каждые 3 месяца, начало через неделю от текущего времени.
+            > ENDS
+              > Значение ENDS по умолчанию - бесконечность.
+              > Указывает дату и время, когда событие должно перестать периодически
+                выполняться.
+            > Проблема лавинообразного образования экземпляров событий
+              > Если событие не успевает закончиться в течение интервала, то образуется
+                еще одно событие. Теперь одновременно выполняются 2 события. В дальнейшем
+                количество одновременно выполняющихся событий растет.
+        > Атрибут ON COMPLETION [NOT] PRESERVE.
+          > Значение по умолчанию: ON COMPLETION NOT PRESERVE
+          > По умолчанию, после выполнения событие сразу удаляется.
+          > Если установить ON COMPLETION PRESERVE, то событие сохраняется на сервере
+            даже после окончания своей работы.
+        > Статус события (не путать со статусом планировщика событий)
+          > ENABLE             | (по умолчанию) включено
+          > DISABLE            | выключено
+                                 > Можно переключить в ENABLE с помощью ALTER EVENT
+          > DISABLE ON SLAVE   | выключено на slave-сервере.
+                                 > говорит о том, что событие создано на мастер-сервере,
+                                   и скопировано на slave-сервер, но на нем оно DISABLE.
+        > Атрибут COMMENT.
+          > Можно добавить комментарий для события. MAX 64 символа. Пишется в кавычках "".
+        > Атрибут DO.
+          > Тело события (подробнее см. "9. Сохраняемые программы и представления")
+    > Сигнатура: см. в примерах.
+
+  > CREATE FUNCTION      | создать хранимую функцию или пользовательскую функцию
+    > Общая информация
+      > По умолчанию сохраняемые процедуры и функции прикрепляются к "БД по умолчанию".
+        Чтобы изменить это поведение, требуется квалифицировать имя сохраняемого скрипта
+        при создании именем базы данных, вот так: [имя_БД].[имя_сохр_скрипта].
+      > Для вызова:
+        > Сохраняемой процедуы - операция CALL.
+        > Сохраняемой функции - обратиться к ней по имени в выражении
+      > Если имя скрипта, заданное при определении, совпадает с именем какой-нибудь
+        встроенной функции, то будет ошибка.
+        > Но если после имени будет 1 или более пробелов, то ошибки не возникнет.
+          Зато возникнет путаница. Лучше так не делать.
+        > Даже если сервер запущен с SQL-режимом IGNORE_SPACE, это не повлияет на
+          вышеописанное свойство сохраняемых скриптов.
+      > Выражения, возвращающие результаты могут быть использованы только в процедурах,
+        но не в функциях. Это относится к таким выражениям, как SELECT (без атрибута INTO),
+        SHOW, EXPLAIN и CHECK TABLE.
+      > Использование USE запрещено в теле сохраняемых скриптов.
+      > При создании (CREATE) или изменении (ALTER) сохраняемого скрипта сервер MySQL
+        запоминает состояние системной переменной sql_mode (SQL-режим работы) для
+        этого скрипта, и в дальнейшем выполняет его тело в этом режиме (и без разницы,
+        что текущее значение значение sql_mode могло измениться).
+      > Сервер обрабатывает тип данных параметров скрипта, локальных переменных
+        скрипта (созданных с помощью DECLARE), или возвращаемые функцией значения
+        следующим образом:
+        > MySQL проверяет значения вышеуказанных переменных на соответствие указанному
+          типу данных и не выходят ли они из диапазона значений этого типа данных.
+          Есди ДА, то:
+          > В strict mode - будет error.
+          > Не в strict mode - будет warning.
+        > Переменным могут быть присвоены только скалярные значения, а сложные не могут.
+          Например SET x = (SELECT 1,2) - вызовет ошибку.
+        > Для стоковых типов:
+          > Если использован атрибут CHARACTER SET, а COLLATION нет, то используется
+            COLLATION по умолчанию для этого типа.
+          > ...а если и COLLATION указано явно, то используется оно.
+          > Если CHARACTER SET не указан явно, то будудут использованы CHARACTER SET и
+            COLLATION базы данных, которые были при создании этого скрипта.
+          > Исли изменить CHARACTER SET и COLLATION базы данных по умолчанию, то придется
+            пересоздать сохраняемые скрипты, использующие CHARACTER SET и COLLATION базы
+            данных по умолчанию, чтобы они начали использовать новые значения.
+    > Права на использование
+      > Операции CREATE PROCEDURE и CREATE FUNCTION требуют права CREATE ROUTINE.
+      > В некоторых случаях могут понадобиться SUPER-права:
+        >
+      > По умолчанию MySQL автоматически наделяет правами ALTER ROUTINE и EXECUTE
+        того, кто создал сохраняемый скрипт.
+        > Это поведение можно изменить, изменив значение системной переменной
+          automatic_sp_privileges.
+    > Атрибуты и опции
+      > Список параметров после имени процедуры/функции
+        > ... должен всегда присутствовать. Даже если параметров нет, до должны присутствовать
+          пустые круглые скобки ().
+        > Виды параметров и их использование в процедуре/функции:
+          > Синтакис записи аргумента такой:
+              [ IN | OUT | INOUT ] param_name type
+          > Всего есть 3 вида параметров:
+            > IN
+              > Запускает параметр в процедуру. Внутри он может быть изменен, но снаружи
+                никаких изменений видно не будет. Тоже самое, что передача по значению.
+            > OUT
+              > Передает параметр из процедуры. Его начальное значение == NULL.
+            > INOUT
+              > Тоже самое, что IN, только внесенные в этот параметр в процедуре изменения
+                видны снаружи. Тоже самое, что передача по ссылке.
+          > Применительно к процедуре:
+            > По умолчанию все параметры IN-вида.
+            > Можно использовать все 3 вида параметров.
+          > Применительно к функции:
+            > По умолчанию все параметры IN-вида.
+            > Других видов параметров, кроме IN, в функции быть не может.
+      > Атрибут RETURNS (только для функции)
+        > RETURNS указывает значение type - тип возвращаемого значения
+        > Тело функции обязано содержать выражение RETURN value (не путать с RETURNS).
+          > value должно быть того же типа, что указан в RETURNS.
+          > Если value - это значение НЕ того типа, что указан в RETURNS, то оно
+            насильно приводится к нему.
+      > routine_body - содержит тело сохраняемого скрипта, которое будет выполнено при
+        его активации.
+      > Атрибут COMMENT - позволяет добавить описание для сохраняемого скрипта. Пишется в
+        кавычках "".
+      > Атрибут LANGUAGE - указывает, на каком языке написано тело сохраняемого скрипта.
+        Он игнорируется, потому что только SQL разрешен.
+      > Атрибут [NOT] DETERMINISTIC
+        > На что это влияет
+          > На внутреннюю оптимизацию в MySQL
+          > Правильность определения, DETERMINISTIC скрипт или нет - лежит на плечах
+            разработчика. MySQL это никак не проверяет.
+        > Какой скрипт считается DETERMINISTIC
+          > Скрипт считается DETERMINISTIC, если получая одни и те же параметры, он выдает
+            один и тот же результат.
+          > ... иначе он считается NOT DETERMINISTIC (по умолчанию).
+        > Определение, DETERMINISTIC скрипт, или нет:
+          > Скрипт, который содержит функцию NOW() (или ее синонимы) или RAND()
+            является NOT DETERMINISTIC.
+      > Атрибуты { CONTAINS SQL | NO SQL | READS SQL DATA | MODIFIES SQL DATA }
+        > Это несколько констант, которые являются чем-то вроде комментария. MySQL
+          никак их не использует. Они призваны показать, что в теле скрипта.
+      > Атрибут SQL SECURITY
+        > Указывает, чьи права должен использовать скрипт при выполнеии своего тела -
+          DEFINER'а (того, кто определил или посл. раз модифицировал его) или
+          INVOKER'а (того, кто запустил скрипт).
+        > Может иметь 2 значения:
+          > DEFINER (по умолчанию)
+          > INVOKER
+        > В сохраняемом скрипте, определенном с SQL SECURITY DEFINER, выражение
+           CURRENT_USER возвращает значение DEFINER'a в формате 'user_name'@'host_name'.
+      > Атрибут DEFINER
+        > Если для DEFINER указано value, то:
+          > Оно может содержать следующие значения:
+            > Либо полное имя MySQL аккаунт в формате 'user_name'@'host_name'
+            > Либо CURRENT_USER или CURRENT_USER()  - что означает текущий пользователь.
+              Это значение идет по умолчанию
+          > Если атрибут явно не указывается, значение по умолчанию - тот, кто создал
+            событие, либо тот, кто последний его изменил.
+          > Правила для указаная правильного значения атрибута DEFINER:
+            > Если у тебя нет SUPER-прав, то в качестве значения name ты можешь
+              указать только CURRENT_USER.
+            > Если у тебя есть SUPER-права, то ты можешь указать в качестве значения
+              name любой синтаксически-правильный аккаунт. Если такого аккаунта не
+              существует, будет сгенерировано предупреждение.
+            > Создать событие с несуществующим аккаунтом в качестве значения name
+              атрибута DEFINER возможно. Но делать это бессмысленно, потому что
+              в момент выполнения события будет сгенерирована ошибка, и оно не выполнится.
+    > Сигнатура: см. в примерах.
+
+  > CREATE INDEX         | создать индекс
+    > Общая информация
+      > Подробнее об индексах см. "10. Индексы и оптимизация".
+      > Обычно создание индекса осуществляется одновременно с созданием таблицы, с помощью
+        операции CREATE TABLE. Либо индек создается уже после создания таблицы с
+        помощью операции ALTER TABLE.
+      > CREATE INDEX не может быть использован для создания PRIMARY KEY.
+      > CREATE INDEX позволяет создавать индексы на существующих таблицах
+      > Особенности непространственных индексов на колонках пространственного типа:
+       (созданных с INDEX, UNIQUE или PRIMARY KEY)
+        > Разрешены для всех движков хранилищ, поддерживающих пространственные типы колонок,
+          кроме ARCHIVE.
+        > Значения могут быть NULL, если только индекс не PRIMARY KEY.
+        > Для каждой колонки пространственного типа, в непространственном индексе, кроме
+          колонок типа POINT, можно указать column prefix length.
+        > Тип индекса для непространственных индексов зависит от движка. Обычно, это B-TREE.
+        > Начиная с MySQL 5.6:
+          > Можно добавить индекс в колонку, которая может иметь NULL-значения, только
+            на движках INNODB, MyISAM или MEMORY.
+          > Индекс на колонках типа BLOB и TEXT работает только на движках INNODB и MyISAM.
+          > Если опция innodb_stats_persistent == 1, требуется запустить операцию
+            ANALYZE TABLE для таблицы на движке INNODB после создания индекса на ней.
+    > Права на использование
+      > -
+    > Атрибуты и опции
+      > [UNIQUE|FULLTEXT|SPATIAL]
+        > Виды индексов:
+          > Префиксный   | для текстовый столбцов, ограничивает индекс первыми N символами
+          > UNIQUE       | указывает, что все значения индекса должны быть уникальны
+          > FULLTEXT     | полнотекстовый индекс для текстовых колонок, игнорирует префексы
+          > SPATIAL      | индекс для пространственных типов данных, только для MyISAM
+        > Префиксный
+          > Используя синтаксис col_name(N) в символьных столбцах с индексом, можно указать,
+            что индексировать требуется только первые N символов в строке.
+          > Благодаря этой технике можно сделать размер индекса намного меньше, чем он
+            мог бы быть при полном индексировании. Особенно при работе со столбцами типа
+            TEXT или BLOB (при работе с ними синтаксис вообще требует исползьзования этой техники).
+            > Пример:
+                CREATE TABLE test (blob_col BLOB, INDEX(blob_col(10)));
+          > В INNODB MAX длинна префиксных индексов == 767 байт.
+        > UNIQUE
+          > Указывает, что все значения индекса должны быть уникальны.
+          > При попытке добавить в столбец с таким индексом значение, совпадающее
+            с уже существующем в этом столбце, будет error.
+          > Строк со значениями NULL это ограничение не касается. Это верно для
+            всех движков хранилищ в MySQL.
+        > FULLTEXT
+          > Полнотекстовый индекс для текстовых колонок типа CHAR, VARCHAR и TEXT.
+            Индексирует значение в каждой строке полностью.
+          > Игнорирует попытки установить префиксный индекс.
+          > Работает только в таблицах на движках INNODB и MyISAM.
+        > SPATIAL
+          > Индекс для пространственных типов данных
+          > Доступен только для таблиц на движке MyISAM.
+      > (index_col_name,...)
+        > Список колонок, записанный в форме (col1,col2,...) - создает много-столбцовый
+          индекс.
+        > Может заканчиваться атрибутами (ASC | DESC). Эта возможность зарезервирована
+          для будующих версий MySQL, а сейчас она ни на что не влияет.
+      > index_option
+        > Может содержать 1 или несколько следующих значений:
+          > KEY_BLOCK_SIZE [=] value
+            > Для сжатых INNODB-таблиц указывает размер в байтах для страниц (pages).
+          > index_type
+            > Уточнить тип индекса.
+            > Для INNODB уточнить тип нельзя, у него только 1 тип - B-TREE.
+          > WITH PARSER parser_name
+            > Только для FULLTEXT индексов.
+            > Позволяет указать путь к альтернативному parser plugin.
+          > COMMENT 'string'
+            > Комментарий к индексу
+    > Сигнатура: см. в примерах.
+
+  > CREATE LOGFILE GROUP | создать группу для лог-файлов
+    > Общая информация
+      > Это работает только для движка NDB в MySQL 5.6 (в MySQL 5.7 этого движка больше нет).
+      > Создает новую группу для log-файлов, имеющую 1 UNDO-файл с именем 'undo_file'.
+      > Имеет только 1 атрибут ADD UNDOFILE.
+    > Права на использование
+      > -
+    > Атрибуты и опции
+      > Атрибут INITIAL_SIZE - устанавливает начальный размер UNDO-файла в байтах. По умолчанию
+        128 мегабайт. Диапазон: [1M - 4G]
+      > Атрибут UNDO_BUFFER_SIZE устанавливает размер в байтах, который использует UNDO-буфер
+        для группы лог-файлов. По умолчанию 8M. Это значение не может превышать размер
+        доступной оперативной памяти в системе. MAX размер - 600M.
+    > Сигнатура: см. в примерах.
+
+
+  > CREATE PROCEDURE     | создать хранимую процедуру
+    > Общая информация
+      > См. CREATE FUNCTION - там же и про CREATE PROCEDURE
+    > Сигнатура: см. в примерах.
+
+
+  > CREATE SERVER        | (для FEDERATED engine) создать определение сервера
+    > Общая информация
+      > Работает только с движком FEDERATED.
+    > Права на использование
+      >
+    > Атрибуты и опции
+      >
+    > Сигнатура: см. в примерах.
+      >
+
+  > CREATE TABLESPACE    | создать табличное пространство
+    > Общая информация
+      > Работает только с движком NDBCLUSTER.
+      > Это выражение используется для создания tablespace. При создании в него
+        добавляется 1 файл.
+      > Tablespace - это 1 или более файлов, которые хранят в себе таблицы.
+      > Чтобы добавить дополнительные файлы в tablespace вручную, можно использовать
+        операцию ALTER TABLESPACE (а вообще, обычно, они добавляются в него автоматически).
+    > Права на использование
+      >
+    > Атрибуты и опции
+      > logfile_group - имя группы лог-файлов.
+        > Содержит из 1 или более UNDO log files.
+        > Должна быть указаны для создаваемого tablespace.
+        > Это должна быть существующая группа лог-файлов, созданна с помощью
+          CREATE LOGFILE GROUP.
+        > Несколько tabelspace'ов могут использовать ту же группу лог-файлов для
+          UNDO-logging'а.
+      > Атрибут EXTENT_SIZE - устанавливает размер в байтах всех extents (степеней),
+        используемых любым файлом, принадлежащим tablespace'у. По умолчанию - 1М.
+        Диапазон: [32К - 2G]. Однако на практике этот размер зависит от ряда факторов.
+        > Extent - это единица распределения дискового пространства. 1 extent заполняется
+          данными настолько, сколько он может вместить, затем используется другой extent.
+        > Рекомендуемый MAX размер 1 файла - 32G. Он состоит из 32K extents * 1MB на
+          каждый extent.
+      > Атрибут INITIAL_SIZE - полный размер файла в байтах.
+        > После создания размер файла уже нельзя изменить.
+        > Однако, можно добавить еще файлы в tablespace, используя ALTER TABLESPACE ..
+          ADD DATAFILE. По умолчанию 128М. MAX размер 4G для 32 битных систем.
+      > Атрибуты AUTOEXTEND_SIZE, MAX_SIZE, NODEGROUP, WAIT, и COMMENT
+        > Их можно указать, но они игнорируются, и никак не используются.
+          Они зарезервированы на будущее.
+      > Атрибут ENGINE
+        > Определяет движох хранилища.
+          > Для MySQL 5.6 доступен только 1 вариант - NDBCLUSTER.
+          > А в MySQL 5.7 уже нет этого движка.
+    > Сигнатура: см. в примерах.
+
+  > CREATE VIEW       | создать вьюху
+    > Общая информация
+      > Подробнее о представлениях см. "9. Сохраняемые программы и представления".
+      > Выражение CREATE VIEW - создает новое представление, или перемещает старое,
+        если присутствует атрибут OR REPLACE.
+        > Если представление не существует, то CREATE OR REPLACE VIEW автоматически
+          превращается в CREATE VIEW.
+        > Если представление существует, то CREATE OR REPLACE VIEW автоматически
+          превщащается в ALTER VIEW.
+      > Данные в представлении "заморожены" в момент создания. Так что если после
+        его создания произойдут какие-то изменения в таблицах и/или представлениях,
+        из которых его создали, это никак не повлияет на данные этого представления.
+      > Представление прикрепляется к конкретной базе данных. По умолчанию, новое
+        представление при создании прикрепляется к базе данных по умолчанию. Изминеть
+        это поведение, можно квалифицировав имя представления именем базы данных:
+        [имя_БД].[имя_представления].
+      > Имена колонок в представлении должны быть уникальными - не дублировать друг друга,
+        также, как и в обычных таблицах.
+        > По умолчанию, имена столбцов, использованных для конструирования представления,
+          используются в качестве имен и в представлении.
+      > Определение представления имеет следующие ограничения:
+        > Выражение SELECT не может содержать SQL-подзапросы в атрибуте FROM.
+        > Выражение SELECT не может ссылаться на системные или пользовательские переменные.
+        > В сохраняемой программе, определение представления не может ссылаться на параметры
+          программи или локальные переменные.
+        > Выражение SELECT не может ссылаться на параметры подготовленных выражений.
+        > Все таблицы и представления, задействованные в определении, должны существовать.
+          Однако, после создания представления, можно удалить таблицу или представление,
+          участвовавшие в сосзании этого представления. В этом случае использование
+          результатов этого представления - по сути будет ошибкой.
+          > Для вычисления ошибок подобного рода используй CHECK TABLE.
+        > Определение представения не может ссылаться на временную таблицу, и невозможно
+          создать временное представление.
+        > Нельзя прикрепить триггер в представлению.
+        > Размер каждого псевдонима для имен столбцов не должен превышать 64 символа.
+      > Выражение ORDER BY разрешено для использования в определении представления,
+        но оно игнорируется, если использовано если выборка берется из представления.
+      > Некоторые таблицы являются обновляемыми - это значит, что можно использовать
+        их в выражениях типа UPDATE, DELETE, INSERT - для обновления содержимого
+        таблиц, из которых было сделано представление.
+        > Подробнее условия обновляемости представления см. в "9. Сохраняемые программы и представления".
+    > Права на использование
+      > Выражение CREATE VIEW требует права CREATE VIEW.
+        Выражение также может потребовать SUPER-права в определенных ситуациях:
+        > От того, есть ли у создателя представления SUPER-права, зависит то, может ли
+          он указать аккаунт другого пользователя MySQL в атрибуте DEFINER.
+      > Для колонок, используемых в SELECT-выражениях, нужны SELECT-права.
+      > Если присутствует атрибут OR REPLACE, требуются также DROP-права.
+      > Права в представлениях проверяются следующим образом:
+        > В момент объявления, создающий представление должен иметь права, требуемые
+          для использования высокоуровневых объектов, задействованных представлением.
+          > Например, если определение представления задействует столбцы таблицы,
+            создающий представление должен иметь некоторые права для каждого столбца.
+        > Пользователь, который запрашивает представление, должен иметь соответствующие
+          права для доступа к нему (SELECT-прав для этой операции, или INSERT-права
+          для этой, и т.д.).
+        > Права для объектов, на которые ссылается это представление при его создании,
+          тоже проверяются. Ведь это представление может ссылаться на другое представление,
+          которое, например, имеет значениее атрибута SQL SECURITY равное DEFINER.
+        > Если представление ссылается на другое представление, которое запускает
+          выполнение сохраняемой функции, то производится проверка прав этой функции,
+          чему равен ее SQL SECURITY аргумент - DEFINER или INVOKER, и т.д.
+        >
+
+    > Атрибуты и опции
+      > select_statement - это выражение, результат которого - таблица - и формирует
+        данное представление.
+        > Оно может выбирать данные из других таблиц и/или представлений.
+        > Колонки, извлекаемые с помощью SELECT, могут быть простыми ссылками на колонки
+          таблиц, а могут быть выражениями, которые используют функции, константы,
+          операторы и т.д.
+        > Можно использовать JOIN'ы, UNION'ы и другие SQL-выражения.
+        > SELECT даже не обязан ссылаться на другую таблицу, а может выбирать, например,
+          значение - результат выражения, или просто литерал (см. пример).
+      > Атрибут ALGORITHM - указывает серверу MySQL, как он обрабатывает представления.
+        > Доступны 3 варианта:
+          > UNDEFINED
+          > MERGE
+          > TEMPTABLE
+        > Подробнее - см. "9. Сохраняемые программы и представления".
+      > view_name - имя представления. Находится в пространстве имен базы данных,
+        и поэтому должно быть уникальным в этом пространстве имен.
+      > column_list - строка с новыми именами (перечисляются через запятую) для
+        столбцов представления.
+        > По умолчанию столбцы, из которых сделано представление, носят имена, которые
+          они носили в таблицах, из которых их извлекли. Вот column_list как раз задает
+          им другие имена.
+        > Количество имен в строке column_list должно совпадать с кол-вом столбцов.
+      > Атрибут SQL SECURITY
+        > Указывает, чьи права должно использовать представление -
+          DEFINER'а (того, кто определил или посл. раз модифицировал его) или
+          INVOKER'а (того, кто запустил скрипт).
+        > Может иметь 2 значения:
+          > DEFINER (по умолчанию)
+          > INVOKER
+        > В представлении, определенном с SQL SECURITY DEFINER, выражение
+           CURRENT_USER возвращает значение DEFINER'a в формате 'user_name'@'host_name'.
+    > Сигнатура: см. в примерах.
+      >
+
+  > CREATE TRIGGER          | создать триггер
+    > Общая информация
+      > Подробнее о триггерах см. "9. Сохраняемые программы и представления".
+      > Это выражение создает новый триггер.
+      > Триггер - это именованный объект базы данных, связанный с конкретной таблицей,
+        и активирующийся, когда с этой таблицей происходит одно из указанных событий.
+      > Нельзя ассоциировать триггер с временной таблицей или представлением.
+      > Имя триггера находится в пространстве имен таблицы, так что оно должно быть уникальным
+        в этом пространстве.
+      > Не может быть 2-х и более триггеров одной конфигурации у 1-й таблицы. Например,
+        не может быть 2 INSERT BEFORE триггера у 1-й таблицы.
+      >
+    > Права на использование
+      > *Примечание: тело триггера будет выполняться с правами, определенными в атрибуте
+         DEFINER.
+      > Операция CREATE TRIGGER требует TRIGGER-права.
+      > Выражение также может потребовать SUPER-права в определенных ситуациях:
+        > От того, есть ли у создателя триггера SUPER-права, зависит то, может ли
+          он указать аккаунт другого пользователя MySQL в атрибуте DEFINER.
+      > SELECT-права, для работы в теле триггера с OLD и NEW выражениями.
+      > UPDATE-права, для использования в теле триггера выражения с таким шаблоном:
+        SET NEW.col_name = value.
+      > Любые другие права, которые требуются для присутствующих в теле триггера
+        SQL-выражений.
+    > Атрибуты и опции
+      > tbl_name - имя таблицы, с которой ассоциируется триггер.
+      > trigger_name - имя триггера, должно быть уникальным для этой таблицы.
+      > DEFINER - аккаунт MySQL, права которого будут использованы для выполнения
+        тела триггера, когда он срабатывает.
+      > trigger_time - указывает, когда срабатывает триггер, до (BEFORE) или
+        после (AFTER) активировавшего его события.
+      > trigger_event - содержит имена операций, запускающих триггер:
+        > INSERT - вставка информации.
+        > UPDATE - обновление информации.
+        > DELETE - удаление информации.
+      > trigger_body - тело триггера.
+    > Сигнатура: см. в примерах.
+      >
+
+  > CREATE TABLE         | создать таблицу
+    > Общая информация
+      > CREATE TABLE создает таблицу с указанным именем.
+      > По умолчанию таблица создается с ENGINE == INNODB.
+      > Временная таблица
+        > Она видна только для текущего подключения к серверу MySQL, и автоматически
+          удаляется, когда соединение закрывается.
+        > Таким образом, 2 разных соединения могут использовать 2 разные временные
+          таблицы, которые имеют одинаковые имена, и это нормально.
+          > Мало того, могут быть временная и обычная таблица с одинаковыми именами,
+            и это нормально. Но при этом получить доступ к обычной таблице будет нельзя,
+            пока временная таблица с её именем не будет удалена.
+      > Как MySQL хранит таблицы
+        > Есть 2 варианта
+          1. Данные таблиц и их индексы хранятся в tablespace'е, а их определения в
+             .frm файлах (по 1-му для каждой таблицы) в директории базы данных.
+          2. Если опция сервера innodb_file_per_table включена:
+             Данные таблиц и их индексы хранятся в отдельных (по 1-му на каждую таблицу)
+             файлах .idb в директории БД, а их определения в .frm файлах
+             (по 1-му для каждой таблицы) в директории базы данных.
+    > Права на использование
+      > Для использования операции CREATE TABLE нужны CREATE права.
+      > Для использования операции CREATE TEMPORARY TABLE нужны одноименные права.
+    > Атрибуты и опции
+      > tbl_name - имя таблицы.
+        > Имя таблицы можно квалифицировать именем БД по следующему шаблону:
+          db_name.tbl_name. Такое назначение БД имеет приоритет над БД по умолчанию.
+          > Если требуется заключить имена таблицы и БД в кавычки, то надо заключить
+            каждое из них в кавычки по отдельности: "db_name"."tbl_name"
+        > Ошибка при создании возникает:
+         > Если таблица с таким именем уже существует.
+         > Если не назначена БД по умолчанию, и имя таблицы не квалифицировано
+           именем базы данных.
+         > Указано не верное имя базы данных
+      > Атрибут TEMPORARY - указать, что создаваемая таблица будет временной.
+      > Атрибут IF NOT EXISTS предотвращает возникновение ошибки при создании таблицы,
+        если таблица с таким именем уже существует
+      > Типы данных и атрибуты для колонок
+        > data_type - представляет тип данных в column_definition.
+        > Подробнее о типах данных см. "6. Типы данных в MySQL".
+        > spatial_type - представляет пространственные типы данных.
+        > Некоторые атрибуты не применяются ко всем типам данных. Например, AUTO_INCREMENT
+          применяется только к типам integer и floating-point. А DEFAULT не применяется
+          к типам BLOB и TEXT.
+        > Если явно не указан ни атрибут NULL, ни NOT NULL, то атрибут NULL указывается
+          автоматически по умолчанию.
+        > Атрибут AUTO_INCREMENT
+          > В колонках типа integer и floating-point можно указать доп. атрибут
+            AUTO_INCREMENT.
+          > Когда добавляется строка со значением NULL или 0 в этой колонке, то
+            оно автоматически заменяется значением:  value + 1.
+            Где value - MAX() значение в этой колонке.
+            > Если в системной переменной sql_mode добавить значение NO_AUTO_VALUE_ON_ZERO,
+              то при вставке цифры 0 можно избежать автовставки значения авто-инкрементом
+              в эту ячейку, и сохранить 0.
+          > Последовательность значений авто-инкремента начинается с 1.
+          > С помощью функции LAST_INSERT_ID() можно получить последнее вставленное
+            авто-инкрементом значение.
+            > В некоторых ODBC-приложениях эта функция может не работать, и вместо нее можно
+              использовать запрос:  SELECT * FROM tbl_name WHERE auto_col IS NULL.
+        > Символьные типы данных (CHAR, VARCHAR, TEXT) могут иметь атрибуты CHARACTER SET
+          и COLLATION. Пример:
+          > CREATE TABLE t (c CHAR(20) CHARACTER SET utf8 COLLATE utf8_bin);
+        > Атрибут DEFAULT - указывает дефолтное значение для ячеек колонки.
+          > Подробнее см. "6. Типы данных в MySQL".
+          > Должно быть константой. Не может быть функцией или выражением.
+          > Если в системной переменной sql_mode есть значения NO_ZERO_DATE или
+            NO_ZERO_IN_DATE, то если в дата-временныех колонках не указать
+            дефолтное значение, то будет warning (если strict mode выключен) или
+            error (если strict mode включен).
+        > Атрибут COMMENT - комментарий для таблицы, максимум 1024 символа.
+          Его можно увидеть с помощью выражений SHOW CREATE TABLE и SHOW FULL COLUMNS.
+        > UNIQUE - индекс с ограничением - все значения в столбце должны быть уникальными.
+          Не распространяется на значения NULL.
+        > PRIMARY KEY - это UNIQUE-индекс, с ограничением: колонка имеет атрибут NOT NULL.
+          Если он не был присвоен ей явно, MySQL присваивает его не явно.
+          > KEY - синоним для INDEX и PRIMARY KEY. Последний сохранен для совместимости
+            со старыми версиями MySQL.
+          > В 1-й таблице может быть только 1 PRIMARY KEY.
+          > Имя primary зарезервировано, и не может быть использовано для других индексов.
+          > В уже созданной таблице колонка с PRIMARY KEY идет первой слева. За ней идут
+            все колонки с UNIQUE-индексами. А за ними все остальные.
+          > Индекс PRIMARY KEY может быть много-столбцовым. Однако, нельзя создать
+            много-столбцовый индекс с помощью атрибута PRIMARY KEY в определении колонки.
+            Требуется использовать отдельный атрибут PRIMARY KEY(index_col_name, ...).
+          > Если PRIMARY KEY или UNIQUE индекс состоит только из 1-й колонки типа integer,
+            то к ней можно обращаться в выражении SELECT через ключевое слово _rowid.
+          > В MySQL имя колонки с PRIMARY KEY - это primary. Для других индексов, если
+            имя явно не указано, то используется имя первой (слева) колонки с индексов
+            + постфикс _2, _3, ... и т.д., чтобы сделать имя уникальным.
+            > Имена индексов для колонки можно посмотреть с помощью выражения:
+              SHOW INDEX FROM tbl_name.
+        > Некоторые типы движков хранилищь позволяют указать тип индекса.
+          > У движка INNODB только 1 тип индекса - B-TREE - он и так указан по умолчанию.
+          > Синтаксис для этого: USING type_name.
+          > Пример:
+            CREATE TABLE lookup
+            (id INT, INDEX USING BTREE (id))
+            ENGINE = MEMORY;
+        > В MySQL 5.6 только столбцы на движках INNODB, MyISAM и MEMORY поддерживают
+          индексы на колонках, которые могут иметь значения NULL. Для других движков
+          требуется указать атрибут NOT NULL для индексируемой колонки.
+        > Для колонок симсольных типов - CHAR, VARCHAR, BINARY и VARBINARY - можно
+          создать индекс, использующий только N первых символов значений этой колонки.
+          Это называется префиксным индексом. Синтаксис такой: col_name(length_N)
+          > Для колонок типов BLOB и TEXT это делать обязательно, а для остальных нет.
+        > index_col_name может заканчиваться ключевыми словами ASC и DESC, для уточнения
+          того, как будет хранитсья индекс, по возрастанию или убыванию. В MySQL 5.6
+          эти атрибуты игнорируются сервером - они зарезервированы для будущих версий.
+        > При использовании операций ORDER BY или GROUP BY на колонке с помощью SELECT,
+          сервер сортирует значения, используя первые N байт, где N - число, указанное
+          в системной переменной max_sort_length.
+          > С MySQL 5.6.9 max_sort_length игнорируется для типов - integer, decimal,
+            floating-point и temporal.
+        > Можно создавать полнотекстовые индексы на колонках типа CHAR, VARCHAR и TEXT,
+          только над вижках INNODB и MyISAM. Подробнее см. выше в разделе CREATE INDEX.
+        > Можно создавать SPATIAL-индексы для пространственных типов данных. Только
+          для таблиц на движке MyISAM и с атрибутом NOT NULL.
+        > В MySQL 5.6 определение индекса может включать комментарий размером до 1024 символов.
+        > Движок INNODB поддерживает проверку внешнего ключа (foreign key). Колонки задействованной
+          таблицы всегда должны иметь явно заданные имена.
+          > Foreign key поддерживает атрибуты ON DELETE и ON UPDATE.
+          > Другие движки кроме INNODB и NDB игнорируют выражения FOREIGN KEY и REFERENCES
+            в операции CREATE TABLE.
+          > Partitioned tables, использующие INNODB, не поддерживают foreign keys.
+      > ENGINE - движок для таблицы.
+        > Рекомендуемый движок - INNODB. Он стоит по умолчанию, и неявно назначается, если этот атрибут не указан.
+        > Подробнее о движках хранилищь смотри: "5. Storage engines and INNODB"
+      > Атрибуты для оптимизации производительности:
+        > Указанные ниже атрибуты используются для оптимизации производительности таблицы. Обычно, не требуется
+          их указывать вообще. Эти опции будут применяться ко всем движкам, если не указано иное. Опции, которые
+          не подходят к текущему движку, будут сохранены, и применятся, если вдруг текущий движок будет сменен
+          с помощью ALTER TABLE на тот, на который они действуют.
+        > AUTO_INCREMENT
+          > Работает только для таблиц на движках INNODB, MyISAM, MEMORY и ARCHIVE
+          > Изменить текущее значение автоинкремента на N можно с помощью ALTER TABLE:
+            ALTER TABLE tbl_name AUTO_INCREMENT = N
+        > AVG_ROW_LENGTH
+          > Применяется для таблиц на MyISAM.
+          > Приблизительное значение среднего размера строки.
+          > Применяется только для больших таблиц с переменным размером строк.
+          > При создании таблицы на движке MyISAM, по значениям атрибутов MAX_ROWS и AVG_ROW_LENGTH
+            он определяет, насколько большим может быть файл с таблицами. Если эти значения не установлены
+            то по умолчанию он выбирает размер 256TB.
+        > [DEFAULT] CHARACTER SET
+          > Указывет кодировку по умолчанию. CHARSET - синоним для CHARACTER SET. Если выбирается имя
+            кодировки == DEFAULT, то используется кодировка базы данных.
+        > CHECKSUM
+          > Только для MyISAM
+          > Установить == 1, если требуется, чтобы MySQL для каждой строки поддерживал в актуальном состоянии
+            значение контрольной суммы. Это облегчает поиск поврежденных таблиц.
+          > Выражением CHECKSUM TABLE можно проверить контрольную сумму.
+        > [DEFAULT] COLLATE
+          > Указать collation по умолчанию. Если указан DEFAULT, то используется collation для
+            выбранной кодировки по умолчанию.
+        > COMMENT
+          > Комментарий до 2048 символов.
+        > CONNECTION
+          > Только для таблиц на движке FEDERATED.
+          > Строка соединения.
+        > DATA DIRECTORY, INDEX DIRECTORY
+          > Для таблиц на MyISAM и INNODB.
+          > Для INNODB применяется только, если innodb_file_per_table == 1.
+          > Можно указть папку, в которой хранятся .ibd.
+          > Если не указывать эти атрибуты, то значение по умолчанию - директория базы данных.
+        > DELAY_KEY_WRITE
+          > Установить == 1, если требуется сделать отложенное обновление ключей - непосредственно
+            перед закрытием таблицы. (см. описание delay_key_write).
+        > INSERT_METHOD
+          > Только для таблиц на движке MERGE.
+          > Можно указать метод вставки.
+        > KEY_BLOCK_SIZE
+          > Только для сжатых таблиц на INNODB.
+          > Подсказка о размере страниц (pages) для движка. Он может использовать и другой размер
+            если это необходимо.
+        > MAX_ROWS
+          > Подсказка для движка о том, какое MAX количество строк планируется использовать в этой
+            таблице. Это не жесткий лимит, а подсказка для оптимизации.
+        > MIN_ROWS
+          > Тоже, что MAX_ROWS, только для MIN значения.
+          > Движок MEMORY использует эту опцию как подсказку о MIN кол-ве памяти.
+        > PACK_KEYS
+          > Только для таблиц на MyISAM.
+          > Установить == 1, если требуется сделать индексы компактнее (он их сжимает).
+          > Минус в том, что больше времени и ресурсов трарится на обновление этих индексов.
+        > PASSWORD
+          > Эта опция не используется.
+        > ROW_FORMAT
+          > Определяет физический формат хранения данных строк.
+            Подробнее см. здесь: http://dev.mysql.com/doc/refman/5.6/en/innodb-row-format.html
+          > Для INNODB:
+            > В последних версиях MySQL, строки хранятся по умолчанию в формате ROW_FORMAT=COMPACT.
+            > В старых версиях MySQL, строки хранятся по умолчанию в формате ROW_FORMAT=REDUNDANT.
+            > Чтобы включить хранение таблиц в сжатом виде: ROW_FORMAT=COMPRESSED
+            > Для более эффективного хранения данных BLOB-типа: ROW_FORMAT=DYNAMIC
+          > Для MyISAM ROW_FORMAT = (FIXED | DYNAMIC).
+        > STATS_AUTO_RECALC
+          > Только для таблиц на INNODB.
+          > Указывает, пересчитывать ли автоматически статистику индексов на диске при изменениее
+            данных таблицы более, чем на 10% (см. persistent statistics).
+          > Если не указать, то значение по умочанию берется из системной переменной innodb_stats_auto_recalc.
+        > STATS_PERSISTENT
+          > Только для таблиц на INNODB.
+          > Указывает, записывать ли статистику индексов таблицы на диск (см. persistent statistics).
+          > Если не указать, то значение по умочанию берется из системной переменной innodb_stats_persistent.
+          > Для ручной записи статистики использовать выражение ANALYZE TABLE после загрузки данных в таблицу.
+            (если указан STATS_AUTO_RECALC == 1, то все будет происходить автоматически)
+        > STATS_SAMPLE_PAGES
+          > Какое кол-во страниц брать для тестирования cardinality и других статистических свойств
+            индексированной колонки.
+        > UNION
+          > Только для таблиц на MERGE.
+          > UNION используется, когда требуется получить доступ к группе идентичных MyISAM-таблиц,
+            как к одной.
+      > partition_options
+        > ...
+        > Про partitioning см.: http://dev.mysql.com/doc/refman/5.6/en/partitioning.html
+    > Сигнатура: см. в примерах.
+    > Синтаксис для CREATE TABLE ... SELECT
+      > Этот синтаксис позволяет создать одну таблици из другой - то есть просто добавив выражение
+        SELECT в конец выражения CREATE TABLE.
+      > MySQL создает новую колонку для каждого столбца из SELECT.
+      > В новой таблице сначала идут колонки, определенные в CREATE TABLE. А колонки из SELECT
+        прикрепляются к ним справа.
+      > Те колонки, при извлечении которых с помощью SELECT возникли ошибки, не прикрепляются
+        к новой таблице.
+      > Опция ENGINE не должна использоваться и в SELECT-выражении, имя движка бедется из
+        ENGINE в CREATE TABLE. Аналогично для ряда других опций, например, CHARACTER SET или COLLATION.
+      > Перед SELECT можно поставить IGNORE или REPLACE - чтобы указать, как обрабатывать строки
+        с дублирующимися UNIQUE ключами.
+        > IGNORE - последующая строка, дублирующая первую - игнорируются и не записываются.
+          >  CREATE TABLE ... IGNORE SELECT
+        > REPLACE - последующая строка, дублирующая предыдущую - перезаписывает предыдущую.
+          > CREATE TABLE ... REPLACE SELECT
+        > Эти выражения признаные небезопасными, потому что бывает трудно отследить, какие
+          точно строки перезапишутся, а какие будут проигнорированы. Поэтому они вызывают
+          warning с MySQL >= 5.6.4.
+      > Синтаксис CREATE TABLE ... SELECT автоматически не создает никаких индексов. Даже если
+        они были в добавляемых SELECT'ом столбцах. Это сделано намерянно, для увеличения гибкости
+        использования.
+        > Чтобы добавить индекс, требуется указать это до выражения SELECT, вот так:
+            CREATE TABLE bar (UNIQUE (n)) SELECT n FROM foo;
+      > При использовании CREATE TABLE ... SELECT не забыть указать псевдоним для всех
+        столбцов, являющихся результатами выражения, иначе результирующую таблицу может быть
+        неудобно читать. Вот так:
+            CREATE TABLE artists_and_works
+            SELECT artist.name, COUNT(work.artist_id) AS number_of_works
+            FROM artist LEFT JOIN work ON artist.id = work.artist_id
+            GROUP BY artist.id;
+      > Для добавляемого с помощью SELECT'а в конце столбца можно явно указать тип данных, вот так:
+          CREATE TABLE foo (a TINYINT NOT NULL) SELECT b+1 AS a FROM bar;
+      > При использовании  CREATE TABLE ... SELECT , если присутствует атрибут IF NOT EXISTS,
+        выражение обрабатывается следующим образом (c MySQL > 5.5.6):
+        > При попытке выполнить выражение CREATE TABLE ... SELECT при уже существующей таблице
+          с таким именеи, при отсутствующем IF NOT EXISTS, в существующую таблицу или binary log
+          ничего не записывается, и сервер выдает error.
+        > При попытке выполнить выражение CREATE TABLE IF NOT EXISTS ... SELECT при уже
+          существующей таблице с таким именеи, при присутствующем IF NOT EXISTS, в существующую
+          таблицу или binary log также ничего не записывается, и сервер выдает warning.
+    > Использование ограничений FOREIGN KEY
+      > Примеры использования FOREIGN KEY см. здесь: http://dev.mysql.com/doc/refman/5.6/en/create-table-foreign-keys.html
+      > MySQL поддерживает внешние ключи, которые позволяют построить ссылочную систему
+        между связанными данными из разных таблиц. И ограничения внешних ключей, которые
+        позволяют поддерживать целостность этой системы и связанных данных.
+      > Базовый синтаксис для определения ограничений внешних ключей выглядит так:
+          [CONSTRAINT [symbol]] FOREIGN KEY
+              [index_name] (index_col_name, ...)
+              REFERENCES tbl_name (index_col_name,...)
+              [ON DELETE reference_option]
+              [ON UPDATE reference_option]
+
+          reference_option:
+              RESTRICT | CASCADE | SET NULL | NO ACTION
+      > index_name
+        > Это ID внешнего ключа.
+        > Игнорируется, если индекс для внешнего ключа задан явно.
+        > В противном случае, если MySQL автоматически задает индекс для внешнего ключа дочерней
+          таблицы (см. ниже), используется в качесве его имени.
+      > Определение внешнего ключа должн отвечать следующим условиям:
+        > Отношения, создаваеыме внешним ключем, включают родительскую таблицу (parent table),
+          которая содержит центральные данные, и дочерняя таблица (child table), с идентичными
+          данными, которые указывают да центральные данные родительской таблицы.
+          > Родительские и дочерние таблицы должны иметь один и тот же движок хранилища.
+          > Они не могут быть TEMPORARY-таблицами.
+        > Колонка с внешним ключем в родительской таблице и колонка, на которую он указывает в
+          дочерней таблице, должны быть абсолютно идентичного типа (всякие там размеры, префиксы
+          и т.д. должны быть идентичны тоже).
+          > Длина строковых типов может отличаться.
+          > Для символьных (не бинарных) типов, character set и collation должны быть те же.
+        > MySQL требует наличие индекса на колонках с foreign key (это позволяет быстро проверять
+          зависимости foreign key'я без сканирования таблиц).
+          > В дочерних таблицах должен быть индекс, в котором колонки с foreign key занимают
+            1-е место слева, и имеют тот же порядок (ASC|DESC).
+            > Такой индекс создается в дочерних таблицах автоматически (если его еще небыло).
+            > Автоматически созданный индекс может быть по-тихому удален, если позже будет
+              явно создан другой индекс, удовлетворяющий требованиям foreign key'я.
+        > В INNODB дочерних таблиц может быть много (требования по индексу такие же, как описаны выше).
+        > Foreign key не поддерживает префиксные индексы. А так как типы данных BLOB и TEXT требуют
+          наличие таких индексов, то foreign key не может применяться на колонках этих типов.
+        > Если атрибут CONSTRAINT [symbol] присутствует, то [symbol] должен быть уникален в
+          пределах базы данных. Иначе будет error.
+        > INNODB не поддерживает foreign key для таблиц с user-defined partitioning. Это относится
+          и к родительским, и к дочерним таблицам.
+      > Настройка взаимодействия между родительской и дочерними таблицами:
+        > Здесь описано, как можно настроить для foreign keys взаимодействие между родительской
+          и дочерними таблицами. То есть действия, которые обеспечивают целостность всей этой
+          структуры данных
+          > Например, можно настроить, что если в родительской таблице изменяется значение в
+            колонке с foreign key, то оно автоматически изменяется и во всех ее дочерних таблицах.
+        > MySQL отклоняет все INSERT и UPDATE операции, которые применяются к дочерним таблицам,
+          которые пытаются добавить значение в столбец с foreign key, если на соответствующем месте
+          в родительской таблице абсолютно совпадающего с добавляемым значения.
+          Иными словами, делать это бессмысленно.
+        > Когда операции INSERT или UPDATE вставляют значение в родительскую таблицу, и в дочерней
+          (дочерних) таблицах есть на соответствующих местах строки, то результат зависит
+          от referential action, указанного в податрибутах ON UPDATE и ON DELETE атрибута FOREIGN KEY.
+          MySQL поддерживает 5 вариантов (а по сути всего 3):
+          1. CASCADE
+            > Операции удаления или обновления строки в родительской таблице - автоматически удаляют
+              или изменяют соответствующие строки в дочерних таблицах на это же значение.
+            > Поддерживаются оба выражения: ON DELETE CASCADE и ON UPDATE CASCADE
+            > В настоящий момент, это не активирует триггеры, настроенные на события DELETE и UPDATE
+              в дочерних таблицах.
+          2. SET NULL
+            > Операции удаления или обновления строки в родительской таблице - автоматически удаляют
+              или изменяют соответствующие строки в дочерних таблицах на значение NULL.
+            > Поддерживаются оба выражения: ON DELETE SET NULL и ON UPDATE SET NULL
+            > При использовании действия SET NULL требуется убедиться, что в дочерних таблицан на
+              колонках с foreign key нет атрибута NOT NULL, иначе будет error.
+          3. RESTRICT
+            > Указывает, что при изменении или удалния значения в родительской таблице, с
+              дочерними талицами ничего делать не надо
+            > По сути, отключает атрибуты ON UPDATE или ON DELETE.
+          4. NO ACTION
+            > Тоже самое, что RESTRICT. Это ключевое слово из стандартного SQL.
+          5. SET DEFAULT
+            > Не использовать это действие, оно отвергается и INNODB, и NDB. Непонятно зачем
+              оно вообще нужно.
+    > В каких случаях происходит неявное автоприсвоение атрибутов
+      > В некоторых случаях MySQL по-тихому автоматически изменяет определения колонок,
+        и результат отличается от определенного в выражении CREATE TABLE или ALTER TABLE.
+        Это могут быть изменения типа данных, атрибутов связанных с типом данных, или
+        в определении индекса.
+      > Колонки с PRIMARY KEY получают атрибут NOT NULL, даже если его никто не назначал.
+      > Трейлинг-пробелы автоматически удаляются из колонок типа ENUM и SET при создании таблицы.
+      > Если с помощью атрибута USING указать тип индекса, который движок этой таблицы не
+        поддерживает, то MySQL автоматом будет использовать какой-нибудь другой - поддерживемый тип.
+      > Если в системной переменной sql_mode выключен режим strict mode, то если длина колонки
+        типа VARCHAR указана более 65535, она автоматически конвертируется в TEXT-тип. Аналогично,
+        VARBINARY конвертируется в BLOB.
+        А если strict mode включен, то будет error в обоих случаях.
+      > Если для текстовой колонки при ее определении указать CHARACTER SET binary, то ее тип
+        автоматически будет изменен на соответствующий бинарный тип: CHAR на BINARY, VARCHAR на
+        VARBINARY, TEXT на BLOB.
+
+
+> ALTER           | изменение структур данных
+  > ALTER DATABASE       | изменить базу данных
+    > Общая информация
+      > Выражение позволяет измениро характеристики базы данных, которые хранятся в файле db.opt
+        в директории БД.
+      > ALTER SCHEMA - это синоним для ALTER DATABASE.
+    > Права на использование
+      > Для использования выражения ALTER TABLE требуются ALTER-права для БД.
+    > Атрибуты и опции
+      > db_name
+        > Имя базы данных, которую требуется изменить.
+        > Может быть опущено, значение по умолчанию - текущая выбранная БД.
+    > Сигнатура: см. в примерах.
+
+  > ALTER EVENT          | изменить событие
+    > Общая информация
+      > Позволяет изменить значения свойств события.
+      > Работает только с существующими событиями.
+      > Когда пользователь изменяет событие, его MySQL аккаунт становится DEFINER'ом этого события.
+    > Права на использование
+      > Требуются EVENT-права.
+    > Атрибуты и опции
+      > Синтаксис для всех атрибутов такой же, как в CREATE EVENT.
+    > Сигнатура: см. в примерах.
+
+  > ALTER LOGFILE GROUP  | изменить группу для лог-файлов
+    > Общая информация
+      > Выражение добавляет UNDO-файл с именем file_name в существующую группу лог-файлов logfile_group.
+      >
+    > Права на использование
+      >
+    > Атрибуты и опции
+      > file_name
+        > Имя добавляемого UNDO-файла.
+      > logfile_group
+        > Имя группы лог-файлов, куда добавляется файл.
+      > ADD UNDOFILE
+        > Такой атрибут может быть только 1 в пределах 1-го выражения ALTER LOGFILE GROUP.
+      > INITIAL_SIZE
+        > Устанавливает начальный размер UNDO-файла, по умолчанию 128MB.
+    > Сигнатура: см. в примерах.
+
+  > ALTER FUNCTION       | изменить хранимую функцию
+    > Общая информация
+      > Практически бесполезная операция.
+      > Используется для изменения свойств сохраняемой функции.
+      > Однако, тело функции этим выражением НЕ изменить.
+        Сделать это можно только удалив старую функцию с помощью DROP FUNCTION, и создав новую
+        с помощью CREATE FUNCTION.
+    > Права на использование
+      > Для применения этой операции требуются права ALTER ROUTINE.
+      > Если binary logging включен, то могут потребоваться SUPER-права.
+    > Атрибуты и опции
+      >
+    > Сигнатура: см. в примерах.
+
+  > ALTER PROCEDURE      | изменить хранимую процедуру
+    > Общая информация
+      > Практически бесполезная операция.
+      > Используется для изменения свойств сохраняемой процедуры.
+      > Однако, тело процедуры этим выражением НЕ изменить.
+        Сделать это можно только удалив старую функцию с помощью DROP PROCEDURE, и создав новую
+        с помощью CREATE PROCEDURE.
+    > Права на использование
+      > Для применения этой операции требуются права ALTER ROUTINE.
+        По умолчанию, эти права автоматически получает тот, кто создал эту процедуру.
+        Это поведение можно отключить, изменив значение системной переменной automatic_sp_privileges
+    > Атрибуты и опции
+      >
+    > Сигнатура: см. в примерах.
+
+  > ALTER SERVER         | (для FEDERATED engine) изменить сервер
+    > Общая информация
+      > Изменяет серверную информацию сервера server_name. Может изменить любуют опцию, указанную
+        при CREATE SERVER. Соответствующие поля в mysql.servers будут изменены соответственно.
+    > Права на использование
+      > Требует SUPER-права.
+    > Атрибуты и опции
+      >
+    > Сигнатура: см. в примерах.
+      >
+
+  > ALTER TABLESPACE     | изменить табличное пространство
+    > Общая информация
+      > Только для таблиц на движке NDB.
+      > Может как добавить, так и удалить файл из tablespace.
+    > Права на использование
+      >
+    > Атрибуты и опции
+      > tablespace_name
+        > Имя tablespace.
+      > ADD DATAFILE
+        > Указывает, что требуется добавить файл с имененм file_name в tablespace.
+      > DROP DATAFILE
+        > Указывает, что требуется удалить файл с именем file_name из tablespace.
+      > INITIAL_SIZE
+        > Если был выбран ADD DATAFILE, то можно указать его начальный размер в байтах.
+          По умолчанию: 128M. MAX размер: 4G.
+      > ENGINE
+        > Указать тип движка. Сейчас поддерживается только NDB.
+    > Сигнатура: см. в примерах.
+      >
+
+  > ALTER VIEW           | изменить вьюху
+    > Общая информация
+      > Позволяет изменить определение представления. Оно должно существовать.
+      > ALTER VIEW - синоним для CREATE OR REPLACE VIEW.
+    > Права на использование
+      > Требует права CREATE VIEW и DROP для представления, и SELECT-права для колонок, на которые
+        ссылается.
+      > ALTER VIEW доступен только DEFINER'у или пользователю с SUPER-правами.
+    > Атрибуты и опции
+      > Синтаксис аналогичен тому, что в CREATE VIEW.
+      > Эффект от этого выражения такой же, как от CREATE VIEW с атрибутом OR REPLACE:
+        CREATE OR REPLACE VIEW.
+    > Сигнатура: см. в примерах.
+
+  > ALTER TABLE          | изменить таблицу
+    > Общая информация
+      > Изменяет структуру таблицы.
+        > Например, можно добавлять или удалять столбцы, создавать или удалять индексы,
+          менять тип существующих столбцов, переименовывать столбцы или таблицу.
+          А также менять всякие свойства таблицы, такие как движок хранилища, или комментарий.
+      > ALTER TABLE работает следующим образом:
+        > В большинстве случает это выражение создает временную таблицу - копию указанной в
+          tbl_name таблицы. MySQL ждет, пока все указанные операции не будут проведены
+          в этой копии, и затем продолжает - создает новую таблицу из измененной временной,
+          удаляет старую оригинальную таблицу, переименовывает новую в имя старой.
+          > Эта временная таблица создается в директории БД новой таблицы. Она не всегда
+            совпадает с директорией старой, потому что они могут быть в разных БД.
+        > Пока ALTER TABLE выполняется, оригинальная таблица досутпна для чтения, но не доступна
+          для записи. Все запросы на запись сохраняются, и после завершения работы ALTER TABLE
+          применяются уже к измененной таблице.
+          > Есть исключение - когда оригинальная таблица блокируется и для чтения. Это происходит:
+            > В момент перед установкой .frm файла для новой таблицы.
+            > В момент удаления старой таблицы.
+            > В момент удаления структур данных из таблицы.
+        > Для некоторыех операций в ALTER TABLE, может и не потребоваться временная таблица:
+          > Для ALTER TABLE tbl_name RENAME TO new_tbl_name без доп. операций.
+          > Операции, изменяющие только метаданные таблицы, и не трогают данные таблицы.
+            Т.е. изменение происходит только в .frm файле таблицы. След. операции отвечают этому:
+            > Переименование колонки.
+            > Изменение DEFAULT'ного значения колонки.
+            > Изменение определения колонок типа ENUM и SET добавлением новых значений в конец списка.
+              До тех пор, пока storage size не изменится. Например, если добавить нового члена
+              в столбец типа SET, уже имеющий 8 члено, то это потребует уже не 1, а 2 байта на каждое
+              значение, и потребует использования временной таблицы.
+      > Заметки по использованию ALTER TABLE
+        > Чтобы предотвратить потерю данных, ALTER TABLE не может быть использован, чтобы сменить
+          движок таблицы на MERGE или BLACKHOLE.
+        > Можно сменить значение AUTO_INCREMENT, которое будет использоваться для новых строк:
+          > ALTER TABLE t2 AUTO_INCREMENT = value;
+          > Нельзя сменить значение на то, которое меньше или равно текущему.
+            > Если попытаться, то в движках INNODB и MyISAM значение автоматичеки переустановится
+              на MAX + 1.
+        > В одном ALTER TABLE может быть много атрибутов ADD, ALTER, DROP или CHANGE.
+          Их требуется разделять между собой точкой с запятой.
+        > Слово COLUMN может быть опущено.
+        > Атрибуты ADD и CHANGE из column_definition используют тот же синтаксис, что и CREATE TABLE.
+        > Если из таблицы удалены столбцы, то автоматом удаляются и те части индекса, которыми
+          являлись индексы этих столбцов. Если удаляются все столбцы, из индексов которых состоял
+          индекс, то удаляется и этот индекс.
+        > Если таблица состоит из 1 столбца, то этот столбец не может быть удален. Вместо этого
+          потребуется использовать DROP TABLE.
+        > С версии MySQL >= 5.6.7, сервер запрещает всякие изменения с помощью ALTER TABLE
+          для столбцов с foreign key, которые потенциально могут привести к потере ссылочной
+          целостности между родительскими и дочерними таблицами.
+          > Поэтому, если надо будет изменить колонку с foreign key, и с этим возникнут проблемы,
+            придется удалить foreign key, изменить колонку, а потом снова добавить его.
+          > Не получится удалить и добавить foreign key в таблицу в одном выражении ALTER TABLE.
+            Придется использовать разные выражения.
+
+    > Права на использование
+      > Для использования ALTER TABLE требуются права для этой таблицы ALTER, CREATE и INSERT.
+      > Переименование таблицы требует права ALTER и DROP для старой таблицы, и ALTER, CREATE и INSERT
+        для новой.
+    > Атрибуты и опции
+      > Синтаксис для многих операций такой же, как в CREATE TABLE.
+      > tbl_name
+        > Указывает имя таблицы, которую надо изменить.
+        > После tbl_name идет список изменений, которые надо сделать.
+          Если список пуст, то ALTER TABLE ничего и не изменит.
+      > LOCK
+        > Атрибут, позволяющих контролировать MAX число одновременных запросов к таблицы во время
+          проведения операции ALTER TABLE, а также разрешающий/запрещающий чтение/запись другими
+          запросами.
+        > Возможные значения:
+          > LOCK = DEFAULT
+            > Разрешить чтение и запись.
+            > Значение, соответствующее выбранному с помощью атрибута ALGORITHM значению.
+          > LOCK = NONE
+            > Разрешить чтение и запись.
+          > LOCK = SHARED
+            > Разрешить чтение, запретить запись.
+          > LOCK = EXCLUSIVE
+            > Запретит чтиние и запись.
+      > IGNORE
+        > Контролирует, как поступает MySQL в случае, если значение из колонки с UNIQUE ключем
+          пытаются переаписать операцией ALTER TABLE.
+        > Означает, что старое значение сохраняется, а новое игнорируется.
+      > table_option
+        > Означает любые аргументы, которые могут быть использованы в CREATE TABLE, такие, например, как
+          ENGINE, AUTO_INCREMENT, AVG_ROW_LENGTH или MAX_ROWS.
+          > Например, чтобы сменить движок таблицы, ввести:
+            ALTER TABLE t1 ENGINE = InnoDB;
+      > CHANGE и MODIFY
+        > Переименование и изменение определения колонки с помощью CHANGE и MODIFY:
+          > При использовании CHANGE или MODIFY, column_definition должно содержать всю информацию
+            о типе данных колонки и все атрибуты, которые должны к ней применяться.
+            > Кроме касающихся индексов, таких как PRIMARY KEY или UNIQUE.
+            > Атрибуты, присутствующие до переименования, но не указанные при переименовании
+              будут в результате отсутстовать.
+          > Чтобы переименовать колонку и изменить ее тип:
+            > Использовать синтаксис: CHANGE old_col_name new_col_name column_definition
+            > Пример: ALTER TABLE t1 CHANGE a b INTEGER;
+          > Чтобы только сменить тип колонки, но не переименовывать:
+            > Просто указать new_col_name == old_col_name в примере выше.
+            > Пример: ALTER TABLE t1 CHANGE b b BIGINT NOT NULL;
+            > Либо использовать атрибут MODIFY:
+              > ALTER TABLE t1 MODIFY b BIGINT NOT NULL;
+          > При изменении типа данных колонки MySQL автоматически пытается привести существующие
+            значения колонки к новому типу.
+        > FIRST и AFTER
+          > Чтобы добавить колонку в конкретное желаемое место в таблицы, использовать синтаксис
+            FIRST col_name или AFTER col_name.
+          > А вообще по умолчанию новые колонки добавляются в конец.
+          > Также FIRST и AFTER могут быть использованы в CHANGE и MODIFY для изменения порядка
+            указанных колонок в таблице.
+        > ALTER ... (SET|DROP) DEFAULT
+          > Устанавливает/удаляет значение по умолчанию указанного столбца col_name.
+        > DROP (INDEX|KEY)
+          > Удаляет индекс или ключ.
+        > DROP PRIMARY
+          > Удаляет первичный ключ, а если его нет, то вызывает ошибку.
+        > index_option
+          > Задает различные опции для индекса
+          > USING type_name
+            > Уточняет тип индекса
+        > ORDER BY
+          > Позволяет создать новую таблицу со строками в указанном порядке.
+          > Применяется только в момент операции, и после всяких удалений и вставок порядок
+            будет уже не тот.
+          > Можно указать 1 или несколько имен колонок, после которых указать атрибут ASC или DESC,
+            чтобы уточнить порядок сортировки (по возрастарию(по умолчанию)/убыванию).
+        > DROP FOREIGN KEY
+          > В таблицах на движках INNODB и NDB можно использовать ALTER TABLE для удаления
+            внешнего ключа. Например:
+             ALTER TABLE tbl_name DROP FOREIGN KEY fk_symbol;
+        > DISCARD, IMPORT
+          > Для таблицы на движке INNODB, которая находится в отдельном .idb файле:
+            > Этот файл может быть отключен от таблицы.
+              > Например:
+                > ALTER TABLE tbl_name DISCARD TABLESPACE;
+              > При отключении файл удаляется.
+            > Файл .idb может быть подключен к таблице. Для этого надо положить его в директорию
+              базы данных таблицы и провести следующую операцию:
+                ALTER TABLE tbl_name IMPORT TABLESPACE;
+        > CONVERT TO
+          > Чтобы изменить CHARACTER SET всей таблицы, и всех ее текстовых (CHAR, VARCHAR, TEXT)
+            колонок, использовать выражение вроде этого:
+              ALTER TABLE tbl_name CONVERT TO CHARACTER SET charset_name;
+    > Сигнатура: см. в примерах.
+      >
+
+
+> DROP            | удаление структур данных
+  > DROP DATABASE        | удалить базу данных
+    > Общая информация
+      > Удаляет все таблицы из указанной базы данных и саму БД.
+      > DROP SCHEMA - синоним DROP DATABASE.
+      > Если удаляется БД по умолчанию, то после этого базы данных по умолчанию нет.
+      > DROP DATABASE возвращает кол-во таблиц, которые были в удаленной БД. Это число соответствует
+        количеству удаленных .frm файлов.
+      > DROP DATABASE удаляет из директории указанной БД только те файлы и директории, которые
+        MySQL сам мог создать:
+        > Файлы с расширениями .BAK, .DAT, .HSH, .MRG, .MYD, .MYI, .TRG, .TRN, .db, .drm, .ibd, .ndb, .par
+          > А также db.opt, если есть.
+        > Если всякие посторонние файлы остались в директории БД, то MySQL не может удалить директорию
+          базы данных. В этом случае придется самому вручную очистить директорию, и запустить выражение
+          DROP DATABASE снова.
+    > Права на использование
+      > Требуются DROP-права.
+    > Атрибуты и опции
+      > IF EXISTS
+        > Используется чтобы избежать error в случае, если db_name не существует.
+    > Сигнатура:
+        DROP {DATABASE | SCHEMA} [IF EXISTS] db_name
+
+  > DROP EVENT           | удалить событие
+    > Общая информация
+      > Удаляет событие с именем event_name. После удаления событие немедленно перестает быть
+        активным, и полностью удаляется с сервера.
+    > Права на использование
+      > Требуются EVENT-права
+    > Атрибуты и опции
+      > IF EXISTS
+        > Используется чтобы избежать error в случае, если event_name не существует.
+    > Сигнатура:
+        DROP EVENT [IF EXISTS] event_name
+
+  > DROP FUNCTION        | удалить хранимую функцию
+    > Общая информация
+      > Эта операция удаляет сохраняемые функции / процедуры с сервера.
+      > Также эта операция используется для удаления пользовательских функций.
+    > Права на использование
+      > Требуются права ALTER ROUTINE.
+        > Если системная переменная automatic_sp_privileges == 1, то создатель сохраняемой программы
+          автоматически получает это право + EXECUTE-право при её создании, и теряет их при ее
+          удалении.
+    > Атрибуты и опции
+      > IF EXISTS
+        > Используется чтобы избежать error в случае, если sp_name не существует.
+        > Посмотреть предупреждения можно с помощью SHOW WARNINGS.
+    > Сигнатура:
+        DROP {PROCEDURE | FUNCTION} [IF EXISTS] sp_name
+
+  > DROP INDEX           | удалить индекс
+    > Общая информация
+      > Удаляет индекс index_name из таблицы tbl_name.
+      > Это выражение также применяется в качестве податрибута операции ALTER TABLE.
+      > Чтобы удалить PRIMARY KEY, имя индекса index_name должно быть == 'PRIMARY', обязательно
+        в кавычках '', потому что PRIMARY без кавычек - зарезервированное слово. Например:
+          DROP INDEX `PRIMARY` ON t;
+
+    > Права на использование
+      >
+    > Атрибуты и опции
+      > Описание атрибутов LOCK и ALGORITHM смотри в описании операции ALTER TABLE.
+    > Сигнатура:
+        DROP INDEX index_name ON tbl_name
+            [algorithm_option | lock_option] ...
+
+        algorithm_option:
+            ALGORITHM [=] {DEFAULT|INPLACE|COPY}
+        lock_option:
+            LOCK [=] {DEFAULT|NONE|SHARED|EXCLUSIVE}
+
+  > DROP LOGFILE GROUP   | удалить группу для лог-файлов
+    > Общая информация
+      > Это выражение удаляет группу лог файлов logfile_group
+      > Если группы с именем logfile_group не существует, будет ошибка.
+      > Перед удалением группы для лог файлов, надо сначала удалить все лог-файлы из
+        это группы, используемые для UNDO logging'а.
+    > Права на использование
+      > Обязательный атрибут ENGINE
+        > Единственное доступное значение: NDB.
+    > Атрибуты и опции
+      >
+    > Сигнатура:
+        DROP LOGFILE GROUP logfile_group
+        ENGINE [=] engine_name
+
+  > DROP PROCEDURE       | удалить хранимую процедуру
+    > Общая информация
+      > Эта операция удаляет сохраняемые функции / процедуры с сервера.
+    > Права на использование
+      > Требуются права ALTER ROUTINE.
+        > Если системная переменная automatic_sp_privileges == 1, то создатель сохраняемой программы
+          автоматически получает это право + EXECUTE-право при её создании, и теряет их при ее
+          удалении.
+    > Атрибуты и опции
+      > IF EXISTS
+        > Используется чтобы избежать error в случае, если sp_name не существует.
+        > Посмотреть предупреждения можно с помощью SHOW WARNINGS.
+    > Сигнатура:
+        DROP {PROCEDURE | FUNCTION} [IF EXISTS] sp_name
+
+  > DROP SERVER          | (для FEDERATED engine) удалить сервер
+    > Общая информация
+      > Удаляет определение сервера с именем server_name. Соответствующая строка в mysql.servers
+        тоже удаляется.
+    > Права на использование
+      > Требует SUPER-права.
+    > Атрибуты и опции
+      >
+    > Сигнатура:
+        DROP SERVER [ IF EXISTS ] server_name
+
+  > DROP TABLE           | удалить таблицу
+    > Общая информация
+      > Выражение удаляет одну или более таблиц.
+        > Чтобы удалить несколько таблиц, следует перечислить их имена через запятую.
+        > Если каких-то из этих таблиц не существует, сервер удалит те, которые существуют, и
+          выдаст error (или warning, исли используется аргумент IF EXISTS).
+      > Удаляется определение таблицы и все ее данные.
+      > После удаления таблицы права пользователя на таблицу автоматически НЕ удаляются.
+      > Операция DROP TABLE автоматически COMMIT'ит текущую транзакцию.
+    > Права на использование
+      > Требуются DROP-права.
+    > Атрибуты и опции
+      > IF EXISTS
+        > Используется чтобы избежать error в случае, если хоть одна из таблиц, указанных
+          в списке tbl_name, ... не существует.
+      > RESTRICT и CASCADE ничего не делают, а так - для красоты.
+      > Атрибут TEMPORARY
+        > С ним операция удаляет только временные таблицы.
+          Так что использовать TEMPORARY - хороший способ убедиться в том, что операция не удалит
+          обычные таблицы.
+        > С ним операция не COMMIT'ит текущую транзакцию.
+        > Никакие права доступа не проверяются (т.к. временные таблицы видны только соединению,
+          которое их создало, так что проверять права нет смысла).
+    > Сигнатура:
+        DROP [TEMPORARY] TABLE [IF EXISTS]
+        tbl_name [, tbl_name] ...
+        [RESTRICT | CASCADE]
+
+  > DROP TABLESPACE      | удалить табличное пространство
+    > Общая информация
+      > Выражение удаляет tablespace, который ранее был создан с помощью CREATE TABLESPACE.
+      > Чтобы tablespace можно было удалить, в нем не должно быть файлов с данными. Если они есть,
+        то сначала нужно удалить каждый из этих файлов, используя операцию:
+          ALTER TABLESPACE ... DROP DATAFILE
+    > Права на использование
+      >
+    > Атрибуты и опции
+      > ENGINE
+        > Обязательный атрибут - указывает движок хранилища, используемый этим tablespace.
+          Единственный вариант: NDB.
+    > Сигнатура:
+        DROP TABLESPACE tablespace_name
+        ENGINE [=] engine_name
+
+  > DROP TRIGGER         | удалить триггер
+    > Общая информация
+      > Это выражение удаляет триггер с именем trigger_name.
+      > Квалификация trigger_name именем базы данных schema_name - не обязательно.
+        Если квалификации нет, то используется база данных по умолчанию.
+      > Кроме того, при удалении таблицы автоматически удаляются и все ее триггеры.
+    > Права на использование
+      >
+    > Атрибуты и опции
+      > IF EXISTS
+        > Используется чтобы избежать error в случае, если trigger_name не существует.
+    > Сигнатура:
+        DROP TRIGGER [IF EXISTS] [schema_name.]trigger_name
+
+  > DROP VIEW            | удалить вьюху
+    > Общая информация
+      > Выражение удаляет одно или более представлений.
+        > Чтобы удалить несколько представлений, следует перечислить их имена через запятую.
+        > Если каких-то из этих представлений не существует, сервер удалит те, которые существуют, и
+          выдаст error (или warning, исли используется аргумент IF EXISTS).
+    > Права на использование
+      > Требуются DROP-права.
+    > Атрибуты и опции
+      > IF EXISTS
+        > Используется чтобы избежать error в случае, если хоть одно из представлений, указанных
+          в списке view_name, ... не существует.
+      > RESTRICT и CASCADE ничего не делают, а так - для красоты.
+    > Сигнатура:
+        DROP VIEW [IF EXISTS]
+        view_name [, view_name] ...
+        [RESTRICT | CASCADE]
+
+> RENAME TABLE           | переименовать 1 или более таблиц
+    > Общая информация
+      > Выражение переименовывает 1 или более таблиц.
+      > Выражение действует на таблицы атомарно - это значит, что никакие другие потоки не могут
+        получать доступ к любой из таблиц, пока действует это выражение.
+      > Можно одновременно переименовать несколько таблиц (одним выражением), и переименование
+        будет идти слева-направо.
+        > Например, махнуть друг на друга имена двух таблиц можно вот так:
+              RENAME TABLE old_table TO tmp_table,
+                           new_table TO old_table,
+                           tmp_table TO new_table;
+        > Если возникает ошибка при переименовании хоть одной таблицы из списка, то срывается
+          переименование всех.
+      > Если 2 базы данных находятся в 1-й файловой системе, то можно применять RENAME TABLE для
+        того, чтобы перемещать таблицу между этими базами данных, например:
+            RENAME TABLE current_db.tbl_name TO other_db.tbl_name;
+        > Однако, это не сработает, если у перемещаемой в другую ДБ таблицы есть триггер.
+          Будет error.
+      > RENAME TABLE работает и для представлений.
+        > Но если попытаться использовать прием перемещения в другую БД для представления -
+          будет error.
+      > Любые права, выписанные на конкретную таблицу, не сохраняются, если ее переименовать.
+      > В момент выполнения RENAME не должно быть никаких заблокированных таблиц или активных
+        транзакций.
+      > Нельзя использовать RENAME для переименования временной таблицы.
+        > Но можно вместо этого можно использовать ALTER TABLE:
+            ALTER TABLE orig_name RENAME new_name;
+    > Права на использование
+      > Требуются права ALTER, DROP, CREATE, INSERT.
+    > Атрибуты и опции
+      >
+    > Сигнатура:
+        RENAME TABLE tbl_name TO new_tbl_name
+        [, tbl_name2 TO new_tbl_name2] ...
+
+> TRANCATE TABLE         | полностью очистить таблицу от данных
+    > Общая информация
+      > Выражение полностью удаляет из таблицы все строки.
+      > Операция не может быть откачена назад (rolled back).
+      > Операция не активирует ON DELETE триггеры.
+      > Операция не может быть выполнена в таблицах на движке INNODB, в которых
+        находится родительский foreign key.
+      > Операция TRUNCATE TABLE похожа на операцию DELETE. Но с отличиями:
+        > Не удаляет строки одна за одно, а удаляет и воссоздает таблицу. Так быстрее.
+        > Вызывает неявный COMMIT, поэтому не может быть ROLL BACK.
+        > TRANCATE TABLE не может быть выполнена, если есть заблокированные таблицы.
+        > Операция не может быть выполнена в таблицах на движке INNODB, в которых
+          находится родительский foreign key.
+          > Однако, внешний ключ между колонками одной и той же таблицы допускается,
+            операция будет работать.
+        > TRANCATE TABLE НЕ возвращает информации о кол-ве удаленных строк.
+        > Поврежденную таблицу с не поврежденным .frm файлом можно воссоздать (без данны)
+          с помощью TRANCATE TABLE.
+        > Стобцы с AUTO_INCREMENT сбрасываеются на свое начальное значение (обычно 1) после
+          применения на этой таблице операции TRANCATE TABLE.
+        > TRANCATE TABLE не вызывает срабатывание триггера ON DELETE.
+
+    > Права на использование
+      > Требует DROP-прав.
+    > Атрибуты и опции
+      >
+    > Сигнатура:
+        TRUNCATE [TABLE] tbl_name
+
+
+
+
+
+-------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

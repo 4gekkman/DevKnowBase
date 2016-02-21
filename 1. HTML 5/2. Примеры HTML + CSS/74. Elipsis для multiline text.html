@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+	<style>
+
+		.cont {
+			width: 200px;
+			height: 30px;
+			background-color: #eee;
+			line-height: 15px;
+		}
+
+		/* Для chrome и safari */
+		@supports (-webkit-line-clamp: 2) {
+			.line-clamp {
+				display: -webkit-box;
+				-webkit-line-clamp: 2;				/* показывать ровно 2 строки */
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+			.line-clamp:after {
+				display: none;
+			}
+		}
+
+		/* Для всех браузеров, кроме chrome и safari */
+		.line-clamp {
+			position: relative;
+			overflow: hidden;
+			height: 30px; 								/* показывать ровно 2 строки */
+		}
+		.line-clamp:after {
+			content: "";
+			text-align: right;
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			width: 40%;
+			height: 15px;
+			background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+		 }
+
+
+
+
+	</style>
+
+</head>
+<body>
+
+	<div class="cont line-clamp">
+		Это длинный текст, который не влезает полностью в родительский блок.
+	</div>
+
+</body>
+</html>
+
+

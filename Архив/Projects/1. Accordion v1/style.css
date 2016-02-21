@@ -1,0 +1,87 @@
+* {margin:0; padding:0; font:12px Verdana,Arial}
+code {font-family:"Courier New",Courier}
+
+#options {
+	width:457px; 
+	margin:20px auto; 
+	text-align:right; 
+	color:#9ac1c9
+}
+
+#options a {
+	text-decoration:none; 
+	color:#9ac1c9
+}
+#options a:hover {color:#033}
+
+#acc {
+	width:457px; 
+	list-style:none; 
+	color:#033; 
+	margin:0 auto 40px
+}
+	
+#acc h3 {
+	width:443px; 
+	border:1px solid #9ac1c9; 
+	padding:6px 6px 8px; 
+	font-weight:bold; 
+	margin-top:5px; 
+	cursor:pointer; 
+	background: #eeeeee;
+}
+
+#acc h3:hover {
+	background: #eeeeee;
+}
+
+#acc .acc-section {
+	overflow:hidden; 
+	background:#fff
+}
+
+#acc .acc-content {
+	width:425px; 
+	padding:15px; 
+	border:1px solid #9ac1c9; 
+	border-top:none; 
+	background:#fff
+}
+
+#nested {
+	width:425px; 
+	list-style:none; 
+	color:#033; 
+	margin-bottom:15px
+}
+
+#nested h3 {
+	width:411px; 
+	border:1px solid #9ac1c9; 
+	padding:6px 6px 8px; 
+	font-weight:bold; 
+	margin-top:5px; 
+	cursor:pointer; 
+	background: #eeeeee;
+}
+
+#nested h3:hover {
+	background: #eeeeee;
+}
+
+#nested .acc-section {
+	overflow:hidden; 
+	background:#fff
+}
+
+#nested .acc-content {
+	width:393px; 
+	padding:15px; 
+	border:1px solid #9ac1c9; 
+	border-top:none; 
+	background:#fff
+}
+
+#nested .acc-selected {
+	background: #eeeeee;
+}

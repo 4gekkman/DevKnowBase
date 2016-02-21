@@ -1,0 +1,194 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+HTML 5.
+5. Изображения.
+
+Теги:
+  > img           | определяет изображение
+  > map           | определяет client-side изображение-карту
+  > area          | определяет область внутри изображения-карты
+  > canvas        | элемент для рисования с использованием javascript
+  > figcaption    | определяет подпись для элемента figure
+  > figure        | группировка любых элементов, например картинок и подписей к ним
+
+
+Атрибуты  локальные (специфичные для каждого тега):
+
+  > img
+      # alt               | указывает альтернативный текст для изображения
+      # crossorigin       | указыкть, использовать ли учетные данные (??? не понятный атрибут)
+      # ismap             | сделать изображение server-side изображением-картой
+      # src               | путь к файлу или URL адрес картинки
+      # usemap            | сделать изображение client-side изображением-картой
+      # width             | ширина
+      # height            | высота
+
+  > map
+      # name              | указывает имя изображения-карты
+
+  > area
+      # alt               | необходим, если присутствует href; указывает альтернативный текст для изображения
+      # coords            | указывает координаты области в определенном формате
+        > Формат зависит от значения атрибута shape:
+          - x1,y1,x2,y2 - если shape='rect'
+          - x,y,radius - если shape='circle'
+          - x1,y1,x2,y2,..,xn,yn - если shape='poly'
+      # href              | указывает ссылку на ресурс, куда ведет щелчек по области
+      # hreflang          | указывает язык ресурса, куда ведет щелчек по области
+      # media             | указывает, для какого устройства оптимизирован ресурс, куда ведет ссылка
+      # rel               | уточняет отношения между текущем ресурсом и ресурсом, куда ведет ссылка
+      # shape             | уточняет форму области
+        > Возможно указтать 1 из 3 форм:
+          - default  | прямоугольник (вся картинка)
+          - rect     | прямоугольник
+          - circle   | круг
+          - poly     | многоугольник
+      # target            | уточняет, в каком окне откроется ресурс
+      # type              | уточняет MIME тип ресурса, куда ведет ссылка
+        > Значения MIME типов можно посмотреть здесь: http://www.iana.org/assignments/media-types
+
+  > canvas
+      # width             | указывает ширину canvas
+      # height            | указывает высоту canvas
+
+
+Атрибуты глобальные (подходят к любому тегу):
+  # accesskey         | указывает горячую клавишу для активации / наведения фокуса на элемент
+  # class             | указывает имя класса или классов CSS, которые надо применить к элементу
+  # contenteditable   | указывает, можно ли редактировать контент элемента, или нет
+  # contextmenu       | указывает контекстное меню, которое открывается при щелчке правой КМ по элементу
+  # dir               | указывает направление текста внутри элемента
+  # draggable         | указывает, является ли элемент перетаскиваемым
+  # dropzone          | указывает, что будет с перетащенным элементом: скопируется, передвинется, свяжется, петеращится (упадет)
+  # hidden            | скрывает элемент
+  # id                | указывает уникальный ID для элемента
+  # lang              | указывает язык контента элемента
+  # spellcheck        | указывает, проверять ли браузеру орфографию в редактируемом элементе, или нет
+  # style             | позволяет указать локальные стили элемента
+  # tabindex          | позволяет настроить порядок навигации между элементами с помощью клавиши TAB
+  # title             | при наведении мышью на элемент всплывает подсказка со значением атрибута title
+  # translate         | указывает, должно ли value элемента быть переведено, когда страница локализована, или нет
+
+
+
+
+-------------------------------------------------- -->
+
+<!-- Подготовка документа  -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>Заголовок страницы - 3. Формы</title>
+</head>
+<body>
+
+
+
+  <p><mark>img</mark></p>
+
+    <!-- ismap             | сделать изображение server-side изображением-картой -->
+    <p class='hclassattr1'>> ismap<span class='tipforattr'> - нет, просто ismap</span></p>
+    ismap - означает, что картинка с этим атрибутом является server-side image map,
+    и если кликнуть по этой картинке, то на сервер отправляются координаты этого клика
+    через URL и query string (методом GET)<br>
+    <a href=''>
+      <img width='200px' src='Files/Красна девица.jpg' ismap />
+    </a>
+
+    <!-- src               | путь к файлу или URL адрес картинки -->
+    <p class='hclassattr1'>> src<span class='tipforattr'> - значение: ссылка</span></p>
+    <img width='200px' src='Files/Карта мира.jpeg' />
+    <br>Это картинка с width='200px' и src='Files/Карта мира.jpeg'
+
+    <!-- usemap            | сделать изображение client-side изображением-картой -->
+    <p class='hclassattr1'>> usemap<span class='tipforattr'> - значение: name of the map tag</span></p>
+    В картинке ниже использован атрибут usemap, указывающий на name тега map - в результате получилось меню со ссылками:
+    <br>На этой картинке с помощью координат выделено 7 областей. Щелчок по каждой из областей открывает соответствующий ресурс
+    <p><map name="Navigation">
+      <area shape="poly" coords="113,24,211,24,233,0,137,0" href="inform.html" alt="Информация">
+      <area shape="poly" coords="210,24,233,0,329,0,307,24" href="activity.html" alt="Мероприятия">
+      <area shape="poly" coords="304,24,385,24,407,0,329,0" href="depart.html" alt="Отделения">
+      <area shape="poly" coords="384,24,449,24,473,0,406,0" href="techinfo.html" alt="Техническая информация">
+      <area shape="poly" coords="449,24,501,24,525,0,473,0" href="study.html" alt="Обучение">
+      <area shape="poly" coords="501,24,560,24,583,0,525,0" href="work.html" alt="Работа">
+      <area shape="poly" coords="560,24,615,24,639,0,585,0" href="misk.html" alt="Разное">
+    </map></p>
+    <img src="http://htmlbook.ru/example/images/navigate.png" width="640" height="30" alt="Навигация по сайту"
+         usemap="#Navigation"></div>
+
+
+  <p><mark>canvas</mark></p>
+
+    Нарисовать на лету красный квадрат внутри элемента canvas:<br>
+    <canvas id='myCanvas'></canvas>
+    <script>
+      var canvas = document.getElementById('myCanvas');
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle='#ff0000';
+      ctx.fillRect(0,0,80,100);
+    </script>
+    <br>
+    <b>Справка по canvas:</b> <br>
+    <a href='http://www.w3schools.com/tags/ref_canvas.asp'>1. w3schools</a><br>
+    <a href='https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Canvas_tutorial'>2. mozilla dev</a><br>
+    Шпаргалка по canvas: http://www.nihilogic.dk/labs/canvas_sheet/HTML5_Canvas_Cheat_Sheet.png
+    <br>
+
+
+  <p><mark>figure и figcaption</mark></p>
+
+    <figure>
+      <img src="Files/Simpsons 2.jpeg" alt="The Pulpit Rock" width="304" height="228">
+      <figcaption>Фото №1. Эта подпись сделана с помощью figcaption</figcaption>
+    </figure>
+
+
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+
+Ссылки:
+> Справочник по HTML 5 на сайте htmlbook.ru
+    http://htmlbook.ru/html
+
+> Справочник по HTML 5 на сайте w3schools.com
+    http://www.w3schools.com/tags/default.asp
+
+> Справочник по HTML 5 на сайте developer.mozilla.org
+    https://developer.mozilla.org/en-US/docs/Web/HTML?redirectlocale=en-US&redirectslug=HTML
+
+
+
+*****************************************************
+Оглавление:
+
+>
+
+*****************************************************
+
+
+>
+
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

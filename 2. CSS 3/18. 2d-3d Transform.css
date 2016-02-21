@@ -1,0 +1,404 @@
+/*	Общий стиль для тестовых блоков	*/
+.outerBox {
+	border: 1px solid #666;
+	display: inline-block;
+	margin: 20px;
+	padding: 0;
+
+	-webkit-perspective: 600px;
+}
+.box {
+	width: 150px;
+	height: 100px;
+	font: 14px arial;
+	color: #000;
+	margin: 0px;
+	padding: 5px;
+	opacity: 0.8;
+
+	background: radial-gradient(ellipse farthest-corner at 50% 50%, #fff, #abb626);
+}
+
+/*	matrix2d	*/
+.matrix2d_1 {
+	-webkit-transform: matrix(1,0,0,1,0,0);
+}
+.matrix2d_2 {
+	-webkit-transform: matrix(1,0.5,0,1,0,0);
+}
+.matrix2d_3 {
+	-webkit-transform: matrix(1,0,0.5,1,0,0);
+}
+.matrix2d_4 {
+	-webkit-transform: matrix(1,-0.5,0,1,0,0);
+}
+.matrix2d_5 {
+	-webkit-transform: matrix(1,0,-0.5,1,0,0);
+}
+.matrix2d_6 {
+	-webkit-transform: matrix(1,0,0,1,20,0);
+}
+.matrix2d_7 {
+	-webkit-transform: matrix(1,0,0,1,0,20);
+}
+
+
+
+/*	Transform - matrix3d - масштабирование	*/
+.matrix3d_1 {
+	-webkit-transform: matrix3d(
+		1,0,0,0,
+		0,1,0,0,
+		0,0,1,0,
+		0,0,0,1);
+}
+.matrix3d_2 {
+	-webkit-transform: matrix3d(
+		1.2,0,0,0,
+		0,1,0,0,
+		0,0,0,0,
+		0,0,0,1);
+}
+.matrix3d_3 {
+	-webkit-transform: matrix3d(
+		1,0,0,0,
+		0,1.2,0,0,
+		0,0,0,0,
+		0,0,0,1);
+}
+.matrix3d_4 {
+	-webkit-transform: matrix3d(
+		1,0,0,0,
+		0,1,0,0,
+		0,0,1.2,0,
+		0,0,0,1);
+}
+
+
+/*Transform - matrix3d - перемещение*/
+.matrix3d_5 {
+	-webkit-transform: matrix3d(
+		1,0,0,0,
+		0,1,0,0,
+		0,0,1,0,
+		20,0,0,1);
+}
+.matrix3d_6 {
+	-webkit-transform: matrix3d(
+		1,0,0,0,
+		0,1,0,0,
+		0,0,1,0,
+		0,-20,0,1);
+}
+.matrix3d_7 {
+	-webkit-transform: matrix3d(
+		1,0,0,0,
+		0,1,0,0,
+		0,0,1,0,
+		0,0,20,1);
+}
+
+
+/*Transform - matrix3d - скос*/
+.matrix3d_8 {
+	-webkit-transform: matrix3d(
+		1,0,0,0,
+		0.5,1,0,0,
+		0,0,1,0,
+		0,0,0,1);
+}
+.matrix3d_9 {
+	-webkit-transform: matrix3d(
+		1,0.5,0,0,
+		0,1,0,0,
+		0,0,1,0,
+		0,0,0,1);
+}
+
+
+/*Transform - matrix3d - поворот по оси X на 45**/
+.matrix3d_10 {
+	-webkit-transform: matrix3d(
+		1,0,0,0,
+		0,0.7071,-0.7071,0,
+		0,0.7071,0.7071,0,
+		0,0,0,1);
+}
+
+/*Transform - matrix3d - поворот по оси Y на 45**/
+.matrix3d_11 {
+	-webkit-transform: matrix3d(
+		0.7071,0,-0.7071,0,
+		0,1,0,0,
+		0.7071,0,0.7071,0,
+		0,0,0,1);
+}
+
+/*Transform - matrix3d - поворот по оси Z на 45**/
+.matrix3d_12 {
+	-webkit-transform: matrix3d(
+		0.7071,-0.7071,0,0,
+		0.7071,0.7071,0,0,
+		0,0,1,0,
+		0,0,0,1);
+}
+
+
+/*Perspective-origin (смещение начала координат) + поворот вокруг оси X на 45**/
+.outerBoxForOrig {
+	height: 100px;
+	width: 150px;
+	margin: 20px;
+	border: 1px solid #666;
+	perspective:150;
+	perspective-origin: 10% 10%;
+	-webkit-perspective:150; /* Safari and Chrome */
+	-webkit-perspective-origin: 20% 20%; /* Safari and Chrome */
+}
+.matrix3d_13 {
+	height: 100px;
+	width: 150px;
+	border: 1px solid black;
+	background-color: #9c0000;
+	transform: rotateX(45deg);
+	-webkit-transform: rotateX(45deg); /* Safari and Chrome */
+}
+
+
+/*Transform origin*/
+.c1 {
+	font-family: 'PT Sans',Tahoma,Arial;
+	background: rgba(0,0,0,.3);
+	border-radius: 8px;
+	border: 3px solid #fff;
+	color: #fff;
+	font-size: 1.2em;
+	height: 100px;
+	line-height: 25px;
+	margin: 40px;
+	text-align: center;
+	width: 250px;
+	display: inline-block;
+}
+.r1 {
+	-webkit-transform: rotate(30deg);
+	-webkit-transform-origin: center;
+
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+.r1:hover {
+	-webkit-transform: rotate(-30deg);
+}
+.r2 {
+	-webkit-transform: rotate(30deg);
+	-webkit-transform-origin: top left;
+
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+.r2:active {
+	-webkit-transform: rotate(-30deg);
+}
+.r3 {
+	-webkit-transform: rotate(30deg);
+	-webkit-transform-origin: 0 0;
+
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+.r3:active {
+	-webkit-transform: rotate(-30deg);
+}
+.r4 {
+	-webkit-transform: rotate(30deg);
+	-webkit-transform-origin: 0% 100%;
+
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+.r4:active {
+	-webkit-transform: rotate(-30deg);
+}
+
+
+/*Анимация перемещения*/
+.trans1 {
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+.trans1:hover {
+	-webkit-transform: translate(40px,0);
+}
+.trans2 {
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+.trans2:hover {
+	-webkit-transform: translate(0,-40px);
+}
+
+
+/*Анимация сдвига*/
+.skew1 {
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+.skew1:hover {
+	-webkit-transform: skew(20deg,0);
+}
+.skew2 {
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+.skew2:hover {
+	-webkit-transform: skew(0,20deg);
+}
+
+
+/*Анимация 3d вращения вдоль осей X,Y,Z (с использованием перспективы)*/
+.perspective {
+	-webkit-perspective: 600px;
+	width: 250px;
+}
+.card {
+	font-family: 'PT Sans',Tahoma,Arial;
+	background: rgba(0,0,0,.3);
+	border-radius: 8px;
+	border: 3px solid #fff;
+	color: #fff;
+	font-size: 1.2em;
+	height: 100px;
+	line-height: 50px;
+	margin: 40px;
+	text-align: center;
+	width: 250px;
+	display: inline-block;
+}
+.trans3 {
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+}
+.trans3:hover {
+	-webkit-transform: rotate3d(1,1,1,350deg);
+
+}
+
+
+/*Анимация 3d вращения блока с проигрывающимся видео*/
+.card2 {
+	font-family: 'PT Sans',Tahoma,Arial;
+	background: rgba(0,0,0,.3);
+	border-radius: 8px;
+	border: 3px solid #fff;
+	color: #fff;
+	font-size: 1.2em;
+	width: 640px;
+	height: 480px;
+	line-height: 50px;
+	margin: 100px;
+	text-align: center;
+	display: inline-block;
+}
+.trans4 {
+	-webkit-transition: all 1s ease-in-out;
+	-moz-transition: all 1s ease-in-out;
+	-ms-transition: all 1s ease-in-out;
+	-o-transition: all 1s ease-in-out;
+	transition: all 1s ease-in-out;
+	-webkit-transform: rotate3d(1,1,1,40deg);
+}
+.trans4:hover {
+	-webkit-transform: rotate3d(1,1,1,10deg);
+
+}
+#videoFrameId {
+	width: 640px;
+	height: 480px;
+}
+
+
+/*Куб на CSS*/
+#wrapper {
+	font: 1em 'PT Sans',tahoma,arial;
+	margin: 80px;
+
+	-webkit-perspective: 900px;
+}
+#cube {
+	position: relative;
+	width: 300px;
+	height: 300px;
+
+	-webkit-transform: rotate3d(1,1,1,0deg);
+	-webkit-transform-style: preserve-3d;
+	-webkit-transform-origin: 50% 50% -150px;
+
+	-webkit-transition: -webkit-transform 1s ease-in-out;
+	-moz-transition: -webkit-transform 1s ease-in-out;
+	-ms-transition: -webkit-transform 1s ease-in-out;
+	-o-transition: -webkit-transform 1s ease-in-out;
+	transition: -webkit-transform 1s ease-in-out;
+}
+/*#cube:active {
+	-webkit-transform: rotate3d(1,1,1,50deg);
+}*/
+.side {
+	width: 300px;
+	height: 300px;
+	background: rgba(0, 0, 0, .3);
+	background: -webkit-radial-gradient(rgba(0,0,0,.1),rgba(0,0,0,.5));
+	position: absolute;
+	border: 10px solid #fff;
+	border-radius: 10px;
+	font-size: 5em;
+	color: #ffffff;
+	line-height: 300px;
+	text-align: center;
+	text-shadow: 0 1px 3px rgba(0,0,0,.4);
+	box-shadow: 0 0 6px rgba(0,0,0,.5);
+
+	-webkit-transform-origin: 50% 50% -150px;
+}
+#side2 {
+	-webkit-transform: rotateY(90deg);
+}
+#side3 {
+	-webkit-transform: rotateY(-90deg);
+}
+#side4 {
+	-webkit-transform: rotateX(90deg);
+}
+#side5 {
+	-webkit-transform: rotateX(-90deg);
+}
+#side6 {
+	-webkit-transform: rotateY(180deg);
+}

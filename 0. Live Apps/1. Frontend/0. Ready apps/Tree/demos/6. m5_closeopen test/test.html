@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+	</style>
+
+	<link rel="stylesheet" href="../../css/tree_main.css"/>
+
+</head>
+<body>
+
+<ul>
+
+	<li>Ниже можно поиграться с открытием/закрытием дерева</li>
+	<li>Обрати внимение, что на время анимации закрытия/открытия функционал отключается</li>
+	<li><button id="on">Включить функционал m5_closeopen у дерева</button></li>
+	<li><button id="off">Выключить функционал m5_closeopen у дерева</button></li>
+	<li>Текущий статус функционала: <span id="status">Включён</span></li>
+	<li><input id="speedText" size="50" type="text" placeholder="Установить скорость анимации: от 50 до 1000 мс"></li>
+	<li><button id="speedButton">Установить</button></li>
+	<li>Текущее значение скорости анимации: <span id="speedStatus"></span></li>
+
+</ul>
+
+	<script data-main="test.js" src="../../vendors/requirejs/require.js"></script>
+
+</body>
+</html>
+
+

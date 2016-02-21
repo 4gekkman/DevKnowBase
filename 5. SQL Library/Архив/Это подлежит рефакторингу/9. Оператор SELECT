@@ -1,0 +1,232 @@
+/* INFO
+Про оператор SELECT
+
+-> Оператор SELECT - нужен чтобы делать запрос данных с сервера.
+-> SELECT всегда возвращает таблицу. Даже если это 1 значение. В реляционных
+   БД единицей измерения является таблица.
+
+Про предикаты (клаузулы)
+-> Клаузул - уточняющие запрос выражение
+
+*/
+
+-- подготовка учебной БД
+CREATE DATABASE IF NOT EXISTS fSelect;    -- создать
+USE fSelect;                              -- исползовать
+
+-- SELECT с простым выражением
+SELECT 2+2;      -- результат: таблица из 1 колонки 1 ячейки со значением 4
+
+-- создать переменную
+SET @a = 'Привет, Мир!';                  -- переменные создаются оператором SET
+
+-- SELECT с переменной
+SELECT @a;                    -- результат - таблица, название колонки - выполняемое выражение
+
+-- SELECT с переменной (сложнее)
+SET @b = 2; SET @c = 3;
+SET @r = @b + @c;
+SELECT @r;
+
+-- AS позволяет указать свое название колонки
+SELECT @r AS 'Название колонки!';  -- результат - талица, название колонки - 'Название колонки!'
+
+-- сделать копии таблиц из другой БД
+CREATE TABLE courses SELECT * FROM univer.courses;
+CREATE TABLE teachers SELECT * FROM univer.teachers;
+CREATE TABLE timetable SELECT * FROM univer.timetable;
+
+-- при копировании все ключи и автоинкременты слетели, поэтому добавим сначала ключи
+ALTER TABLE courses ADD PRIMARY KEY (id);   -- первичный ключ
+ALTER TABLE teachers ADD PRIMARY KEY (id);  -- ПК
+ALTER TABLE timetable ADD PRIMARY KEY (id); -- ПК
+-- ALTER TABLE timetable ADD UNIQUE KEY (course); -- уникальный ключ, но перед FOREIGN KEY его добавлять не надо
+-- ALTER TABLE timetable ADD UNIQUE KEY (teacher); -- уникальный ключ, но перед FOREIGN KEY его добавлять не надо
+ALTER TABLE timetable ADD CONSTRAINT fkTeacher FOREIGN KEY (teacher) REFERENCES teachers(id) ON UPDATE CASCADE; -- внешний ключ
+ALTER TABLE timetable ADD CONSTRAINT fkCourse FOREIGN KEY (course) REFERENCES courses(id) ON UPDATE CASCADE;   -- внешний ключ
+ALTER TABLE timetable ADD KEY(course);  -- добавить не уникальный ключ (годится в дочерней таблице для работы с FOREIGN KEY)
+ALTER TABLE timetable ADD KEY(teacher); -- добавить не уникальный ключ (годится в дочерней таблице для работы с FOREIGN KEY)
+
+-- так можно при нужде удалить FOREIGN KEY
+ALTER TABLE timetable DROP FOREIGN KEY ИМЯ_CONSTRAINTa;
+ALTER TABLE timetable DROP FOREIGN KEY ИМЯ_CONSTRAINTa;
+
+-- так можно удалить любой другой ключ
+ALTER TABLE timetable DROP KEY ИМЯ_ТАБЛИЦЫ;
+ALTER TABLE timetable DROP KEY ИМЯ_ТАБЛИЦЫ;
+
+-- так можно посмотреть все ограничения (CONSTRAINT) таблицы
+SHOW CREATE TABLE timetable;
+
+-- добавление автоинкриментов (не сработает, если есть CONSTRAINTы)
+ALTER TABLE courses MODIFY ID INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE teachers MODIFY ID INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE timetable MODIFY ID INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+-- добавить в таблицы данные
+INSERT INTO courses(title,length,description) VALUES
+('PHP',24,'Это курс PHP'),
+('Java',24,'Это курс Java'),
+('ASP',24,'Это курс ASP');
+
+INSERT INTO teachers(lastname,postindex) VALUES
+('Иванов',123456),
+('Петров',654321),
+('Сидоров',098765);
+
+INSERT INTO timetable(date,course,teacher) VALUES
+('2013.05.24',1,3),
+('2013.06.10',2,2),
+('2013.07.05',3,1),
+('2013.08.23',1,3),
+('2013.09.15',2,2),
+('2013.10.03',3,1);
+
+-- запрос всех данных в таблице
+SELECT * FROM courses;
+SELECT * FROM teachers;
+SELECT * FROM timetable;
+
+-- запрос структуры таблицы
+DESC courses;
+DESC teachers;
+DESC timetable;
+
+-- обновить конкретную запись в таблице
+UPDATE teachers SET postindex = 987654 WHERE lastname = 'Сидоров';
+
+-- запросить фамилию и индекс из таблицы teachers
+SELECT lastname, postindex
+  FROM teachers;
+
+-- запросить тоже самое, но переименовать имена колонок в результирующей таблице
+SELECT lastname AS Фамилия, postindex AS Индекс
+  FROM teachers;
+
+
+-- ---------------------- --
+--  ПРЕДИКАТЫ (клаузулы)  --
+-- ---------------------- --
+--              (писать их в запросе рекомендуется в таком же порядке, потому что в этом порядке сервер их и выполняет)
+-- WHERE             |  фильтр - просеивает каждую запись
+-- GROUP             |  сгруппировать результаты
+-- HAVING            |  2-ая фильтрация после группировки
+-- ORDER BY          |  как отсортировать результат
+-- LIMIT             |  какие строки выводить
+
+
+-- ------------------>  ORDER BY  <------------------ --
+
+-- запросить фамилию и имя, отсортировать результат по имени
+-- *Примечание: ASC можно не писать, оно стоит по умолчанию
+SELECT lastname, postindex
+  FROM teachers
+  ORDER BY lastname ASC;     -- сортировать по lastname от меньшему к большему
+
+-- запросить фамилию и имя, отсортировать результат по имени
+SELECT lastname, postindex
+FROM teachers
+ORDER BY lastname DESC;      -- сортировать по lastname от большего к меньшему
+
+-- запросить фамилию и имя, отсортировать результат по имени
+SELECT lastname, postindex
+FROM teachers
+ORDER BY lastname DESC;      -- сортировать по lastname от большего к меньшему
+
+-- запросить фамилию и имя, отсортировать результат по 1 колонке результата
+-- *Примечание: по номеру колонки лучше не сортировать, может все съехать
+SELECT lastname, postindex  --   1 - lastindex,  2 - postindex
+FROM teachers
+ORDER BY 1 DESC;     -- результат в убывающем порядке
+
+
+
+-- ------------------>  LIMIT  <------------------ --
+
+-- запросить первые 2 записи из таблицы
+SELECT lastname, postindex
+  FROM teachers
+  ORDER BY lastname
+  LIMIT 2;              -- первые 2 записи
+
+-- начиная с номер 1, запросить 2 записи
+SELECT lastname, postindex
+FROM teachers
+ORDER BY lastname
+LIMIT 1,2;
+
+
+
+-- ------------------>  WHERE  <------------------ --
+-- ---> Спец. операции WHERE
+-- BETWEEN    |  между двумя значениями
+-- LIKE       |  простой поиск по тексту (2 альтернативы: регулярные выражения и полнотекстовый индекс
+-- IN         |  операция "во множестве"
+-- IS NULL    |  NULL - означает 'не записано', NULL != 0.
+
+
+-- запросить все строки, в которых lastname == Петров
+SELECT lastname, postindex
+  FROM teachers
+  WHERE lastname = 'Петров';
+
+-- запросить все уроки, в которых teacher == 1
+SELECT date, course
+  FROM timetable
+  WHERE teacher = 1
+  ORDER BY date DESC;  -- сортировать результат по дате в убывающем порядке
+
+-- запросить всех преподов, которые когда либо вели уроки, но без повторов
+-- SELECT ALL - где ALL идет по умолчанию, выводит все записи
+   SELECT DISTINCT teacher FROM timetable; -- без повторений
+
+-- запросить все занятия с июля 2013 по сентябрь 2013
+-- --- Можно так:
+SELECT * from timetable
+  WHERE date >= '2013.07.01' AND date <= '2013.09.30';
+-- --- А можно так (синоним):
+SELECT * from timetable
+  WHERE date BETWEEN '2013.07.01' AND '2013.09.30';
+
+-- запросить фамилии всех преподов, у которых не указан индекс
+SELECT * FROM teachers
+  WHERE postindex IS NULL;
+
+-- запросить всех преподов, кроме Сидорова
+SELECT * FROM teachers
+  WHERE NOT lastname = 'Сидоров'; -- (или просто WHERE lastname != 'Сидоров')
+
+-- запросить всех преподов с фамилией Семенович из справочника teachers
+SELECT * FROM teachers
+  WHERE lastname LIKE '%Семенович%';
+
+-- запросить всех преподов, у которых в ФИО встречается слог 'ов'
+SELECT * FROM teachers
+  WHERE lastname LIKE '%ов%';
+
+-- запросить тех преподов, у которых фамилия заканчивается на 'ов', и состоит из 6 букв
+SELECT * FROM teachers
+  WHERE lastname LIKE '____ОВ';  -- 4 знака _ означают 4 символа
+
+-- пример поиска регулярным выражением
+-- - это язык, который позволяет написать шаблон поиска в тексте
+-- - работает тупым перебором
+
+-- найти курсы, в описаниикоторых встречается английская буква A
+SELECT * FROM courses
+  WHERE description REGEXP '[A]';
+
+-- найти курсы, описание которых заканчивается на букву A
+SELECT * FROM courses
+WHERE description REGEXP '[A]$';
+
+-- найти все занятия, которые вели преподы 1 и 3
+SELECT * FROM timetable
+  WHERE teacher IN(1,3);      -- или так: WHERE teacher = 1 OR teacher = 3;
+
+-- в какие года и месяцы преподы 2,3 читали свои курсы
+SELECT DISTINCT YEAR(date), MONTH(date) -- функция YEAR(d) извлекает год из даты
+  FROM timetable
+  WHERE teacher IN (2,3);
+
+-- ------------------>  HAVING и GROUP в 11  <------------------ --

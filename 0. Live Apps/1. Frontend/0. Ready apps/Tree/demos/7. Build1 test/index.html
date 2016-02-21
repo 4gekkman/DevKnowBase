@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+	</style>
+
+	<link rel="stylesheet" href="../../css/tree_main.css"/>
+	<script data-main="../../builds/tree_build1/tree_build1.js" src="../../vendors/requirejs/require.js"></script>
+
+</head>
+<body>
+
+<b>Управление выделением узлов:</b>
+<ul>
+	<li>Попробуй повыделять узлы дерева ниже, кликая на них</li>
+	<li>Если кликать с зажатым CTRL, можно выделить несколько узлов</li>
+	<li>
+		Вкл/выкл выделение у дерева:
+		<button id="on">Вкл</button>
+		<button id="off">Выкл</button>
+		<span id="status" style="color: #000; background: #afdf9e">Включено</span>
+	</li>
+	<li>
+		Выделить/развыделить все узлы дерева:
+		<button id="selectAll">Выделить все</button>
+		<button id="unselectAll">Развыделить все</button>
+	</li>
+	<li>
+		Выделить/развыделить узел №6:
+		<button id="select6">Выделить</button>
+		<button id="unselect6">Развыделить</button>
+	</li>
+	<li>
+		Получить в консоль все выделенные/не выделенные узлы дерева:<br>
+		<button id="getselected">Получить выделенные</button>
+		<button id="getunselected">Получить не выделенные</button>
+	</li>
+</ul>
+
+
+<b>Управление раскрытием/закрытием узлов:</b>
+
+<ul>
+	<li>Попробуй пооткрывать и позакрывать узлы, имеющие потомков</li>
+	<li>Обрати внимение, что на время анимации функционал раскрытия/закрытия блокируется</li>
+	<li>Вкл/выкл функционал открыть/закрыть у дерева:
+		<button id="Xon">Вкл</button>
+		<button id="Xoff">Выкл</button>
+		<span id="Xstatus" style="color: #000; background: #afdf9e">Включено</span>
+	</li>
+	<li>
+		<input id="speedText" size="50" type="text" placeholder="Установить скорость анимации: от 50 до 1000 мс">
+		<button id="speedButton">Установить</button>
+	</li>
+	<li>Текущее значение скорости анимации: <span id="speedStatus" style="color: #f00"></span></li>
+</ul>
+
+
+</body>
+</html>
+
+

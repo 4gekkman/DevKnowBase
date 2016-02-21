@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+	<link rel="stylesheet" href="c.css"/>
+
+</head>
+<body>
+
+
+
+
+	<div class="heading">
+			<input type="checkbox" data-bind="checked: selectedAllProduce" title="Select all/none"/> Produce
+	</div>
+	<hr>
+	<div data-bind="foreach: produce">
+			<label>
+					<input type="checkbox" data-bind="checkedValue: $data, checked: $parent.selectedProduce"/>
+					<span data-bind="text: $data"></span>
+			</label>
+	</div>
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

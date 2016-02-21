@@ -1,0 +1,21 @@
+body {
+	font: 1em 'PT Sans', Arial, Helvetica, sans-serif;
+}
+
+.fileDropTarget {
+	border: 1px solid RGBA(255,255,255,.3);
+	color: #444;
+	width: 600px;
+	border-radius: 5px;
+	box-shadow: 0 3px 3px rgba(0,0,0,.4);
+	background: #789048;
+	text-shadow: 0 1px 0 rgba(255,255,255,.6);
+	text-align: center;
+	line-height: 250px;
+	font-size: 2em;
+	font-weight: bold;
+}
+
+.fileDropTarget h1 {
+	border: 1px solid black;
+}

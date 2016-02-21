@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+	</style>
+
+	<link rel="stylesheet" href="c.css"/>
+</head>
+<body>
+
+
+<mark>Поле для СМС с числом введенных символов</mark>
+<ul>
+	<li>Вводи и удаляй символы из поля</li>
+	<li>Попробуй вставить строку > 25 символов с помощью операции "вставка"</li>
+	<li>Наблюдай, как в режиме online меняется текущее число введенных символов</li>
+	<li>Цвет текущего числа введенных символов становится красным, если значение >= 20</li>
+	<li>Не получится ввести более 25 символов</li>
+</ul>
+
+<div id="wrapper">
+	<p id="header">Поле для ввода СМС</p>
+	<p id="nums">
+		<span id="now">0</span>
+		<span id="forwardslash">/</span>
+		<span id="max">25</span>
+	</p>
+	<input id="inp" size="60" placeholder="Введите СМС, но не более 25 символов" type="text"/>
+</div>
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>28. Связка checked - чекбоксы (значение-массив)</mark><br><br>
+
+<ul>
+	<li>Здесь продемонстрирована работа связки checked с чекбоксами (значение-массив)</li>
+	<li>В данном примере в качестве значения использован массив значений value чекбоксов</li>
+	<li>Всё устроено так, что все чекбоксы, value которых в этом массиве, имеют checked == true</li>
+	<li>При переключении чекбоксов KO автоматически синхронизирует массив</li>
+	<li>Что и наглядно продемонстрировано в этом примере</li>
+</ul>
+
+
+	<hr>
+
+	<p><input type="checkbox" value="one" data-bind="checked: checkboxes"> - value="one"</p>
+	<p><input type="checkbox" value="two" data-bind="checked: checkboxes"> - value="two"</p>
+	<p><input type="checkbox" value="three" data-bind="checked: checkboxes"> - value="three"</p>
+	<p><input type="checkbox" value="four" data-bind="checked: checkboxes"> - value="four"</p>
+	<p><input type="checkbox" value="five" data-bind="checked: checkboxes"> - value="five"</p>
+
+	<hr>
+
+	<p>Содержание массива checkboxes:</p>
+	<ul data-bind="foreach: checkboxes">
+		<li data-bind="text: $data"></li>
+	</ul>
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

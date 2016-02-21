@@ -1,0 +1,330 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+CSS 3.
+0b. Селекторы CSS
+
+ Селектор                        Пример                Описание примера
+  Селекторы CSS1, CSS2
+  > .class               |  .intro          | выделяет все элементы с class='intro'
+  > #id                  |  #firstname      | выделяет 1 элемент с id='firstname'
+  > *                    |  *               | выделяет все элементы в этом HTML-документе
+  > element              |  p               | выделяет все <p> элементы
+  > element,element      |  div,p           | выделяет все <div> и <p> элементы
+  > element element      |  div p           | выделяет все <p> элементы внутри всех <div> элементов
+  > element>element      |  div>p           | выделяет все <p> элементы, у которых <div> - родительский элемент
+  > element+element      |  div+p           | выделяет все <p> элементы, которые идут СРАЗУ после <div> элементов
+  > [attribute]          |  [target]        | выделяет все элементы с атрибутом target
+  > [attribute=value]    |  [target=_blank] | выделяет все эелменты с атрибутом target='_blank'
+  > [attribute~=value]   |  [title~=flower] | выделяет все элементы с атрибутом title, содержащим слово "flower"
+  > [attribute|=value]   |  [lang|=en]      | выделяет все элементы с атрибутом lang, начинающимся с en
+  > :link                |  a:link          | выделяет все не посещенный ссылки
+  > :visited             |  a:visited       | выделяет все посещенные ссылки
+  > :active              |  a:active        | выделяет активную свылку
+  > :hover               |  a:hover         | выделяет ссылку, над которой курсор мыши
+  > :focus               |  input:focus     | выделяет элемент input, у которого фокус
+  > :first-letter        |  p:first-letter  | выделяет первую букву всех элементов <p>
+  > :first-line          |  p:first-line    | выделяет первую строку всех элементов <p>
+  > :first-child         |  p:first-child   | выделяет все элементы <p>, которые являются 1-ми дочерними элементы своего родительского элемента
+  > :before              |  p:before        | вставляет контент перед контентом всех элементов <p>
+  > :after               |  p:after         | вставляет контент после контента всех элементов <p>
+  > :lang(language)      |  p:lang(it)      | выделяет все элементы <p> с атрибутом lang равным 'it' (italian)
+
+  Селекторы CSS3
+  > element1~element2    |  p~ul                 | выделяет все элементы <ul>, перед которым непосредственно есть элемент <p>
+  > [attribute^=value]   |  a[src^='https']      | выделяет все элементы <a>, у которых атрибут src начинается с 'https'
+  > [attribute$=value]   |  a[src$='pdf']        | выделяет все элементы <a>, у которых атрибут src заканчивается на '.pdf'
+  > [attribute*=value]   |  a[src*='w3schools']  | выделяет все элементы <a>, у которых атрибут src содержит подстроку 'w3schools'
+  > :first-of-type       |  p:first-of-type      | выделяет все элементы <p>, которые являются первыми элементами этого типа у своих родителей
+  > :last-of-type        |  p:last-of-type       | выделяет все элементы <p>, которые являются последними элементами этого типа у своих родителей
+  > :only-of-type        |  p:only-of-type       | выделяет все элементы <p>, которые являются единственными элементами этого типа у своих родителей
+  > :only-child          |  p:only-child         | выделяет все элементы <p>, которые являются единственными дочерними элементами у своих родителей
+  > :nth-child(n)        |  p:nth-child(2)       | выделяет все элементы <p>, которые являются n-ыми (в примере 2-ми) элементами этого типа у своих родителей
+  > :nth-last-child(n)   |  p:nth-last-child(2)  | выделяет все элементы <p>, которые являются n-ыми с конца (в примере 2-ми) элементами этого типа у своих родителей
+  > :nth-of-type(n)      |  p:nth-of-type(2)     | выделяет все элементы <p>, которые являются n-ыми (в примере 2-ми) элементами своего родителя
+  > :nth-last-of-type(n) |  p:nth-last-of-type(2)| выделяет все элементы <p>, которые являются n-ыми с конца (в примере 2-ми) элементами своего родителя
+  > :last-child          |  p:last-child         | выделяет все элементы <p>, которые являются последним дочерним элементом своего родителя
+  > :root                |  :root                | выбирает корневой элемент документа
+  > :empty               |  p:empty              | выбирает все элементы <p>, у которых нет дочерних элементов (включая текстовые узлы)
+  > :target              |  #news:target         | Selects the current active #news element (clicked on a URL containing that anchor name)
+  > :enabled             |  input:enabled        | выбирает все включенные элементы <input>
+  > :disabled            |  input:disabled       | выбирает все выключенные элементы <input>
+  > :checked             |  input:checked        | (не поддерживается) выбирает все checked элементы <input>
+  > :not(selector)       |  :not(p)              | выбирает все элементы, которые не являются элементом <p>
+  > ::selection          |  ::selection          | выбирает часть элемента, выделенную пользователем
+
+
+
+
+
+
+-------------------------------------------------- -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>1. Вводный tutorial в CSS + общая информация</title>
+  <link rel="stylesheet" type="text/css" href="0b. Селекторы CSS.css">
+</head>
+<body>
+
+<b>Селекторы CSS1 + CSS2</b><br><br>
+
+  <mark>.class</mark>
+    <p class="c1">Иван да марья.</p>
+    <p class="c2">Хлеб да соль.</p>
+
+  <mark>#id</mark>
+    <p id="myId1">Lorem Ipsum</p>
+
+  <mark>*</mark>
+    <p class="c3">[сделал font-family: tahoma, arial, sans-serif; для всех элементов]</p>
+
+  <mark>element</mark>
+    <p class="c4">Сделал border: 1px solid #eee; всем элементам p</p>
+
+  <mark>element,element</mark>
+    <p>Сделал border: 1px solid #eeae0c; элементам p.c3 и p.c4</p>
+
+  <mark>element element</mark>
+    <div class="c5">
+      <div>
+        <p>Выделил P внутри div.c5</p>
+      </div>
+    </div>
+
+  <mark>element>element</mark>
+  <div class="c6">
+    <p>Тыц - выделился только этот, потому что только он непосредственно-дочерний от div.c6</p>
+    <div>
+      <p>Тыц</p>
+    </div>
+  </div>
+
+  <mark>element+element</mark>
+    <div class="c7">
+      Здесь div
+    </div>
+    <p>Тыц - выделился этот, потому что это он идет сразу после div</p>
+    <p>Тыц</p>
+
+  <mark>[attribute]</mark>
+    <p onclick="">Элемент p с атрибутом onclick</p>
+
+  <mark>[attribute=value]</mark>
+    <p onclick="abc">Элемент p с атрибутом onclick='abc'</p>
+
+  <mark>[attribute~=value]</mark>
+  <p onclick="qqqoyoyqqq">Элемент p с атрибутом onclick='qqqoyoyqqq' - выделился, потому что содержит oyoy</p>
+
+  <mark>:link</mark><br>
+    <a class="c8" href="http://google.com">Не посещенная ссылка (не нажимать!) (увеличен шрифт)</a>
+
+  <br><mark>:visited</mark><br>
+  <a class="c9" href="http://google.com">Посещенная ссылка (нажать!) (увеличен шрифт)</a>
+
+  <br><mark>:active</mark><br>
+  <a class="c10" href="http://google.com">Активная ссылка - выделяется, если на нее нажать и держать</a>
+
+  <br><mark>:hover</mark><br>
+  <a class="c11" href="http://google.com">Ссылка, над которой курсор мыши (увеличен шрифт)</a>
+
+  <br><br><mark>:focus</mark>
+    <form>
+      <input size="50" placeholder="Щелки по мне, и я пожелтею, получив фокус" class="c12" type="text">
+    </form>
+
+  <mark>:first-letter</mark>
+    <p class="c13">Жил был царь (выделяет 1 букву)</p>
+
+  <mark>:first-line</mark>
+  <p class="c14">Жил был царь. (выделяет 1-ю строку текстового узла) <br>Но докучал ему дракон-окоянец!</p>
+
+  <mark>:first-child</mark>
+    <div>
+      <p class="c15">Тыц (выделился, потому что этот p - 1-й дочерний элемент своего родителя</p>
+      <p class="c15">Тыц</p>
+    </div>
+
+  <mark>:before</mark>
+    <p class="c16">принц</p>
+
+
+  <mark>:after</mark>
+    <p class="c17">принц</p>
+
+  <mark>:lang</mark>
+    <p class="c18" lang="it">Italian</p>
+
+
+<br><br><b>Селекторы CSS3</b><br><br>
+
+
+  <mark>element1~element2</mark>
+    <p>Тыц</p>
+    <div class="c19">Это блок</div>
+
+  <mark>[attribute^=value]</mark><br>
+    <a class="c20" src="http://">Элемент а</a>
+
+  <br><mark>[attribute$=value]</mark><br>
+    <a class="c21" src=".pdf">Элемент а</a>
+
+  <br><mark>[attribute*=value]</mark><br>
+    <a class="c22" src="Армения">Содержит слово Армения, поэтому и выделилось</a>
+
+  <br><mark>:first-of-type</mark>
+    <div>
+      <p class="c23">Тыц (выделился, потому что это первый элемент p у своего родителя)</p>
+      <p class="c23">Тыц</p>
+    </div>
+
+  <br><mark>:last-of-type</mark>
+    <div>
+      <p class="c24">Тыц</p>
+      <p class="c24">Тыц</p>
+      <p class="c24">Тыц (выделился, потому что это последний элемент p у своего родителя)</p>
+    </div>
+
+  <mark>:only-of-type</mark>
+    <div>
+      <div></div>
+      <p class="c25">Тыц (выделился, потому что это единственный элемент (этого типа) p у своего родителя)</p>
+    </div>
+
+  <mark>:only-child</mark>
+    <div>
+      <p class="c26">Тыц (выделился, потому что это единственный дочерний элемент своего родителя)</p>
+    </div>
+
+  <mark>:nth-child(n)</mark>
+    <div>
+      <p class="c27">1-й элемент у своего родителя</p>
+      <p class="c27">2-й элемент у своего родителя</p>
+      <p class="c27">3-й элемент у своего родителя</p>
+    </div>
+
+  <mark>:nth-last-child(n)</mark>
+    <div>
+      <p class="c28">1-й элемент у своего родителя (3-й с конца)</p>
+      <p class="c28">2-й элемент у своего родителя (2-й с конца)</p>
+      <p class="c28">3-й элемент у своего родителя (1-й с конца)</p>
+    </div>
+
+  <mark>:nth-of-type(n)</mark>
+    <div>
+      <p class="c29">1-й элемент p у своего родителя</p>
+      <p class="c29">2-й элемент p у своего родителя</p>
+      <p class="c29">3-й элемент p у своего родителя</p>
+    </div>
+
+  <mark>:nth-last-of-type(n)</mark>
+    <div>
+      <p class="c30">1-й элемент p у своего родителя (3-й с конца)</p>
+      <p class="c30">2-й элемент p у своего родителя (2-й с конца)</p>
+      <p class="c30">3-й элемент p у своего родителя (1-й с конца)</p>
+    </div>
+
+  <mark>:last-child</mark>
+    <div>
+      <p class="c31">1-й элемент p у своего родителя</p>
+      <p class="c31">2-й элемент p у своего родителя</p>
+      <p class="c31">3-й элемент p у своего родителя</p>
+      <p class="c31">Последний элемент p у своего родителя</p>
+    </div>
+
+  <mark>:root</mark>
+    <p>Селектор :root выделит корневой элемент - а в HTML-документе это всегда элемент html (поменял фон на серый)</p>
+
+  <mark>:empty</mark>
+    <p class="c32">Этот элемент p не пуст, а вот элемент p под ним - да. Его и выделяет селектор :empty</p>
+    <p class="c32"></p>
+    <p class="c32">Кое-что есть</p>
+
+  <mark>:target </mark>
+    <p><a href="#news1">Нажми на меня, и тогда выделится Контент 1</a></p>
+    <p><a href="#news2">Нажми на меня, и тогда выделится Контент 2</a></p>
+    <p id="news1"><b>Контент 1</b></p>
+    <p id="news2"><b>Контент 2</b></p>
+
+  <mark>:enabled и :disabled </mark>
+    <form>
+      Включено: <input class="c33" type="text" value="Иван" /><br>
+      Выключено: <input class="c34" type="text" disabled="disabled" value="Disneyland" />
+    </form>
+
+  <mark>not(selector)</mark>
+    <div class="c35">
+      <p class="c33">Элемент p, класс c33</p>
+      <p class="c34">Элемент p, класс c34 - задача: в элементе div выбрать все элементы p НЕ класса c33</p>
+      <p class="c33">Элемент p, класс c33</p>
+    </div>
+
+  <mark>::selection </mark>
+    <p class="c36">Попробуй выделить текст из этого абзаца. И к выделенному тексту применится стиль из селектора</p>
+
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+
+Ссылки:
+
+
+  > Исчерпывающее учебное пособие по CSS 3 на сайте w3schools.com
+    (справка + tutorial + demos)
+      http://www.w3schools.com/css/css3_intro.asp
+
+  > Исчерпывающее учебное пособие по CSS 3 от Mozilla Developer:
+    (справка + tutorial + demos)
+      https://developer.mozilla.org/en-US/docs/Web/CSS
+
+  > Справочник по CSS от htmlbook.ru (немного устарел, но хорошо написан):
+      http://htmlbook.ru/css
+
+  > Список веб-безопасных шрифтов:
+      http://www.w3schools.com/cssref/css_websafe_fonts.asp
+
+  > Полный справочник CSS-селекторов:
+      http://www.w3schools.com/cssref/css_selectors.asp
+
+
+
+*****************************************************
+Оглавление:
+
+  > Общая информация
+
+
+
+*****************************************************
+
+> Общая информация
+  > О селекторах можешь почитать в "1. Общая информация о CSS3".
+  > Все перечисленные выше селекторы поддерживаются большой 5-кой современных
+    браузеров. Все, кроме селектора checked.
+  >
+
+
+
+
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

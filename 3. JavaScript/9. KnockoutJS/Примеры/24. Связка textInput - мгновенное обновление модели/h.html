@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>24. Связка textInput - мгновенное обновление модели</mark><br><br>
+
+<ul>
+	<li>Попробуй начать вводить любой текст в любое из текстовых полей.</li>
+	<li>При вводе любого символа модель будет обновляться мгновенно, не дожидаясь потери фокуса.</li>
+	<li>Об этом свидетельствуют связанные с соотв. св-вами модели эл-ты p, по ходу ввода заполняющиеся текстом</li>
+</ul>
+
+
+
+	<p>
+		<input type="text" data-bind="textInput: name" placeholder="Имя">
+		<span data-bind="text: name"></span>
+	</p>
+
+	<p>
+		<textarea data-bind="textInput: description" placeholder="Описашка"></textarea>
+		<span data-bind="text: description"></span>
+	</p>
+
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,601 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+HTML 5.
+3. Формы.
+
+Теги:
+  > form          | HTML форма для ввода данных пользователем
+  > input         | элемент управления для ввода данных
+  > textarea      | элемент управления - многострочное текстовое поле
+  > button        | элемент управления - кнопка
+  > select        | элемент управления - селект (дроп-даун лист)
+  > optgroup      | определяет группу связанных опций в элементе дроп-даун лист
+  > option        | определяет опцию в элементе дроп-даун лист
+  > label         | определяет приписку к input элементу
+  > fieldset      | выделяет группу связанных элементов в form
+  > legend        | определяет заголовок для группы fieldset
+  > datalist      | список опций для выбора в input list, изначально скрыт, становится доступен при получении полем фокуса
+  > keygen        | генерирует открытый и закрытый ключ для шифорованной отправки даных
+  > output        | отображает результат калькуляции других элементов формы (не работает в IE)
+
+
+Атрибуты  локальные (специфичные для каждого тега):
+
+  > form
+      # accept-charset  | уточняет кодировку, которая будет использована для отправки
+      # action          | уточняет, куда отправить данные из формы (например, в PHP файл)
+      # autocomplete    | уточняет, включить автокомплит, или нет
+      # enctype         | уточняет, как данные из формы должны быть закодированы при отправке на сервер
+        > только для метода post
+        > Есть 3 доступных строки-значения:
+          - "application/x-www-form-urlencoded" | (по умолчанию) Перед отправкой кодирует все символы, пробелы в '+', а спец. знаяения в ASCII HEX values
+          - "multipart/form-data"               | Ничего не кодирует, рекомендуется использовать в формах, где есть загрузка файлов.
+          - "text/plain"                        | только конвертирует пробелы в '+', и все.
+      # method          | уточняет HTTP-метод, который будет использоваться для отправки формы
+        > Есть 2 доступных метода запроса: GET и POST
+      # name            | уточняет имя формы
+      # novalidate      | указывает, что не нужно производить валидацию данных формы перед отправкой
+      # target          | указывает в каком окне получить ответ после отравки данных форме
+        > Доступны 4 варианта:
+          - _self        | в этом же окне
+          - _blank       | в новом окне
+          - _parent      | в родительском фрейме
+          - _имя_фрейма  | во фрейме, имя которого указано здесь
+
+  > input
+      // Основные атрибуты
+      # type            | тип элемента input
+        > Все доступные типы input'ов можно увидеть ниже в примерах
+      # name            | уточняет имя элемента input
+      # value           | укажывает значение элемента input
+      # form            | уточняет id формы, которой принадлежит этот элемент
+      # size            | указать ширину элемента input в символах
+      # placeholder     | подсказка бледными буквами в текстовом инпуте
+
+      // Атрибуты флаги
+      # autocomplete    | уточняет, включить автокомплит, или нет (без атрибута name не рабтает)
+      # autofocus       | уточняет, должен ли этот инпут автоматом получить фокус после загрузки
+      # checked         | для type='checkbox' / type='radiobox' - уточняет, включен ли элемент
+      # disabled        | уточняет, должен ли этот input-элемент быть отключен
+      # readonly        | указать, что этот инпут только для чтения
+
+      // Атрибуты для type == submit / image / file
+      # src             | указать URL картинки, которая будет использована в качестве кнопки submit
+      # height          | для type='image' - уточняет высоту элемента
+      # width           | для type='image' - уточняет ширину элемента
+      # alt             | для type='image' позволяет указать альтернативный текст
+      # formaction      | для type='submit' / type='image' - уточняет локальный путь или адрес к скрипту, который будет обрабатывать данные от этого элемента после отправки
+      # formenctype     | для type='submit' / type='image', уточняет, как данные из формы должны быть закодированы при отправке на сервер (только для метода post)
+      # formmethod      | для type='submit' / type='image' - определяет HTTP-метод для отправки данных
+      # formtarget      | для type='submit' / type='image', аналог target - где открыть ответное сообщение от формы
+      # accept          | (для type='file') уточняет, какой тип файла должен принять сервер
+
+      // Атрибуты валидации
+      # required        | указать, что указать значение этого элемента необходимо для отправки формы
+      # pattern         | можно указать RegExp, с которым бьется введенное в input значение
+      # formnovalidate  | (для type='submit') указывает, что не надо делать валидацию
+
+      // Атрибуты, связанные со значением элемента
+      # max             | указать МАХ значение для элемента
+      # min             | указать MIN значение для элемента
+      # maxlength       | указать максимальную длину текста
+      # step            | указать величину интервала для значений элемента
+      # multiple        | указать, что пользователь может ввести больше 1 значения в элемент input
+      # list            | можно указать ID от <datalist> с предопределенными опциями
+
+  > textarea
+      # autofocus         | уточняет, должен ли этот инпут автоматом получить фокус после загрузки
+      # cols              | уточняет видимую ширину элемента в символах
+      # disabled          | уточняет, должен ли этот input-элемент быть отключен
+      # maxlength         | указать максимальную длину текста
+      # name              | уточняет имя элемента input
+      # placeholder       | подсказка бледными буквами в текстовом инпуте
+      # readonly          | указать, что этот инпут только для чтения
+      # required          | указать, что указать значение этого элемента необходимо для отправки формы
+      # rows              | уточняет видимое количество строк в текстовом поле
+      # wrap              | уточняет, содержит ли отправляемый на сервер текст символы новой строки; cols тоже должен быть определен.
+
+  > button
+      # autofocus         | уточняет, должен ли этот инпут автоматом получить фокус после загрузки
+      # disabled          | уточняет, должен ли этот input-элемент быть отключен
+      # form              | уточняет id формы, которой принадлежит этот элемент
+      # formaction        | для type='submit' / type='image' - уточняет локальный путь или адрес к скрипту, который будет обрабатывать данные от этого элемента после отправки
+      # formenctype       | для type='submit' / type='image', уточняет, как данные из формы должны быть закодированы при отправке на сервер (только для метода post)
+      # formmethod        | для type='submit' / type='image' - определяет HTTP-метод для отправки данных
+      # formnovalidate    | (для type='submit') указывает, что не надо делать валидацию
+      # formtarget        | для type='submit' / type='image', аналог target - где открыть ответное сообщение от формы
+      # name              | уточняет имя элемента input
+      # type              | уточняет тип кнопкки
+      # value             | уточняет текст, написанный на кнопке
+
+  > select
+      # autofocus         | уточняет, должен ли этот инпут автоматом получить фокус после загрузки
+      # disabled          | уточняет, должен ли этот input-элемент быть отключен
+      # form              | уточняет id формы, которой принадлежит этот элемент
+      # multiple          | указать, что пользователь может ввести больше 1 значения в элемент input
+      # name              | уточняет имя элемента input
+      # required          | указать, что указать значение этого элемента необходимо для отправки формы
+      # size              | определяет количество видимых при загрузке опций дроп-даун листа
+
+  > optgroup
+      # disabled          | уточняет, должен ли этот input-элемент быть отключен
+      # label             | уточняет label для optgroup
+
+  > option
+      # disabled          | уточняет, должен ли этот input-элемент быть отключен
+      # label             | уточняет короткий label для опции
+      # selected          | определяет, что эта опция должна быть уже выбрана автоматически при загрузке страницы
+      # value             | обозначает значение, которое должно быть отправлено на сервер
+
+  > label
+      # for               | уточняет, элементу с каким id принадлежит этот label
+      # form              | уточняет, форме с каким id принадлежит этот label
+
+  > option
+      # disabled          | уточняет, должен ли этот input-элемент быть отключен
+      # form              | уточняет, форме с каким id принадлежит этот элемент
+      # name               | уточняет имя элемента input
+
+  > keygen
+      # autofocus         | уточняет, должен ли этот инпут автоматом получить фокус после загрузки
+      # challenge         | указывает, что значения keygen элемента должно быть challenget после опубликования
+      # disabled          | уточняет, должен ли этот input-элемент быть отключен
+      # form              | уточняет, форме с каким id принадлежит этот элемент
+      # keytype           | указывает алгоритм шифрования
+      # name              | уточняет имя элемента input
+
+  > output
+      # for               | указывает отношения между результатом вычисления и его элементами
+      # form              | уточняет, форме с каким id принадлежит этот элемент
+      # name              | уточняет имя элемента input
+
+
+Атрибуты глобальные (подходят к любому тегу):
+  # accesskey         | указывает горячую клавишу для активации / наведения фокуса на элемент
+  # class             | указывает имя класса или классов CSS, которые надо применить к элементу
+  # contenteditable   | указывает, можно ли редактировать контент элемента, или нет
+  # contextmenu       | указывает контекстное меню, которое открывается при щелчке правой КМ по элементу
+  # dir               | указывает направление текста внутри элемента
+  # draggable         | указывает, является ли элемент перетаскиваемым
+  # dropzone          | указывает, что будет с перетащенным элементом: скопируется, передвинется, свяжется, петеращится (упадет)
+  # hidden            | скрывает элемент
+  # id                | указывает уникальный ID для элемента
+  # lang              | указывает язык контента элемента
+  # spellcheck        | указывает, проверять ли браузеру орфографию в редактируемом элементе, или нет
+  # style             | позволяет указать локальные стили элемента
+  # tabindex          | позволяет настроить порядок навигации между элементами с помощью клавиши TAB
+  # title             | при наведении мышью на элемент всплывает подсказка со значением атрибута title
+  # translate         | указывает, должно ли value элемента быть переведено, когда страница локализована, или нет
+
+
+
+
+-------------------------------------------------- -->
+
+<!-- Подготовка документа  -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>Заголовок страницы - 3. Формы</title>
+</head>
+<body>
+
+
+
+  <p><mark>form, input, fieldset, legend - Пример формы с несколькими fieldset'ами и всеми видами инпутов </mark></p>
+    <form
+        accept-charset="UTF-8"
+        action='#'
+        method="get"
+        autocomplete="on"
+        enctype="application/x-www-form-urlencoded"
+        name='myForm'
+        novalidate
+        target='_blank'>
+
+        <fieldset><legend>Кнопки отправки формы и сброса значений:</legend>
+          <input type='button' value='кнопка'> - кнопка button - простая кнопка<br>
+          <input type='submit'> - кнопка submit отправки формы, тоже самое, что тип image<br>
+          <input type='image'> - кнопка image, тоже самое, что кнопка submit, только в виде картинки<br>
+          <input type='reset'> - сбросить на дефолт все значения формы<br>
+        </fieldset>
+
+        <fieldset><legend>Старые добрые стандартные элементы:</legend>
+          <input type='checkbox'> - Чекбокс<br>
+          <input type='radio'> - радио-кнопка<br>
+          <input type='text'> - простой текст<br>
+          <input type='file'> - загрузка файла<br>
+        </fieldset>
+
+        <fieldset><legend>Дата и время:</legend>
+          <input type='datetime'> - Вписать самому дату и время<br>
+          <input type='date'> - Выбор даты<br>
+          <input type='datetime-local'> - Выбор даты и времени<br>
+          <input type='month'> - выбор месяца<br>
+          <input type='week'> - ввод недели<br>
+          <input type='time'> - ввод времени<br>
+        </fieldset>
+
+        <fieldset><legend>Прочие элементы:</legend>
+          <input type='color'> - Выбор цвета<br>
+          <input type='email'> - ввод email с валидацией<br>
+          <input type='hidden'> - скрытый элемент<br>
+          <input type='number'> - выбор числа<br>
+          <input type='password'> - ввод пароля (звездочки вместо букв)<br>
+          <input type='range'> - выбрать из диапазона<br>
+          <input type='search'> - текстбокс для поиска<br>
+          <input type='tel'> - ввод телефона<br>
+          <input type='url'> - ввод URL с валидацией<br>
+        </fieldset>
+
+    </form>
+
+
+  <p><mark>Далее идут примеры работы всех остальных атрибутов input'a</mark></p>
+    <!-- Далее идут примеры работы всех остальных атрибутов input'a -->
+    <!-- ----------------------------------------------------------------------------------- -->
+
+        <!-- name       | уточняет имя элемента input -->
+        <p class='hclassattr1'>> name<span class='tipforattr'> - значение: текст</span></p>
+        <form><input type='text' name='input1'> - инпут с name='input1'</form>
+
+        <!-- value       | укажывает значение элемента input -->
+        <p class='hclassattr1'>> value<span class='tipforattr'> - значение: текст</span></p>
+        <form><input type='text' value='дефолтное значение'> - с помощью value можно устанавливать стандартное значение</form>
+
+        <!-- form       | уточняет id формы, которой принадлежит этот элемент -->
+        <p class='hclassattr1'>> form<span class='tipforattr'> - значение: id формы</span></p>
+        <form><input type='text' id='id777'> - теперь можно получить доступ к этому элементу по id = 'id777'</form>
+
+        <!-- size       | указать ширину элемента input в символах -->
+        <p class='hclassattr1'>> size<span class='tipforattr'> - значение: число</span></p>
+        <form><input type='text' size='10'> - вот такая ширина при size='10'</form>
+
+        <!-- placeholder       | подсказка бледными буквами в текстовом инпуте -->
+        <p class='hclassattr1'>> placeholder<span class='tipforattr'> - значение: текст</span></p>
+        <form><input type='text' size='30' title='Это тул-тип подсказка title' placeholder='Это подсказка placeholder'> - наведи на элемент курсор, и получишь подсказку!</form>
+
+
+        <!-- ################# -->
+        <!-- атрибуты - Флаги -->
+        <p class='hclassattr'>атрибуты - Флаги:</p>
+
+        <!-- autocomplete       | уточняет, включить автокомплит, или нет (без атрибута name не рабтает) -->
+        <p class='hclassattr1'>> autocomplete<span class='tipforattr'> - значение: on / off </span></p>
+        <form action=''>
+          <input type='text' name="fname1">
+          <input type='submit'>
+        </form>
+
+        <!-- autofocus       | уточняет, должен ли этот инпут автоматом получить фокус после загрузки -->
+        <p class='hclassattr1'>> autofocus<span class='tipforattr'> - значение: нет, просто autofocus</span></p>
+        <form><input type='image>' autofocus="on"> - элемент с autofocus </form>
+        <form><input type='image>' autofocus="on"> - автоматически получает автофокус при загрузке страницы. Автофокус получает самый нижний элемент с autofocus </form>
+
+        <!-- checked       | для type='checkbox' / type='radiobox' - уточняет, включен ли элемент -->
+        <p class='hclassattr1'>> checked<span class='tipforattr'> - значение: нет, просто checked</span></p>
+        <form>
+          <input type='checkbox'> - чекбокс 1<br>
+          <input type='checkbox' checked> - чекбокс 2 - включен по умолчанию<br>
+          <input type='checkbox'> - чекбокс 3<br>
+        </form>
+
+        <!-- disabled       | уточняет, должен ли этот input-элемент быть отключен -->
+        <p class='hclassattr1'>> disabled<span class='tipforattr'> - значение: нет, просто disabled</span></p>
+        <form>
+          <input type='checkbox'> - чекбокс 1<br>
+          <input type='checkbox' disabled> - чекбокс 2 отключен (disabled)<br>
+          <input type='checkbox'> - чекбокс 3<br>
+        </form>
+
+        <!-- readonly       | указать, что этот инпут только для чтения -->
+        <p class='hclassattr1'>> readonly<span class='tipforattr'> - значение: нет, просто readonly</span></p>
+        <form>
+          <input type='text' value='значение элемента' readonly> - этот элемент только для чтения (редактировать не получится)
+        </form>
+
+
+        <!-- ############################################# -->
+        <!-- атрибуты - Для type == submit / image / file -->
+        <p class='hclassattr'>атрибуты - Для type == submit / image / file:</p>
+
+        <!-- src       | указать URL картинки, которая будет использована в качестве кнопки submit -->
+        <p class='hclassattr1'>> src<span class='tipforattr'> - значение: локальный адрес или URL</span></p>
+        <form><input type='image' alt='это кнопка submit' height="30px" width="100px" src='http://www.alternativefinancialnow.com/images/BuyButton.jpg'> - к кнопке типа image можно приделать
+          картинку, например такую. Напоминаю, это аналог submit. Кнопке заданы атрибуты src='ссылка на картинку', width и height - задающие ширину и высоту, и alt - с текстом картинки для поисковиков </form>
+
+        <!-- height       | для type='image' - уточняет высоту элемента  -->
+        <p class='hclassattr1'>> height<span class='tipforattr'> - значение: пиксели</span></p>
+
+        <!-- width     | для type='image' - уточняет ширину элемента -->
+        <p class='hclassattr1'>> witdh<span class='tipforattr'> - значение: пиксели</span></p>
+
+        <!-- alt       | для type='image' позволяет указать альтернативный текст -->
+        <p class='hclassattr1'>> alt<span class='tipforattr'> - значение: текст</span></p>
+
+        <!-- formaction       | для type='submit' / type='image' - уточняет локальный путь или адрес к скрипту, который будет обрабатывать данные от этого элемента после отправки -->
+        <p class='hclassattr1'>> formaction<span class='tipforattr'> - значение: локальный путь или адрес</span></p>
+
+        <form action='index1.php'>
+          <input type='image'> - кнопка 1, если ее нажать то данные из формы отправятся на обработку скрипту index1.php<br>
+          <input type='image' formaction="index2.php"> - кнопка 2, если ее нажать то данные из формы отправятся на обработку скрипту index2.php<br>
+          *Примечание: это все кнопки одной и той же формы
+        </form>
+
+        <!-- formenctype       | уточняет, как данные из формы должны быть закодированы при отправке на сервер (только для метода post) -->
+        <p class='hclassattr1'>> formenctype<span class='tipforattr'> - значение: см. выше у атрибута Enctype</span></p>
+        <form action=''>
+          <input type='image' formenctype="application/x-www-form-urlencoded"> - кнопка 1, если ее нажать то при отправке данные будут закодированы методом "application/x-www-form-urlencoded"<br>
+          <input type='image' formenctype="multipart/form-data"> - кнопка 2, если ее нажать то при отправке данные будут закодированы методом "multipart/form-data"<br>
+          <input type='image' formenctype="text/plain"> - кнопка 2, если ее нажать то при отправке будут данные закодированы методом "text/plain"<br>
+          *Примечание: это все кнопки одной и той же формы
+        </form>
+
+        <!-- formmethod       | для type='submit' / type='image' - определяет HTTP-метод для отправки данных -->
+        <p class='hclassattr1'>> formmethod<span class='tipforattr'> - значение: get / post</span></p>
+        <form action=''>
+          <input type='image' formmethod="post"> - кнопка 1, если ее нажать то данные будут отправлены HTTP-методом POST<br>
+          <input type='image' formmethod="get"> - кнопка 2, если ее нажать то данные будут отправлены HTTP-методом GET<br>
+          *Примечание: это все кнопки одной и той же формы
+        </form>
+
+        <!-- formtarget       | аналог target  -->
+        <p class='hclassattr1'>> formtarget<span class='tipforattr'> - значение: см. у атрибута Target</span></p>
+        <form action='http://ya.ru'>
+          <input type='image' formtarget=" _blank"> - кнопка 1, если ее нажать ответ от формы будет получен в окно _blank<br>
+          <input type='image' formtarget="_self"> - кнопка 2, если ее нажать ответ от формы будет получен в окно _self<br>
+          <input type='image' formtarget="_parent"> - кнопка 3, если ее нажать ответ от формы будет получен в окно _parent<br>
+          <input type='image' formtarget="_top"> - кнопка 4, если ее нажать ответ от формы будет получен в окно _top<br>
+          *Примечание: это все кнопки одной и той же формы
+        </form>
+
+        <!-- accept       | для type='file' уточняет, какой тип файла должен принять сервер -->
+        <p class='hclassattr1'>> accept<span class='tipforattr'> - значение: audio/* / video/* / image/* / MIME_type</span></p>
+        <form>
+          <input type='image'><br>
+          <input type='file' accept='image/jpeg'> - атрибутом accept мы здесь уточнили, что сервер должен принять файл типа image/jpeg, и благодаря этому в открывшемся окне выбора файла можно будет выбрать только этот тип файла
+        </form>
+
+
+        <!-- ##################### -->
+        <!-- атрибуты - Валидация -->
+        <p class='hclassattr'>атрибуты - Валидация:</p>
+
+        <!-- required       | указать, что указать значение этого элемента необходимо для отправки формы -->
+        <p class='hclassattr1'>> required<span class='tipforattr'> - значение: нет, просто required</span></p>
+        <form><input type='text' required="on"><input type='image'> - у текстового поля установлен required - значит не получится отправить данные, пока в текстовом поле не будет валидной информации</form>
+
+        <!-- pattern       | можно указать RegExp, с которым бьется введенное в input значение -->
+        <p class='hclassattr1'>> pattern<span class='tipforattr'> - значение: RegExp</span></p>
+        <form><input type='text' pattern="\d+" required="on"><input type='image'> - значение в текстовом поле валидуется регулярным выражением. Также обязательно включить required. Должна быть 1 или более цифр. Не работает в IE<10 и safari</form>
+
+        <!-- formnovalidate       | указывает, что не надо делать валидацию -->
+        <p class='hclassattr1'>> formnovalidate<span class='tipforattr'> - значение: нет, только formnovalidate</span></p>
+        <form><input type='email' formnovalidate="on"><input type='image'> - у инпута типа email, в котором встроенная валидация, указан флаг formnovalidate, отключающий какую-бы то нибыло валидацию</form>
+
+
+        <!-- ############################# -->
+        <!-- атрибуты - Значение элемента -->
+        <p class='hclassattr'>атрибуты - Значение элемента:</p>
+
+        <!-- max       | указать МАХ значение для элемента -->
+        <p class='hclassattr1'>> max<span class='tipforattr'> - значение: число, дата-время</span></p>
+        <form><input type='range' mix='0' max='100' value='20'> - тип input со значением max=100, min=0, value=20</form>
+
+        <!-- min       | указать MIN значение для элемента -->
+        <p class='hclassattr1'>> min<span class='tipforattr'> - значение: число, дата-время</span></p>
+
+        <!-- maxlength       | указать максимальную длину текста -->
+        <p class='hclassattr1'>> maxlength<span class='tipforattr'> - значение: число</span></p>
+        <input type='text' maxlength="5"> - это инпут типа текст с МАХ длинной текста maxlength='5' символам
+
+        <!-- step       | указать величину интервала для значений элемента -->
+        <p class='hclassattr1'>> step<span class='tipforattr'> - значение: число</span></p>
+        <form><input type='range' mix='0' max='100' step='10' value='20'> - тип input со значением max=100, min=0, value=20 и шагом step=10</form>
+
+        <!-- multiple       | указать, что пользователь может ввести больше 1 значения в элемент input -->
+        <p class='hclassattr1'>> multiple<span class='tipforattr'> - значение: нет, просто multiple</span></p>
+        <form><input type='file' multiple> - тут указан флаг multiple, можно выбрать для загрузки несколько файлов одновременно</form>
+
+        <!-- list       | можно указать ID от <datalist> с предопределенными опциями -->
+        <p class='hclassattr1'>> list<span class='tipforattr'> - значение: id от datalist</span></p>
+        <form>
+          <datalist id="browsers">
+            <option value="Internet Explorer">
+            <option value="Firefox">
+            <option value="Chrome">
+            <option value="Opera">
+            <option value="Safari">
+          </datalist>
+          <input type='text' list='browsers' name='browser'> - попробуй вписать firefox, chrome, opera или safari, и сработает автокомплит, потому что это предопределенные опции из datalist
+        </form>
+
+  <!-- ----------------------------------------------------------------------------------- -->
+
+
+  <p><mark>textarea</mark></p>
+    <!-- autofocus         | уточняет, должен ли этот инпут автоматом получить фокус после загрузки -->
+    <p class='hclassattr1'>> autofocus<span class='tipforattr'> - значение: нет, просто autofocus</span></p>
+    <form><textarea autofocus></textarea> - при загрузке страницы автофокус передается последнему элементу с autofocus</form>
+
+    <!-- cols              | уточняет видимую ширину элемента в символах -->
+    <p class='hclassattr1'>> cols<span class='tipforattr'> - значение: число</span></p>
+    <form><textarea cols='30'></textarea> - cols='30'</form>
+    <form><textarea cols='40'></textarea> - cols='40'</form>
+
+    <!-- disabled          | уточняет, должен ли этот input-элемент быть отключен -->
+    <p class='hclassattr1'>> disabled<span class='tipforattr'> - значение: нет, просто disabled</span></p>
+    <form><textarea disabled></textarea> - disabled - отключен</form>
+
+    <!-- maxlength         | указать максимальную длину текста -->
+    <p class='hclassattr1'>> maxlength<span class='tipforattr'> - значение: число</span></p>
+    <form><textarea maxlength='10'></textarea> - maxlength == 10 символов максимум можно сюда вписать. Попробуй.</form>
+
+    <!-- name              | уточняет имя элемента input -->
+    <p class='hclassattr1'>> name<span class='tipforattr'> - значение: текст</span></p>
+    <form><textarea name='textbox11'></textarea> - name='textbox11'</form>
+
+    <!-- placeholder       | подсказка бледными буквами в текстовом инпуте -->
+    <p class='hclassattr1'>> placeholder<span class='tipforattr'> - значение: текст</span></p>
+    <form><textarea placeholder='Это подсказка бледными буквами (placeholder)'></textarea></form>
+
+    <!-- readonly          | указать, что этот инпут только для чтения -->
+    <p class='hclassattr1'>> readonly<span class='tipforattr'> - значение: нет, просто readonly</span></p>
+    <form><textarea readonly></textarea> - readonly - только для чтения. Вписать ничего нельзя.</form>
+
+    <!-- required          | указать, что указать значение этого элемента необходимо для отправки формы -->
+    <p class='hclassattr1'>> required<span class='tipforattr'> - значение: нет, просто required</span></p>
+    <form><textarea required></textarea> - required - если ничего не вписать, то отправить форму будет нельзя</form>
+
+    <!-- rows              | уточняет видимое количество строк в текстовом поле -->
+    <p class='hclassattr1'>> rows<span class='tipforattr'> - значение: число</span></p>
+    <form><textarea rows='5'></textarea> - rows='5' - заданы 5 видимых строк при загрузке страницы</form>
+
+    <!-- wrap              | уточняет, содержит ли отправляемый на сервер текст символы новой строки; cols тоже должен быть определен -->
+    <p class='hclassattr1'>> wrap<span class='tipforattr'> - значение: hard / soft</span></p>
+
+
+  <p><mark>button</mark></p>
+    <!-- type              | уточняет тип кнопкки -->
+    <p class='hclassattr1'>> type<span class='tipforattr'> - значение: button / reset / submit</span></p>
+    <form>
+      <input type='text' /><br>
+      <input type='submit' value='отправить (type=submit)' /><br>
+      <input type='reset' value='сбросить (type=reset)' /><br>
+      <input type='button' value='просто нажимаемая кнопка (type=button)' /><br>
+    </form>
+
+
+  <p><mark>select</mark></p>
+    <!-- multiple          | указать, что пользователь может ввести больше 1 значения в элемент input -->
+    <p class='hclassattr1'>> multiple<span class='tipforattr'> - значения: нет, просто multiple</span></p>
+    <form><select multiple>
+      <option value='volvo'>volvo</option>
+      <option value='bmw'>bmw</option>
+      <option value='mercedes'>mercedes</option>
+    </select> - если зажать shift, то можно выбрать несколько элементов; при multiple, size - не работает, видны все элементы</form>
+
+    <!-- size              | определяет количество видимых при загрузке опций дроп-даун листа -->
+    <p class='hclassattr1'>> size<span class='tipforattr'> - значение: число</span></p>
+    <form><select size='2'>
+      <option value='volvo'>volvo</option>
+      <option value='bmw'>bmw</option>
+      <option value='mercedes'>mercedes</option>
+    </select> - size=2 - видны 2 элемента, а остальные скрыты в дроп-даун меню (что-то в chrome не работает...)</form>
+
+
+  <p><mark>optgroup и option</mark></p>
+
+    <!-- label             | уточняет label для optgroup -->
+    <p class='hclassattr1'>> label<span class='tipforattr'> - значение: текст</span></p>
+    <form><select>
+      <optgroup label="Шведские машины">
+        <option value='saab'>Saab</option>
+        <option value='volvo'>Volvo</option>
+      </optgroup>
+      <optgroup label="Русские машины">
+        <option value='VAZ'>VAZ</option>
+        <option value='GAZ'>GAZ</option>
+      </optgroup>
+    </select> - optgroup разбивает варианты в дроп даун меню на категории</form>
+
+    <!-- disabled          | уточняет, должен ли этот input-элемент быть отключен -->
+    <p class='hclassattr1'>> disabled<span class='tipforattr'> - см. примеры выше</span></p>
+
+    <!-- label             | уточняет короткий label для опции -->
+    <p class='hclassattr1'>> label<span class='tipforattr'> - значение: текст</span></p>
+    <form>
+      <select>
+        <option label='Собака' value='dog'>Собакен</option>
+        <option label='Кошка' value='cat'>Кошкен</option>
+      </select>
+    </form>
+
+    <!-- selected          | определяет, что эта опция должна быть уже выбрана автоматически при загрузке страницы -->
+    <p class='hclassattr1'>> selected<span class='tipforattr'> - значение: нет, просто selected</span></p>
+    <form>
+      <select>
+        <option label='Собака' value='dog'>Собакен</option>
+        <option label='Кошка' value='cat' selected>Кошкен</option>
+      </select> - Кошка выбран по умолчанию с помощью selected. Для "Собака" value='dog', это значение и отправится на сервер. Для Кошка, соответственно, value='cat'
+    </form>
+
+
+  <p><mark>label</mark></p>
+
+    <!-- for               | уточняет, элементу с каким id принадлежит этот label -->
+    <p class='hclassattr1'>> for<span class='tipforattr'> - значение: id элемента</span></p>
+
+    <!-- form              | уточняет, форме с каким id принадлежит этот label -->
+    <p class='hclassattr1'>> form<span class='tipforattr'> - значение: id формы</span></p>
+
+
+  <p><mark>datalist</mark></p>
+
+    <form>
+      <input list='cars' />
+      <datalist id='cars'>
+        <option value='BMW'>
+        <option value='Mercedes'>
+        <option value='Audi'>
+      </datalist>
+    </form>
+
+
+  <p><mark>output</mark></p>
+
+    <form oninput="x.value=parseInt(a.value)+parseInt(b.value)">0
+      <input type="range" id="a" value="50">100
+      +<input type="number" id="b" value="50">
+      =<output name="x" for="a b"></output>
+    </form>
+
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+
+Ссылки:
+> Справочник по HTML 5 на сайте htmlbook.ru
+    http://htmlbook.ru/html
+
+> Справочник по HTML 5 на сайте w3schools.com
+    http://www.w3schools.com/tags/default.asp
+
+> Справочник по HTML 5 на сайте developer.mozilla.org
+    https://developer.mozilla.org/en-US/docs/Web/HTML?redirectlocale=en-US&redirectslug=HTML
+
+
+
+*****************************************************
+Оглавление:
+
+>
+
+*****************************************************
+
+
+>
+
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

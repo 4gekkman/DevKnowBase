@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Текст для галочки</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+   input:checked + span {
+    background: red;
+   }
+  </style>   
+ </head>
+ <body>
+  <form>
+   <p><label><input type="checkbox"></input><span> Балка рукояти</span></label></p>
+   <p><label><input type="checkbox"></input><span> Шестерня</span></label></p>
+   <p><label><input type="checkbox"></input><span> Вал</span></label></p>
+   <p><label><input type="checkbox"></input><span> Пимпочка</span></label></p>
+  </form>
+ </body>
+</html>

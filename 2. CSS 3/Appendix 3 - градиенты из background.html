@@ -1,0 +1,242 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+CSS 3.
+Appendix 3 - градиенты из background
+
+
+Синтаксис применения градиента:
+
+  background: градиент[, градиент[, ... ]];
+
+
+Синтаксис линейного градиента (значения CSS-свойства background):
+
+  linear-gradient([line], color-stop [, color-stop [, ... ]])
+  # Где line:  | линия градиента
+    - angle             | угол в градусах, например, 45deg
+    - to side-or-angle   | несколько ключевых слов, резервирующих конфигурации angle
+      - to [left | right] || [top | bottom]  | примеры:   left top    right bottom
+  # Где color-stop:  | ключевые точки на линии градиента, между которыми осуществляется переход цвета
+    - Синтаксис:
+        color [, % | length]
+    - color       | цвет
+    - % | length  |
+                    - если не указано, то ключевая точка располагается посередине,
+                      между предыдущей и следующей точкой на линии градиента.
+                    - или можно указать расстояние в % (0 - предыдущая точка, 100 - следующая),
+                      или в px, pt ...
+
+
+Синтаксис радиального градиента (значения CSS-свойства background):
+
+  radial-gradient([contour size] at position, color-stop [, ... ]] )
+  # Где contour  | форма градиента (доступны 2 шт.)
+    - circle
+    - ellipse
+  # Где size     | размер градиента
+    # Если contour = circle:
+      - X                | вручную задать радиус круглого контура ending shape
+                           длина от центра вдоль виртуального градиентного луча в px, pt ...
+                           (0px,0px)
+      - extent-keyword   | автоподбор размера ending shape
+    # Если contour = ellipse:
+      - X Y             | вручную задать радиусы контура-эллипса ending shape
+                          где X и Y - длины радиусов эллипса по X и Y (в % или px,pt ... )
+                           (0px,0px) и (0%,0%) - это центр;
+                           (100%,100%) - пересечение ending shape с виртуальным градиентным лучем
+      - extent-keyword   | автоподбор размера ending shape
+    # Доступные значения extent-keyword:
+      - closest-side    |
+                          - Для circle: length подбирается так, чтобы контур касался
+                            ближайшей к центру градиента границы родителя.
+                          - Для ellipse: ... чтобы контур по X и Y касался, соответственно,
+                            ближайшей горизонтальной и вертикальной границы родителя.
+      - farthest-side   | по аналогии, только дальней вместо ближней
+      - closest-corner  | по аналогии, только для ближайшего угла
+      - farthest-corner | по аналогии, только для дальнего
+
+  # Где position  |
+    - X Y
+      - В качестве X и Y могут быть следующие значения:
+          top right bottom left center
+      - Если указать только X без Y, или наоборот, то второе неявно будет center
+    - x% y%  | (0,0) - top left, (100,100) - bottom right
+    - xpos ypos  | (0,0) - top left, единицы измерения - любые допустимые, если один не задан, то он неявно будет 50%
+  # Где color-stop:  | ключевые точки на виртуальном градиентном луче (см. картинку у Mozilla), между которыми осуществляется переход цвета
+    - Синтаксис:
+        color [, % | length]
+    - color       | цвет
+    - % | length  |
+                    - если не указано, то ключевая точка располагается посередине,
+                      между предыдущей и следующей точкой на линии градиента.
+                    - или можно указать расстояние в % (0 - предыдущая точка, 100 - следующая),
+                      или в px, pt ...
+
+
+
+
+
+-------------------------------------------------- -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>1. Вводный tutorial в CSS + общая информация</title>
+  <link rel="stylesheet" type="text/css" href="Appendix%203%20-%20градиенты%20из%20background.css">
+</head>
+<body>
+
+<mark>Параметр angle градиентов (на примере linear-gradient):</mark><br><br>
+  В градусах: <br>
+  <div class="box c1">linear-gradient(0deg, #f00, #000);</div>
+  <div class="box c2">linear-gradient(45deg, #f00, #000);</div>
+  <div class="box c3">linear-gradient(90deg, #f00, #000);</div>
+  <div class="box c4">linear-gradient(135deg, #f00, #000);</div>
+  <div class="box c5">linear-gradient(180deg, #f00, #000);</div><br><br>
+
+  Заданные с помощью предназначенных значений:<br>
+  <div class="box c6">linear-gradient(to left, #dbca00, #fff);</div>
+  <div class="box c7">linear-gradient(to right, #dbca00, #fff);</div>
+  <div class="box c8">linear-gradient(to top, #dbca00, #fff);</div>
+  <div class="box c9">linear-gradient(to bottom, #dbca00, #fff);</div>
+  <div class="box c10">linear-gradient(to left bottom, #dbca00, #fff);</div>
+  <div class="box c11">linear-gradient(to top right, #dbca00, #fff);</div>
+
+
+<br><br><mark>Параметры color-stop градиентов (на примере linear-gradient):</mark><br><br>
+  Одинаковые градиенты, но ключевые точки левого заданны с помощью %, а правого - с помощью px. Ширина контейнера: 150px.<br>
+  <div class="box c12">linear-gradient(90deg, <br>#ff836f 0%, <br>#529214 50%, <br>#fff 100%);</div>
+  <div class="box c13">linear-gradient(90deg, <br>#ff836f 0px, <br>#529214 75px, <br>#fff 150px);</div>
+  <div class="box c25"></div>
+  <div class="box c26"></div>
+
+
+<br><br><mark>Радиальный градиент c пояснениями:</mark><br><br>
+  Это значит: <br>
+  circle: круглый градиет<br>
+  50px: радиус круга<br>
+  at 50% 50%: центр градиента в середине родителя<br>
+  #fff, #9d1e1b: ключевые цветовые точки<br>
+<div class="box c14">radial-gradient(circle 50px at 50% 50%, #fff, #9d1e1b);</div><br>
+
+<br><br><mark>Size радиального градиента:</mark><br><br>
+  Круглые градиенты:<br>
+    <div class="box c14">radial-gradient(circle 50px at 50% 50%, #fff, #9d1e1b);</div>
+    <div class="box c15">radial-gradient(circle closest-side at 50% 50%, #fff, #9d1e1b);</div>
+    <div class="box c16">radial-gradient(circle farthest-side at 50% 50%, #fff, #54e654);</div>
+    <div class="box c17">radial-gradient(circle closest-corner at 50% 50%, #fff, #ea53e4);</div>
+    <div class="box c18">radial-gradient(circle farthest-corner at 50% 50%, #fff, #4b45e2);</div>
+  <br><br>Эллиптические градиенты:<br>
+    <div class="box c19">radial-gradient(ellipse 100px 40px at 50% 50%, #fff, #db6b50);</div>
+    <div class="box c20">radial-gradient(ellipse closest-side at 50% 50%, #fff, #db6b50);</div>
+    <div class="box c21">radial-gradient(ellipse farthest-side at 50% 50%, #fff, #db6b50);</div>
+    <div class="box c22">radial-gradient(ellipse closest-corner at 50% 50%, #fff, #db6b50);</div>
+    <div class="box c23">radial-gradient(ellipse farthest-corner at 50% 50%, #fff, #db6b50);</div>
+
+<br><br><mark>Эксперименты с color-stop радиального градиента:</mark><br><br>
+  <div class="box c24"></div>
+  <div class="box c27"></div>
+
+
+<br><br><mark>Пример оформления фотографии с помощью повторяющегося градиента:</mark><br>
+  <div class="fotoBox">
+    <img src="http://lorempixel.com/600/400/city">
+  </div>
+
+
+<br><br><mark>Как нарисовать линии с помощью градиента:</mark><br>
+<div class="fotoBox1">
+  <img src="http://lorempixel.com/600/400/food">
+</div>
+
+
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+Ссылки:
+
+  > Полная информация о linear-gradient на developer.mozilla.org:
+      https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient#Syntax
+
+  > Полная информация о radial-gradient на developer.mozilla.org:
+      https://developer.mozilla.org/en-US/docs/Web/CSS/radial-gradient
+
+  > Полная информация о repeating-linear-gradient на developer.mozilla.org:
+      https://developer.mozilla.org/en-US/docs/Web/CSS/repeating-linear-gradient
+
+  > Полная информация о repeating-radial-gradient на developer.mozilla.org:
+      https://developer.mozilla.org/en-US/docs/Web/CSS/repeating-radial-gradient
+
+  > Нарисованные с помощью CSS-градиентов паттерны (кто-то заморочился):
+      http://lea.verou.me/css3patterns/
+
+  >
+
+
+
+*****************************************************
+Оглавление:
+
+  > Общая информация
+    > Как рисовать градиенты в CSS?
+    > Кроссбраузерная запись градиентов
+
+
+
+
+
+
+*****************************************************
+
+> Общая информация
+
+  > Как рисовать градиенты в CSS?
+    > Градиент в CSS ресуется через CSS-свойство background.
+      CSS-синтаксис выглядит так:
+          background: градиент;
+    > Таким образом видно, что в CSS нет отдельных CSS-свойств для
+      градиента, а есть градиентные значения для CSS-свойства background.
+    > Вместо "градиент" надо подставить значение градиента, сформированное
+      с помощью 1 из 4 доступных (на 01.11.2013) ключевых слов:
+      - linear-gradient            | линейный градиент
+      - radial-gradient            | радиальный градиент
+      - repeating-linear-gradient  | повторяющийся линейный градиент
+      - repeating-radial-gradient  | повторяющийся радиальный градиент
+
+  > Кроссбраузерная запись градиентов
+    > linear gradient
+        background: #F07575; /* fallback color if gradients are not supported */
+        background: -webkit-linear-gradient(top, hsl(0, 80%, 70%), #bada55); /* For Chrome and Safari */
+        background:    -moz-linear-gradient(top, hsl(0, 80%, 70%), #bada55); /* For old Fx (3.6 to 15) */
+        background:     -ms-linear-gradient(top, hsl(0, 80%, 70%), #bada55); /* For pre-releases of IE 10*/
+        background:      -o-linear-gradient(top, hsl(0, 80%, 70%), #bada55); /* For old Opera (11.1 to 12.0) */
+        background:         linear-gradient(to bottom, hsl(0, 80%, 70%), #bada55); /* Standard syntax; must be last */
+
+    > radial gradient
+        Аналогично.
+
+
+
+
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

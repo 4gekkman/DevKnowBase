@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Граница вокруг формы</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+   p {
+    font: bold 1em serif;
+   }
+   label {
+    display: block;
+    margin: 0 0 15px 150px; 
+   }
+   button {
+    background-color: #B98F5C;
+    border: solid 1px white;
+    color: white;
+    margin: 0 0 0 150px;
+   }
+   legend {
+    font: bold 1em sans-serif;
+    color: #B98F5C;
+   }
+   fieldset {
+    background: #E1E3B8 url('32.%20Граница%20вокруг%20формы.png') no-repeat;
+    padding: 0px 10px 20px 10px;
+   }
+  </style>   
+ </head>
+ <body>
+  <form>
+   <fieldset title="Выбор варианта">
+    <legend>Выбор варианта</legend>
+    <p>Какой раздел психологии изучает познавательные процессы человеческого сознания?</p>
+    <label><input type="radio" value="1" name="da"/> Психоанализ </label>
+    <label><input type="radio" value="2" name="da"/> Бихевиоризм </label>
+    <label><input type="radio" value="3" name="da"/> Когнитивная психология </label> 
+    <label><input type="radio" value="4" name="da"/> Гуманистическая психология </label> 
+    <label><input type="radio" value="5" name="da"/> Гештальт-психология </label> 
+    <button>Ответить</button>
+   </fieldset>
+  </form>
+ </body>
+</html>

@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Нумерация страниц</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+  
+   .item-list {
+    padding: 0px;
+   }
+   .pager {
+    background: #F0F0F0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-bottom: 4px solid #CCCCCC;
+   }
+   ul.pager li {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+   }
+   a {
+    text-decoration: none;
+    color: maroon;
+   }
+   .pager-current {
+    border-bottom: 4px solid #373737;
+    margin-bottom: -4px;
+    color: black;
+   }
+   .first {
+    margin-left: 0px;
+    background: #CCCCCC;
+   }
+   
+  </style>   
+ </head>
+ <body>
+  <div class="item-list">
+   <ul class="pager">
+    <li class="pager-current first"><span>1</span></li>
+    <li class="pager-item"><a href="/node?page=1" title="На страницу номер 2">2</a></li>
+    <li class="pager-item"><a href="/node?page=2" title="На страницу номер 3">3</a></li>
+    <li class="pager-item"><a href="/node?page=3" title="На страницу номер 4">4</a></li>
+    <li class="pager-next last"><a href="/node?page=1" title="На следующую страницу">›</a></li>
+   </ul>
+  </div>
+  <p>Содержание</p>  
+ </body>
+</html>

@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Двойная рамка</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+   .sec1 {
+    background-color: yellow;
+    margin: 100px;
+    width: 300px;
+    height: 150px;
+    border-right: solid 5px red;
+    border-bottom: solid 5px red;
+    padding: 5px;
+   }
+   .sec2 {
+    background-color: white;
+    width: 295px;
+    height: 145px;
+    border-left: solid 5px red;
+    border-top: solid 5px red;
+   }
+  </style>   
+ </head>
+ <body>
+  <section class="sec1"><section class="sec2">Контент</section></section>
+ </body>
+</html>

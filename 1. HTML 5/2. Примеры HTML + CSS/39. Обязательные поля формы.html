@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Обязательные поля формы</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+   
+   input:valid + span:after {
+    content: url("39. valid.png");
+   }
+   
+   input:invalid + span:after {
+    content: url("39. invalid.png");
+   }
+   
+  </style>   
+ </head>
+ <body>
+  <form name="Form1">
+   <p>Пожалуйста, заполните обязательные поля</p>
+   <p><label>Имя: <input name="name" type="text" required /><span></span></label></p>
+   <p><label>Возраст: <input name="age" type="number" /><span></span></label></p>
+   <p><label>Адрес: <input name="adress" type="text" required /><span></span></label></p>
+   <p><label>Комментарий: <input name="comment" type="text" /></label></p>
+   <p><label><button name="button">Отправить</button></label></p>
+  </form>
+ </body>
+</html>

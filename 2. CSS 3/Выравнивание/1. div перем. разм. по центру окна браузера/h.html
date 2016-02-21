@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+
+		/*Выравнивание элемента div по центру клиентской области браузера
+			DIV должен быть:
+			- Фиксированной ширины
+			- Переменной или фиксированной высоты
+		*/
+
+		body {
+			font: 2em 'PT Sans', Arial, Helvetica, sans-serif;
+		}
+
+		.wrapper {
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			text-align: center;
+
+			background: #fff;
+		}
+		.wrapper:before {
+			display: inline-block;
+			height: 100%;
+			vertical-align: middle;
+			content: '';
+		}
+
+		.centered {
+			display: inline-block;
+			vertical-align: middle;
+
+			padding: 10px;
+			background: #567;
+			box-shadow: 2px 2px 8px RGBA(0,0,0,.5);
+			border-radius: 5px;
+			color: #fff;
+		}
+
+
+	</style>
+	<link rel="stylesheet" href="1.%20div%20перем.%20разм.%20по%20центру%20окна%20браузера.css"/>
+</head>
+<body>
+
+
+	<div class="wrapper">
+		<div class="centered">Приветствую тебя...<br>странник.</div>
+	</div>
+
+
+</body>
+</html>
+
+

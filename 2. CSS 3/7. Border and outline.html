@@ -1,0 +1,286 @@
+ 1<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+CSS 3.
+
+7. Border and outline  | границы
+  > border                      | все-в-одном border- свойства
+    > border-color                | цвет всех 4-х границ
+    > border-style                | стиль для всех 4-х границ
+    > border-width                | ширина для всех 4-х границ
+
+  > border-bottom               | все-в-одном border-bottom- свойства
+    > border-bottom-color         | цвет нижней границы
+    > border-bottom-style         | стиль нижней границы
+    > border-bottom-width         | ширина нижней границы
+
+  > border-left                 | все-в-одном border-left- свойства
+    > border-left-color           | цвет левой границы
+    > border-left-style           | стиль левой границы
+    > border-left-width           | ширина левой границы
+
+  > border-right                | все-в-одном border-right- свойства
+    > border-right-color          | цвет правой границы
+    > border-right-style          | стиль правой границы
+    > border-right-width          | ширина правой границы
+
+  > border-top                  | все-в-одном border-top- свойства
+    > border-top-color            | цвет верхней границы
+    > border-top-style            | стиль верхней границы
+    > border-top-width            | ширина верхней границы
+
+  > outline                     | все-в-одном outline- свойства
+    > outline-color               | цвет внешней границы
+    > outline-style               | стиль внешней границы
+    > outline-width               | ширина внешней границы
+
+  > border-radius               | все-в-одном border...radius свойства
+    > border-bottom-left-radius   | определяет форму границы в левом нижнем углу
+    > border-bottom-right-radius  | определяет форму границы в правом нижнем углу
+    > border-top-left-radius      | определяет форму границы в левом верхнем углу
+    > border-top-right-radius     | определяет форму границы в правом верхнем углу
+
+  > border-image                | все-в-одном border-image- свойства
+    > border-image-outset         | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+    > border-image-repeat         | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+    > border-image-slice          | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+    > border-image-source         | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+    > border-image-width          | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+
+  > box-decoration-break        | -
+  > box-shadow                  | тени блока
+
+
+
+Подробнее о некоторых свойствах (их значения, единицы измерения ... ):
+
+
+  > border                      | все-в-одном border- свойства
+    - Синтаксис:
+        border-width, border-style, border-color
+
+    > border-width                | ширина для всех 4-х границ
+      - Синтаксис (4 варианта):
+        - top, right, bottom, left
+        - top, right&left, bottom
+        - top&bottom, right&left
+        - top&bottom&right&left
+      - thin     | тонкая
+      - medium   | средняя
+      - thick    | жирная
+      - length   | значение в px, pt ...
+      - inherit  | Наследует это свойство у родителя
+
+    > border-style                | стиль для всех 4-х границ
+      - Синтаксис (4 варианта):
+        - top, right, bottom, left
+        - top, right&left, bottom
+        - top&bottom, right&left
+        - top&bottom&right&left
+      - none    | нет границы
+      - hidden  | тоже, что none, но другое поведение в табличных элементах
+      - dotted  | пунктирная линия
+      - dashed  | штриховая линия
+      - solid   | сплошная линия
+      - double  | двойная сплощная линия
+      - groove  | 3d желобчатая линия
+      - ridge   | 3d остроконечная линия
+      - inset   | 3d вдавленная линия
+      - outset  | 3d выпирающая линия
+      - inherit  | Наследует это свойство у родителя
+
+    > border-color                | цвет всех 4-х границ
+      - color    | цвет границы
+      - invert   | (по умолчанию) берется цвет, обратный фоновому
+      - inherit  | Наследует это свойство у родителя
+
+  > outline                     | все-в-одном outline- свойства
+    - Синтаксис:
+        outline-color, outline-style, outline-width
+
+  > border-radius               | все-в-одном border...radius свойства
+    - Синтаксис:
+      - top-left_x top_right_x bottom-right_x bottom-left_x / top-left_y top_right_y bottom-right_y bottom-left_y
+        - Если bottom-left опущен, то он равен top-right
+        - Если bottom-right опущен, то он равен top-left
+        - Если top-right опущен, то он равен top-left
+    - Единицы измерения:
+      - length  | форма указанного угла в px, pt ...
+      - %       | форма указанного угла в %
+
+    > border-bottom-left-radius   | определяет форму границы в левом нижнем углу
+    > border-bottom-right-radius  | определяет форму границы в правом нижнем углу
+    > border-top-left-radius      | определяет форму границы в левом верхнем углу
+    > border-top-right-radius     | определяет форму границы в правом верхнем углу
+      - Синтаксис:
+          border-bottom-left-radius: X Y;
+        - X и Y предятавляют горизонтальный и вертикальный радиусы 1/4 эллипса,
+          которая и представляет собой в итоге форму угла.
+      - Единицы измерения:
+        - length  | форма левого нижнего угла в px, pt ...
+        - %       | форма левого нижнего угла в %
+
+
+  > border-image                | все-в-одном border-image- свойства
+    - Синтаксис:
+        source slice width outset repeat;
+    - Поддержка разными браузерами (на 30.10.2013):
+      - -webkit-border-image   (Chrome + Safari)
+      - -o-border-image        (Opera)
+      - border-image           (Firefox)
+
+    > border-image-outset         | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+                                     расстояние, на которое картинка выпирает за прямоугольник границы
+      - length  | px, pt ...
+      - number  | мультипликатор для текущей border-width
+
+    > border-image-repeat         | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+                                     картинка в границе должна повторятся, закругляться или растягиваться
+      - repeat   | повторяться
+      - round    | закругляться
+      - stretch  | растягиваться
+
+    > border-image-slice          | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+                                    внутреннее смещение картинки в границе
+      - number  | пиксели в картинке или координаты (если картинка векторная)
+      - %       | % от размера картинки
+      - fill    | делает так, что центральная часть картинки для границы не становится прозрачной
+
+    > border-image-source         | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+      - none
+      - url(картинка)
+
+    > border-image-width          | (не поддерживается ни 1 браузером из большой 5 в настоящий момент)
+      - number  | пиксели в картинке или координаты (если картинка векторная)
+      - %       | % от размера картинки
+      - auto    | автоматически
+
+  > box-shadow                  | тени блока
+    - Синтаксис:
+        box-shadow: h-shadow v-shadow blur spread color inset;
+    - h-shadow  | (требуется) позиция горизонтальной тени
+    - v-shadow  | (требуется) позиция вертикальной тени
+    - blur      | (опция) размытие (блур)
+    - spread    | (опция) размер тени
+    - color     | (опция) цвет тени
+    - inset     | (опция) превращает тень из внешней во внутреннюю
+
+
+-------------------------------------------------- -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>1. Вводный tutorial в CSS + общая информация</title>
+  <link rel="stylesheet" type="text/css" href="7.%20Border%20and%20outline.css">
+</head>
+<body>
+
+
+<mark>border-width</mark><br>
+  <div class="c1">border-width: 6px;</div>
+  <div class="c2">border-width: thin;</div>
+  <div class="c3">border-width: medium;</div>
+  <div class="c4">border-width: thick;</div>
+
+<br><br><mark>border-style</mark><br>
+  <div class="c5">border-style: none;</div>
+  <div class="c6">border-style: solid;</div>
+  <div class="c7">border-style: dashed;</div>
+  <div class="c8">border-style: dotted;</div>
+  <div class="c9">border-style: double;</div>
+  <div class="c10">border-style: inset;</div>
+    <br><br>
+  <div class="c11">border-style: groove;</div>
+  <div class="c12">border-style: ridge;</div>
+  <div class="c13">border-style: outset;</div>
+
+<br><br><mark>outline</mark><br>
+  <div class="c14">Красная рамка - outline, черная - border</div>
+
+<br><br><mark>border-radius</mark><br>
+  <div class="c15">border-radius: 20px;</div>
+  <div class="c16">border-radius: 40px 40px 0px 0px / 40px 40px 0px 0px;</div>
+  <div class="c17">border-radius: 40px 40px 0px 0px / 40px 40px 0px 0px;</div>
+  <div class="c18">
+    border-radius: 0px 40px 0px / 0px 40px 0px;<br>
+    Если bottom-left опущен, то он равен top-right
+  </div>
+  <div class="c19">
+    border-radius: 40px 0px / 40px 0px;<br>
+    Если bottom-right опущен, то он равен top-left
+  </div>
+  <div class="c20">
+    border-radius: 60px / 20px;<br>
+    Если top-right опущен, то он равен top-left
+  </div>
+  <div class="c21">
+    Лимон<br><br>
+    border-radius: 100px 10px;
+  </div>
+
+<br><br><mark>border-image</mark><br>
+  <div class="c22">
+    border-image:url('Files/lemon.png') 30 30 round
+  </div>
+
+<br><br><mark>box-shadow</mark><br>
+  <div class="c23">
+    box-shadow: 10px 10px 5px #888888;
+  </div>
+  <div class="c24">
+    box-shadow: 10px 10px 5px #f00 inset;
+  </div>
+
+
+<br><br><br><mark>Треугольники на CSS с помощью border</mark><br>
+  <div class="c25"></div>
+  <div class="c26"></div>
+  <div class="c27"></div>
+  <div class="c28"></div>
+  <div class="c29"></div>
+
+<br><br><mark>Стиль всплывающей подсказки на CSS с применением треугольников и content (:before)</mark><br>
+  <div class="c30">
+    <p class="c31">Привет!</p>
+  </div>
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+Ссылки:
+
+  > Справочное руководство по всем CSS-свойствам:
+      http://www.w3schools.com/cssref/default.asp
+
+
+*****************************************************
+Оглавление:
+
+  >
+
+
+
+*****************************************************
+
+>
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

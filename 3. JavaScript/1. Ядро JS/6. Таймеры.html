@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title>6. Таймеры</title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+  div { height: 18px; margin: 1px; background-color:green; }
+
+
+	</style>
+</head>
+<body>
+
+<mark>Сравнение производительности функций setTimeout и setImmediate</mark><br>
+Что надо делать:
+<ul>
+	<li>Нажать сначала на одну кнопку, потом на другую</li>
+	<li>Смотреть данные в тексте справа от кнопок</li>
+	<li>Сравнить скорость, с которой они сработали, и Т.О. производительность
+			функций setTimeout и setImmediate</li>
+</ul>
+<button onclick="testTimeout()">testTimeout</button><span id="setTimeout"></span><br>
+<button onclick="testImmediate()">testImmediate</button><span id="setImmed"></span><br><br>
+
+<mark>Тест минимальной задержки метода intervalID - от 0мс до 20мс с шагом в 2мс:</mark><br>
+Что надо делать:
+<ul>
+	<li>Нажать на кнопку "Старт"</li>
+	<li>Каждая полоса визуально показывает задержку между выполнениями некой простой функции</li>
+	<li>Когда полоса обнуляется - это значит, что функция сработала</li>
+	<li>Пока полоса ползет - это значит, что идет задержка между выполнениями</li>
+</ul>
+<input type="button" id="start" value="Старт">
+<input type="button" id="stop" value="Стоп" disabled><br><br>
+
+
+
+	<script src='6.%20Таймеры.js'></script>
+</body>
+</html>
+
+

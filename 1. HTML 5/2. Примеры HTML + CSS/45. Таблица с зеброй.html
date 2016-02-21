@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Таблица с зеброй</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+   .lux { 
+    width: 300px;
+    border: 1px solid maroon;
+    border-collapse: collapse;
+    border-spacing: 0;
+   }
+   .lux th {
+    background: #a52a2a;
+    color: white; 
+   }
+   .lux td { 
+    border-bottom: 1px solid maroon;
+   }
+   td + td {
+    text-align: center;
+   }
+   .lux td, .lux th {
+    padding: 4px;
+   }
+   tr:nth-child(2n+1) {
+    background: #F9E497;
+   }
+  </style>   
+ </head>
+ <body>
+  <table class="lux">
+   <tr><th></th><th>2004</th><th>2005</th><th>2006</th></tr>
+   <tr><td>Рубины</td><td>43</td><td>51</td><td>79</td></tr>
+   <tr><td>Изумруды</td><td>28</td><td>34</td><td>48</td></tr>
+   <tr><td>Сапфиры</td><td>29</td><td>57</td><td>36</td></tr>
+   <tr><td>Аметисты</td><td>23</td><td>64</td><td>97</td></tr>
+  </table>
+ </body>
+</html>

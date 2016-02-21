@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="120552339">
+    <data-source source="LOCAL" name="MySQL server connection" uuid="fb76d066-aeed-402a-a50d-587bac2cc4b6">
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3308</jdbc-url>
+      <user-name>root</user-name>
+      <schema-pattern>*</schema-pattern>
+      <libraries>
+        <library>
+          <url>jar://$PROJECT_DIR$/Supply/mysql-connector-java-5.1.26-bin.jar!/</url>
+        </library>
+        <library>
+          <url>file://$PROJECT_DIR$/Supply/mysql-connector-license.txt</url>
+        </library>
+      </libraries>
+    </data-source>
+  </component>
+</project>
+

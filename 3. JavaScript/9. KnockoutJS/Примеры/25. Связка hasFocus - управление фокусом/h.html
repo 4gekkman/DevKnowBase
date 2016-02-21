@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>25. Связка hasFocus - управление фокусом</mark><br><br>
+
+<ul>
+	<li>Наведи фокус на текстовое поле, и справа появится надпись.</li>
+	<li>Нажми на кнопку, и фокус наведётся на текстовое поле программным образом.</li>
+</ul>
+
+
+
+	<input data-bind="hasFocus: isSelected" />
+	<button data-bind="click: setIsSelected">Навести фокус программно</button>
+	<span data-bind="visible: isSelected">Текстовое поле имеет фокус</span>
+
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

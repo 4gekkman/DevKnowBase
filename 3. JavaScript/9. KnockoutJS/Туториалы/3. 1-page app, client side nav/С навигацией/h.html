@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>1. Tutorial 1 - демонстрация MVVM</title>
+
+	<link rel="stylesheet" href="c.css"/>
+
+</head>
+<body>
+<p><mark>Одностраничное приложение и клиентская навигация в нём</mark></p>
+
+
+	<!--
+		- $data							| Данные из соотв. "строки" "таблицы" folders.
+		- selected: $data		| Соотв. li получит класс 'selected', если...
+		click: ... 					| При клике по соотв. li будет выполнена функция...
+	-->
+	<ul class="folders" data-bind="foreach: folders">
+    <li data-bind="	text: $data,
+    								css: { selected: $data == $root.chosenFolderId() },
+               			click: $root.goToFolder">
+
+    </li>
+	</ul>
+
+
+	<!--
+		- with:    | значит, здесь всё связано с chosenFolderData, и нет необходимости
+							 | писать префикс chosenFolderData. перед mails.
+		- 
+	-->
+<table class="mails" data-bind="with: chosenFolderData">
+    <thead><tr><th>From</th><th>To</th><th>Subject</th><th>Date</th></tr></thead>
+    <tbody data-bind="foreach: mails">
+        <tr data-bind="click: $root.goToMail">
+            <td data-bind="text: from"></td>
+            <td data-bind="text: to"></td>
+            <td data-bind="text: subject"></td>
+            <td data-bind="text: date"></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="viewMail" data-bind="with: chosenMailData">
+    <div class="mailInfo">
+        <h1 data-bind="text: subject"></h1>
+        <p><label>From</label>: <span data-bind="text: from"></span></p>
+        <p><label>To</label>: <span data-bind="text: to"></span></p>
+        <p><label>Date</label>: <span data-bind="text: date"></span></p>
+    </div>
+    <p class="message" data-bind="html: messageContent" />
+</div>
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sammy.js/0.7.4/sammy.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>

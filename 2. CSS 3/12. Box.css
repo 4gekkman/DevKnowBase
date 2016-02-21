@@ -1,0 +1,15 @@
+/* overflow-x, overflow-y */
+div
+{
+  width:110px;
+  height:110px;
+  border:thin solid black;
+  overflow-x:hidden;
+  overflow-y:hidden;
+}
+
+
+
+
+
+

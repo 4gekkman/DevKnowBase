@@ -1,0 +1,233 @@
+/* float */
+  /* Про float (часть 1) - clear fix */
+    /* С Clear Fix */
+    .c25 {
+      width: 700px;
+      border: 2px solid #777;
+      background: #bbccdd;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .c25 img {
+      float: left;
+      width: 200px
+    }
+    .c26 {
+      float: left;
+      width: 400px;
+    }
+    .c27 {
+      clear: both;
+      float: left;
+    }
+      /* clear fix */
+      .c25:after {
+        content: '';
+        display: block;
+        clear: both;
+        height: 0;
+      }
+
+
+    /* Без Clear Fix */
+    .c28 {
+      width: 700px;
+      border: 2px solid #777;
+      background: #bbccdd;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .c28 img {
+      float: left;
+      width: 200px
+    }
+    .c29 {
+      float: left;
+      width: 400px;
+    }
+    .c30 {
+      clear: both;
+      float: left;
+    }
+
+
+
+  /* Про float (часть 2) */
+  .c1 {
+    width: 400px;
+  }
+  .c2 {
+    width: 100px;
+    height: 100px;
+    background: #c0be55;
+    float: right;
+  }
+  .c3 {
+    width: 100px;
+    height: 100px;
+    background: #4aa872;
+    float: left;
+  }
+
+
+
+
+/* display */
+.c4 {
+  width: 400px;
+  height: 400px;
+  border: 1px solid #008BCE;
+}
+.c5 {
+  border: 1px solid #ce6361;
+  display: inline;
+}
+.c6 {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #58ce6b;
+  display: block;
+}
+.c7 {
+  border: 1px solid #58ce6b;
+  display: none;
+}
+
+
+/* position, top, left, right, bottom */
+.c12 {
+  width: 400px;
+  height: 400px;
+  border: 1px solid #4355a9;
+  position: relative;
+}
+.c8 {
+  width: 100px;
+  height: 50px;
+  border: 1px solid #58ce6b;
+  position: static;
+}
+.c9 {
+  width: 250px;
+  height: 100px;
+  border: 1px solid #b3b138;
+  position: absolute;
+  left: 40px; top: 70px;
+}
+.c10 {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #b3b138;
+  position: fixed;
+  left: 1000px; top: 50px;
+}
+.c11 {
+  width: 180px;
+  height: 100px;
+  border: 1px solid #b35058;
+  position: relative;
+  left: 200px; top: 200px;
+}
+
+
+/* overflow */
+.c13 {
+  width: 200px;
+  height: 100px;
+  border: 1px solid #752641;
+  overflow: visible;
+}
+.c14 {
+  width: 200px;
+  height: 100px;
+  border: 1px solid #337532;
+  overflow: hidden;
+}
+.c15 {
+  width: 200px;
+  height: 100px;
+  border: 1px solid #337532;
+  overflow: scroll;
+}
+.c16 {
+  width: 200px;
+  height: 100px;
+  border: 1px solid #337532;
+  overflow: auto;
+}
+
+
+/* visibility */
+.c17 {
+  width: 150px;
+  height: 50px;
+  border: 2px solid #c9c654;
+}
+.c18 {
+  width: 150px;
+  height: 50px;
+  border: 2px solid #c9c654;
+  visibility: hidden;
+}
+
+
+/* z-index */
+.c19 {
+  width: 300px;
+  height: 300px;
+  border: 2px solid #c9c654;
+  position: relative;
+}
+.c20 {
+  z-index: 1;
+
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  border: 2px solid #fff;
+  background: #f00;
+  position: absolute;
+  margin: auto auto;
+}
+.c21 {
+  z-index: 2;
+
+  width: 50px;
+  height: 50px;
+  top: 40%;
+  left: 40%;
+  border: 2px solid #fff;
+  background: #0f0;
+  position: absolute;
+  margin: auto auto;
+}
+.c22 {
+  z-index: 1;
+
+  width: 50px;
+  height: 50px;
+  top: 30%;
+  left: 30%;
+  border: 2px solid #fff;
+  background: #00f;
+  position: absolute;
+  margin: auto auto;
+}
+
+
+/* cursor */
+.c23 {
+  cursor: help;
+
+  width: 100px;
+  height: 100px;
+  border: 2px solid #c9c654;
+ }
+.c24 {
+  cursor: wait;
+
+  width: 100px;
+  height: 100px;
+  border: 2px solid #c95269;
+}

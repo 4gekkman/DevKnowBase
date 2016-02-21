@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+	body {
+		font: 1em 'PT Sans', Arial, Helvetica, sans-serif;
+	}
+
+	.wrap {
+		position: relative;
+		top: 20px;
+		left: 100px;
+		border: 1px solid #ddd;
+		padding: 15px;
+		display: inline-block;
+		text-align: center;
+		background: #8288cc;
+		color: #fff;
+		border-radius: 5px;
+		box-shadow: 2px 2px 10px RGBA(0,0,0,.5);
+	}
+
+	.wrap p {
+		margin-top: 0;
+		margin-bottom: 15px;
+		font-size: 1.5em;
+	}
+
+	.sliderStrip {
+		position: relative;
+		width: 400px;
+		height: 10px;
+		border-radius: 5px;
+		background: #eee;
+	}
+
+	.sliderSlider {
+		position: relative;
+		top: -10px;
+		left: 10px;
+		width: 10px;
+		height: 30px;
+		background: #c33e41;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+
+
+	</style>
+</head>
+<body>
+
+<mark>Что надо делать:</mark>
+<ul>
+	<li>Тяни бегунок вправо-влево</li>
+</ul>
+
+
+<div class="wrap">
+	<p>Слайдер</p>
+	<div class="sliderStrip">
+		<div class="sliderSlider"></div>
+	</div>
+</div>
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

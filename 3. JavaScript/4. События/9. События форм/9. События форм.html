@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+		body {
+			font: 1em 'PT Sans', Arial, Helvetica, sans-serif;
+		}
+
+
+	</style>
+</head>
+<body>
+
+
+	<!--Примеры работы с label-->
+
+	<h3>Некоторые особенности работы с элементом формы label:</h3>
+
+		<mark>Способ использовать label #1 - завернуть в него input:</mark><br>
+		<label> Щелкни по тексту, нажмется input <input type="checkbox"></label>
+
+		<br><br>
+		<mark>Способ использовать label #2 - использовать атрибут for:</mark><br>
+		<label for="myInput"> Щелкни по тексту, нажмется input</label><br>
+		<input id="myInput" type="checkbox">
+
+		<br><br>
+		<mark>Использование label с элементом select:</mark><br>
+		<label>Клик на мне - это фокус на селекте:
+		<select><option>1</option><option>2</option></select>
+		</label>
+
+		<br><br>
+		<mark>Использование label с элементом button:</mark><br>
+		<label>Клик на мне равен клику на кнопке:
+		<button onclick="alert(123)">alert(123)</button>
+		</label>
+
+	<br><br>
+	<h3>Некоторые особенности работы с элементом формы input типа textarea:</h3>
+	<mark>Главное правило:</mark>
+	<ul>
+		<li>НЕ использовать для чтения значения textarea.innerHTML</li>
+		<li>А вместо этого использовать textarea.value</li>
+	</ul>
+	<textarea id="myTextarea">Привет, дружок! &nbsp;</textarea>
+	<p>Попробуй ввести что-нибудь в этот textarea и, нажав на кнопки ниже, узреть разницу:</p>
+	<button onclick="alertTextareaInnerHTML();">Вывести textarea.innerHTML</button>
+	<button onclick="alertTextareaValue();">Вывести textarea.value</button>
+
+
+	<script src="9.%20События%20форм.js"></script>
+</body>
+</html>
+
+

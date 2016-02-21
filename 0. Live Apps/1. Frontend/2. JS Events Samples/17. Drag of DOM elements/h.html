@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+		body {
+			font: 1em 'PT Sans', Arial, Helvetica, sans-serif;
+		}
+
+		.rect {
+			width: 200px;
+			height: 200px;
+			box-shadow: 2px 2px 4px RGBA(0,0,0,.5);
+			border-radius: 5px;
+			color: #fff;
+			line-height: 200px;
+			font-size: 2em;
+			text-align: center;
+			cursor: default;
+			display: inline-block;
+		}
+
+		#red {
+			background: #854;
+		}
+
+		#blue {
+			background: #458;
+		}
+
+		#green {
+			background: #484;
+		}
+
+	</style>
+</head>
+<body>
+
+	<div id="red" class="rect draggable">Тащи меня</div>
+	<div id="blue" class="rect draggable">Тащи меня</div>
+	<div id="green" class="rect draggable">Тащи меня</div>
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+		.placeholder {
+			color: #99bcff;
+			text-shadow: 2px 2px 10px RGBA(0,0,0,.5);
+		}
+
+	</style>
+</head>
+<body>
+
+<mark>Плейсхолдер для input типа text, работающий на основе событий focus/blur</mark>
+<ul>
+	<li>В текстовых полях ниже ты видишь плейсхолдеры</li>
+	<li>Эти плейсхолдеры добавлены JS-скриптом всем эл-там input типа text,
+	содержащим класс 'placeholder'.</li>
+	<li>Текст для плейсхолдера берется из польз. аттр. data-placeholder элемента input</li>
+	<li>Нажми на текстовое поле, и он исчезнет</li>
+	<li>Нажми где-нибудь в другом месте, тестовое поле потеряет фокус, и плейсхолдер снова появится</li>
+</ul>
+<form action="">
+	<input class="placeholder" data-placeholder="Подсказочка" type="text"/><br>
+	<input class="placeholder" data-placeholder="Другая подсказонция" type="text"/>
+</form>
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

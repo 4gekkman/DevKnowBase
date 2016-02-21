@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+		.button {
+			cursor: pointer;
+			width: 185px;
+			height: 52px;
+		}
+
+		.buttonOnCSS {
+			background: url('button-sprite.png') no-repeat;
+		}
+		.buttonOnCSS:hover {
+			background-position: 0 -52px;
+		}
+		.buttonOnCSS:active {
+			background-position: 0 -104px;
+		}
+
+		.jsStatic {
+			background: url('button-sprite.png') no-repeat;
+		}
+
+		.jsHover {
+			background-position: 0 -52px;
+		}
+
+		.jsActive {
+			background-position: 0 -104px;
+		}
+
+	</style>
+</head>
+<body>
+
+	<mark>Кнопка на CSS</mark><br>
+	<div class="button buttonOnCSS"></div><br><br>
+
+	<mark>Кнопка на JS</mark><br>
+	<div id="jsButton" class="button jsStatic"></div>
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+	<style>
+
+		.perspective {
+			-webkit-perspective: 500px;
+			position: fixed;
+			width: 100%;
+			top: -2px;
+			height: 1px;
+			text-align: centerdata.result == 'success'
+		}
+
+		.c {
+			display: inline-block;
+
+			width: 300px;
+			height: 30px;
+			background-color: #eee;
+			line-height: 30px;
+			padding: 10px;
+			text-align: center;
+			box-shadow: 0 1px 1px rgba(0,0,0,.2);
+
+			transition: all .3s ease-in-out;
+
+			transform-origin: 50% 0%;
+			-webkit-transform: rotate3d(1,0,0,-10deg);
+			opacity: .5;
+		}
+
+		.c:hover {
+			-webkit-transform: rotate3d(1,0,0,0deg);
+			opacity: 1;
+		}
+
+	</style>
+
+</head>
+<body>
+
+	<div class="perspective">
+		<div class="c">
+			Создаю каталог...
+		</div>
+	</div>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+		.red {
+			color: #f00;
+		}
+
+	</style>
+</head>
+<body>
+
+	<mark>Синхронный HTTP-запрос с помощью XHR, и получение HTTP-ответа</mark>
+	<ul>
+		<li>Запрос осуществляется при нажатии на кнопку</li>
+		<li>Запрос осуществляется методом GET</li>
+		<li>Запрос осуществляется к файлу p.php</li>
+		<li>Файл p.php возвращает в теле ответа строку с серверными датой и временем</li>
+		<li>Этот ответ устанавливается в кач-ве button.innerHTML</li>
+		<li>Для демонстрации "зависания" скрипта на время ожидания ответа организован бенчмарк,
+		но этот бенчмарк использует только дату и время на клиенте</li>
+	</ul>
+
+<p>
+	<button id="button">Послать синхронный HTTP-запрос на сервер</button>
+</p>
+
+<p>
+	Время отправки запроса: <span class="red" id="start"></span>
+</p>
+<p>
+	Время получения ответа: <span class="red" id="end"></span>
+</p>
+<p>
+	Разница в секундах: <span class="red" id="diff"></span>
+</p>
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,168 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+CSS 3.
+
+6. Background  | фон
+  > background            | все-в-одном свойства фона
+    > background-attachment | зафиксирован ли фон при прокрутке контента в контейнере
+    > background-color      | цвет фона
+    > background-image      | картинка для фона
+    > background-position   | начальная позиция фоновой картинки
+    > background-repeat     | должна ли повторяться картинка для фона по осям x,y
+    > background-clip       | определяет зону для отрисовки фона
+    > background-origin     | Specifies the positioning area of the background images
+    > background-size       | размеры фоновых картинок
+
+
+
+Подробнее о каждом свойстве (его значения, единицы измерения ... ):
+
+  > background            | все-в-одном свойства фона
+    - Синтаксис:
+        background: color position size repeat origin clip attachment image;
+
+    > background-attachment | зафиксирован ли фон при прокрутке контента в контейнере
+      - scroll   | (по умолчанию) фон прокручивается вместе с элементом
+      - fixed    | фон зафиксирован при прокрутке элемента
+      - local    | фон прокручивается вместе с контентом элемента
+
+    > background-color      | цвет фона
+      - color         | указать цвет фона
+      - transparent   | (по умолчанию) фон - прозрачный
+      - inherit       | Наследует это свойство у родителя
+
+    > background-image      | картинка для фона
+      - url('адрес')  | адрес - в интернет или локальный
+      - none          | (по умолчанию) фона нет
+      - inherit       | Наследует это свойство у родителя
+
+    > background-position   | начальная позиция фоновой картинки
+      - X Y
+        - В качестве X и Y могут быть следующие значения:
+            top right bottom left center
+        - Если указать только X без Y, или наоборот, то второе неявно будет center
+      - x% y%  | (0,0) - top left, (100,100) - bottom right
+      - xpos ypos  | (0,0) - top left, единицы измерения - любые допустимые, если один не задан, то он неявно будет 50%
+      - inherit    | Наследует это свойство у родителя
+
+    > background-repeat     | должна ли повторяться картинка для фона по осям x,y
+      - repeat     | (по умолчанию) фон повторяется по X и Y
+      - repeat-x   | фон повторяется по X
+      - repeat-y   | фон повторяется по Y
+      - no-repeat  | фон не повторяется
+
+    > background-clip       | определяет зону для отрисовки фона
+      - Синтаксис:
+          background-clip: border-box|padding-box|content-box;
+      - border-box   | фон обрезается прямоугольником границы
+      - padding-box  | фон обрезается прямоугольником padding
+      - content-box  | фон обрезается прямоугольником content
+
+    > background-origin     | Указать, относительно какого прямоугольника позиционируется фон
+      - Синтаксис:
+          background-origin: padding-box|border-box|content-box;
+      - padding-box  | относительно padding-box
+      - border-box   | относительно border-box
+      - content-box  | относительно content-box
+
+    > background-size       | размеры фоновых картинок
+      - Синтаксис:
+          background-size: length|percentage|cover|contain;
+      - length      | X Y,  X - ширина, Y - высота, единицы - px, pt ...; если один не указан, то он неявно auto
+      - percentage  | X Y,  X и Y измеряются в % от размера родителя
+      - cover       | растянуть фон по всему родительскому элементу
+      - contain     | замостить (без растягивания) фон в родительском элементе
+
+
+
+
+
+-------------------------------------------------- -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>1. Вводный tutorial в CSS + общая информация</title>
+  <link rel="stylesheet" type="text/css" href="6.%20Background.css">
+</head>
+<body>
+
+
+<mark>background-image, background-attachment</mark>
+  <div class="c1">
+    background-attachment: fixed; background-attachment: fixed; background-attachment: fixed; background-attachment: fixed; background-attachment: fixed; background-attachment: fixed; background-attachment: fixed; background-attachment: fixed; background-attachment: fixed; background-attachment: fixed; background-attachment: fixed; background-attachment: fixed; background-attachment: fixed;
+  </div>
+
+<mark>background-color</mark>
+  <div class="c2">
+    background-color: #9ac1c9;
+  </div>
+
+<mark>background-position</mark><br>
+  <div class="c3">center right</div>
+  <div class="c4">70% 30%</div>
+  <div class="c5">40px 30px</div>
+
+<br><br><mark>background-repeat</mark><br>
+  <div class="c6">no-repeat</div>
+  <div class="c7">repeat</div>
+  <div class="c8">repeat-x</div>
+  <div class="c9">repeat-y</div>
+
+<br><br><mark>background-clip</mark><br>
+  <div class="c10">border-box</div>
+  <div class="c11">padding-box</div>
+  <div class="c12">content-box</div>
+
+<br><br><mark>background-size</mark><br>
+  <div class="c13">60px 80px</div>
+  <div class="c14">50% 50%</div>
+  <div class="c15">cover</div>
+  <div class="c16">contain</div>
+
+<br><br><mark>Несколько фонов у 1-го элемента</mark><br>
+  <div class="c17">
+
+  </div>
+
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+Ссылки:
+
+  > Справочное руководство по всем CSS-свойствам:
+      http://www.w3schools.com/cssref/default.asp
+
+
+*****************************************************
+Оглавление:
+
+  >
+
+
+
+*****************************************************
+
+>
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

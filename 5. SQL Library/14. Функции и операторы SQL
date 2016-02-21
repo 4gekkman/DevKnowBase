@@ -1,0 +1,2757 @@
+/* --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+14. Функции и операторы SQL
+
+  > Приведение типов во время выполнения выражения
+    > Неявное приведение к числу (пример)
+    > Неявное приведение к строке (пример) - возникает при использовании ф-ии CONCAT()
+    > Явное приведение к строке с помощью ф-ии CAST()
+    > Неявное приведение типов в операциях сравнения
+    > Противоречивые результаты при сравнении чисел с плавающей запятой
+
+  > Операторы
+    > Примеры логических операций
+    > Примеры оператора BETWEEN ... AND ...
+    > Пример оператора BINARY
+    > Пример оператора CASE (синтаксис №1)
+    > Пример оператора CASE (синтаксис №2)
+    > Пример оператора IS NULL
+    > Пример оператора IS
+    > Примеры оператора LIKE
+
+  > Функции для сравнения значений
+    > Примеры функции COALESCE  | Возвращает 1-е не нулевое value в списке.
+    > Примеры функции GREATEST  | Возвращает наибольший value из всех.
+    > Примеры функции IN        | Возвращает 1, если expr равен хотя бы 1-му из value в списке. Иначе 0.
+    > Примеры функции INTERVAL  | Возвращает 0, если N < N1; возвращает 1 если N < N2; и так далее.
+    > Примеры функции ISNULL    | Если expr содержит NULL, возвращает 1. Иначе 0.
+    > Примеры функции LEAST     | Возвращает наименьший value из всех.
+    > Примеры функции STRCMP    | Возвращает -1, если expr1 < expr2; 0 если они равны; 1 если expr1 > expr2.
+
+  > Функции для управления потоком выполнения
+    > Примеры функции IF        | Если expr1 = true (<> 0 и <> NULL), то IF возвращает expr2. Иначе - expr3.
+    > Примеры функции IFNULL    | Если expr1 не NULL, то IFNULL вернет expr1. Иначе - expr2.
+    > Примеры функции NULLIF    | Если expr1 = expr2, возвращает NULL. Иначе - возвращает expr1.
+
+  > Строковые функции
+    > ASCII(str)                      | возвращает числовое представление 1-го символа в str
+    > BIN(N)                          | возвращает строку с бинарным представлением числа
+    > BIT_LENGTH(str)                 | возвращает длину строки в битах
+    > CHAR_LENGTH(str)                | возвращает длину строки в символах (многобайтовый символ считается как 1)
+    > LENGTH(str)                     | Возвращает длину строки str в байтах (многобайтовый символ считается как много байт)
+    > CHAR(N,... [USING charset_name])   | возвращает строку, собранную из цифровых представлений представленных символов
+    > CONCAT(str1,str2,...)              | склеивает строки
+    > CONCAT_WS(separator,str1,str2,...) | склеивает строки и ставит между ними разделитель
+    > FIELD(str,str1,str2,str3,...)      | Возвращает позицию str в списке из строк str1, str2 ...
+    > FORMAT(X,D[,locale])            | форматирует число, ограничивает D числами после запятой, результат - строка
+    > TO_BASE64(str)                  | закодировать строку алгоритмом base_64
+    > FROM_BASE64(str)                | раскодировать строку из алгоритма base_64, результат - бинарная строка
+    > HEX(str), HEX(N)                | возвращает шестнадцатеричное значени строки str или числа N
+    > UNHEX(str)                      | возвращает строку в нормальном состоянии из ее 16-ричного представления
+    > INSERT(str,pos,len,newstr)      | в строке str с позиции pos заменяет подстроку длины len на newstr
+    > ELT(N,str1,str2,str3,...)       | Возвращает N-ный элемент из списка str.
+    > FIND_IN_SET(str,strlist)        | ищет str в strlist и возвращает её позицию слева
+    > INSTR(str,substr)               | Возвращает позицию первого вхождения строки substr строку str.
+    > LOCATE(substr,str), LOCATE(substr,str,pos)  | возвращает позицию вхождения substr в str начиная с pos
+    > LEFT(str,len)                   | Возвращает подстроку строки str длиной len символов, начиная слева.
+    > RIGHT(str,len)                  | Возвращает подстроку строки str длиной len символов, начиная cправа.
+    > LOWER(str)                      | возвращает строку str в нижнем регистре
+    > UPPER(str)                      | возвращает строку str в верхнем регистре
+    > LPAD(str,len,padstr)            | возвращает str с прилепленной слева padstr, общи размер должен быть len
+    > RPAD(str,len,padstr)            | возвращает str с прилепленной справа padstr, общи размер должен быть len
+    > LTRIM(str)                      | Возвращает строку str, из которой удалены все пробелы слева.
+    > TRIM([{BOTH | LEADING | TRAILING} [remstr] FROM] str), TRIM([remstr FROM] str)      | Возвращает строку, из которой удалены все суффиксы и префиксы remstr (или пробелы, если remstr не указан)RTRIM(str)  | Возвращает строку str, из которой удалены все пробелы справа.
+    > QUOTE(str)                      | заключает str в одинарные кавычки, и экранирует ряд символов внутри нее обратным слэшем
+    > REPEAT(str,count)               | Возвращает строку, состоящую из строки str, повторенной count раз.
+    > REPLACE(str,from_str,to_str)    | возвращает str, где заменяет подстроки from_str на to_str
+    > REVERSE(str)                    | инвертирует строку
+    > SUBSTRING_INDEX(str,delim,count)  | Возвращает подстроку строки str, в которую разделитель delim входит count раз.
+    > SUBSTRING(str,pos), SUBSTRING(str FROM pos), SUBSTRING(str,pos,len), SUBSTRING(str FROM pos FOR len)    | возвращает подстроку строки str длиной len, начиная с позиции pos
+
+  > Математические функции
+    > SIN(x)                      | вернуть синус от аргумента
+    > COS(x)                      | возвращает косинус
+    > TAN(x)                      | вернуть тангенс от аргумента
+    > COT(x)                      | возвращает котангенс
+    > ACOS(x)                     | возвращает арк косинус
+    > ASIN(x)                     | возвращает арк синус
+    > ATAN(x)                     | возвращает арк тангенс
+    > ATAN(x,y), ATAN2(x,y)       | возвращает арк тангенс от 2-х аргументов
+    > ABS(x)                      | возвращает значение по модулю
+    > CEIL(x)                     | округление в большую сторону.
+    > FLOOR(x)                    | округление в меньшую сторону
+    > ROUND(x), ROUND(x,d)        | округлить аргумент x до d десятичных знаков (d = 0 по умолчанию)
+    > CONV(N,from_base,to_base)   | конвертирует числа между разными числовыми основаниями
+    > CRC32(expr)                 | вычисляет cyclic redundancy check value
+    > RADIANS(x)                  | аргумент конвертируется в радианы
+    > DEGRESS(x)                  | конвертирует радианы в градусы
+    > EXP()                       | возвращает базу натурального логарифма e, возведенную в указанную степерь
+    > LN(x)                       | вернуть натуральный логарифм (с базой e)
+    > LOG10(x)                    | вернуть десятичный логарифм (с базой 10)
+    > LOG2()                      | вернуть логарифм с 2 в основании
+    > LOG(x,b)                    | вернуть логарифм от x с базой b (если b не указан, то == e)
+    > MOD(N,M)                    | вернуть остаток от деления N на M
+    > PI()                        | вернуть число ПИ
+    > POW(x,y)                    | вернуть аргумент x, возведенный в степень y
+    > SQRT(x)                     | вернуть квадратный корень от x
+    > RAND(), RAND(N)             | вернуть рандумное число с плавающей запятой
+    > SIGN(x)                     | вернуть знак аргумента x (-1, 0, 1)
+    > TRUNCATE(x,d)               | обрезать x до d десятичных разрядов (по умолчанию d = 0)
+
+  > Функции для работы с датой и временем
+    > ADDDATE(date,INTERVAL expr unit), ADDDATE(expr,days)    | прибавляет expr единииц unit к дата-временному значению date.
+    > SUBDATE(date,INTERVAL expr unit), SUBDATE(expr,days)    | вычитает expr единииц unit из дата-временного значения date.
+    > ADDTIME(expr1,expr2)                        | добавляет время к дата-временному значению
+    > CONVERT_TZ(dt,from_tz,to_tz)                | конвертирует datetime dt из временной зоны from_tz в to_tz
+    > CURDATE()                                   | возвращает текущую дату
+    > CURTIME([fsp])                              | возвращает текущее время, fsp [0,6] - кол-во символов для дробных секунд
+    > DATE_ADD(date,INTERVAL expr unit)           | Прибавляет к значению date дата-временного типа expr единиц типа unit.
+    > DATE_SUB(date,INTERVAL expr unit)           | Вычитает из значения date дата-временного типа expr единиц типа unit.
+    > DATE_FORMAT(date,format)                    | Возвращает значение date в виде строки с заказанным форматом format.
+    > TIME_FORMAT(time,format)                    | Возвращает значение time в виде строки с заказанным форматом format.
+    > DATE(expr)                                  | Извлекает дату из значения expr (типа DATE или DATETIME), и возвращает в виде строки.
+    > DATEDIFF(expr1, expr2)                      | Возвращает разницу в днях между двумя датавременными значениями expr1 - expr2.
+    > DAYOFMONTH(date), DAY(date)                 | Возвращает дату, которую извлекает из значения date, в диапазоне от 0 до 31.
+    > DAYNAME(date)                               | Возвращает имя дня недели, который берет из значения date.
+    > DAYOFWEEK(date)                             | Возвращает номер для недели, который берет из date, в диапазоне от 1 до 7.
+    > DAYOFYEAR(date)                             | Возвращает номер дня в году, который берет из date, в диапазоне от 1 до 366.
+    > EXTRACT(unit FROM date)                     | Извлекает тип unit из дата-временного значения date.
+    > FROM_DAYS(N)                                | Возвращает значение DATE, которое вычисляет по заданному кол-ву дней N, прошедших с Рождества Христова.
+    > FROM_UNIXTIME(unix_timestamp), FROM_UNIXTIME(unix_timestamp,format)   | Возвращает представление unix_timestamp либо в заказанном формате format, либо в 1 из 2 стандартных форматов
+    > GET_FORMAT({DATE|TIME|DATETIME}, {'EUR'|'USA'|'JIS'|'ISO'|'INTERNAL'})  | Возвращает format, который можно вставить в функции DATE_FORMAT() и STR_TO_DATE().
+    > HOUR(time)                                  | Возвращает число чисов из дата-временного значения time, в диапазоне [0, 23].
+    > LAST_DAY(date)                              | Возвращает последнее число текущего месяца из даты date.
+    > MAKEDATE(year,dayofyear)                    | Возвращает строку с DATE значением, скомпанованным из year и dayofyear.
+    > MAKETIME(hour,minute,second)                | Возвращает строку с TIME значением, собранным из hour, minute, second.
+    > MICROSECOND(expr)                           | Возвращает кол-во мкСек, которые берет из expr (TIME или DATETIME), диапазон [0 - 999999]
+    > MINUTE(time)                                | Возвращает кол-во минут для времени time, в диапазоне от 0 до 59.
+    > MONTH(date)                                 | Возвращает номер месяца для даты date, в диапазоне от 0 до 12.
+    > YEAR(date)                                  | Возвращает год для даты date, в диапазоне от 1000 до 9999.
+    > MONTHNAME(date)                             | Возвращает полное имя месяца, который берет из даты date.
+    > NOW([fsp]), LOCALTIMESTAMP(), LOCALTIME(), CURRENT_TIMESTAMP()   | Возвращает текущую дату и время. fsp - кол-во символов для микросекунд, от 0 до 6.
+    > PERIOD_ADD(P,N)                             | Добавляет N месяцев к P (в формате YYMM или YYYYMM). p - не значение типа date.
+    > PERIOD_DIFF(P1,P2)                          | Возвращает число месяцев между p1 и p2 (в формате YYMM или YYYYMM). p1 и p2 - не значения типа DATE.
+    > QUARTER(date)                               | Возвращает квартал года, который берет из даты date, в диапазоне от 1 до 4.
+    > SEC_TO_TIME(seconds)                        | Возвращает значение типа TIME, созданное из кол-ва секунд seconds.
+    > SECOND(time)                                | Возвращает секунды, которые берет из time, в диапазоне от 0 до 59.
+    > STR_TO_DATE(str,format)                     | берет str и format, образует DATETIME значение, соотв. format у.
+    > SUBTIME(expr1,expr2)                        | Возвращает разность expr1 - expr2, где expr1 - TIME/DATETIME, expr2 - TIME.
+    > SYSDATE()                                   | Возвращает текущую время и дату в одном из двух форматов.
+    > TIME_TO_SEC(time)                           | Возвращает аргумент time, конвертированный в секунды.
+    > TIME(expr)                                  | Возвращает в виде строки TIME часть аргумента expr.
+    > TIMEDIFF(expr1,expr2)                       | Возвращает expr1 - expr2 (тип TIME) где expr1 и expr2 - одинаковые TIME/DATETIME значения
+    > TIMESTAMP(expr), TIMESTAMP(expr1,expr2)     | возвращает expr в виде DATETIME значения, и прибавляет к нему TIME значение expr2.
+    > TIMESTAMPADD(unit,interval,datetime_expr)   | Прибавляет int значение interval к DATE или DATETIME значению datetime_expr.
+    > TIMESTAMPDIFF(unit,datetime_expr1,datetime_expr2)   | Возвращает разность datetime_expr2 - datetime_expr1, оба типа DATE/DATETIME.
+    > TO_DAYS(date)                               | Возвращает количество дней, прошедших по дату date с Рождества Христова.
+    > TO_SECONDS(expr)                            | Возвращает для expr (DATE/DATETIME) количество секунд, прошедших с Рождества Христова.
+    > UNIX_TIMESTAMP([date])                      | возвращает UNIX timestamp для указанной date (по умолчанию = NOW())
+    > UTC_DATE()                                  | Возвращает текущую дату, переведенную в UTC, в 1 из 2 форматов.
+    > UTC_TIME([fsp])                             | Возвращает текущее время, переведенное в UTC, в 1 из 2 форматов.
+    > UTC_TIMESTAMP([fsp])                        | Возвращает текущие время и дату, переведенные в UTC, в 1 из 2 форматов.
+    > WEEK(date[,mode])                           | Возвращает кол-во недель, прошедших с начала года, для даты date. Аргумент mode - для настроки (см. ниже в ИНФОРМАЦИИ)
+    > WEEKDAY(date)                               | Возвращает номер дня недели для даты date, в диапазоне от 0 = Monday ... 6 = Sunday.
+    > WEEKOFYEAR(date)                            | Эквивалент WEEK(date,3).
+    > YEARWEEK(date), YEARWEEK(date,mode)         |   возвращает год и номер недели в году, слитно
+
+  > Функции и операции для приведения типов
+    > Оператор BINARY  | приводит строку к бинарному виду
+    > CONVERT(expr,type), CONVERT(expr USING transcoding_name)  | Приводит выражение expr к типу type.
+
+  > Некоторые функции для шифрования и сжатия
+    > ENCODE(str,pass_str)              | зашифровать str в бинарную строку, используя pass_str в качестве пароля
+    > DECODE(crypt_str,pass_str)        | расшифровать ранее зашифрованную str, используя pass_str в качестве пароля для расшифровки
+    > COMPRESS(string_to_compress)      | сжимает строку и возвращает результат в виде бинарной строки
+    > UNCOMPRESS(string_to_uncompress)  | разжимает строку, сжатую ранее функцией COMPRESS()
+    > UNCOMPRESSED_LENGTH(compressed_string)  | возвращает длину строки, которая у нее была до того, как она была сжата
+    > MD5(str)                          | возвращает 128-битную MD5 контрольную сумму для строки str
+    > PASSWORD(str)                     | возвращает хэш строки str в виде не бинарной строки с кодировкой соединения
+
+  > Информационные функции
+    > BENCHMARK(count,expr)   | выполняет выражение expr непрерывно count раз
+    > CHARSET(str)            | возвращает кодировку строки str
+    > COLLATION(str)          | возвращает collation строки str
+    > COERCIBILITY(str)       | возвращает collation coercibility строки str (флаг от 0 до 5)
+    > CONNECTION_ID()         | возвращает ID соединения
+    > USER()                  | имя и хост пользователя, указанные при подключении к серверу в формате 'user@localhost'
+    > CURRENT_USER()          | возвращает строку с именем и хостом текущего пользователя в формате 'user@localhost'
+    > DATABASE()              | возвращает имя текущей базы данных по умолчанию, или NULL, если её нет
+    > FOUND_ROWS()            | после SELECT ... LIMIT показывает, сколько бы это выражение вернуло строк без LIMIT
+    > LAST_INSERT_ID([expr])  | возвращает последнее успешно вставленное autoincrement значение
+    > ROW_COUNT()             | после DML-выражения вернет кол-во затронутых им строк
+    > VERSION()               | возвращает версию сервера MySQL
+
+  > Разные функции (не попавшие в другие разделы, выборочно)
+    > DEFAULT(col_name)       | Возвращает значение по умолчанию для указанной колонки
+    > INET_ATON(expr)         | принимает ipv4 адрес типа '10.0.0.1', возвращает число - сетевой порядок байтов
+    > INET_NTOA(expr)         | противоположность INET_ATON - принимает число - сетевой порядок байтов, возвращает строку с ipv4 адресом
+    > IS_IPV4(expr)           | возвращает 1, если expr - допустимый ipv4 адрес. Иначе 0.
+    > IS_IPV6(expr)           | возвращает 1, если expr - допустимый ipv6 адрес. Иначе 0.
+    > NAME_CONST(name,value)  | возвращает value в колонке с именем name
+    > SLEEP(duration)         | делает паузу на duration секунд
+
+  > Функции (выборочно) и модификаторы для использования в атрибуте GROUP BY (включая функции-агрегаторы)
+    > AVG([DISTINCT] expr)  | Возвращает среднее значение для expr (DISTINCT - считать только уникальные значения)
+    > COUNT(DISTINCT expr,[expr...])  | возвращает кол-во строк отдельно в каждом из expr (DISTINCT - считать только уникальные значения)
+    > GROUP_CONCAT(expr)  | возвращает строку, в которой все значения столбца идут через разделитель (в прямом или обратном порядке)
+    > MAX([DISTINCT] expr)  | возвращает максимальное значение expr (DISTINCT - считать только уникальные значения)
+    > MIN([DISTINCT] expr)  | возвращает минимальное значение expr (DISTINCT - считать только уникальные значения)
+    > SUM([DISTINCT] expr)  | возвращает сумму значений в expr (DISTINCT - считать только уникальные значения)
+
+
+  > Примеры применения атрибута GROUP BY
+    > Посчитать суммарный price представленных фильмов для каждого жанра кино (category), отсортировать по результату
+    > То же самое, но с применением WITH ROLLUP - добавляет доп. строку с итогом: суммарным price по всем жанрам
+    > Пример работы WITH ROLLUP при анализе не 1-й колонки (как выше), а нескольких
+    > ORDER BY запрещено использовать с WITH ROLLUP. Но зато можно использовать ASC и DESC:
+    > Демонстрация того, как LIMIT срезает строки, добавленные WITH ROLLUP (использовать их вместе не рекомендуется)
+    > Колонка, отсутствующая в GROUP BY, может присутствовать в списке SELECT (см. об этом в ИНФОРМАЦИИ)
+
+
+  > Примеры точных вычислений
+    > Наглядный пример отличия точных значений от не точных.
+    > Еще один способ увидеть отличия точных значений от неточных, сложить маленькое число много раз
+    > Умножение имеет размер S1 + S2, где S1, S1 - размеры умножаемых чисел.
+    > Примеры округления для точных и не точных значений
+    > Разница в поведении при вставке выходящих за ракми диапазона значений в строгом и не строгом SQL-режимах
+      > В строгом SQL-режиме
+      > В не строгом SQL-режиме
+    > Разница в поведении, если INSERT содержит выражение, в котором происходит деление на 0, для нестрогого SQL-режима, и для строгого SQL-режима + ERROR_FOR_DIVISION_BY_ZERO
+      > В строгом SQL-режиме + ERROR_FOR_DIVISION_BY_ZERO
+      > В не строгом SQL-режиме
+    > Демонстрация, что в MySQL >= 5.0.3 точные литералы обрабатываются, как DECIMAL значения
+    > Если аргумент агрегирующей функции - точное число, то результат тоже будет точным числом
+
+
+
+
+
+-------------------------------------------------- */
+
+
+-- Приведение типов во время выполнения выражения
+
+  # Неявное приведение к числу (пример)
+    SELECT 1 + '1';  -- 2
+
+  # Неявное приведение к строке (пример) - возникает при использовании ф-ии CONCAT()
+    SELECT CONCAT(2, ' test');
+
+  # Явное приведение к строке с помощью ф-ии CAST()
+    SELECT 38.5, CAST(38.5 AS CHAR);
+
+  # Неявное приведение типов в операциях сравнения
+    SELECT 1 > '6x';  -- 0
+    SELECT 7 > '6x';  -- 1
+    SELECT 0 > 'x6';  -- 0
+    SELECT 0 = 'x6';  -- 1
+
+  # Противоречивые результаты при сравнении чисел с плавающей запятой
+    SELECT '18015376320243458' = 18015376320243458;  -- 1
+    SELECT '18015376320243459' = 18015376320243459;  -- 1 (а в старых версия MySQL было 0)
+
+
+-- Операторы
+
+  # Примеры логических операций
+    SELECT 10 IS TRUE;            -- 1
+    SELECT -10 IS TRUE;           -- 1
+    SELECT 'string' IS NOT NULL;  -- 1
+    SELECT NOT 1;  -- 0
+    SELECT NOT 0;  -- 1
+    SELECT !1 + 1; -- 1
+    SELECT 1 && 1; -- 1
+    SELECT 1 && 0; -- 0
+    SELECT 1 && NULL;  -- NULL
+    SELECT 0 && NULL;  -- 0
+    SELECT 1 || 1;  -- 1
+    SELECT 1 || 0;  -- 1
+    SELECT 0 || 1;  -- 1
+    SELECT 0 || NULL;  -- NULL
+    SELECT 1 || NULL;  -- 1
+
+  # Примеры оператора BETWEEN ... AND ...
+    SELECT 5 BETWEEN 4 AND 6;  -- 1
+    SELECT 5 BETWEEN 5 AND 5;  -- 1
+    SELECT 5 BETWEEN 10 AND 15;  -- 0
+    SELECT 5 NOT BETWEEN 10 AND 15;  -- 1
+
+  # Пример оператора BINARY
+    SELECT 'a' = 'A';  -- 1 (без BINARY результат регистронезависимый)
+    SELECT 'a' = 'a '; -- 1 (без BINARY трейлинг-пробелы не играют роли в операции сравнения)
+    SELECT BINARY 'a' = 'A';  -- 0
+    SELECT BINARY 'a' = 'a ';  -- 0
+
+  # Пример оператора CASE (синтаксис №1)
+    SELECT CASE 1 WHEN 1 THEN 'one' WHEN 2 THEN 'two' ELSE 'more' END;  -- 'one'
+
+  # Пример оператора CASE (синтаксис №2)
+    SELECT CASE WHEN 1>0 THEN 'true' ELSE 'false' END;  -- true
+
+  # Пример оператора IS NULL
+    SELECT 1 IS NULL, 0 IS NULL, NULL IS NULL;  -- 0, 0, 1
+
+  # Пример оператора IS
+    SELECT 1 IS TRUE, 0 IS FALSE, NULL IS UNKNOWN;  -- 1, 1, 1
+
+  # Примеры оператора LIKE
+    SELECT 'a' = 'a ', 'a' LIKE 'a ';  -- 1, 0 (трейлинг-пробелы значимы для LIKE)
+    SELECT 'Иван!' LIKE 'Иван_';  -- 1 (пример вайлдкарт-символа _ )
+    SELECT 'Иван Петрович' LIKE '%Петрович';  -- 1 (пример вайлдкарт-символа % )
+    SELECT 'abc' LIKE BINARY 'ABC';  -- 0 (потому что правая строка бинарная - см. про BINARY)
+    SELECT 10 LIKE '1_';    -- 1
+    SELECT 5020 LIKE '5%';  -- 1
+
+
+-- Функции для сравнения значений
+
+  # Примеры функции COALESCE  | Возвращает 1-е не нулевое value в списке.
+    SELECT COALESCE(NULL, 1);         -- 1
+    SELECT COALESCE(NULL,NULL,NULL);  -- NULL
+
+  # Примеры функции GREATEST  | Возвращает наибольший value из всех.
+    SELECT GREATEST(2,0);  -- 2
+    SELECT GREATEST('a', 'б', 'Б');  -- 'б'
+
+  # Примеры функции IN  | Возвращает 1, если expr равен хотя бы 1-му из value в списке. Иначе 0.
+    SELECT 2 IN (0,3,5,7);  -- 0
+    SELECT 3 IN (0,3,5,7);  -- 1
+    SELECT 'wefwf' IN ('wee', 'wefwf', 'weg');  -- 1
+
+  # Примеры функции INTERVAL  | Возвращает 0, если N < N1; возвращает 1 если N < N2; и так далее.
+    SELECT INTERVAL(23, 1,15,17,30,44,200);  -- 3
+    SELECT INTERVAL(10, 1,10,100,1000);  -- 2
+
+  # Примеры функции ISNULL  | Если expr содержит NULL, возвращает 1. Иначе 0.
+    SELECT ISNULL(1+1);  -- 0
+    SELECT ISNULL(1/0);  -- 1
+
+  # Примеры функции LEAST  | Возвращает наименьший value из всех.
+    SELECT LEAST(5,2);  -- 2
+    SELECT LEAST(34.0,3.0,5.0,767.0);  -- 3.0
+    SELECT LEAST('B','A','C');  -- 'A'
+
+  # Примеры функции STRCMP  | Возвращает -1, если expr1 < expr2; 0 если они равны; 1 если expr1 > expr2.
+    SELECT STRCMP('text', 'text2');  -- -1
+    SELECT STRCMP('text2', 'text');  -- 1
+    SELECT STRCMP('text', 'text');   -- 0
+
+
+-- Функции для управления потоком выполнения
+
+  # Примеры функции IF  | Если expr1 = true (<> 0 и <> NULL), то IF возвращает expr2. Иначе - expr3.
+    SELECT IF(1>2, 2, 3);  -- 3
+    SELECT IF(1<2, 'yes', 'no');  -- 'yes'
+    SELECT IF(STRCMP('test','test1'), 'no', 'yes');  -- 'no'
+
+  # Примеры функции IFNULL  | Если expr1 не NULL, то IFNULL вернет expr1. Иначе - expr2.
+    SELECT IFNULL(1,0);  -- 1
+    SELECT IFNULL(0,1);  -- 0
+    SELECT IFNULL(1/0, 10); -- 10
+    SELECT IFNULL(1/0, 'yes'); -- 'yes'
+
+  # Примеры функции NULLIF  | Если expr1 = expr2, возвращает NULL. Иначе - возвращает expr1.
+    SELECT NULLIF(1,1);  -- NULL
+    SELECT NULLIF(1,2);  -- 1
+
+
+-- Строковые функции
+
+  # ASCII(str)         | возвращает числовое представление 1-го символа в str
+    SELECT ASCII('2');   -- 50
+    SELECT ASCII(2);     -- 50
+    SELECT ASCII('dx');  -- 100
+    SELECT ASCII(NULL);  -- NULL
+    SELECT ASCII('');    -- 0
+
+  # BIN(N)             | возвращает строку с бинарным представлением числа
+    SELECT BIN(12);  -- '1100'
+
+  # BIT_LENGTH(str)    | возвращает длину строки в битах
+    SELECT BIT_LENGTH('text');  -- 32 (бита)
+    SELECT BIT_LENGTH('Иван');  -- 64 (бита)
+
+  # CHAR_LENGTH(str)   | возвращает длину строки в символах (многобайтовый символ считается как 1)
+    SELECT CHAR_LENGTH('text');  -- 4
+    SELECT CHAR_LENGTH('Иван');  -- 4
+
+  # LENGTH(str)        | Возвращает длину строки str в байтах (многобайтовый символ считается как много байт)
+    SELECT LENGTH('text');  -- 4
+    SELECT LENGTH('Иван');  -- 8
+
+  # CHAR(N,... [USING charset_name])   | возвращает строку, собранную из цифровых представлений представленных символов
+    SELECT CHAR(77,121,83,81,'76');  -- 'MySQL'
+
+  # CONCAT(str1,str2,...)              | склеивает строки
+    SELECT CONCAT('My', 'S', 'QL');  -- 'MySQL'
+    SELECT CONCAT('My', 'S', 'QL', NULL);  -- NULL
+    SELECT CONCAT(1+1);                    -- '2'
+
+  # CONCAT_WS(separator,str1,str2,...) | склеивает строки и ставит между ними разделитель
+    SELECT CONCAT_WS(', ','Иванов','Петров','Сидоров');  -- 'Иванов, Петров, Сидоров'
+    SELECT CONCAT_WS('+',1+1, 2+2, 3+3);  -- '2+4+6'
+
+  # FIELD(str,str1,str2,str3,...)      | Возвращает позицию str в списке из строк str1, str2 ...
+    SELECT FIELD('Иван1',  'Иван3','Иван1','Иван2');  -- 2
+
+  # FORMAT(X,D[,locale])   | форматирует число, ограничивает D числами после запятой, результат - строка
+    SELECT FORMAT(12332.123456, 4);  -- '12,332.1235'
+
+  # TO_BASE64(str)     | закодировать строку алгоритмом base_64
+  # FROM_BASE64(str)   | раскодировать строку из алгоритма base_64, результат - бинарная строка
+    SELECT TO_BASE64('abc'), FROM_BASE64(TO_BASE64('abc'));
+
+  # HEX(str), HEX(N)  | возвращает шестнадцатеричное значени строки str или числа N
+  # UNHEX(str)        | возвращает строку в нормальном состоянии из ее 16-ричного представления
+    SELECT HEX('abc'), UNHEX(HEX('abc'));
+    SELECT HEX(255), CONV(HEX(255),16,10);
+
+  # INSERT(str,pos,len,newstr)  | в строке str с позиции pos заменяет подстроку длины len на newstr
+    SELECT INSERT('Quadratic', 3, 4, 'WhaT');   -- 'QuWhaTtic'
+    SELECT INSERT('Индульгенция', 5, 2, 'СЫ');  -- 'ИндуСЫгенция'
+    SELECT INSERT('Quadratic', -1, 4, 'What');  -- 'Quadratic'
+    SELECT INSERT('Quadratic', 3, 100, 'What'); -- 'QuWhat'
+
+  # ELT(N,str1,str2,str3,...)          | Возвращает N-ный элемент из списка str.
+    SELECT ELT(1, 'BMW', 'MERCEDES', 'AUDI', 'SUBARU');  -- 'BMW'
+    SELECT ELT(4, 'BMW', 'MERCEDES', 'AUDI', 'SUBARU');  -- 'SUBARU'
+    SELECT ELT(5, 'BMW', 'MERCEDES', 'AUDI', 'SUBARU');  -- NULL
+    SELECT ELT(0, 'BMW', 'MERCEDES', 'AUDI', 'SUBARU');  -- NULL
+
+  # FIND_IN_SET(str,strlist)   | ищет str в strlist и возвращает её позицию слева
+    SELECT FIND_IN_SET('b', 'a,b,c');  -- 2
+    SELECT FIND_IN_SET('c', 'a,b,c');  -- 3
+
+  # INSTR(str,substr)  | Возвращает позицию первого вхождения строки substr строку str.
+    SELECT INSTR('foobarbar', 'bar');      -- 4
+    SELECT INSTR('Индульгенция', 'дуль');  -- 3
+    SELECT INSTR('xbar', 'foobar');        -- 0
+    SELECT INSTR('xbar', NULL);            -- NULL
+
+  # LOCATE(substr,str), LOCATE(substr,str,pos)  | возвращает позицию вхождения substr в str начиная с pos
+    SELECT LOCATE('bar', 'foobarbar');    -- 4
+    SELECT LOCATE('xbar', 'foobar');      -- 0
+    SELECT LOCATE('bar', 'foobarbar', 5); -- 7
+
+  # LEFT(str,len)   | Возвращает подстроку строки str длиной len символов, начиная слева.
+    SELECT LEFT('foobarbar',5);       -- 'fooba'
+    SELECT LEFT('Индульгенция', 5);   -- 'Индул'
+
+  # RIGHT(str,len)  | Возвращает подстроку строки str длиной len символов, начиная cправа.
+    SELECT RIGHT('foobarbar',5);       -- 'arbar'
+    SELECT RIGHT('Индульгенция', 5);   -- 'енция'
+
+  # LOWER(str)  | возвращает строку str в нижнем регистре
+    SELECT LOWER('New York');              -- 'new york'
+    SELECT LOWER('Московская Федерация');  -- 'московская федерация'
+
+  # UPPER(str)  | возвращает строку str в верхнем регистре
+    SELECT UPPER('New York');              -- 'NEW YORK'
+    SELECT UPPER('Московская Федерация');  -- 'МОСКОВСКАЯ ФЕДЕРАЦИЯ'
+
+  # LPAD(str,len,padstr)  | возвращает str с прилепленной слева padstr, общи размер должен быть len
+    SELECT LPAD('aplha',9, 'MIO ');   -- 'MIO alpha'
+    SELECT LPAD('Петров',9, 'Иван '); -- 'ИваПетров'
+    SELECT LPAD('Петров',11, 'Иван '); -- 'Иван Петров'
+
+  # RPAD(str,len,padstr)  | возвращает str с прилепленной справа padstr, общи размер должен быть len
+    SELECT RPAD('MIO ',9, 'alpha');     -- 'MIO alpha'
+    SELECT RPAD('Иван ',9, 'Петров');   -- 'Иван Петр'
+    SELECT RPAD('Иван ',11, 'Петров');  -- 'Иван Петров'
+
+  # LTRIM(str)  | Возвращает строку str, из которой удалены все пробелы слева.
+    SELECT LTRIM('   Москва');  -- 'Москва'
+
+  # RTRIM(str)  | Возвращает строку str, из которой удалены все пробелы справа.
+    SELECT RTRIM('Москва   ');  -- 'Москва'
+
+  # TRIM([{BOTH | LEADING | TRAILING} [remstr] FROM] str), TRIM([remstr FROM] str)
+  # Возвращает строку, из которой удалены все суффиксы и префиксы remstr (или пробелы, если remstr не указан)
+    SELECT TRIM('   Москва   ');  -- 'Москва'
+    SELECT TRIM(LEADING 'id1987_' FROM 'id1987_Иван');       -- 'Иван'
+    SELECT TRIM(TRAILING '_akaDEMON' FROM 'John_akaDEMON');  -- 'John'
+    SELECT TRIM(BOTH 'abc' FROM 'abcShirlyabc');             -- 'Shirly'
+
+  # QUOTE(str)  | заключает str в одинарные кавычки, и экранирует ряд символов внутри нее обратным слэшем
+    SELECT QUOTE('Don\'t!');  -- 'Don\'t!'
+
+  # REPEAT(str,count)  | Возвращает строку, состоящую из строки str, повторенной count раз.
+    SELECT REPEAT('Изыди! ', 5);  -- 'Изыди! Изыди! Изыди! Изыди! Изыди! '
+
+  # REPLACE(str,from_str,to_str)  | возвращает str, где заменяет подстроки from_str на to_str
+    SELECT REPLACE('www.mysql.com', 'w', 'Ж');  -- 'ЖЖЖ.mysql.com'
+
+  # REVERSE(str)                  | инвертирует строку
+    SELECT REVERSE('abc');  -- 'cba'
+    SELECT REVERSE('абв');  -- 'вба'
+
+  # SUBSTRING_INDEX(str,delim,count)  | Возвращает подстроку строки str, в которую разделитель delim входит count раз.
+    SELECT SUBSTRING_INDEX('www.mysql.com', '.', 2);   -- 'www.mysql'
+    SELECT SUBSTRING_INDEX('www.mysql.com', '.', -2);  -- 'mysql.com'
+
+  # SUBSTRING(str,pos), SUBSTRING(str FROM pos), SUBSTRING(str,pos,len), SUBSTRING(str FROM pos FOR len)
+  # возвращает подстроку строки str длиной len, начиная с позиции pos
+    SELECT SUBSTRING('Quadratically',5);      -- 'ratically'
+    SELECT SUBSTRING('foobarbar' FROM 4);     -- 'barbar'
+    SELECT SUBSTRING('Quadratically',5,6);    -- 'ratica'
+    SELECT SUBSTRING('Sakila', -3);           -- 'ila'
+    SELECT SUBSTRING('Sakila', -5, 3);        -- 'aki'
+    SELECT SUBSTRING('Sakila' FROM -4 FOR 2); -- 'ki'
+
+
+-- Математические функции
+
+  # SIN(x)      | вернуть синус от аргумента
+    SELECT SIN(PI());  -- 1.2246063538224e-16
+
+  # COS(x)       | возвращает косинус
+    SELECT COS(PI());  -- -1
+
+  # TAN(x)      | вернуть тангенс от аргумента
+    SELECT TAN(PI());  -- -1.2246063538224e-16
+
+  # COT(x)       | возвращает котангенс
+    SELECT COT(12);  -- -1.5726734063977
+
+  # ACOS(x)    | возвращает арк косинус
+    SELECT ACOS(1.0001); -- NULL
+    SELECT ACOS(1);      -- 0
+    SELECT ACOS(0);      -- 1.5707
+
+  # ASIN(x)    | возвращает арк синус
+    SELECT ASIN(0.2);  -- 0.2013
+
+  # ATAN(x)      | возвращает арк тангенс
+    SELECT ATAN(2);    -- 1.1071
+    SELECT ATAN(-2);   -- -1.1071
+
+  # ATAN(x,y), ATAN2(x,y)   | возвращает арк тангенс от 2-х аргументов
+    SELECT ATAN(-2,2);    -- -0.7853
+    SELECT ATAN(PI(),0);  -- 1.5707
+
+  # ABS(x)     | возвращает значение по модулю
+    SELECT ABS(15);   -- 15
+    SELECT ABS(-15);  -- 15
+
+  # CEIL(x)      | округление в большую сторону.
+    SELECT CEIL(1.23);  -- 2
+    SELECT CEIL(14.1);  -- 15
+
+  # FLOOR(x)   | округление в меньшую сторону
+    SELECT FLOOR(1.23);  -- 1
+    SELECT FLOOR(14.1);  -- 14
+
+  # ROUND(x), ROUND(x,d)   | округлить аргумент x до d десятичных знаков (d = 0 по умолчанию)
+    SELECT ROUND(-1.23);      -- -1
+    SELECT ROUND(1.49);       -- 1
+    SELECT ROUND(1.51);       -- 2
+    SELECT ROUND(1.298,1);    -- 1.3
+    SELECT ROUND(1.298,0);    -- 1
+    SELECT ROUND(23.298,-1);  -- 20
+    SELECT ROUND(28.298,-1);  -- 30
+
+  # CONV(N,from_base,to_base)      | конвертирует числа между разными числовыми основаниями
+    SELECT CONV('a', 16, 2);      -- '1010'
+    SELECT CONV('6E', 18, 8);     -- '172'
+    SELECT CONV('-17', 10, -18);  -- '-H'
+    SELECT CONV(10+'10'+'10'+0xa, 10, 10);  -- '40'
+
+  # CRC32(expr)     | вычисляет cyclic redundancy check value
+    SELECT CRC32('MySQL');  -- 3259397556
+
+  # RADIANS(x)   | аргумент конвертируется в радианы
+    SELECT RADIANS(90);  -- 1.5707
+
+  # DEGRESS(x)   | конвертирует радианы в градусы
+    SELECT DEGREES(PI());    -- 180
+    SELECT DEGREES(PI()/2);  -- 90
+
+  # EXP()     | возвращает базу натурального логарифма e, возведенную в указанную степерь
+    SELECT EXP(2);  -- 7.3895
+
+  # LN(x)      | вернуть натуральный логарифм (с базой e)
+    SELECT LN(2);  -- 0.6931
+
+  # LOG10(x)   | вернуть десятичный логарифм (с базой 10)
+    SELECT LOG10(2);  -- 0.3010
+
+  # LOG2()    | вернуть логарифм с 2 в основании
+    SELECT LOG2(65536);  -- 16
+
+  # LOG(x,b)     | вернуть логарифм от x с базой b (если b не указан, то == e)
+    SELECT LOG(10,100);   -- 2
+    SELECT LOG(2,65536);  -- 16
+    SELECT LOG(2);        -- 0.6931
+
+  # MOD(N,M)     | вернуть остаток от деления N на M
+    SELECT MOD(234,10);  -- 4
+
+  # PI()      | вернуть число ПИ
+    SELECT PI();  -- 3.141593
+
+  # POW(x,y)     | вернуть аргумент x, возведенный в степень y
+    SELECT POW(2,2);   -- 4
+    SELECT POW(2,-2);  -- 0.25
+
+  # SQRT(x)     | вернуть квадратный корень от x
+    SELECT SQRT(4);  -- 2
+
+  # RAND(), RAND(N)    | вернуть рандумное число с плавающей запятой
+    SELECT RAND();    -- (значение v в диапазоне 0 <= v <= 1)
+    SELECT RAND(5);   -- 0.4061 (всегда одно и тоже, потому что использовано зерно N)
+    SELECT FLOOR(7 + (RAND() * 5));  -- (целое число n в диапазоне 7 <= n <= 12)
+
+  # SIGN(x)     | вернуть знак аргумента x (-1, 0, 1)
+    SELECT SIGN(-32);  -- -1
+    SELECT SIGN(32);   -- 1
+    SELECT SIGN(0);    -- 0
+
+  # TRUNCATE(x,d)   | обрезать x до d десятичных разрядов (по умолчанию d = 0)
+    SELECT TRUNCATE(1.223,1);   -- 1.2
+    SELECT TRUNCATE(1.999,1);   -- 1.9
+    SELECT TRUNCATE(1.999,0);   -- 1
+    SELECT TRUNCATE(-1.999,1);  -- -1.9
+    SELECT TRUNCATE(122,-2);    -- 100
+    SELECT TRUNCATE(10.28*100,0);  -- 1028
+
+
+-- Функции для работы с датой и временем
+
+  # ADDDATE(date,INTERVAL expr unit), ADDDATE(expr,days)
+  # прибавляет expr единииц unit к дата-временному значению date.
+    SELECT ADDDATE('2008-01-02', INTERVAL 31 DAY);  -- '2008-02.02'
+    SELECT ADDDATE('2008-01-02', 31);               -- '2008-02.02'
+
+  # SUBDATE(date,INTERVAL expr unit), SUBDATE(expr,days)
+  # Вычитает expr единииц unit из дата-временного значения date.
+    SELECT DATE_SUB('2008-01-02', INTERVAL 31 DAY);  -- '2007-12-02'
+    SELECT SUBDATE('2008-01-02', INTERVAL 31 DAY);   -- '2007-12-02'
+
+  # ADDTIME(expr1,expr2)  | добавляет время к дата-временному значению
+    SELECT ADDTIME('2007-12-31 23:59:59.999999', '1 1:1:1.000002');  -- '2008-01-02 01:01:01.000001'
+    SELECT ADDTIME('01:00:00.999999', '02:00:00.999998');  -- '03:00:01.999997'
+
+  # CONVERT_TZ(dt,from_tz,to_tz)  | конвертирует datetime dt из временной зоны from_tz в to_tz
+    SELECT CONVERT_TZ('2004-01-01 12:00:00', 'GMT', 'MET');        -- '2004-01-01 13:00:00'
+    SELECT CONVERT_TZ('2004-01-01 12:00:00', '+00:00', '+10:00');  -- '2004-01-01 22:00:00'
+
+  # CURDATE()   | возвращает текущую дату
+    SELECT CURDATE();       -- (вызов в строковом контексте) '2013-10-15'
+    SELECT CURDATE() + 0;   -- (вызов в числовом контексте)  20131015
+
+  # CURTIME([fsp])  | возвращает текущее время, fsp [0,6] - кол-во символов для дробных секунд
+    SELECT CURTIME();    -- (вызов в строковом контексте) '18:42:17'
+    SELECT CURTIME + 0;  -- (вызов в числовом контексте) 184217
+    SELECT CURTIME(6);   -- '18:42:17.158613'
+
+  # Дата-временная арифметика
+  # DATE_ADD(date,INTERVAL expr unit)  | Прибавляет к значению date дата-временного типа expr единиц типа unit.
+  # DATE_SUB(date,INTERVAL expr unit)  | Вычитает из значения date дата-временного типа expr единиц типа unit.
+    SELECT '2008-12-31 23:59:59' + INTERVAL 1 SECOND;  -- '2009-01-01 00:00:00'
+    SELECT INTERVAL 1 DAY + '2008-12-31';              -- '2009-01-01'
+    SELECT '2005-01-01' - INTERVAL 1 SECOND;           -- '2004-12-31 23:59:59'
+    SELECT DATE_ADD('2000-12-31 23:59:59', INTERVAL 1 SECOND);  -- '2001-01-01 00:00:00'
+    SELECT DATE_ADD('2010-12-31 23:59:59', INTERVAL 1 DAY);     -- '2011-01-01 23:59:59'
+    SELECT DATE_SUB('2005-01-01 00:00:00', INTERVAL '1 1:1:1' DAY_SECOND);  -- '2004-12-30 22:58:59'
+    SELECT DATE_ADD('1900-01-01 00:00:00', INTERVAL '-1 10' DAY_HOUR);      -- '1899-12-30 14:00:00'
+    SELECT DATE_SUB('1998-01-02', INTERVAL 31 DAY);  -- '1997-12-02'
+    SELECT DATE_ADD('1992-12-31 23:59:59.000002', INTERVAL '1.999999' SECOND_MICROSECOND);  -- '1993-01-01 00:00:01.000001'
+
+  # DATE_FORMAT(date,format)  | Возвращает значение date в виде строки с заказанным форматом format.
+    SELECT DATE_FORMAT('2009-10-04 22:23:00', '%W %M %Y');  -- 'Sunday October 2009'
+    SELECT DATE_FORMAT('2007-10-04 22:23:00', '%H:%i:%s');  -- '22:23:00'
+    SELECT DATE_FORMAT('1900-10-04 22:23:00', '%D %y %a %d %m %b %j');  -- '4th 00 Thu 04 10 Oct 277'
+    SELECT DATE_FORMAT('1997-10-04 22:23:00', '%H %k %I %r %T %S %w');  -- '22 22 10 10:23:00 PM 22:23:00 00 6'
+    SELECT DATE_FORMAT('1999-01-01', '%X %V');  -- '1998 52'
+    SELECT DATE_FORMAT('2006-06-00', '%d');
+
+  # TIME_FORMAT(time,format)  | Возвращает значение time в виде строки с заказанным форматом format.
+    SELECT TIME_FORMAT('100:00:00', '%H %k %h %I %l');  -- '100 100 04 04 4'
+
+  # DATE(expr)  | Извлекает дату из значения expr (типа DATE или DATETIME), и возвращает в виде строки.
+    SELECT DATE('2003-12-31 01:02:03');  -- '2003-12-31'
+
+  # DATEDIFF(expr1, expr2)  | Возвращает разницу в днях между двумя датавременными значениями expr1 - expr2.
+    SELECT DATEDIFF('2007-12-31 23:59:59', '2007-12-30');
+
+  # DAYOFMONTH(date), DAY(date)  | Возвращает дату, которую извлекает из значения date, в диапазоне от 0 до 31.
+    SELECT DAYOFMONTH('2007-02-03');  -- 3
+
+  # DAYNAME(date)   | Возвращает имя дня недели, который берет из значения date.
+    SELECT DAYNAME('2007-02-03');  -- 'Saturday'
+
+  # DAYOFWEEK(date)  | Возвращает номер для недели, который берет из date, в диапазоне от 1 до 7.
+    SELECT DAYOFWEEK('2007-02-03');  -- 7
+
+  # DAYOFYEAR(date)  | Возвращает номер дня в году, который берет из date, в диапазоне от 1 до 366.
+    SELECT DAYOFYEAR('2007-02-03');  -- 34
+
+  # EXTRACT(unit FROM date)  | Извлекает тип unit из дата-временного значения date.
+    SELECT EXTRACT(YEAR FROM '2009-07-02');                 -- 2009
+    SELECT EXTRACT(YEAR_MONTH FROM '2009-07-02 01:02:03');  -- 200907
+    SELECT EXTRACT(DAY_MINUTE FROM '2009-07-02 01:02:03');  -- 20102 (день 2, часы 01, минуты 02)
+    SELECT EXTRACT(MICROSECOND FROM '2003-01-02 10:30:00.000123');  -- 123
+
+  # FROM_DAYS(N)  | Возвращает значение DATE, которое вычисляет по заданному кол-ву дней N, прошедших с Рождества Христова.
+    SELECT FROM_DAYS(730669);  -- '2007-07-03'
+
+  # FROM_UNIXTIME(unix_timestamp), FROM_UNIXTIME(unix_timestamp,format)
+  # Возвращает представление unix_timestamp либо в заказанном формате format, либо в 1 из 2 стандартных форматов
+    SELECT FROM_UNIXTIME(1196440219);      -- (строковой контекст) '2007-11-30 10:30:19'
+    SELECT FROM_UNIXTIME(1196440219) + 0;  -- (числовой контекст) 20071130103019.000000
+    SELECT FROM_UNIXTIME(UNIX_TIMESTAMP(), '%Y %D %M %h:%i:%s %x');  -- '2007 30th November 10:30:59 2007'
+
+  # GET_FORMAT({DATE|TIME|DATETIME}, {'EUR'|'USA'|'JIS'|'ISO'|'INTERNAL'})
+  # Возвращает format, который можно вставить в функции DATE_FORMAT() и STR_TO_DATE().
+    SELECT DATE_FORMAT('2003-10-03', GET_FORMAT(DATE,'EUR'));  -- '03.10.2003'
+    SELECT STR_TO_DATE('10.31.2003', GET_FORMAT(DATE,'USA'));  -- '2003-10-31'
+
+  # HOUR(time)  | Возвращает число чисов из дата-временного значения time, в диапазоне [0, 23].
+    SELECT HOUR('10:05:03');   -- 10
+    SELECT HOUR('272:59:59');  -- 272
+
+  # LAST_DAY(date)  | Возвращает последнее число текущего месяца из даты date.
+    SELECT LAST_DAY('2003-02-05');  -- '2003-02-28'
+    SELECT LAST_DAY('2004-02-05');  -- '2003-02-29'
+    SELECT LAST_DAY('2004-01-01 01:01:01');  -- '2004-01-31'
+    SELECT LAST_DAY('2003-03-32');  -- NULL
+
+  # MAKEDATE(year,dayofyear)  | Возвращает строку с DATE значением, скомпанованным из year и dayofyear.
+    SELECT MAKEDATE(2011,31), MAKEDATE(2011,32);     -- '2011-01-31', '2011-02-01'
+    SELECT MAKEDATE(2011,365), MAKEDATE(2014, 365);  -- '2011-12-31', '2014-12-31'
+    SELECT MAKEDATE(2011,0);  -- NULL
+
+  # MAKETIME(hour,minute,second)  | Возвращает строку с TIME значением, собранным из hour, minute, second.
+    SELECT MAKETIME(12, 15, 30.123);  -- '12:15:30.123'
+
+  # MICROSECOND(expr)  | Возвращает кол-во мкСек, которые берет из expr (TIME или DATETIME), диапазон [0 - 999999]
+    SELECT MICROSECOND('12:00:00.123456');             -- 123456
+    SELECT MICROSECOND('2009-12-31 23:59:59.000010');  -- 10
+
+  # MINUTE(time)  | Возвращает кол-во минут для времени time, в диапазоне от 0 до 59.
+    SELECT MINUTE('2008-02-03 10:05:03');  -- 5
+
+  # MONTH(date)   | Возвращает номер месяца для даты date, в диапазоне от 0 до 12.
+    SELECT MONTH('2008-02-03');  -- 2
+
+  # YEAR(date)  | Возвращает год для даты date, в диапазоне от 1000 до 9999.
+    SELECT YEAR('1987-01-01');
+
+  # MONTHNAME(date)  | Возвращает полное имя месяца, который берет из даты date.
+    SELECT MONTHNAME('2008-02-03');  -- 'Febrary'
+
+  # NOW([fsp]), LOCALTIMESTAMP(), LOCALTIME(), CURRENT_TIMESTAMP()
+  # Возвращает текущую дату и время. fsp - кол-во символов для микросекунд, от 0 до 6.
+    SELECT NOW();      -- (в строковом контексте) '2013-10-15 22:16:10'
+    SELECT NOW() + 0;  -- (в числовом контексте)  20131015221610
+
+  # PERIOD_ADD(P,N)  | Добавляет N месяцев к P (в формате YYMM или YYYYMM). p - не значение типа date.
+    SELECT PERIOD_ADD(200801,2);  -- 200803
+
+  # PERIOD_DIFF(P1,P2)  | Возвращает число месяцев между p1 и p2 (в формате YYMM или YYYYMM). p1 и p2 - не значения типа DATE.
+    SELECT PERIOD_DIFF(200802, 200703);  -- 11
+
+  # QUARTER(date)  | Возвращает квартал года, который берет из даты date, в диапазоне от 1 до 4.
+    SELECT QUARTER('2008-04-01');  -- 2
+
+  # SEC_TO_TIME(seconds)  | Возвращает значение типа TIME, созданное из кол-ва секунд seconds.
+    SELECT SEC_TO_TIME(2378);      -- '00:39:38'
+    SELECT SEC_TO_TIME(2378) + 0;  -- '3938'
+
+  # SECOND(time)  | Возвращает секунды, которые берет из time, в диапазоне от 0 до 59.
+    SELECT SECOND('10:05:03');  -- 3
+
+  # STR_TO_DATE(str,format)  | берет str и format, образует DATETIME значение, соотв. format'у.
+    SELECT STR_TO_DATE('01,5,2013', '%d,%m,%Y');    -- '2013-05-01'
+    SELECT STR_TO_DATE('May 1, 2013', '%M %d,%Y');  -- '2013-05-01'
+    SELECT STR_TO_DATE('a09:30:17','a%h:%i:%s');    -- '09:30:17'
+    SELECT STR_TO_DATE('a09:30:17','%h:%i:%s');     -- NULL
+    SELECT STR_TO_DATE('09:30:17a','%h:%i:%s');     -- '09:30:17'
+    SELECT STR_TO_DATE('abc','abc');                -- '0000-00-00'
+    SELECT STR_TO_DATE('9', '%m');                  -- '0000-09-00'
+    SELECT STR_TO_DATE('9', '%s');                  -- '00:00:09'
+    SELECT STR_TO_DATE('00/00/0000', '%m/%d/%Y');   -- '0000-00-00'
+    SELECT STR_TO_DATE('04/31/2004', '%m/%d/%Y');   -- '2004-04-31'
+
+  # SUBTIME(expr1,expr2)  | Возвращает разность expr1 - expr2, где expr1 - TIME/DATETIME, expr2 - TIME.
+    SELECT SUBTIME('2007-12-31 23:59:59.999999', '1 1:1:1.000002');  -- '2007-12-30 22:58:58.999997'
+    SELECT SUBTIME('01:00:00.999999', '02:00:00.999998');  -- '-00:59:59.999999'
+
+  # SYSDATE()  | Возвращает текущую время и дату в одном из двух форматов.
+    SELECT NOW(), SLEEP(2), NOW();          -- '2013-10-16 00:41:15', '2013-10-16 00:41:15'
+    SELECT SYSDATE(), SLEEP(2), SYSDATE();  -- '2013-10-16 00:41:28', '2013-10-16 00:41:30'
+
+  # TIME_TO_SEC(time)  | Возвращает аргумент time, конвертированный в секунды.
+    SELECT TIME_TO_SEC('22:23:00');  -- 80580
+    SELECT TIME_TO_SEC('00:39:38');  -- 2378
+
+  # TIME(expr)   | Возвращает в виде строки TIME часть аргумента expr.
+    SELECT TIME('2003-12-31 01:01:03');         -- '01:02:03'
+    SELECT TIME('2003-12-31 01:02:03.000123');  -- '01:02:03.000123'
+
+  # TIMEDIFF(expr1,expr2)  | Возвращает expr1 - expr2 (тип TIME) где expr1 и expr2 - одинаковые TIME/DATETIME значения
+    SELECT TIMEDIFF('2000:01:01 00:00:00', '2000:01:01 00:00:00.000001');  -- '-00:00:00.000001'
+    SELECT TIMEDIFF('2008-12-31 23:59:59.000001', '2008-12-30 01:01:01.000002');  -- '46:58:57.999999'
+
+  # TIMESTAMP(expr), TIMESTAMP(expr1,expr2)
+  # возвращает expr в виде DATETIME значения, и прибавляет к нему TIME значение expr2.
+    SELECT TIMESTAMP('2003-12-31');                      -- '2003-12-31 00:00:00'
+    SELECT TIMESTAMP('2003-12-31 12:00:00','12:00:00');  -- '2004-01-01 00:00:00'
+
+  # TIMESTAMPADD(unit,interval,datetime_expr)  | Прибавляет int значение interval к DATE или DATETIME значению datetime_expr.
+    SELECT TIMESTAMPADD(MINUTE, 1, '2003-01-02');   -- '2003-01-02 00:01:00'
+    SELECT TIMESTAMPADD(WEEK, 1, '2003-01-02');     -- '2003-01-09'
+
+  # TIMESTAMPDIFF(unit,datetime_expr1,datetime_expr2)
+  # Возвращает разность datetime_expr2 - datetime_expr1, оба типа DATE/DATETIME.
+    SELECT TIMESTAMPDIFF(MONTH, '2003-02-01', '2003-05-01');  -- 3
+    SELECT TIMESTAMPDIFF(YEAR, '2002-05-01', '2003-05-01');   -- 1
+    SELECT TIMESTAMPDIFF(MINUTE, '2003-02-01', '2003-05-01 12:05:55');   -- 128885
+
+  # TO_DAYS(date)  | Возвращает количество дней, прошедших по дату date с Рождества Христова.
+    SELECT TO_DAYS(950501);         -- 728779
+    SELECT TO_DAYS('2007-10-07');   -- 733321
+
+  # TO_SECONDS(expr)  | Возвращает для expr (DATE/DATETIME) количество секунд, прошедших с Рождества Христова.
+    SELECT TO_SECONDS(950501);        -- 62966505600
+    SELECT TO_SECONDS('2009-11-29');  -- 63426672000
+    SELECT TO_SECONDS('2009-11-29 13:43:32');  -- 63426721412
+    SELECT TO_SECONDS(NOW());  -- 63549109878
+
+  # UNIX_TIMESTAMP([date])  | возвращает UNIX timestamp для указанной date (по умолчанию = NOW())
+    SELECT UNIX_TIMESTAMP();                       -- 138187917
+    SELECT UNIX_TIMESTAMP('1987-01-24 04:00:00');  -- 538444800
+
+  # UTC_DATE()  | Возвращает текущую дату, переведенную в UTC, в 1 из 2 форматов.
+    SELECT UTC_DATE(), UTC_DATE + 0;
+
+  # UTC_TIME([fsp])  | Возвращает текущее время, переведенное в UTC, в 1 из 2 форматов.
+    SELECT UTC_TIME(), UTC_TIME + 0;
+
+  # UTC_TIMESTAMP([fsp])  | Возвращает текущие время и дату, переведенные в UTC, в 1 из 2 форматов.
+    SELECT UTC_TIMESTAMP(), UTC_TIMESTAMP() + 0;
+
+  # WEEK(date[,mode])  | Возвращает кол-во недель, прошедших с начала года, для даты date. Аргумент mode - для настроки (см. ниже в ИНФОРМАЦИИ)
+    SELECT WEEK('2008-02-20');     -- 7
+    SELECT WEEK('2008-02-20', 0);  -- 7
+    SELECT WEEK('2008-02-20',1 );  -- 1
+    SELECT WEEK('2008-12-31',1);   -- 53
+
+  # WEEKDAY(date)  | Возвращает номер дня недели для даты date, в диапазоне от 0 = Monday ... 6 = Sunday.
+    SELECT WEEKDAY('1987-01-24 04:00:00');     -- 5
+    SELECT WEEKDAY('2007-11-06');              -- 1
+
+  # WEEKOFYEAR(date)  | Эквивалент WEEK(date,3).
+    SELECT WEEKOFYEAR('1987-01-24 04:00:00');  -- 4
+
+  # YEARWEEK(date), YEARWEEK(date,mode)  |   возвращает год и номер недели в году, слитно
+    SELECT YEARWEEK('1987-01-24 04:00:00');  -- 198703
+    SELECT YEARWEEK('1987-01-01');           -- 198652
+
+
+-- Функции и операции для приведения типов
+
+  # Оператор BINARY  | приводит строку к бинарному виду
+    SELECT 'a' = 'A';          -- 1
+    SELECT BINARY 'a' = 'A';   -- 0
+    SELECT 'a' = 'a ';         -- 1
+    SELECT BINARY 'a' = 'a ';  -- 0
+
+  # CONVERT(expr,type), CONVERT(expr USING transcoding_name)  | Приводит выражение expr к типу type.
+    SELECT CONVERT('abc' USING utf8);  -- приводит 'abc' к кодировке utf8
+    -- SELECT 'A' LIKE CONVERT(blob_col USING utf8) FROM tbl_name;  -- организация регистронечувствительного поиска в бинарной строке
+    SET @str = BINARY 'New York';
+      SELECT LOWER(@str), LOWER(CONVERT(@str USING utf8));  -- 'New York', 'new york' - без CONVERT ф-ия LOWER не работает
+    CREATE TABLE test.new_table SELECT CAST('2000-01-01' AS DATE);  -- создание колонки указанного типа
+    SELECT 1+'1';  -- 2 (строка в мат. контексте приводится к числу)
+    SELECT CONCAT('Hi ',2);  -- 'Hi 2' (числа в текст. контексте приводится к строке).
+
+
+-- Некоторые функции для шифрования и сжатия
+
+  # ENCODE(str,pass_str)  | зашифровать str в бинарную строку, используя pass_str в качестве пароля
+  # DECODE(crypt_str,pass_str)  | расшифровать ранее зашифрованную str, используя pass_str в качестве пароля для расшифровки
+    SET @str = ENCODE('John','password');
+    SELECT @str;  -- 'U?l'
+    SELECT DECODE(@str,'иван');  -- (введен неправильный пароль) 'ч►>'
+    SELECT DECODE(@str,'password');  -- 'John'
+
+  # COMPRESS(string_to_compress)  | сжимает строку и возвращает результат в виде бинарной строки
+  # UNCOMPRESS(string_to_uncompress)  | разжимает строку, сжатую ранее функцией COMPRESS()
+  # UNCOMPRESSED_LENGTH(compressed_string)  | возвращает длину строки, которая у нее была до того, как она была сжата
+    SET @var = COMPRESS('Иван');
+    SELECT @var;                  --  'x?>0a│♂←.i♣ →·♣o'
+    SELECT UNCOMPRESSED_LENGTH(@var);  -- 8 байт
+    SELECT UNCOMPRESS(@var);  -- 'Иван'
+
+  # MD5(str)  | возвращает 128-битную MD5 контрольную сумму для строки str
+    SELECT MD5('Иван');  --  acd41b5fc27242d19c244185ba6732f2
+
+  # PASSWORD(str)  | возвращает хэш строки str в виде не бинарной строки с кодировкой соединения
+    SET @str = PASSWORD('pass');
+    SELECT @str;  -- '*196BDEDE2AE4F84CA44C47D54D78478C7E2BD7B7'
+
+
+-- Информационные функции
+
+  # BENCHMARK(count,expr)  | выполняет выражение expr непрерывно count раз
+    SELECT BENCHMARK(10000000,ENCODE('hello','goodbye'));  -- 1.53 секунды
+
+  # CHARSET(str)  | возвращает кодировку строки str
+    SELECT CHARSET('abc');   -- utf8
+    SELECT CHARSET('Иван');  -- utf8
+
+  # COLLATION(str)  | возвращает collation строки str
+    SELECT COLLATION('abc');   -- utf8_general_ci
+    SELECT COLLATION('Иван');  -- utf8_general_ci
+
+  # COERCIBILITY(str)  | возвращает collation coercibility строки str (флаг от 0 до 5)
+    SELECT COERCIBILITY('abc' COLLATE utf8_general_ci);    -- 0
+    SELECT COERCIBILITY(USER());                           -- 3
+    SELECT COERCIBILITY('abc');                            -- 4
+
+  # CONNECTION_ID()  | возвращает ID соединения
+    SELECT CONNECTION_ID();  -- 6
+
+  # USER()          | имя и хост пользователя, указанные при подключении к серверу в формате 'user@localhost'
+  # CURRENT_USER()  | возвращает строку с именем и хостом текущего пользователя в формате 'user@localhost'
+    -- для этого примера надо подключиться к серверу строкой mysql -u ivan
+    SELECT USER();  -- 'ivan@localhost'
+    SELECT * FROM mysql.user;  -- 'ERROR 1142 (42000): SELECT command denied to user ''@'localhost' for table 'user''
+    SELECT CURRENT_USER();  -- ''@localhost (т.е. на самом деле, т.к. аккаунта ivan@localhost на сервере нет, подключение было выполнено автоматом от имени анонимного пользователя)
+
+  # DATABASE()  | возвращает имя текущей базы данных по умолчанию, или NULL, если её нет
+    USE test;
+    SELECT DATABASE();  -- 'test'
+
+  # FOUND_ROWS()  | после SELECT ... LIMIT показывает, сколько бы это выражение вернуло строк без LIMIT
+    USE test;
+    SELECT * FROM shirts;                              -- 3 rows
+    SELECT SQL_CALC_FOUND_ROWS * FROM shirts LIMIT 2;  -- 2 rows
+    SELECT FOUND_ROWS();                               -- 3 rows
+
+  # LAST_INSERT_ID([expr])  | возвращает последнее успешно вставленное autoincrement значение
+    SELECT LAST_INSERT_ID();  -- 0
+
+  # ROW_COUNT()  | после DML-выражения вернет кол-во затронутых им строк
+    INSERT INTO shirts VALUES('shirt for sport', 'large');
+    SELECT ROW_COUNT();  -- 1 (строка затронута, читай "вставлена").
+
+  # VERSION()  | возвращает версию сервера MySQL
+    SELECT VERSION();  -- '5.6.13'
+
+-- Разные функции (не попавшие в другие разделы, выборочно)
+
+  # DEFAULT(col_name)     | Возвращает значение по умолчанию для указанной колонки
+    USE test;
+
+    -- Создать таблицу с DEFAULT значением на колонке name, а также процедуру, заполняющую эту
+    --   таблицу 100 строками типа ('Кролик1',1),('Кролик2',2) ... ('Кролик100',100)
+    --   не забыть сменить delimiter
+    CREATE TABLE rabbits (name VARCHAR(20) DEFAULT 'Иван', age TINYINT UNSIGNED);
+    CREATE PROCEDURE fill_table_rabbits()
+      COMMENT 'Добавляет в таблицу test.rabbits 100 строк вроде Кролик1 - 1, Кролик2 - 2'
+      BEGIN
+        SET @rabbit_name = 'Кролик0';
+        SET @rabbit_age = 0;
+        REPEAT
+          SET @rabbit_age = @rabbit_age + 1;
+          SET @rabbit_name = INSERT(@rabbit_name,7,CHAR_LENGTH(CONVERT(@rabbit_age,CHAR)),@rabbit_age);
+          INSERT INTO test.rabbits (name,age) VALUES(@rabbit_name, @rabbit_age);
+        UNTIL @rabbit_age >= 100 END REPEAT;
+      END;
+    CALL fill_table_rabbits();
+
+    -- провирить, успешно ли заполнилась таблица данными
+    SELECT * FROM test.rabbits;
+
+    -- Заменить в строке с age = 1 значение name с 'Кролик1' на 'Иван1', и проверить результат
+    UPDATE test.rabbits SET name = CONCAT(DEFAULT(name),'1') WHERE age = 1;
+    SELECT * FROM test.rabbits;
+
+
+  # INET_ATON(expr)   | принимает ipv4 адрес типа '10.0.0.1', возвращает число - сетевой порядок байтов
+    SELECT INET_ATON('10.0.5.9');  -- 167773449
+
+  # INET_NTOA(expr)   | противоположность INET_ATON - принимает число - сетевой порядок байтов, возвращает строку с ipv4 адресом
+    SELECT INET_NTOA(167773449);  -- '10.0.5.9'
+
+  # IS_IPV4(expr)     | возвращает 1, если expr - допустимый ipv4 адрес. Иначе 0.
+    SELECT IS_IPV4('10.0.5.9'), IS_IPV4('10.0.5.256');  -- 1, 0
+
+  # IS_IPV6(expr)     | возвращает 1, если expr - допустимый ipv6 адрес. Иначе 0.
+    SELECT IS_IPV6('10.0.5.9'), IS_IPV6('::1');  -- 1, 0
+
+  # NAME_CONST(name,value)  | возвращает value в колонке с именем name
+    SELECT NAME_CONST('myname', 14);  -- возвращает столбец с именем myname и значением 14
+
+  # SLEEP(duration)       | делает паузу на duration секунд
+    SELECT SLEEP(5);  -- зависает примерно на 5 секунд
+
+
+--  Функции (выборочно) и модификаторы для использования в атрибуте GROUP BY (включая функции-агрегаторы)
+
+  # AVG([DISTINCT] expr)  | Возвращает среднее значение для expr (DISTINCT - считать только уникальные значения)
+    SELECT AVG(amount) FROM sakila.payment WHERE payment_id <= 100;  -- 4.34
+
+  # COUNT(DISTINCT expr,[expr...])  | возвращает кол-во строк отдельно в каждом из expr (DISTINCT - считать только уникальные значения)
+    SELECT COUNT(*) FROM sakila.payment;  -- 16049
+    SELECT COUNT(*) FROM sakila.payment WHERE payment_id <= 100;  -- 100
+    -- Находит количество платежей с уникальными суммами из 100 платежей
+      SELECT COUNT(DISTINCT amount) FROM sakila.payment WHERE payment_id <= 100;  -- 11
+
+  # GROUP_CONCAT(expr)  | возвращает строку, в которой все значения столбца идут через разделитель (в прямом или обратном порядке)
+    /*
+                             GROUP_CONCAT([DISTINCT] expr [,expr ...]
+                                 [ORDER BY {unsigned_integer | col_name | expr}
+                                     [ASC | DESC] [,col_name ...]]
+                                 [SEPARATOR str_val])
+     */
+    SELECT GROUP_CONCAT(DISTINCT title ORDER BY title DESC SEPARATOR ', ')
+      FROM sakila.film_list WHERE FID <= 5;
+        -- Результат: 'AFRICAN EGG, AFFAIR PREJUDICE, ADAPTATION HOLES, ACE GOLDFINGER, ACADEMY DINOSAUR'
+
+  # MAX([DISTINCT] expr)  | возвращает максимальное значение expr (DISTINCT - считать только уникальные значения)
+    SELECT MAX(length) FROM sakila.film_list
+      WHERE FID <= 10;  -- 169 (возвращает МАХ длину фильма из 10 доступных)
+    SELECT MAX(title) FROM sakila.film_list
+      WHERE FID <= 10;  -- 'ALADDIN CALENDAR' (возвращает максимальное название фильма - строковое значение - из 10 доступных)
+
+  # MIN([DISTINCT] expr)  | возвращает минимальное значение expr (DISTINCT - считать только уникальные значения)
+    SELECT MIN(length) FROM sakila.film_list
+      WHERE FID <= 10;  -- 48 (возвращает MIN длину фильма из 10 доступных)
+    SELECT MIN(title) FROM sakila.film_list
+      WHERE FID <= 10;  -- 'ACADEMY DINOSAUR' (возвращает минимальное название фильма - строковое значение - из 10 доступных)
+
+  # SUM([DISTINCT] expr)  | возвращает сумму значений в expr (DISTINCT - считать только уникальные значения)
+    SELECT SUM(price) FROM sakila.film_list
+      WHERE FID <= 10;  -- 35.10 (суммирует стоимость указанных 10 фильмов)
+
+
+-- Примеры применения атрибута GROUP BY
+
+  # Посчитать суммарный price представленных фильмов для каждого жанра кино (category), отсортировать по результату
+    SELECT category, SUM(price) AS sum FROM sakila.film_list GROUP BY category ORDER BY sum;
+
+  # То же самое, но с применением WITH ROLLUP - добавляет доп. строку с итогом: суммарным price по всем жанрам
+    SELECT category, SUM(price) AS sum
+      FROM sakila.film_list GROUP BY category WITH ROLLUP;  -- 2969.03 - это суммарный price, который посчитал модификатор WITH ROLLUP
+
+  # Пример работы WITH ROLLUP при анализе не 1-й колонки (как выше), а нескольких
+    # Чтобы понять, как это работает, см. результат запроса и ИНФОРМАЦИЮ внизу
+    SELECT category, rating, SUM(price) AS sum
+      FROM sakila.film_list GROUP BY category, rating WITH ROLLUP;  -- см. результат запроса
+
+  # ORDER BY запрещено использовать с WITH ROLLUP. Но зато можно использовать ASC и DESC:
+    SELECT category, rating, SUM(price) AS sum
+      FROM sakila.film_list GROUP BY category DESC, rating DESC WITH ROLLUP;
+
+  # Демонстрация того, как LIMIT срезает строки, добавленные WITH ROLLUP (использовать их вместе не рекомендуется)
+    SELECT category, rating, SUM(price) AS sum
+      FROM sakila.film_list GROUP BY category DESC, rating DESC
+      WITH ROLLUP LIMIT 94;
+
+  # Колонка, отсутствующая в GROUP BY, может присутствовать в списке SELECT (см. об этом в ИНФОРМАЦИИ)
+    # Сервер тогда сам выбирает, какие значения этой колоки (здесь - title) показать в результирующей таблице
+    SELECT title, category, rating, SUM(price) AS sum
+      FROM sakila.film_list GROUP BY category DESC, rating DESC WITH ROLLUP;
+
+
+-- Примеры точных вычислений
+
+  # Наглядный пример отличия точных значений от не точных.
+    SELECT (.1 + .2) = .3;        -- 1 (это сравнение дает TRUE, потому что значения справа и слева точные)
+    SELECT (.1E0 + .2E0) = .3E0;  -- 0 (это сравнение дает FALSE, потому что выражение содержит не точные значения)
+
+  # Еще один способ увидеть отличия точных значений от неточных, сложить маленькое число много раз
+    CREATE PROCEDURE add_small_val_alottimes ()  -- не забыть сменить delimiter
+      BEGIN
+        DECLARE i INT DEFAULT 0;
+        DECLARE d DECIMAL(10,4) DEFAULT 0;
+        DECLARE f FLOAT DEFAULT 0;
+        WHILE i < 10000 DO
+        SET d = d + .0001;
+        SET f = f + .0001E0;
+        SET i = i + 1;
+        END WHILE;
+        SELECT d, f;
+    END;
+    CALL add_small_val_alottimes();  -- d = 1.0000;  f = 1.0005  (d - точное, f - не точное, поэтому результат у него и не = 1)
+
+  # Умножение имеет размер S1 + S2, где S1, S1 - размеры умножаемых чисел.
+    SELECT .01 * .01;  -- 0.0001
+    SELECT 15 * .001;  -- 0.015
+
+  # Примеры округления для точных и не точных значений
+    SELECT ROUND(2.5), ROUND(-2.5);       -- (точные значения)    3, -3
+    SELECT ROUND(2.5E0), ROUND(-2.5E0);   -- (не точные значения) 2, -2
+
+  # Разница в поведении при вставке выходящих за ракми диапазона значений в строгом и не строгом SQL-режимах
+
+    # В строгом SQL-режиме
+      DROP TABLE IF EXISTS t;              -- удалить таблицу t
+      SET sql_mode = 'STRICT_ALL_TABLES';  -- установить строгий SQL-режим
+      CREATE TABLE t (i TINYINT);          -- создать табл. с колонкой типа TINYINT (-127 .. 127)
+      INSERT INTO t SET i = 128;           -- попробовать вставить в нее значение 128 - ОШИБКА!
+
+    # В не строгом SQL-режиме
+      DROP TABLE IF EXISTS t;      -- удалить таблицу t
+      SET sql_mode = '';           -- установить не строгий SQL-режим
+      CREATE TABLE t (i TINYINT);  -- создать табл. с колонкой типа TINYINT (-127 .. 127)
+      INSERT INTO t SET i = 128;   -- попробовать вставить в нее значение 128
+      SELECT i FROM t;  -- 127     -- посмотреть результат - значение было обрезано до 127
+
+  # Разница в поведении, если INSERT содержит выражение, в котором происходит деление на 0,
+  #  для нестрогого SQL-режима, и для строгого SQL-режима + ERROR_FOR_DIVISION_BY_ZERO
+
+    # В строгом SQL-режиме + ERROR_FOR_DIVISION_BY_ZERO
+      DROP TABLE IF EXISTS t;              -- удалить таблицу t
+      SET sql_mode = 'STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO';
+      CREATE TABLE t (i TINYINT);          -- создать табл. с колонкой типа TINYINT (-127 .. 127)
+      INSERT INTO t SET i = 1 / 0;         -- операция INSERT содержащая деление на 0 - ОШИБКА!
+
+    # В не строгом SQL-режиме
+      DROP TABLE IF EXISTS t;              -- удалить таблицу t
+      SET sql_mode = '';                   -- установить не строгий SQL-режим
+      CREATE TABLE t (i TINYINT);          -- создать табл. с колонкой типа TINYINT (-127 .. 127)
+      INSERT INTO t SET i = 1 / 0;         -- операция INSERT содержащая деление на 0 - ОШИБКА!
+      SELECT i FROM t;                     -- посмотреть результат, а он: NULL
+
+  # Демонстрация, что в MySQL >= 5.0.3 точные литералы обрабатываются, как DECIMAL значения
+    SELECT VERSION();                           -- проверка версии сервера MySQL: 5.6.13
+    DROP TABLE IF EXISTS t;                     -- удалить таблицу t, если существует
+    CREATE TABLE t SELECT 2.5 AS a, 25E-1 AS b; -- создать таблицу
+    DESCRIBE t;                                 -- столбец а: decimal(2,1); столбец b: double
+
+  # Если аргумент агрегирующей функции - точное число, то результат тоже будет точным числом
+    DROP TABLE IF EXISTS t;                                -- удалить таблицу t, если существует
+    CREATE TABLE t (i INT, d DECIMAL, f FLOAT);            -- создать таблицу со столбцами 3-х типов
+    INSERT INTO t VALUES(1,1,1);                           -- вставить в каждый из них по 1 значению
+    CREATE TABLE y SELECT AVG(i), AVG(d), AVG(f) FROM t;   -- создать новую таблицу агрегирующих функций той таблицы
+    DESCRIBE y;  -- AVG(i): DECIMAL(14,4); AVG(d): DECIMAL(14,4); AVG(f): DOUBLE
+
+
+/* --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+Ссылки:
+> Официальное руководство по функциям и операторам SQL:
+    http://dev.mysql.com/doc/refman/5.6/en/functions.html
+
+*****************************************************
+Оглавление:
+
+  > Общая информация
+  > Приведение типов во время выполнения выражения
+  > Операторы
+
+          > Арифметические
+              +                        | плюс
+              -                        | минус
+              *                        | умножить
+              /                        | разделить
+          > Операторы присвоения
+              =                        | назначить значение
+              :=                       | назначить значение
+          > Сравнения
+              =                        | равно
+              <=>                      | NULL-безопасное равно
+              !=, <>                   | не равно
+              <=                       | меньше равно
+              <                        | меньше
+              >=                       | больше равно
+              >                        | больше
+          > Битовые
+              <<                       | левый сдвиг
+              >>                       | правый сдвиг
+              &                        | битовое И
+              ~                        | инвертировать биты
+              |                        | битовое ИЛИ
+              ^                        | битовое XOR
+          > Логические
+              AND, &&                  | логическое И
+              OR, ||                   | логическое ИЛИ
+              NOT, !                   | логическое НЕ
+              XOR                      | логическое XOR
+          > Прочие
+              BETWEEN ... AND ...      | проверить, находится ли значение в пределах указанного диапазона
+              NOT BETWEEN ... AND ...  | проверить, находится ли значение вне указанного диапазона
+              LIKE                     | простое сопоставление с шаблоном
+              NOT LIKE                 | отрицательное простое сопоставление с шаблоном
+              BINARY                   | перевести строку в бинарную строку
+              CASE                     | оператор case (аналог оператора switch из php)
+              DIV                      | округление до INT (аналог FLOOR()), безопасное для BIGINT
+              IS NOT NULL              | тест значения на NOT NULL
+              IS NULL                  | тест значения на NULL
+              IS                       | сравнение значения с boolean-значением (0, 1 или unknown)
+              IS NOT                   | тоже, что IS, только результат (boolean) меняется на обратный
+              %, MOD                   | остаток от деления
+              REGEXP                   | сопоставление с шаблоном - регулярным выражением
+              NOT REGEX                | отрицательное сопоставление с шаблоном - регулярным выражением
+              RLIKE                    | (синоним REGEXP)
+              SOUNDS LIKE              | сравнение звуков
+
+  > Функции для сравнения
+
+          COALESCE(value,...)         | Возвращает 1-е не нулевое value в списке.
+          GREATEST(value1,value2,...) | Возвращает наибольший value из всех.
+          LEAST(value1,value2,...)    | Возвращает наименьший value из всех.
+          expr IN(value,...)          | Возвращает 1, если expr равен хотя бы 1-му из value в списке. Иначе 0.
+          NOT IN(value,...)           | Возвращает 0, если expr равен хотя бы 1-му из value в списке. Иначе 1.
+          INTERVAL(N,N1,N2,N3,...)    | Возвращает 0, если N < N1; возвращает 1 если N < N2; и так далее.
+          ISNULL(expr)                | Если expr содержит NULL, возвращает 1. Иначе 0.
+          STRCMP(expr1,expr2)         | Возвращает -1, если expr1 < expr2; 0 если они равны; 1 если expr1 > expr2.
+
+  > Функции для управления потоком (CASE, IF ... )
+
+          IF(expr1,expr2,expr3)  | Если expr1 = true (<> 0 и <> NULL), то IF возвращает expr2. Иначе - expr3.
+          IFNULL(expr1,expr2)  | Если expr1 не NULL, то IFNULL вернет expr1. Иначе - expr2.
+          NULLIF(expr1,expr2)  | Если expr1 = expr2, возвращает NULL. Иначе - возвращает expr1.
+
+  > Строковые функции
+
+          ASCII(str)              | (только 1-байтные кодировки) Возвращает числовое значение самого левого символа в строке.
+          BIN(N)                  | Возвращает строку, представляющую бинарное значение целого числа N типа BIGINT.
+          BIT_LENGTH(str)         | Возвращает длину строки в битах
+          CHAR_LENGTH(str)        | Возвращает длину строки str, измеряемую в символах. Многобайтовый символ считается, как 1.
+          LENGTH(str)             | Возвращает длину строки str в байтах.
+          CHAR(N,... [USING charset_name])  | Возвращает строку (бинарную), каждое N понимает, как код символа их кодировки charset_name.
+          CONCAT(str1,str2,...)   | Склеивает строки str.
+          FIELD(str,str1,str2,str3,...)  | Возвращает позицию str в списке из строк str1, str2 ..., либо 0 (если не найдено)
+          FORMAT(X,D[,locale])    | Приводит число к формату вроде '#,###,###.##', ограничивает до D чисел после запятой, и возвращает результат в виде строки.
+          TO_BASE64(str)          | Кодирует строку str алгоритмом base-64
+          FROM_BASE64(str)        | Декодирует строку str, закодированную алгоритмом base-64
+          HEX(str), HEX(N)        | Возвращает 16-ричное представление строки str или числа N
+          UNHEX(str)              | Переводит строку str из 16-ричного представления в нормальное.
+          INSERT(str,pos,len,newstr)  | Заменяет в str, начиная с pos, len символов на newstr
+          ELT(N,str1,str2,str3,...)  | Возвращает N-ный элемент из списка str. Если N = 1, то str1. Если N = 2, то str2. И т.д.
+          FIND_IN_SET(str,strlist)  | Возвращает число в диапазоне от 1 до N, где N - это количество подстрок в strlist (разделенных запятыми), а возвращаемое число - номер подстроки (считает слева-направо), совпадающей со str.
+          INSTR(str,substr)       | Возвращает позицию первого вхождения строки substr строку str.
+          LOCATE(substr,str[,pos])  | возвращает позицию первого вхождения подстроки substr в строку str, начиная с позиции pos.
+          LEFT(str,len)           | Возвращает подстроку строки str длиной len символов, начиная слева.
+          RIGHT(str,len)          | Возвращает подстроку строки str длиной len символов, начиная справа.
+          LOAD_FILE(file_name)    | Читает файл и возвращает его содержимое в виде строки.
+          LOWER(str)              | Возвращает строку str в нижнем регистре.
+          UPPER(str)              | Возвращает строку str в верхнем регистре.
+          LPAD(str,len,padstr)    | Возвращает строку str, к которой слева прилепляется строка padstr, так что итоговая строка должна иметь размер len символов.
+          RPAD(str,len,padstr)    | Возвращает строку str, к которой справа прилепляется строка padstr, так что итоговая строка должна името размер len символов.
+          LTRIM(str)              | Возвращает строку str, из которой удалены все пробелы слева.
+          RTRIM(str)              | Возвращает строку str, из которой удалены все пробелы справа.
+          TRIM([{BOTH | LEADING | TRAILING} [remstr] FROM] str), TRIM([remstr FROM] str)  | Возвращает строку str, из которой удалены все суффиксы и префиксы вида remstr (по умолчанию ' ')
+          OCT(N)                  | Возвращает строковое представление восьмеричного числа N.
+          ORD(str)                | Если самый левый символ в str - многобайтовый - возвращает код для этого символа, рассчитанный по спец. формуле.
+          QUOTE(str)              | Заключает строку в одинарные кавычки, и экранирует с помощью обратного слэша внутри строки следующее: \ ' NUL Control+Z
+          REPEAT(str,count)       | Возвращает строку, состоящую из строки str, повторенной count раз.
+          REPLACE(str,from_str,to_str)  | Возвращает строку str, в которой заменяет все вхождения подстроки from_str на подстроку to_str.
+          REVERSE(str)            | Возвращает строку str, в которой порядок символов заменен на обратный.
+          SOUNDEX(str)            | Возвращает soudex строку из str.
+          SPACE(N)                | Возвращает строку, состоящую из N пробелов.
+          STRCMP()                | сравнивает 2 строки (см. описание в разделе "функции для сравнения")
+          SUBSTRING_INDEX(str,delim,count)  | Возвращает подстроку строки str, в которую разделитель delim входит count раз.
+          WEIGHT_STRING()         | Рассчитывает вес строки.
+
+  > Математические функции
+
+          SIN(x)                     | вернуть синус от аргумента
+          COS(x)                     | возвращает косинус
+          TAN(x)                     | вернуть тангенс от аргумента
+          COT(x)                     | возвращает котангенс
+          ACOS(x)                    | возвращает арк косинус
+          ASIN(x)                    | возвращает арк синус
+          ATAN(x)                    | возвращает арк тангенс
+          ATAN(x,y), ATAN2(x,y)      | возвращает арк тангенс от 2-х аргументов
+          ABS(x)                     | возвращает значение по модулю
+          CEIL(x)                    | округление в большую сторону.
+          FLOOR(x)                   | округление в меньшую сторону
+          ROUND(x), ROUND(x,d)       | округлить аргумент x до d десятичных знаков (d = 0 по умолчанию)
+          CONV(N,from_base,to_base)  | конвертирует числа между разными числовыми основаниями
+          CRC32(expr)                | вычисляет cyclic redundancy check value
+          RADIANS(x)                 | аргумент конвертируется в радианы
+          DEGRESS(x)                 | конвертирует радианы в градусы
+          EXP(x)                     | возвращает базу натурального логарифма e, возведенную в указанную степерь
+          LN(x)                      | вернуть натуральный логарифм (с базой e)
+          LOG10(x)                   | вернуть десятичный логарифм (с базой 10)
+          LOG2()                     | вернуть логарифм с 2 в основании
+          LOG(x,b)                   | вернуть логарифм от x с базой b (если b не указан, то == e)
+          MOD(N,M)                   | вернуть остаток от деления N на M
+          PI()                       | вернуть число ПИ
+          POW(x,y)                   | вернуть аргумент x, возведенный в степень y
+          SQRT(x)                    | вернуть квадратный корень от x
+          RAND(), RAND(N)            | вернуть рандумное число с плавающей запятой
+          SIGN(x)                    | вернуть знак аргумента x (-1, 0, 1)
+          TRUNCATE(x,d)              | обрезать x до d десятичных разрядов (по умолчанию d = 0)
+
+  > Функции для работы с датой и временем
+
+          ADDDATE(date,INTERVAL expr unit), ADDDATE(expr,days)  | прибавляет expr единииц unit (или days) к дата-временному значению date.
+          SUBDATE(date,INTERVAL expr unit), SUBDATE(expr,days)  | вычитает expr единииц unit (или days) к дата-временному значению date.
+          ADDTIME(expr1,expr2)                     | Прибавляет expr2 к expr1, и возвращает результат, где expr1 - TIME/DATETIME, expr2 - TIME.
+          CONVERT_TZ(dt,from_tz,to_tz)             | Конвертирует дата-временное значение tz из временной зоны from_tz во временную зону to_tz.
+          CURDATE()                                | Возвращает текущую дату. Формат зависит от того, в каком контексте вызвана фукнция.
+          CURTIME([fsp])                           | Возвращает текущее время. Формат зависит от того, в каком контексте вызвана фукнция. 0 <= fsp <= 6, возвращать ли результат с дробными секундами.
+          DATE_ADD(date,INTERVAL expr unit)        | Прибавляет к значению date дата-временного типа expr единиц типа unit.
+          DATE_FORMAT(date,format)                 | Возвращает значение date в виде строки с заказанным форматом format (см. описание в ИНФОРМАЦИИ)
+          TIME_FORMAT(time,format)                 | Возвращает значение time в виде строки с заказанным форматом format (см. описание в ИНФОРМАЦИИ)
+          DATE_SUB(date,INTERVAL expr unit)        | Вычитает из значения date типа datetime - expr единиц unit.
+          DATE(expr)                               | Извлекает дату из значения expr (типа DATE/DATETIME), и возвращает в виде строки.
+          DATEDIFF(expr1, expr2)                   | Возвращает разницу в днях между двумя датавременными значениями expr1 - expr2.
+          DAYOFMONTH(date), DAY(date)              | Возвращает дату, которую извлекает из значения date, в диапазоне от 0 до 31. 0 допустим для нулевых незаконченных дат.
+          DAYNAME(date)                            | Возвращает имя дня недели, который берет из значения date.
+          DAYOFWEEK(date)                          | Возвращает номер для недели, который берет из date, в диапазоне от 1 до 7. (1 = Sunday, 2 = Monday ... 7 = Saturday).
+          DAYOFYEAR(date)                          | озвращает номер дня в году, который берет из date, в диапазоне от 1 до 366.
+          EXTRACT(unit FROM date)                  | Извлекает тип unit из дата-временного значения date. unit те же, что в DATE_ADD().
+          FROM_DAYS(N)                             | Возвращает значение DATE, которое вычисляет по заданному кол-ву дней N, прошедших с Рождества Христова.
+          FROM_UNIXTIME(unix_timestamp), FROM_UNIXTIME(unix_timestamp,format)  | Возвращает представление unix_timestamp либо в заказанном формате format, либо в 1 из 2 стандартных форматов.
+          GET_FORMAT({DATE|TIME|DATETIME}, {'EUR'|'USA'|'JIS'|'ISO'|'INTERNAL'})  | Возвращает один из доступных шаблонов строки format
+          HOUR(time)                               | Возвращает число чисов из дата-временного значения time, в диапазоне [0, 23].
+          LAST_DAY(date)                           | Возвращает последнее число текущего месяца из даты date.
+          MAKEDATE(year,dayofyear)                 | Возвращает строку с DATE значением, скомпанованным из year и dayofyear [1 - 366]
+          MAKETIME(hour,minute,second)             | Возвращает строку с DATE значением, скомпанованным из year и dayofyear [1 - 366]
+          MICROSECOND(expr)                        | Возвращает кол-во микросекунд, которые берет из expr (TIME или DATETIME), в диапазоне от 0 до 999999.
+          MINUTE(time)                             | Возвращает кол-во минут для времени time, в диапазоне от 0 до 59.
+          MONTH(date)                              | Возвращает номер месяца для даты date, в диапазоне от 0 до 12.
+          YEAR(date)                               | Возвращает год для даты date, в диапазоне от 1000 до 9999.
+          MONTHNAME(date)                          | Возвращает полное имя месяца, который берет из даты date.
+          NOW([fsp])                               | Возвращает текущую дату и время. fsp - кол-во символов для микросекунд, от 0 до 6.
+          PERIOD_ADD(P,N)                          | Добавляет N месяцев к периоду P (в формате YYMM или YYYYMM). p - НЕ значение типа DATE.
+          PERIOD_DIFF(P1,P2)                       | Возвращает число месяцев между периодами p1 и p2, которые должны быть в формате YYMM или YYYYMM. p1 и p2 - не значения типа DATE.
+          QUARTER(date)                            | Возвращает квартал года, который берет из даты date, в диапазоне от 1 до 4.
+          SEC_TO_TIME(seconds)                     | Возвращает значение типа TIME, созданное из кол-ва секунд seconds.
+          SECOND(time)                             | Возвращает секунды, которые берет из time, в диапазоне от 0 до 59.
+          STR_TO_DATE(str,format)                  | берет str и format, и образует из них DATETIME значение, соответствующее формату.
+          SUBTIME(expr1,expr2)                     | Возвращает разность expr1 - expr2, где expr1 - TIME/DATETIME, expr2 - TIME.
+          SYSDATE()                                | Возвращает текущую время и дату в одном из двух форматов.
+          TIME_TO_SEC(time)                        | Возвращает аргумент time, конвертированный в секунды.
+          TIME(expr)                               | Возвращает в виде строки TIME часть аргумента expr.
+          TIMEDIFF(expr1,expr2)                    | Возвращает разность expr1 - expr2, как значение типа TIME, где expr1 и expr2 - одинаковые TIME/DATETIME значения.
+          TIMESTAMP(expr1[,expr2])                 | возвращает expr в виде DATETIME значения, и (если есть) прибавляет к нему TIME значение expr2.
+          TIMESTAMPADD(unit,interval,datetime_expr)  | Прибавляет int значение interval к DATE или DATETIME значению datetime_expr.
+          TIMESTAMPDIFF(unit,datetime_expr1,datetime_expr2)  | Возвращает разность datetime_expr2 - datetime_expr1, оба типа DATE/DATETIME.
+          TO_DAYS(date)                            | Возвращает количество дней, прошедших по дату date с Рождества Христова.
+          TO_SECONDS(expr)                         | Возвращает для expr (DATE/DATETIME) количество секунд, прошедших с Рождества Христова.
+          UNIX_TIMESTAMP([date])                   | возвращает UNIX timestamp для указанной date (по умолчанию NOW())
+          UTC_DATE()                               | Возвращает текущую дату, переведенную в UTC, в 1 из 2 форматов.
+          UTC_TIME([fsp])                          | Возвращает текущее время, переведенное в UTC, в 1 из 2 форматов.
+          UTC_TIMESTAMP([fsp])                     | Возвращает текущие время и дату, переведенные в UTC, в 1 из 2 форматов.
+          WEEK(date[,mode])                        | Возвращает кол-во недель, прошедших с начала года, для даты date.
+          WEEKDAY(date)                            | Возвращает номер дня недели для даты date, в диапазоне от 0 = Monday ... 6 = Sunday.
+          WEEKOFYEAR(date)                         | Эквивалент WEEK(date,3).
+          YEARWEEK(date[,mode])                    | Возвращает год и неделю для заданной date. mode как у функции WEEK().
+
+  > Функции и операции для приведения типов
+
+          BINARY  | Оператор BINARY приводит строку, следующую за ним, к бинарной строке.
+          CONVERT(expr,type), CONVERT(expr USING transcoding_name)  | Приводит выражение expr к типу type (USING позволяет изменить кодировку)
+
+  > Некоторые функции для шифрования и сжатия
+
+          ENCODE(str,pass_str)                   | зашифровать str в бинарную строку, используя pass_str в качестве пароля
+          DECODE(crypt_str,pass_str)             | расшифровать ранее зашифрованную str, используя pass_str в качестве пароля для расшифровки
+          COMPRESS(string_to_compress)           | сжимает строку и возвращает результат в виде бинарной строки
+          UNCOMPRESS(string_to_uncompress)       | разжимает строку, сжатую ранее функцией COMPRESS()
+          UNCOMPRESSED_LENGTH(compressed_string) | возвращает длину строки, которая у нее была до того, как она была сжата
+          MD5(str)                               | возвращает 128-битную MD5 контрольную сумму для строки str
+          PASSWORD(str)                          | возвращает хэш строки str в виде не бинарной строки с кодировкой соединения
+
+  > Информационные функции
+
+          BENCHMARK(count,expr)  | выполняет выражение expr непрерывно count раз
+          CHARSET(str)           | возвращает кодировку строки str
+          COLLATION(str)         | возвращает collation строки str
+          COERCIBILITY(str)      | возвращает collation coercibility строки str (флаг от 0 до 5)
+          CONNECTION_ID()        | возвращает ID соединения
+          CURRENT_USER()         | возвращает строку с именем и хостом текущего пользователя в формате 'user@localhost'
+          DATABASE()             | возвращает имя текущей базы данных по умолчанию, или NULL, если её нет
+          FOUND_ROWS()           | после SELECT ... LIMIT показывает, сколько бы это выражение вернуло строк без LIMIT
+          LAST_INSERT_ID([expr]) | возвращает последнее успешно вставленное autoincrement значение
+          ROW_COUNT()            | после DML-выражения вернет кол-во затронутых им строк
+          USER()                 | имя и хост пользователя, указанные при подключении к серверу в формате 'user@localhost'
+          VERSION()              | возвращает версию сервера MySQL
+
+  > Разные функции (не попавшие в другие разделы, выборочно)
+
+            DEFAULT(col_name)     | Возвращает значение по умолчанию для указанной колонки
+            INET_ATON(expr)   | принимает ipv4 адрес типа '10.0.0.1', возвращает число - сетевой порядок байтов
+            INET_NTOA(expr)   | противоположность INET_ATON - принимает число - сетевой порядок байтов, возвращает строку с ipv4 адресом
+            IS_IPV4(expr)     | возвращает 1, если expr - допустимый ipv4 адрес. Иначе 0.
+            IS_IPV6(expr)     | возвращает 1, если expr - допустимый ipv6 адрес. Иначе 0.
+            NAME_CONST(name,value)  | возвращает value в колонке с именем name
+            SLEEP(duration)       | делает паузу на duration секунд
+
+  > Функции (выборочно) и модификаторы для использования в атрибуте GROUP BY (включая функции-агрегаторы)
+
+            AVG([DISTINCT] expr)  | Возвращает среднее значение для expr (DISTINCT - считать только уникальные значения)
+            COUNT(DISTINCT expr,[expr...])  | возвращает кол-во строк отдельно в каждом из expr (DISTINCT - считать только уникальные значения)
+            GROUP_CONCAT(expr)  | возвращает строку, в которой все значения столбца идут через разделитель (в прямом или обратном порядке)
+            MAX([DISTINCT] expr)  | возвращает максимальное значение expr (DISTINCT - считать только уникальные значения)
+            MIN([DISTINCT] expr)  | возвращает минимальное значение expr (DISTINCT - считать только уникальные значения)
+            SUM([DISTINCT] expr)  | возвращает сумму значений в expr (DISTINCT - считать только уникальные значения)
+
+  > Дополнительно об атрибуте GROUP BY и его модификаторах
+  > Точная математика
+    > Общая информация
+    > Настройка SQL-режима работы сервера для организации точной математики
+    > Типы числовых значений
+    > Особенности типа DECIMAL в MySQL 5.6
+    > Обработка выражений
+    > Поведение при округлении
+
+
+
+
+
+*****************************************************
+
+
+
+> Общая информация
+  > Здесь будут описаны встроенные функции и операторы, которые могут быть использованы для
+    написания выражений в MySQL.
+  > Выражения могут быть использованы в нескольких точках SQL-утверждений:
+    - в атрибутах ORDER BY или HAVING утверждения SELECT
+    - в атрибуте WHERE утверждений SELECT, DELETE, UPDATE,
+    - в утверждениях SET.
+  > Выражения могут быть написаны с использованием:
+    - литеральных значений
+    - значений из колонок
+    - NULL-значений
+    - встроенных функций
+    - сохраняемых функций
+    - UDF функций
+    - операторов.
+  > Выражения, которые содержат NULL, всегда возвращают также NULL-результат, если иное не указано
+    в документации конкретной функции или оператора.
+  > По умолчанию, не должно быть пробелов между именем функции, и круглыми скобками с её
+    аргументами. Пробелы вокруг аргументов допускаются.
+    > Примеры:
+      > Правильно:      myFunc(a, b, c)
+      > Не правильно:   myFunc (a, b, c)
+    > Способ изменить это поведение:
+      > Добавить в системную переменную sql_mode режим работы сервера IGNORE_SPACE
+
+> Приведение типов во время выполнения выражения
+  > Когда между двумя операндами разных типов с помощью оператора проводится операция,
+    происходит автоматическое неявное приведение типов операндов для их совместимости.
+
+  > Следующие правила описывают, как происходит неявное приведение типов операндов,
+    если между ними стоит оператор сравнения:
+    > Если оба аргумента NULL, результат сравнения - тоже NULL. Но с 1 исключением,
+      при использовании NULL-безопасного оператора равенства <=>, результат сравнения
+      NULL <=> NULL будет true.
+    > Если оба аргумента в сравнении строки, они сравниваются как строки.
+    > Если оба аргумента integers, то они сравниваются, как integers.
+    > Шестнадцатеричные числа рассматриваются, как строки, если не сравниваются с числами.
+    > Если один из аргументов имеет тип TIMESTAMP или DATETIME, а другой аргумент - константа,
+      то последний приводится к типу TIMESTAMP перед проведением сравнения.
+      > Подзапрос из одной строки из таблицы или таблиц не считается константой. Например,
+        если подзапрос возвращает значение типа int для сравнения со значением типа datetime,
+        сравнение производится мужду двумя значениями типа int. Значение типа integer не
+        переводится в дата-временное значение. Чтобы сравнить операнды в такой ситуации, как
+        значения типа DATETIME, требуется явно привести операнд типа int с помощью функции
+        CAST() к типу DATETIME.
+    > Если один из аргументов - десятичное число (decimal), то сравнение зависит от другого аргумента.
+      > Аргументы сравниваются, как десятичные значения (decimal), если другой аргумент -
+        тоже десятичное значение или число.
+      > Аргументы сравниваются, как числа с плавающей запятой (floating point), если другой
+        аргумент - число с плавающей запятой.
+    > О том, как происходит приведение из одного дата-временного типа в другой, см.:
+      "6. Типы данных в MySQL".
+    > Во всех остальных случаях аргументы сравниваются как числа с плавающей запятой (real).
+
+  > При сравнении строк с числами, если на колонке со строкой есть индекс, MySQL не может его
+    использовать для быстрого поиска значения. Причина: слишком много разных строк могут
+    быть конвертированы в 1 (как в примере ниже):
+      SELECT * FROM tbl_name WHERE str_col=1;
+  > Операции сравнения, в которых используются числа с плавающей запятой (или значения, которые
+    конвертируются в такие числа) - приблизительные, потому что такие числа тоже приблизительные.
+    Это может приводить к противоречивым результатам (см. примеры выше).
+    > Способ избежать приведения строки в таких сравнениях к числу с плавающей запятой -
+      провести явное приведение к целому числу с помощью функции CAST().
+    > В MySQL есть специальная библиотека dtoa, которая обеспечивает улучшенное сравнение
+      меожу строками и DECIMAL, а также между неточными значениями - (FLOAT/DOUBLE) числами.
+      А именно:
+      > Совместимые результаты приведения на разных платформах - теперь результаты сравнения
+        на Windows и Unix одинаковые.
+      > Точное представление значений в случаях, когда результаты заранее не обеспечивают
+        достаточную точность, как для значений, близких к IEEE лимитам.
+      > Приведение чисел к строкам с максимальной возможной точностью. Точность dtoa всегда
+        таже или лучше, чем у стандартной библиотеки C.
+      > dtoa обеспечивает проведение приведения float -> decimal -> float без потерь, в отличие
+        от стандартной C-библиотеки.
+
+  > В MySQL 5.6 при приведении к строке используются character set и collation соединения -
+    результирующая строка будет иметь их.
+
+
+> Операторы
+  > Арифметические
+      +                        | плюс
+      -                        | минус
+      *                        | умножить
+      /                        | разделить
+
+  > Операторы присвоения
+      =                        | назначить значение
+      :=                       | назначить значение
+
+  > Сравнения
+      =                        | равно
+      <=>                      | NULL-безопасное равно
+      !=, <>                   | не равно
+      <=                       | меньше равно
+      <                        | меньше
+      >=                       | больше равно
+      >                        | больше
+
+  > Битовые
+      <<                       | левый сдвиг
+      >>                       | правый сдвиг
+      &                        | битовое И
+      ~                        | инвертировать биты
+      |                        | битовое ИЛИ
+      ^                        | битовое XOR
+
+  > Логические
+      AND, &&                  | логическое И
+      OR, ||                   | логическое ИЛИ
+      NOT, !                   | логическое НЕ
+      XOR                      | логическое XOR
+
+  > Прочие
+      BETWEEN ... AND ...      | проверить, находится ли значение в пределах указанного диапазона
+      NOT BETWEEN ... AND ...  | проверить, находится ли значение вне указанного диапазона
+      LIKE                     | простое сопоставление с шаблоном
+      NOT LIKE                 | отрицательное простое сопоставление с шаблоном
+      BINARY                   | перевести строку в бинарную строку
+      CASE                     | оператор case (аналог оператора switch из php)
+      DIV                      | округление до INT (аналог FLOOR()), безопасное для BIGINT
+      IS NOT NULL              | тест значения на NOT NULL
+      IS NULL                  | тест значения на NULL
+      IS                       | сравнение значения с boolean-значением (0, 1 или unknown)
+      IS NOT                   | тоже, что IS, только результат (boolean) меняется на обратный
+      %, MOD                   | остаток от деления
+      REGEXP                   | сопоставление с шаблоном - регулярным выражением
+      NOT REGEX                | отрицательное сопоставление с шаблоном - регулярным выражением
+      RLIKE                    | (синоним REGEXP)
+      SOUNDS LIKE              | сравнение звуков
+
+  > Подробнее о некоторых группах операторов
+    > Приоритеты операторов (operator precedence)
+        http://dev.mysql.com/doc/refman/5.6/en/operator-precedence.html
+    > Логические операторы
+      > В MySQL все логические операции могут давать одно из 3 значений: TRUE, FALSE, NULL.
+      > TRUE: любое ненулевое, не-ZERO значение.
+    > Операторы присвоения
+      > Заставляет переменную по левую сторону от оператора взять значение переменной по правую
+        стороную от оператора.
+      > По правую сторону от оператора может быть:
+        > Литерал
+        > Переменная, содержащая значение
+        > Выражение, возвращающее скаляр
+      > Можно выполнять несколько присвоений в одном и том же утверждении, или с помощью
+        операции SET>
+      > Отличие = от :=
+        > В отличие от =, оператор := никогда не интерпретируется, как оператор сравнения.
+          Это значит, что его можно использовать в любом допустимом SQL-утверждении
+          (не только в SET-утверждениях) для назначения значения переменной.
+      > Оператор = рассматривается, как оператор присвоения в следующих 2 случаях:
+        > В операции SET.
+        > В атрибуте SET операции UPDATE.
+    > Операторы сравнения
+      > В MySQL все операции сравнения могут давать одно из 3 значений: TRUE, FALSE, NULL.
+      > Работают как со строками, так и с числами. Если нужно, строки автоматически приводятся
+        к числам, и наоборот.
+
+  > Подробнее о некоторых операторах
+    > BETWEEN ... AND ...
+      > Если  min <= expr <= max, то оператор возвращает TRUE (1). Иначе FALSE (0).
+      > Это эквивалентно выражению   min <= expr AND expr <= max
+      > При использовании с дата-временными типами, лучше всего явно приводить значения
+        к желаемым типам с помощью функции CAST().
+      > Синтаксис:
+          expr BETWEEN min AND max
+
+    > BINARY
+      > Это легкий способ в операции сравнения строк заставить их сравниваться побитово,
+        а не посимвольно.
+      > Это делает результат сравнения зависимым от регистра строк.
+      > Это делает трейлинг-пробелы имеющими значение для сравнения.
+      > BINARY str - эквивалент для CAST(str AS BINARY).
+      > Синтаксис:
+          BINARY str
+
+    > CASE
+      > В синтаксисе №1, выражение возвращает result, для которого value = compare_value.
+        В синтаксисе №2, выражение вовзвращает result для первого condition = TRUE.
+          Если таких condition нет, то возвращает result из атрибута ELSE.
+      > Синтаксис №1:
+          CASE value WHEN [compare_value] THEN result [WHEN [compare_value] THEN result ...]
+          [ELSE result] END
+      > Синтаксис №2:
+          CASE WHEN [condition] THEN result [WHEN [condition] THEN result ...] [ELSE result] END
+
+    > LIKE
+      > Простое сопоставление с шаблоном, который представляет из себя простое SQL - регулярное
+        выражение.
+      > В MySQL операция с LIKE может возвращать одно из 2 значений: TRUE, FALSE.
+      > Шаблон может быть:
+        - Строкой-литералом
+        - Строкой-результатом выражения
+        - Строкой-значением из колонки
+      > Трейлинг пробелы при работе с LIKE имеют значения.
+      > В шаблоне для LIKE можно использовать следующие вайлдкард-символы:
+          %        | сопоставляетсяя с любым числом символов, в т.ч. с отсутствием символов.
+          _        | сопоставляется ровно с 1 символом
+      > В MySQL использовать оператор LIKE разрешено также в выражениях с числами (см. примеры выше).
+      > Синтаксис:
+          expr LIKE pat [ESCAPE 'escape_char']
+
+
+> Функции для сравнения
+  > COALESCE(value,...)
+    > Возвращает 1 не нулевое value в списке. Или, если таковых не имеется, NULL.
+
+  > GREATEST(value1,value2,...)
+    > Минимум должно быть 2 аргумента.
+    > Возвращает наибольший value из всех.
+    > Возвращает NULL, если хоть 1 из value = NULL.
+    > Значения value сравниваются по тем же правилам, что и для LEAST.
+
+  > LEAST(value1,value2,...)
+    > Минимум должно быть 2 аргумента.
+    > Возвращает наименьший value из всех.
+    > Аргументы сравниваютсяпо следующим правилам:
+      > Возвращает NULL, если хоть 1 из value = NULL.
+      > Если результат сравнения должен вернуться в INTEGER контексте, или все аргументы
+        имеют тип integer, то они и сравниваются по правилам сравнения для integer-значений.
+      > Если результат сравнения должен вернуться в REAL контексте, или все аргументы
+        имеют тип REAL, то они и сравниваются по правилам сравнения для REAL-значений.
+      > Если среди значений value есть и числа, и строки, то они сравниваются, как числа.
+      > Если хоть 1 value представляет собой небинарную строку, аргументы сравниваются,
+        как небинарные строки.
+      > В остальных случаях, аргументы сравниваются, как бинарные строки.
+
+  > expr IN(value,...)
+    > Возвращает 1, если expr равен хотя бы 1-му из value в списке. Иначе возвращает 0.
+    > Нельзя вместе с функцией IN использовать одновременно значения в кавычках (такие,
+      как строки) и значения не в кавычках (такие, как числа), потому что правила сравнения
+      для них разные. Иначе это приведет к противоречивым результатам.
+
+  > NOT IN(value,...)
+    > Тоже самое, что   NOT (expr IN (value,...))
+
+  > INTERVAL(N,N1,N2,N3,...)
+    > Все арнументы N должны быть типа integer.
+    > Чтобы функция работала корректно, для аргументов есть требование:
+        N1 < N2 < N3 < ... < Nn
+    > Возвращает 0, если N < N1; возвращает 1 если N < N2; возвращает 2 если N < N3; и так далее.
+
+  > ISNULL(expr)
+    > Если expr содержит NULL, возвращает 1. Иначе 0.
+
+  > STRCMP(expr1,expr2)
+    > Сравнивает 2 строки.
+    > Производит сравнение с использованием collation аргументов.
+      > Если collations аргументов несовместимы, перед сравнением надо вручную изменить
+        collation одного из аргументов так, чтобы collations аргументов стали совместимы.
+    > Возвращает:
+      0   | если строки равны
+      -1  | если expr1 < expr2
+      1   | если expr1 > expr2
+
+
+> Функции для управления потоком (CASE, IF ... )
+  > CASE
+    > Оператор. См. описание выше, в разделе Операторы + примеры в разделе с примерами.
+
+  > IF(expr1,expr2,expr3)
+    > Если expr1 = true (<> 0 и <> NULL), то IF возвращает expr2. Иначе - expr3.
+    > Возвращает числовое или строковое значение в зависимости от контекста, в котором
+      вызвано выражение.
+      > Если либо expr2, либо expr3 содержит NULL, то IF возвращает значение того типа,
+        который у того значения, которое не NULL.
+      > Если expr2 или expr3 возвращает строку, то IF возвращает строку.
+        > Если и expr2, и exrp3 возвращают строку, результат регистрозависим если
+          хотя бы 1 из строк регистрозависима.
+      > Если expr2 или expr3 возвращает число с плавающей запятой, то IF тоже.
+      > Если expr2 или expr3 возвращает integer, то IF тоже.
+    > Есть также утверждение IF, которое не имеет ничего общего с функцией IF().
+      НЕ ПУТАТЬ!
+
+  > IFNULL(expr1,expr2)
+    > Если expr1 не NULL, то IFNULL вернет expr1. В противном случае - expr2.
+    > Возвращает числовое или строковое значение в зависимости от контекста, в котором
+      вызвано выражение.
+
+  > NULLIF(expr1,expr2)
+    > Если expr1 = expr2, возвращает NULL. Иначе - возвращает expr1.
+
+
+> Строковые функции
+  > ASCII(str)
+    > Работает только для 1-байтных кодировок.
+    > Возвращает числовое значение самого левого символа в строке.
+    > Если str пустая, вернет 0.
+    > Если str содержит NULL, то вернет NULL.
+
+  > BIN(N)
+    > Возвращает строку, представляющую бинарное значение целого числа N типа BIGINT.
+
+  > BIT_LENGTH(str)
+    > Возвращает длину строки в битах
+
+  > CHAR_LENGTH(str)
+    > Возвращает длину строки str, измеряемую в символах. Мультибайтовый символ считается, как 1.
+      Иначе говоря, эта функция вернет одинаковые значения для двух строк с одинаковым кол-вом
+      символов, но в одной из которых 1-байтовые символы, а в другой многобайтовые.
+
+  > LENGTH(str)
+    > Возвращает длину строки str в байтах.
+    > Многобайтовые символы считаются, как несколько (сколько там в них) байт. Т.Е. если в строке
+      5 символов по 2 байта, то функция вернет 10.
+
+  > CHAR(N,... [USING charset_name])
+    > Распознает каждое N - как числовое представление символа из кодировки charset_name.
+      Возвращает строку (бинарную по умолчанию), которая в результате получается.
+    > Значения N, содержащие NULL, игнорируются.
+
+  > CONCAT(str1,str2,...)
+    > Склеивает строки str.
+    > Если хотя бы 1 из str содержит NULL, результат будет тоже NULL.
+
+  > CONCAT_WS(separator,str1,str2,...)
+    > Склеивает строки str, ставит между ними separator.
+    > Если хотя бы 1 из str содержит NULL, результат будет тоже NULL.
+
+  > FIELD(str,str1,str2,str3,...)
+    > Возвращает позицию str в списке из строк str1, str2 ..., либо 0, если в списке на найдено
+      строки str.
+    > Если str содержит NULL, то функция возвращает 0.
+    > Если все аргументы строки, то они и сравниваются как строки.
+      Если все аргументы числа, то они и сравниваются как числа.
+      Иначе, они сравниваются как double.
+
+  > EXPORT_SET(bits,on,off[,separator[,number_of_bits]])
+    > ?
+
+  > FORMAT(X,D[,locale])
+    > Приводит число к формату вроде '#,###,###.##', ограничивает до D чисел после запятой,
+      и возвращает результат в виде строки.
+    > Атрибут locale настраивает вид формата (напр., в 'английском стиле' или во 'французском стиле')
+
+  > TO_BASE64(str)
+    > Кодирует строку str алгоритмом base-64, и возвращает результат в виде символьной
+      строки с connection character set и collation.
+    > Если str не является строкой, он конвертируется в строку перед кодированием.
+    > Если аргумент содержит NULL, результат тоже будет NULL.
+
+  > FROM_BASE64(str)
+    > Берет строку, закодированную функцией TO_BASE64(), декодирует и возвращает результат в
+      виде бинарной строки.
+    > Возвращает NULL, если аргумент содержит NULL, или не является допустимой base-64 строкой.
+
+  > HEX(str), HEX(N)
+    > При аргументе str, HEX возвращает шестнадцатеричное представление строки, где каждый
+      символ в str конвертируется в 2 шестнадцатеричные цифры.
+      > Для инверсии этой операции использовать функцию UNHEX()
+    > При аргументе N, HEX возвращает шестнадцатеричное представление значения N, тип которого
+      ожидается быть BIGINT числом.
+      > Для инверсии этой операции использовать выражение CONV(HEX(N),16,10)
+
+  > UNHEX(str)
+    > Возвращает в исходное состояние строку str, на которую воздействовали функцией HEX(str).
+
+  > INSERT(str,pos,len,newstr)
+    > Возвращает строку str, в которой начиная с позиции pos, на протяжении len символов
+      подстрока заменена на newstr.
+    > Возвращает первоначальную строку, если pos находится вне длины строки.
+    > Если len больше, чем оставшаеся с позиции pos длина строки, то производится замена
+      всей оставшейся длины строки.
+    > Если любой из аргументов содержит NULL, то функция возвращает NUL.
+
+  > ELT(N,str1,str2,str3,...)
+    > Возвращает N-ный элемент из списка str. Если N = 1, то str1. Если N = 2, то str2. И т.д.
+    > Если N < 1, или больше чем кол-во элементов в списке, то фукнция возвращает NULL.
+
+  > FIND_IN_SET(str,strlist)
+    > Возвращает число в диапазоне от 1 до N, где N - это количество подстрок в strlist
+      (разделенных запятыми), а возвращаемое число - номер подстроки (считает слева-направо),
+      совпадающей со str.
+      > Например: FIND_IN_SET('b','a,b,c') вернет 2.
+    > Вернет NULL, если хоть 1 из аргументов содержит NULL.
+    > Вернет 0, если str не найден в strlist, или str - содержит пустую строку.
+
+  > INSTR(str,substr)
+    > Возвращает позицию первого вхождения строки substr строку str.
+    > Работает с мультибайтовыми символами.
+    > Является регистрозависимой, только если хотя бы 1 аргумент - бинарная строка.
+
+  > LOCATE(substr,str), LOCATE(substr,str,pos)
+    > Первый синтаксис возвращает позицию первого вхождения подстроки substr в строку str.
+    > Второй синтаксис возвращает позицию первого вхождения подстроки substr в строку str,
+      начиная с позиции pos.
+    > Возвращает 0, если substr не найден в str.
+
+  > LEFT(str,len)
+    > Возвращает подстроку строки str длиной len символов, начиная слева.
+    > Если хоть 1 аргумент содержит NULL, результат будет NULL.
+    > Работает с многобайтными кодировками.
+
+  > RIGHT(str,len)
+    > Возвращает подстроку строки str длиной len символов, начиная справа.
+    > Если хоть 1 аргумент содержит NULL, результат будет NULL.
+    > Работает с многобайтными кодировками.
+
+  > LOAD_FILE(file_name)
+    > Читает файл и возвращает его содержимое в виде строки.
+    > Чтобы функция сработала, файл должен находиться на сервере, надо указать полное абсолютное
+      имя к нему, и у исполняющего функцию аккаунта MySQL должна быть привилегия FILE. Сам файл
+      должен быть доступен для чтения, а его размер меньше, чем max_allowed_packet байт. Если
+      системная переменная secure_file_priv содержит адрес некой директории, то файл должен быть
+      именно в ней.
+    > Если файл не найден, или указанные выше условия не выполнены, функция вернет NULL.
+    > Имя файла file_name интерпретируется с использованием character_set, указанного в
+      системной переменной character_set_filesystem.
+
+  > LOWER(str)
+    > Возвращает строку str в нижнем регистре.
+    > Работает с многобайтовыми строками. Для unicode использует
+      Unicode Collation Algorithm (UCA) 5.2.0.
+
+  > UPPER(str)
+    > Возвращает строку str в верхнем регистре.
+    > Работает с многобайтовыми строками. Для unicode использует
+      Unicode Collation Algorithm (UCA) 5.2.0.
+
+  > LPAD(str,len,padstr)
+    > Возвращает строку str, к которой слева прилепляется строка padstr, так что итоговая
+      строка должна иметь размер len символов.
+
+  > RPAD(str,len,padstr)
+    > Возвращает строку str, к которой справа прилепляется строка padstr, так что итоговая
+      строка должна името размер len символов.
+
+  > LTRIM(str)
+    > Возвращает строку str, из которой удалены все пробелы слева.
+
+  > RTRIM(str)
+    > Возвращает строку str, из которой удалены все пробелы справа.
+
+  > TRIM([{BOTH | LEADING | TRAILING} [remstr] FROM] str), TRIM([remstr FROM] str)
+    > Возвращает строку str, из которой удалены все суффиксы и префиксы вида remstr.
+      BOTH идет по умолчанию. Если remstr не указан, то по умолчанию имеются в виду пробелы ' '.
+
+  > MAKE_SET(bits,str1,str2,...)
+    > ?
+
+  > OCT(N)
+    > Возвращает строковое представление восьмеричного N, где N - число типа BIGINT.
+
+  > ORD(str)
+    > Если самый левый символ в str - многобайтовый - возвращает код для этого символа,
+      рассчитаный из числовых значений батов, из которых состоит символ, по формуле:
+              (1st byte code)
+            + (2nd byte code * 256)
+            + (3rd byte code * 2562) ...
+
+  > QUOTE(str)
+    > Заключает строку в одинарные кавычки, и экранирует с помощью обратного слэша внутри
+      строки следующее: \ ' NUL Control+Z
+    > Если str содержит NULL, то результат тоже будет NULL.
+
+  > REPEAT(str,count)
+    > Возвращает строку, состоящую из строки str, повторенной count раз.
+    > Если count < 1, то возвращает пустую строку.
+    > Если хотя бы 1 из аргументов содержит NULL, возвращает NULL.
+
+  > REPLACE(str,from_str,to_str)
+    > Возвращает строку str, в которой заменяет все вхождения подстроки from_str на подстроку
+      to_str.
+    > Регистрочувствительна.
+
+  > REVERSE(str)
+    > Возвращает строку str, в которой порядок символов заменен на обратный.
+
+  > SOUNDEX(str)
+    > SOUNDEX - алгоритм сравнения строк по их звучанию.
+    > Возвращает soudex строку из str.
+
+  > SPACE(N)
+    > Возвращает строку, состоящую из N пробелов.
+
+  > STRCMP()
+    > См. описание выше в разделе "Функции для сравнения"
+
+  > SUBSTRING_INDEX(str,delim,count)
+    > Возвращает подстроку строки str, в которую разделитель delim входит count раз.
+      Если count > 0, то ищет слева направа. Иначе - наоборот.
+    > Регистрозависимо ищет delim.
+    > Работает с многобайтовыми кодировками.
+
+  > SUBSTRING(str,pos), SUBSTRING(str FROM pos), SUBSTRING(str,pos,len), SUBSTRING(str FROM pos FOR len)
+    > Синтаксисы без len возвращают подстроку строки str, начиная с позиции pos.
+    > Синтаксисы с len возвращают подстроку длиной len символов строки str, начиная с позиции pos.
+    > Если использовать pos < 0, то тогда позиция отсчитывается от конца строки.
+
+  > WEIGHT_STRING()
+    > Рассчитывает вес строки.
+
+
+> Математические функции
+
+  > SIN(x)      | вернуть синус от аргумента
+    > Возвращает синус от x, где x - в радианах.
+
+  > COS(x)       | возвращает косинус
+    > Возвращает косинус от x, где x - в радианах.
+
+  > TAN(x)      | вернуть тангенс от аргумента
+    > Возвращает тангенс от x, где x - в радианах.
+
+  > COT(x)       | возвращает котангенс
+    > Возвращает котангенс от x.
+
+  > ACOS(x)    | возвращает арк косинус
+    > Возвращает арккосинус от x.
+    > Вернет NULL, если x не в диапазоне от -1 до 1
+
+  > ASIN(x)    | возвращает арк синус
+    > Возвращает арксинус от x.
+    > Вернет NULL, если x не в диапазоне от -1 до 1
+
+  > ATAN(x)      | возвращает арк тангенс
+    > Возвращает арктангенс от x.
+
+  > ATAN(x,y), ATAN2(x,y)   | возвращает арк тангенс от 2-х аргументов
+    > Возвращает арктангенс от 2 аргументов. Это эквивалентно тому, как если бы арктангенс
+      брался от x/y. За исключением того, что знаки обоих аргументов используются для определения
+      квадранта.
+
+  > ABS(x)     | возвращает значение по модулю
+    > -
+
+  > CEIL(x)      | округление в большую сторону.
+    > Возвращает самое маленькое целое значение, которое не меньше, чем аргумент
+
+  > FLOOR(x)   | округление в меньшую сторону
+    > Вернуть наибольше целое значение, которое на больше, чем аргумент
+
+  > ROUND(x), ROUND(x,d)   | округлить аргумент x до d десятичных знаков (d = 0 по умолчанию)
+    > Округляет аргумент до d десятичных знаков.
+    > Если d не указан, то по умолчанию он == 0.
+    > d может быть < 0, в этом случае цифры слева от десятичной точки становятся нулями.
+    > Возвращает результат того же типа, что и аргумент x.
+    > Для точных x, если десятичная часть < 0.5, округляет вниз. Иначе - вверх.
+    > Для не точных x, результат зависит от установленной C-библиотеки. Обычно, округление
+      производится вниз, независимо от десятичной части.
+
+  > CONV(N,from_base,to_base)      | конвертирует числа между разными числовыми основаниями
+    > Возвращает строковое представление числа N, конвертированного из основания from_base
+      в основание to_base.
+    > Возвращает NULL, если хотя бы 1 из аргументов NULL.
+    > Значение N ожидается типа integer, но также может быть и string, который будет переведен
+      в integer.
+    > Работает с 64-битной точностью.
+
+  > CRC32(expr)     | вычисляет cyclic redundancy check value
+    > Вычисляет cyclic redundancy check value и возвращает 32-битное unsigned значение.
+    > Если аргумент содержит NULL, то результат будет тоже NULL.
+    > expr ожидается быть строкой.
+
+  > RADIANS(x)   | аргумент конвертируется в радианы
+    > Возвращает аргумент X, конвертированный из градусов в радианы. (ПИ радиан = 180 градусам).
+
+  > DEGRESS(x)   | конвертирует радианы в градусы
+    > Возвращает аргумент X, конвертированный из радиан в градусы.
+
+  > EXP(x)     | возвращает базу натурального логарифма e, возведенную в указанную степерь
+    > Обратный эффект дает функция LOG() или LN().
+
+  > LN(x)      | вернуть натуральный логарифм (с базой e)
+    > Возвращает натуральный логарифм аргумента x. База натурального логарифма - e.
+
+  > LOG10(x)   | вернуть десятичный логарифм (с базой 10)
+    > LOG10(x) эквивалентно LOG(10,x)
+
+  > LOG2()    | вернуть логарифм с 2 в основании
+    > Полезен для того, чтобы определить, сколько бит требуется для хранения этого числа.
+
+  > LOG(x,b)     | вернуть логарифм от x с базой b (если b не указан, то == e)
+    > Если x <= 0, или b <= 1, возвращает NULL.
+
+  > MOD(N,M)     | вернуть остаток от деления N на M
+    > -
+
+  > PI()      | вернуть число ПИ
+    > -
+
+  > POW(x,y)     | вернуть аргумент x, возведенный в степень y
+    > -
+
+  > SQRT(x)     | вернуть квадратный корень от x
+    > -
+
+  > RAND(), RAND(N)    | вернуть рандумное число с плавающей запятой
+    > Возвращает произвольное число v с плавающей запятой из диапазона 0 <= v <= 1.0.
+    > Если присутствует аргумент N, то он используется, как семя. При использовании семени
+      можно получить повторяемую последовательность чисел. Например, сколько не делай
+      RAND(3), все время будет получаться один и тот же результат.
+    > Чтобы получить произвольное целое число R из диапазона i <= R <= j, использовать выражение:
+        FLOOR(i + RAND() * (j-i)).
+    > Нельзя использовать RAND() в атрибуте ORDER BY, потому что последний проделывает операцию
+      много раз, и если использовать RAND(), то каждый раз будут указываться разные числа.
+      > Однако, можно извлекать строки в произвольном порядке следующим образом:
+          SELECT * FROM tbl_name ORDER BY RAND();
+      > Если соединить ORDER BY RAND() и LIMIT, то можно получить рандумную выборку из набора
+        строк:
+          SELECT * FROM table1, table2 WHERE a=b AND c<d -> ORDER BY RAND() LIMIT 1000;
+
+  > SIGN(x)     | вернуть знак аргумента x (-1, 0, 1)
+    > Возвращает знак аргумента. Если минус, то -1. Если 0, то 0. Если плюс, то 1.
+
+  > TRUNCATE(x,d)   | обрезать x до d десятичных разрядов (по умолчанию d = 0)
+    > d может быть отрицательным, тогда d разрядов слева от десятичной точки станут нулями.
+
+
+> Функции для работы с датой и временем
+
+  > ADDDATE(date,INTERVAL expr unit), ADDDATE(expr,days)
+    > Первый синтаксис: синоним функции DATE_ADD(), прибавляет expr единииц unit к
+      дата-временному значению date.
+    > Второй синтаксис: прибавляет days дней к дата-временному значению expr.
+
+  > SUBDATE(date,INTERVAL expr unit), SUBDATE(expr,days)
+    > Первый синтаксис: синоним функции DATE_SUB(), вычитает expr единииц unit из
+      дата-временного значения date.
+    > Второй синтаксис: вычитает days дней из дата-временного значения expr.
+
+  > ADDTIME(expr1,expr2)
+    > Прибавляет expr2 к expr1, и возвращает результат. expr1 имеет тип time или datetime,
+      а expr2 имеет тип time.
+
+  > CONVERT_TZ(dt,from_tz,to_tz)
+    > Конвертирует дата-временное значение tz из временной зоны from_tz во временную зону to_tz.
+    > Если результа вышел за пределы доступного для TIMESTAMP диапазона, конвертации не
+      происходит.
+
+  > CURDATE()
+    > Возвращает текущую дату. Формат зависит от того, в каком контексте вызвана фукнция.
+      > Если в строковом контексте: 'YYYY-MM-DD'
+      > Если в числовом контексте:  YYYYMMDD
+
+  > CURTIME([fsp])
+    > Возвращает текущее время. Формат зависит от того, в каком контексте вызвана фукнция.
+      > Если в строковом контексте: 'HH:MM:SS'
+      > Если в числовом контексте:  HHMMSS
+    > 0 <= fsp <= 6, возвращать ли результат с дробными секундами (указать количество знаков).
+
+  > DATE_ADD(date,INTERVAL expr unit)
+    > Прибавляет к значению date дата-временного типа expr единиц типа unit.
+    > expr может быть отрицательным, тогда оно будет не прибавлено, а вычтено.
+    > Функция возвращает значение следующего типа:
+      > datetime, если:
+        > Если date имеет тип datetime.
+          > Чтобы убедиться, что оно действительно datetime, можно использовать функцию CAST
+            и конвертировать date в datetime значение.
+        > date имеет тип date, а unit HOURS/MINUTES/SECONDS.
+      > string в иных случаях.
+    > unit может иметь одно из фиксированных значений, прердставленных в таблице:
+      http://dev.mysql.com/doc/refman/5.6/en/date-and-time-functions.html#function_date-add
+
+  > DATE_FORMAT(date,format)
+    > Возвращает значение date в виде строки с заказанным форматом format.
+    > Правила компановки шаблона format см. по ссылке: http://dev.mysql.com/doc/refman/5.6/en/date-and-time-functions.html#function_date-format
+    > Диапазоны для месяцев и дней начинаются с 0, потому что MySQL допускает возможность
+      сохранения незавершенных дат в формате вроде "2014-00-00".
+    > Возвращает строку, сформированную с character set и collation, взятыми из системных
+      переменных character_set_connection и collation_connection.
+
+  > TIME_FORMAT(time,format)
+    > Возвращает значение time в виде строки с заказанным форматом format.
+    > Правила компановки шаблона format см. по ссылке: http://dev.mysql.com/doc/refman/5.6/en/date-and-time-functions.html#function_date-format
+      Но в отличие правил для DATE_FORMAT(), правила для TIME_FORMAT() могут содержать только
+      элементы для часов, минут, секунд и микросекунд. Прочие элементы дадут в результате NULL или 0.
+    > Если значение time содержит значения для часов > 23, элементы %H и %k выводят значение
+      большее, чем обычный диапазон для часов 0 ... 23. Остальные элементы выводят остаток
+      от деления числа часов на 12.
+
+  > DATE_SUB(date,INTERVAL expr unit)
+    > Вычитает из значения date типа datetime - expr единиц unit.
+    > expr может быть отрицательным, тогда оно будет не вычтено, а прибавлено (2 минуса дают плюс)
+
+  > DATE(expr)
+    > Извлекает дату из значения expr (типа DATE или DATETIME), и возвращает в виде строки.
+
+  > DATEDIFF(expr1, expr2)
+    > Возвращает разницу в днях между двумя датавременными значениями expr1 - expr2.
+    > В рассчетах участвуют только те части значений, которые отвечают за дни.
+
+  > DAYOFMONTH(date), DAY(date)
+    > Возвращает дату, которую извлекает из значения date, в диапазоне от 1 до 31. Или 0 для
+      значений date, таких как '0000-00-00' или '2008-00-00'.
+
+  > DAYNAME(date)
+    > Возвращает имя дня недели, который берет из значения date. Язык, используемый для имени,
+      контролируется системной переменной lc_time_names.
+
+  > DAYOFWEEK(date)
+    > Возвращает номер для недели, который берет из date, в диапазоне от 1 до 7. Причем
+      нумерация начинется с воскресенья (1 = Sunday, 2 = Monday ... 7 = Saturday).
+
+  > DAYOFYEAR(date)
+    > Возвращает номер дня в году, который берет из date, в диапазоне от 1 до 366.
+
+  > EXTRACT(unit FROM date)
+    > Извлекает тип unit из дата-временного значения date.
+    > Использует те же значения unit, что DATE_ADD() (см. описание выше).
+
+  > FROM_DAYS(N)
+    > Возвращает значение DATE, которое вычисляет по заданному кол-ву дней N, прошедших с
+      Рождества Христова.
+
+  > FROM_UNIXTIME(unix_timestamp), FROM_UNIXTIME(unix_timestamp,format)
+    > Возвращает представление unix_timestamp либо в заказанном формате format, либо
+      в одном из двух форматов, в зависимости от того, в каком контекстевызвана функция:
+      > Если в строковом контексте: 'YYYY-MM-DD HH:MM:SS'
+      > Если в числовом контексте:  YYYYMMDDHHMMSS
+    > Значения рассчитывается для текущей временной зоны.
+    > С помощью атрибута format можно заказать формат, в котором будет возвращен результат.
+      Правила форматирования теже, что для функции DATE_FORMAT() (см. описание выше)
+    > Если использовать 2 функции UNIX_TIMESTAMP() и FROM_UNIXTIME() для конвертации значения
+      туда-сюда, то эти преобразования пройдут с потерями.
+
+  > GET_FORMAT({DATE|TIME|DATETIME}, {'EUR'|'USA'|'JIS'|'ISO'|'INTERNAL'})
+    > Возвращает формат. Результат этой функции можно вставить в качестве
+      аргумента format в функции DATE_FORMAT() и STR_TO_DATE().
+    > Список доступных возвращаемых форматов можно посмотреть в таблице по ссылке:
+        http://dev.mysql.com/doc/refman/5.6/en/date-and-time-functions.html#function_get-format
+    > В качестве первого аргумента также может быть использован TIMESTAMP.
+
+  > HOUR(time)
+    > Возвращает число чисов из дата-временного значения time, в диапазоне [0, 23].
+    > Однако, диапазон типа TIME гораздо шире, поэтому HOUR может вернуть значение > 23.
+
+  > LAST_DAY(date)
+    > Возвращает последнее число текущего месяца из даты date.
+    > Возвращает NULL, если аргумент не верный.
+
+  > MAKEDATE(year,dayofyear)
+    > Возвращает строку с DATE значением, скомпанованным из year и dayofyear.
+      Последний в диапазоне от 1 до 366.
+
+  > MAKETIME(hour,minute,second)
+    > Возвращает строку с TIME значением, собранным из hour, minute, second.
+    > Аргумент second также может иметь дробную часть.
+
+  > MICROSECOND(expr)
+    > Возвращает кол-во микросекунд, которые берет из expr (TIME или DATETIME),
+      в диапазоне от 0 до 999999.
+
+  > MINUTE(time)
+    > Возвращает кол-во минут для времени time, в диапазоне от 0 до 59.
+
+  > MONTH(date)
+    > Возвращает номер месяца для даты date, в диапазоне от 0 до 12.
+
+  > YEAR(date)
+    > Возвращает год для даты date, в диапазоне от 1000 до 9999.
+
+  > MONTHNAME(date)
+    > Возвращает полное имя месяца, который берет из даты date.
+    > Язык, используемый для имени месяца, зависио от системной переменной lc_time_names.
+
+  > NOW([fsp]), LOCALTIMESTAMP(), LOCALTIME(), CURRENT_TIMESTAMP()
+    > Возвращает текущую дату и время. fsp - кол-во символов для микросекунд, от 0 до 6.
+    > В зависимости от контекста возвращает значение в следующих форматах:
+      > Строковой контекст:  'YYYY-MM-DD HH:MM:SS'
+      > Числовой контекст:   YYYYMMDDHHMMSS
+    > Значение возвращается в текущей временной зоне.
+
+  > PERIOD_ADD(P,N)
+    > Добавляет N месяцев к периоду P (в формате YYMM или YYYYMM). p - не значение типа DATE.
+    > Возвращает значение в формате YYYYMM.
+
+  > PERIOD_DIFF(P1,P2)
+    > Возвращает число месяцев между периодами p1 и p2, которые должны быть в формате
+      YYMM или YYYYMM. p1 и p2 - не значения типа DATE.
+
+  > QUARTER(date)
+    > Возвращает квартал года, который берет из даты date, в диапазоне от 1 до 4.
+
+  > SEC_TO_TIME(seconds)
+    > Возвращает значение типа TIME, созданное из кол-ва секунд seconds.
+
+  > SECOND(time)
+    > Возвращает секунды, которые берет из time, в диапазоне от 0 до 59.
+
+  > STR_TO_DATE(str,format)
+    > Эта функция - противоположность для DATE_FORMAT(). Она берет str и format, и образует
+      из них DATETIME значение, соответствующее формату.
+    > Если str содержит только дату, то на выходе DATE значение, а если только время, то
+      на выходе TIME значение.
+    > Агрумент format имеет те же правила, что у функции DATE_FORMAT().
+    > Сканирование начинается с левого конца str, и терпит неудачу, если обнаруживается расхождение
+      с форматом format. Лишние символы в конце игнорируются.
+    > Не охваченные шаблоном или строкой части значений даты и времени, например, минуты или месяцы,
+      возникают в результирующем значении, как нули.
+
+  > SUBTIME(expr1,expr2)
+    > Возвращает разность expr1 - expr2, где expr1 - TIME/DATETIME, expr2 - TIME.
+
+  > SYSDATE()
+    > Возвращает текущую время и дату в одном из двух форматов.
+    > Формат зависио от контекста, в котором вызвана функция:
+      > Строковой: 'YYYY-MM-DD HH:MM:SS'
+      > Числовой:  YYYYMMDDHHMMSS
+    > В чем отличие от NOW() ?
+      > SYSDATE() возвращает время, в которое выражение начало выполняться.
+        Может даже возвращать разные значения внутри одного и того же выражения.
+        А вот NOW() - не может!
+    > В системной переменной --sysdate-is-now можно указать, чтобы SYSDATE() стал псевдонимом
+      для NOW().
+
+  > TIME_TO_SEC(time)
+    > Возвращает аргумент time, конвертированный в секунды.
+
+  > TIME(expr)
+    > Возвращает в виде строки TIME часть аргумента expr.
+
+  > TIMEDIFF(expr1,expr2)
+    > Возвращает разность expr1 - expr2, как значение типа TIME, где expr1 и expr2 -
+      одинаковые TIME/DATETIME значения.
+    > expr1 и expr2 должны быть одного типа.
+
+  > TIMESTAMP(expr), TIMESTAMP(expr1,expr2)
+    > С одним аргументом: возвращает expr в виде DATETIME значения.
+    > С двумя аргументами: возвращает expr в виде DATETIME значения, и прибавляет к нему
+      TIME значение expr2.
+
+  > TIMESTAMPADD(unit,interval,datetime_expr)
+    > Прибавляет int значение interval к DATE или DATETIME значению datetime_expr.
+    > Единицы измерения unit значения interval могут быть следующие:
+       MICROSECOND (microseconds), SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, QUARTER, or YEAR.
+
+  > TIMESTAMPDIFF(unit,datetime_expr1,datetime_expr2)
+    > Возвращает разность datetime_expr2 - datetime_expr1, оба типа DATE/DATETIME.
+    > Они могут быть разных типов, не обязательно одного и того же.
+    > Значение рассматривается, как DATETIME, если у него есть временная часть '00:00:00'
+    > Единицы измерения unit возвращаемого результирующего значения могут быть следующие:
+       MICROSECOND (microseconds), SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, QUARTER, or YEAR.
+
+  > TO_DAYS(date)
+    > Возвращает количество дней, прошедших по дату date с Рождества Христова.
+    > Не предназначена для использования для дат, ранее 1582 года, потому что когда
+      меняли календарь потеряли часть дат, и функция этого не учитывает.
+
+  > TO_SECONDS(expr)
+    > Возвращает для expr (DATE/DATETIME) количество секунд, прошедших с Рождества Христова.
+    > Возвращает NULL, если expr не верный.
+    > Не предназначена для использования для дат, ранее 1582 года, потому что когда
+      меняли календарь потеряли часть дат, и функция этого не учитывает.
+
+  > UNIX_TIMESTAMP([date])
+    > Без аргумента возвращает UNIX timestamp - количество секунд, прошедших с начала эпохи
+      UNIX '1970-01-01 00:00:00' UTC.
+    > С аргументом возвращает UNIX timestamp для указанной date.
+    > Аргумент date может быть следующих типов: DATE, DATETIME, TIMESTAMP, или число в
+      определенном формате, например YYMMDD или YYYYYMMDD.
+      > Сервер воспринимает date как дата-временное значение в текущей временной зоне,
+        и конвертирует его во временную зону UTC.
+      > Если передать не правильный date, то функция вернет NULL.
+    > Если использовать UNIX_TIMESTAMP() и FROM_UNIXTIME() для конвертирования TIMESTAMP
+      значений, то конвертация пройдет с потерями.
+
+  > UTC_DATE()
+    > Возвращает текущую дату, переведенную в UTC, в 1 из 2 форматов.
+    > В зависимости от контекста возвращает значение в следующих форматах:
+      > Строковой контекст:  'YYYY-MM-DD'
+      > Числовой контекст:   YYYYMMDD
+
+  > UTC_TIME([fsp])
+    > Возвращает текущее время, переведенное в UTC, в 1 из 2 форматов.
+    > В зависимости от контекста возвращает значение в следующих форматах:
+      > Строковой контекст:  'HH:MM:SS'
+      > Числовой контекст:   HHMMSS
+    > Аргумент fsp устанавливает, возвращать ли дробные доли секунды, диапазон от 0 до 6.
+
+  > UTC_TIMESTAMP([fsp])
+    > Возвращает текущие время и дату, переведенные в UTC, в 1 из 2 форматов.
+    > В зависимости от контекста возвращает значение в следующих форматах:
+      > Строковой контекст:  'YYYY-MM-DD HH:MM:SS'
+      > Числовой контекст:   YYYYMMDDHHMMSS
+    > Аргумент fsp устанавливает, возвращать ли дробные доли секунды, диапазон от 0 до 6.
+
+  > WEEK(date[,mode])
+    > Возвращает кол-во недель, прошедших с начала года, для даты date.
+    > Аргумент mode позволяет указать, неделя начинается с воскресенья или с понедельника,
+      а также возвращаемое значение должно быть в диапазон 0..53, или 1..53.
+      > Таблицу возможных значений аргумента mode см. по ссылке:
+          http://dev.mysql.com/doc/refman/5.6/en/date-and-time-functions.html#function_week
+
+  > WEEKDAY(date)
+    > Возвращает номер дня недели для даты date, в диапазоне от 0 = Monday ... 6 = Sunday.
+
+  > WEEKOFYEAR(date)
+    > Эквивалент WEEK(date,3).
+
+  > YEARWEEK(date), YEARWEEK(date,mode)
+    > Возвращает год и неделю для заданной date. mode как у функции WEEK().
+
+
+> Функции и операции для приведения типов
+
+  > BINARY
+    > Оператор BINARY приводит строку, следующую за ним, к бинарной строке.
+    > Это простой способ организовать побайтовое, а не посимвольное, сравнение строк.
+    > Если хотя бы 1 строка в сравнении бинарная, сравнение становится регистрочувствительным,
+      а пробелы становятся значимыми для сравнения.
+    > Применение функции в таком виде: CAST(str AS BINARY) эквивалентно применению оператора.
+    > При приведении значений из индексированных столбцов к BINARY, MySQL в некоторых случаях
+      не сможет использовать индекс.
+    > В операции сравнения, где бы ни присутствовал BINARY, он влияет на всю операцию.
+
+  > CAST(expr AS type)
+    > Приводит выражение expr к типу type.
+    > См. описание функции CONVERT() для уточнения подробностей.
+
+  > CONVERT(expr,type), CONVERT(expr USING transcoding_name)
+    > Приводит выражение expr к типу type.
+    > Атрибут type может быть один из следующих:
+      - BINARY[(N)]
+      - CHAR[(N)]
+      - DATE
+      - DATETIME
+      - DECIMAL[(M,[,D])]
+      - SIGNED[INTEGER]
+      - TIME
+      - UNSIGNED[INTEGER]
+    > Аргумент N у BINARY дает команду использовать не более, чем N символов при приведении.
+    > Атрибут USING используется для приведения строки в другую кодировку.
+    > Чтобы организовать регистронечувствительное сравнение строк, их требуется привести
+      к не бинарному виду, потому что бинарные строки не имеют понятия о регистре, ведь у
+      них нет кодировки, и сравнение их регистрочувствительно.
+      > Кроме того, следует выбрать регистронечувствительный collation (их большинство, а
+        регистрочувствительные collation имеют имена с суффиксом _cs).
+    > Функции LOWER() и UPPER() не работают на бинарных строках. Сначала требуется привести их
+      в не бинарный вид.
+    > Функции приведения типов также полезны, когда требуется создать колонку определенного
+      типа с помощью CREATE TABLE.
+    > Если использовать строку в математическом контексте, она автоматически приводится к числу
+      с плавающей запятой. Если использовать число в текстовом контексте, оно автоматически
+      приводится к строки. В этих случаях операторы приведения не требуются.
+
+> Некоторые функции для шифрования и сжатия
+
+  > ENCODE(str,pass_str)  | зашифровать str в бинарную строку, используя pass_str в качестве пароля
+    > Результат - бинарная строка той же длины, что и str.
+    > Для расшифровки использовать функцию DECODE().
+
+  > DECODE(crypt_str,pass_str)  | расшифровать ранее зашифрованную str, используя pass_str в качестве пароля для расшифровки
+    > -
+
+  > COMPRESS(string_to_compress)  | сжимает строку и возвращает результат в виде бинарной строки
+    > MySQL должен быть скомпилирован с библиотекой для сжатия zlib. Иначе результатом будет
+      всегда NULL.
+    > Сжатая строка может быть разжата с помощью функции UNCOMPRESS().
+
+  > UNCOMPRESS(string_to_uncompress)  | разжимает строку, сжатую ранее функцией COMPRESS()
+    >
+
+  > UNCOMPRESSED_LENGTH(compressed_string)  | возвращает длину строки, которая у нее была до того, как она была сжата
+    > Если аргумент представляет собой не сжатое функцией COMPRESS() значение, то функция
+      вернет NULL.
+    > MySQL должен быть скомпилирован с библиотекой для сжатия zlib. Иначе результатом будет
+      всегда NULL.
+
+  > MD5(str)  | возвращает 128-битную MD5 контрольную сумму для строки str
+    > -
+
+  > PASSWORD(str)  | возвращает хэш строки str в виде не бинарной строки с кодировкой соединения
+    > Возвращает хэш строки str. Обычно используется для хэширования паролей. Хэш представляет
+      собой не бинарную строку в кодировке соединения.
+    > Если str содержит NULL, то и результат будет NULL.
+    > С помощью этой функции MySQL также делает хэши и для своих паролей, которые хранит
+      в таблице mysql.user.
+
+
+  > Информационные функции
+
+    > BENCHMARK(count,expr)  | выполняет выражение expr непрерывно count раз
+      > Может быть использовано для того, чтобы выяснить, как быстро MySQL выполняет выражение.
+      > Результат функции всегда 0. Она предназначена для выполнения в клиенте mysql shell,
+        который показывает время выполнения выражения.
+      > Рекомендуется запускать функцию несколько раз, а затем взять среднее арифметическое
+        от результатов, чтобы повысить точность бенчмаркинга.
+
+    > CHARSET(str)  | возвращает кодировку строки str
+      > -
+
+    > COLLATION(str)  | возвращает collation строки str
+      > -
+
+    > COERCIBILITY(str)  | возвращает collation coercibility строки str (флаг от 0 до 5)
+      > Возвращает целое число от 0 до 6. Возможные значения:
+        - 0: явное collation. Пример: задано явно с помощью атрибута COLLATE
+        - 1: нет collation. Пример: конкатенация строк с разными collation
+        - 2: не явное collation. Примеры: значение колонки, параметр или локальная переменая сохраняемого скрипта
+        - 3: системная константа. Пример: результат функции USER()
+        - 4: Coercible. Пример: строка-литерал.
+        - 5: Ignorable. Пример: NULL или выражение, возвращающее NULL
+
+    > CONNECTION_ID()  | возвращает ID соединения
+      > Каждое соединение имеет уникальный ID среди подключенных к серверу в настоящий
+        момент клиентов.
+
+    > CURRENT_USER()  | возвращает строку с именем и хостом текущего пользователя в формате 'user@localhost'
+      > Возвращает имя пользователя и хост для аккаунта MySQL, который сервер использует
+        для аутентификации текущего клиента. Этот аккаунт определяет привилегии этого
+        пользователя.
+      > Значение возвращает в виде строки с кодировкой UTF8.
+      > При попытке подключения к серверу с именем пользователя, аккаунта для которого нет,
+        сервер может автоматически выполнить данное подключение с использованием анонимного
+        пользователя.
+
+    > DATABASE()  | возвращает имя текущей базы данных по умолчанию, или NULL, если её нет
+      > Значение возвращает в виде строки с кодировкой UTF8.
+      > Если базы данных по умолчанию не устновлено, возвращает NULL.
+      > Внутри сохраняемого скрипта, база данных по умолчанию - та, с которой этот скрипт
+        связан.
+
+    > FOUND_ROWS()  | после SELECT ... LIMIT показывает, сколько бы это выражение вернуло строк без LIMIT
+      > Утверждение SELECT может включять атрибут LIMIT, который ограничивает МАХ количество
+        выводимых в результате строк.
+        Но иногда, требуется узнать, сколько бы строк содержал результат этой же операции
+        SELECT, но при этом повторно ее выполянть не хочется.
+        В этом случае как раз и поможет функция FOUND_ROWS(). Её надо выполнить сразу после
+        операции SELECT с атрибутом LIMIT.
+      > Чтобы это сработало, после утверждения SELECT должна быть опция SQL_CALC_FOUND_ROWS
+        (см. как в примере).
+
+    > LAST_INSERT_ID([expr])  | возвращает последнее успешно вставленное autoincrement значение
+      > Если аргумента нет, возвращает последнее на сервере успешно вставленное значение в
+        столбец с атрибутом AUTO_INCREMENT. Как правило, в результате INSERT-операции.
+
+    > ROW_COUNT()  | после DML-выражения вернет кол-во затронутых им строк
+      > Возвращает значение следующим образом:
+        > DDL-утверждения: 0. Это применимо с утверждениям CREATE, ALTER, DROP.
+        > DML-утверждения (кроме SELECT): количество затронутых строк. Это применимо к
+          таким утверждениям, как UPDATE.
+        > SELECT: -1, если возвращает набор результатов, например, SELECT * FROM t1;
+                  кол-во затронутых строк, если нет, например, SELECT * FROM t1 INTO OUTFILE 'file_name';
+        > SIGNAL-утверждения: 0.
+
+    > USER()  | имя и хост пользователя, указанные при подключении к серверу в формате 'user@localhost'
+      > Возвращает имя и хост, которые пользователь указал в клиенте для подключения к серверу
+        MySQL. Это имя может не всегда совпадать с именем аккаунта, который действительно
+        был использован сервером для аутентификации этого подключения.
+        > Наглядный пример см. выше в примерах. Если попытаться подключиться к серверу MySQL
+          с использованием имени, аккаунта для которого не существует (например, 'ivan'),
+          сервер выполнит подключение от имени анонимного аккаунта. При этом функция
+          USER() будет возвращать ivan@somehost, а функция CURRENT_USER() будет возвращать
+          ''@somehost. И этот пользователь будет иметь привилегии для анонимного аккаунта.
+
+    > VERSION()  | возвращает версию сервера MySQL
+      > Результат возвращает в виде строки с кодировкой UTF8.
+
+
+> Разные функции (не попавшие в другие разделы, выборочно)
+
+  > DEFAULT(col_name)     | Возвращает значение по умолчанию для указанной колонки
+    > Возыращает ошибку, если у колонки col_name нет значения по умолчанию.
+
+  > INET_ATON(expr)   | принимает ipv4 адрес типа '10.0.0.1', возвращает число - сетевой порядок байтов
+    > Сетевой порядок байтов рассчитывается следующим образом (на примере для expr = '10.0.5.9'):
+      10×256^3 + 0×256^2 + 5×256^1 + 9 = 167773449 (См. пример на SQL выше в примерах.)
+
+  > INET_NTOA(expr)   | противоположность INET_ATON - принимает число - сетевой порядок байтов, возвращает строку с ipv4 адресом
+    > -
+
+  > IS_IPV4(expr)     | возвращает 1, если expr - допустимый ipv4 адрес. Иначе 0.
+    > -
+
+  > IS_IPV6(expr)     | возвращает 1, если expr - допустимый ipv6 адрес. Иначе 0.
+    > -
+
+  > NAME_CONST(name,value)  | возвращает value в колонке с именем name
+    > -
+
+  > SLEEP(duration)       | делает паузу на duration секунд
+    > Зависает на duration секунд (которая может иметь дробную часть), и возвращает 0.
+
+
+> Функции (выборочно) и модификаторы для использования в атрибуте GROUP BY (включая функции-агрегаторы)
+
+  > AVG([DISTINCT] expr)  | Возвращает среднее значение для expr (DISTINCT - считать только уникальные значения)
+    > Возвращает NULL, если не находится совпадающих строк.
+
+  > COUNT(DISTINCT expr,[expr...])  | возвращает кол-во строк отдельно в каждом из expr (DISTINCT - считать только уникальные значения)
+    > Возвращает число non-NULL значений из expr в строках, извлеченных операцией SELECT.
+    > Возвращает NULL, если не находится совпадающих строк.
+    > COUNT(*) немного отличается в том плане, что считает в т.ч. и NULL значения.
+      > Отрабатывает очень быстро, если операция SELECT извлекает из 1 таблицы,
+        никакие другие колонки не извлекаются, и нет атрибута WHERE. Например:
+          mysql> SELECT COUNT(*) FROM student;
+      > Эта оптимизация работает только для таблиц на движке MyISAM.
+  > GROUP_CONCAT(expr)  | возвращает строку, в которой все значения столбца идут через разделитель (в прямом или обратном порядке)
+    > Эта функция берет все значения столбца (или столбцов) expr , и делает из них строку
+      с разделителем str_val. При этом с помощью атрибута ORDER BY можно выбрать порядок.
+    > Атрибут DISTINCT позволяет исключить повторяющиеся значения.
+    > Системная переменная group_concat_max_len ограничивает максимальную длину результирующей
+      строки. По умолчанию: 1024 байта.
+      > Изменить можно либо в конфигурационном файле my.ini (постоянное изменение), либо только
+        для этого подключения, ввести команду SET [GLOBAL | SESSION] group_concat_max_len = val;
+      > Кроме того, можно упереться в ограничение в системной переменной max_allowed_packet,
+        по умолчанию ее значение 4MB.
+    > Синтаксис:
+          GROUP_CONCAT([DISTINCT] expr [,expr ...]
+                       [ORDER BY {unsigned_integer | col_name | expr}
+                           [ASC | DESC] [,col_name ...]]
+                       [SEPARATOR str_val])
+
+  > MAX([DISTINCT] expr)  | возвращает максимальное значение expr (DISTINCT - считать только уникальные значения)
+    > Может также принимать и значения строкового типа, и возвращать максимальное из них.
+    > Атрибут DISTINCT позволяет исключить повторяющиеся значения.
+
+  > MIN([DISTINCT] expr)  | возвращает минимальное значение expr (DISTINCT - считать только уникальные значения)
+    > Может также принимать и значения строкового типа, и возвращать минимальное из них.
+    > Атрибут DISTINCT позволяет исключить повторяющиеся значения.
+    > Возвращает NULL, если не находится совпадающих строк.
+
+  > SUM([DISTINCT] expr)  | возвращает сумму значений в expr (DISTINCT - считать только уникальные значения)
+    > Атрибут DISTINCT позволяет исключить повторяющиеся значения.
+    > Возвращает NULL, если не находится совпадающих строк.
+
+  + Бонус: дополнительно об атрибуте GROUP BY и его модификаторах
+    > Модификаторы GROUP BY
+      > Атрибут GROUP BY может иметь модификатор WITH ROLLUP, который позволяет добавить
+        дополнительные строки к выходному результату. Эти строки представляют собой итоговую
+        сводку - super-aggregate операции. Таким образом, это позволяет в одном запросе
+        помимо вывода табличных данных, провести с ними аналитические операции и вывести
+        их результат как раз в виде этих доп. строк.
+      > Таким образом, анализ производится по всем колонкам, присутствующим в атрибуте
+        GROUP BY, а не обязательно только по 1-й. И вот эта самая строка с результатом
+        анализа по колонке X появляется в этой колонке тогда, когда заканчиваются строки
+        со значением A, и перед тем, как начнутся строки со значением Б.
+          См. пример в примерах выше, а также по ссылке, там неплохо объявнено:
+            http://dev.mysql.com/doc/refman/5.6/en/group-by-modifiers.html
+      > Одновременно с WITH ROLLUP нельзя использовать атрибут ORDER BY для сортировки результатов,
+        потому что первый сам сортирует результаты особым образом. Так что, они друг друга исключают.
+        > Однако, можно сохранить некоторый контроль над сортировкой - можно использовать атрибуты
+          ASC и DESC после имен колонок, по которым идет анализ (см. пример выше, в примерах).
+      > Так как LIMIT может быть добавлен после WITH ROLLUP, то его действие в первую очередь срезает
+        строки, которые добавил WITH ROLLUP. Так что не целесообразно использовать их вместе.
+      > NULL появляется в каждой super-aggregate строке. Сервер следит за колонками, перечисленными в
+        атрибуте GROUP BY после самой левой колонки, и ждет смены значения. И перед строкой, в которой
+        знаение меняется посылает super-aggregate строку с NULL-значением в этом месте.
+        > Поскольку super-aggregate строки добавляются в выходной результат на поздних этапах
+          выполнения запроса, невозможно во время запроса отлавливать эти NULL и заменять их
+          на что-нибудь другое.
+      > Колонка, не агрегированная которая отсутствует в GROUP BY, может присутствовать в SELECT-списке,
+        и это нормально для MySQL.
+        В этом случае сервер сам каким-то образом выбирает, какие значения из этой колонки показать
+        в результирующей таблице (см. пример выше в примерах)
+        > Но если в системной переменной sql_mode добавлен режим ONLY_FULL_GROUP_BY, то будет error.
+
+    > Расширения MySQL к GROUP BY
+      > Первое расширение описано выше, про возможность присутствия неагрегированных колонок в
+        списке SELECT, вместе с WITH ROLLUP.
+      > Аналогичное расширение касается атрибута HAVING - в MySQL в этом атрибуте могут быть не
+        агрегированные колонки.
+      > Чтобы отключить расширения MySQL, требуется добавить в системную переменную sql_mode
+        режим работы ONLY_FULL_GROUP_BY.
+
+
+> Точная математика
+  > Общая информация
+    > MySQL 5.6 позволяет оперировать точной математикой - обработка числовых операций происходит
+      с чрезвычайной точностью и высшей степенью контроля отсутствия не верных значений.
+    > Точная математика основывается на двух особенностях:
+      > Режимах SQL, которые регулирует то, принимает ли или отвергает сервер неверные данные.
+      > Библиотека MySQL для арифметики с фиксированной точкой.
+    > Эти особенности имеют несколько последствий для числовых операций, и обеспечивают высокую
+      степень соблюдения стандарта SQL:
+      > Точные вычисления.
+        > Чтобы получить точные вычисления, в них не должны участвовать числа с плавающей запятой,
+          потому что они по природе своей содержат в себе элемент неточности. Например, MySQL
+          рассматривает число вроде .0001, как точное значение, а не как приблизительное число
+          с плавающей запятой. Поэтому если сложить его 10000 раз, то получится ровно 1, а не
+          "некое значение, близкое к 1".
+      > Четкое поведение при округлении.
+        > Для точных чисел, результат функции ROUND() зависит от её аргумента, а не от окружающих
+          факторов, таких как работа лежащих в основе библиотек C.
+      > Независимость от платформы.
+        > Операции с точными числами дают тот же самый результат на Windows и UNIX.
+      > Контроль обработки не верных значений.
+        > Выход из допустимого диапазона для этого типа, деление на ноль, обнаруживаются и
+          могут быть рассмотрены, как ошибки. Например, можно рассматривать слишком большое
+          для типа колонки значение, как ошибку, вместо того, чтобы обрезать его до ближайшего
+          допустимого размера. Аналогично, можно рассматривать деление на ноль, как ошибку,
+          вместо того, чтобы такая операция давала в результате NULL.
+          То, как поступает в этих случаях сервер MySQL, настраивают в системной переменной sql_mode.
+
+  > Настройка SQL-режима работы сервера для организации точной математики
+    > За SQL-режим, в котором работает сервер, отвечает системная переменная sql_mode.
+    > Чтобы настроить SQL-режим для точной математики, требуется добавить туда следующие значения:
+      > STRICT_ALL_TABLES
+      > STRICT_TRANS_TABLES
+      > ERROR_FOR_DIVISION_BY_ZERO
+
+  > Типы числовых значений
+    > Масштаб применения точной математики для точных операций включает типы данны (DECIMAL и integer)
+      и точные числовые литералы. Приблизительные типы данных и числовые литералы обрабатываются,
+      как числа с плавающей запятой.
+    > Точные значения-литералы имет целую и/или дробную часть. Они могут имет знак.
+        Примеры: 1, .2, 3.4, -5, -6.78, +9.10
+    > Приблизительные значения-литералы представлены в научном формате, с мантиссой и экспонентой.
+      Обе они могут быть со знаком.
+        Примеры: 1.2E3, 1.2E-3, -1.2E3, -1.2E-3
+    > Два числа, которые вроде бы выглядят одинаковыми, могут быть разными:
+      2.34 - точное число с фиксированной запятой.
+      2.34E0 - приблизительное число с плавающей запятой.
+    > Тип DECIMAL - это тип с фиксированной запятой, и вычисления со значениями этого типа - точные.
+      В MySQL тип DECIMAL имеет несколько синонимов: NUMERIC, DEC, FIXED.
+      Целочисленные типы также являются точными.
+    > Типы FLOAT и DOUBLE  - это типы с плавающей запятой, и вычисления со значениями этих типов -
+      не точные.
+
+  > Особенности типа DECIMAL в MySQL 5.6
+    > Синтаксис для объявления значения типа DECIMAL такой: DECIMAL(M,D). Диапазоны для аргументов
+      в MySQL следующие:
+      > M - максимальное количество чисел (точность). Диапазон: [1..65].
+      > D - количество цифр справа от десятичной точки (масштаб). Диапазон: [0..30].
+            Должно быть не больше, чем M.
+    > "Максимальное значение М = 65" означает, что вычисления со значениями типа DECIMAL остаются
+      точными до тех пор, пока M <= 65. Это ограничение также относится и к точным числовым литералам,
+      и это меньше чем раньше (раньше было 254 цифры, но и вычисления были не точными, и проводились
+      с использованием значений с плавающей запятой).
+    > Значения типа DECIMAL в MySQL 5.6 хранятся в бинарном формате, который упаковывает 9
+      десятичных цифр в 4 байта. Цифры слева занимают определенное место, и, отдельно, цифры
+      справа от десятичной точки занимают отдельное место на диске. Каждая связка из 9 цифр
+      требует дополнительные 4 байта.
+      Сколько занимает крайняя неполная связка:
+          - 0 цифр - 0 байт
+          - 1-2 цифры - 1 байта
+          - 3-4 цифры - 2 байта
+          - 5-6 цифр - 3 байта
+          - 7-9 цифр - 4 байта
+    > Например, DECIMAL(18,9) имеет 9 цифр на каждой стороне от десятичной точки, так что
+      целая часть занимает 4 байта (9 цифр), и дробная столько же.
+      Другой пример: DECIMAL(20,6) имеет 14 цифр слева от десятичной точки, что требует 4 + 3 = 7
+      байт для хранения информации, и 6 цифр справа, что требует 3 байта. В сумме: 10 байт.
+    > В отличие от старых версий MySQL, в новых для значений типа DECIMAL знак + или -
+      не сохраняется, как и нули слева от цифр. Если ввести +0003.1 в колонку типа DECIMAL(5,1),
+      то сохранится значение 3.1.
+      > !!! Это не значит, что DECIMAL не может быть отрицательным. Это значит, что теперь знак
+        сохраняется не как литерал, а в одном из битов - в знаковом бите.
+    > Колонки типа DECIMAL в MySQL 5.6 не допускают значения больше, чем заявлено в определении
+      колонки. Например, для DECIMAL(3,0) колонка поддерживает диапазон от -999 до 999.
+      Колонка DECIMAL(M,D) допускает максимум M - D цифр слева от десятичной точки.
+
+  > Обработка выражений
+    > С точной математикой, точные значения используются как описано везде. Например, числа в
+      сравнениях используются точно так, как они написаны, без изменения значения. В строгом
+      SQL режиме, для операции INSERT в колонке с точным типом данных (DECIMAL или целый),
+      вставляются только те точные значения, которые попадают в диапазон этого типа данных
+      (если строгий SQL режим не включен, при не попадании в диапазон вставляемого числа, оно обрезается
+      до ближайшего допустимого, и все таки вставляется).
+      При извлечение значение должно бы тоже самое, что при вставке
+    > Обработка числовых выражений зависит от того, какой тип значений содержит выражение:
+      > Если присутствуют какие-либо не точные значения, все выражение обрабатывается, как не точное,
+        с использованием арифметики с плавающей запятой.
+      > Если в выражении нет не точных значений, то значит оно содержит только точные. Если какое-нибудь
+        из точных значений содержит дробную часть, то выражение выполняется с использованием точной
+        арифметики для типа DECIMAL, и имеет точность 65 цифр. Термин "точный" обозначает пределы,
+        в соответствии с которыми значения могут быть представлены в бинарном виде. Например,
+        результат выражения 1.0/3.0 может быть представлен в DECIMAL-нотации как .333..., но не
+        записан, как точное число, так что (1.0/3.0)*3 не дает точный результат.
+      > В иных случаях, выражение содержит только целые значения. Тогда выражение точное, и
+        выполняется с использованием арифметики для целых чисел, и той же точностью, что
+        у BIGINT (64 бита).
+    > Если выражение содержит строки, то они конвертируются в значения с
+      плавающей запятой двойной точности (double-precision), и выражение становится не точным.
+    > Если число вставляется в колонку с точным типом (DECIMAL или целый), то оно вставляется, как
+      целое значение в пределах диапазона возможных значений колонки.
+    > Если значение содержит слишком много цифр в десятичной части, то возникает предупреждение,
+      и число округляется, как описано в следующем пункте "Поведение при округлении".
+    > Если значение содержит слишком много цифр в целой части (слишком большое) оно обрабатывается
+      следующим образом:
+      > Если строгий SQL-режим не включен, значение обрезается до ближайшего допустимого и вставляется.
+        При этом возникает warning.
+      > Если строгий SQL-режим включен, возникает ошибка "overflow error".
+    > По умолчанию деление на ноль дает NULL. Но если включен SQL-режим ERROR_FOR_DIVISION_BY_ZERO,
+      то такая ситуация обрабатывается следующим образом:
+      > Если строгий SQL-режим не включен, возникает warning.
+      > Если строгий SQL-режим включен, inserts и updates, содержащие деление на ноль, запрещены,
+        и возниакет ошибка.
+        Другими словами, вставки и обновления значений таблицы, включающие вражения, которые содержат
+        в себе деление на ноль, могут быть рассмотрены, как ошибки, но для этого дополнительно к
+        строгому SQL-режиму должен быть включен режим ERROR_FOR_DIVISION_BY_ZERO.
+      > Например, у нас есть выражение ниже. И вот что произойдет при разных комбинациях
+        строгого режима и вышеобозначенного режима:
+          INSERT INTO t SET i = 1/0;
+
+   -------------------------------------------------------------------------------------------
+        sql_mode режим                                        Результат
+   -------------------------------------------------------------------------------------------
+   1    '' (по умолчанию)                      ни ошибок, ни предупреждений; значение i = NULL
+   2    strict                                 ни ошибок, ни предупреждений; значение i = NULL
+   3    ERROR_FOR_DIVISION_BY_ZERO             предупреждение, ошибок нет;   значение i = NULL
+   4    strict + ERROR_FOR_DIVISION_BY_ZERO    ошибка; строка не вставляется.
+   -------------------------------------------------------------------------------------------
+
+    > Для вставки строковых значений в колонки с числовыми типами, приведение из строки в число
+      обрабатывается следующим образом, если в строке есть не числовое содержание:
+      > Строка, которая начинается не с числа, не может быть использована как число. Попытка
+        такой вставки в строгом SQL-режиме выдает ошибку, а в не строгом - предупреждение.
+        Это касается и пустых строк.
+      > Строка, которая начинается с числа, может быть приведена, но все, что чледует за
+        этим числом, с которого она начинается, обрезается. Если обрезанный кусок содержит
+        что-либо, кроме пробелов, то в строгом SQL-режиме будет error, а в не строгом - warning.
+
+> Поведение при округлении
+  > В этом пункте будет обсуждаться округление в режиме работы точной математики, для операции
+    ROUND() и при вставке значений в колонку, имеющую точный тип (DECIMAL или целый).
+  > Функция ROUND() округляет по-разному, в зависимости от того, каков аргумент - точный или
+    приблизительный:
+    > Для точных чисел, ROUND() использует следующее правило:
+      > Значения с дробной частью .5 или больше округляются вверх до ближайшего целого
+        (для + значений), и вниз (для - значений), иначе говоря, округление происходит
+        в сторону ОТ нуля.
+      > Значения с дробной частью < .5 округляются до ближайшего целого в сторону К нулю.
+  > Отличие округления точных и не точных значений на примере:
+    > ROUND(2.5) = 3;
+    > ROUND(25E-1) = 2;
+  > При вставке значений в колонки с точными типами DECIMAL или integer, цель - получить точное
+    значение, поэтому округление происходит по схеме "как для точных чисел" независимо от того,
+    точное ли значение вставляется, или приблизительное.
+
+
+
+-------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

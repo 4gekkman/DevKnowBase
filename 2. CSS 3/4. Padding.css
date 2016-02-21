@@ -1,0 +1,11 @@
+
+/* padding */
+.c1 {
+  width: 200px;
+  height: 200px;
+  border: 2px solid #f00;
+  padding: 15px;
+}
+.c2 {
+  margin: 0;
+}

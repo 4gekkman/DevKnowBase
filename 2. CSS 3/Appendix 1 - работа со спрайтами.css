@@ -1,0 +1,83 @@
+/* Убрать маркеры и отступы у элементов li */
+ul {
+  list-style: none;
+
+  margin: 0;
+  padding: 0;
+}
+
+/* Сделать Sprite Sheet фоном для элементов li */
+.buttons li {
+  background: url('Files/ButtonHoverActive.png') no-repeat;
+  display: inline-block;
+  width: 116px;
+  height: 50px;
+  cursor: pointer;
+}
+
+/* Работа со 1-й кнопкой */
+
+  /* При наведении на 1-ю кнопку сместить её фон так,
+     чтобы было видно её Hover состояние            */
+  .buttons .button1:hover {
+    background-position: -145px 0;
+  }
+
+  /* При наведении на 1-ю кнопку сместить её фон так,
+     чтобы было видно её Active состояние            */
+  .buttons .button1:active {
+    background-position: -286px 0;
+  }
+
+/* Работа со 2-й кнопкой */
+
+  /* Сместить фон 2-го li так, чтобы было видно
+     состояние Button для этой кнопки          */
+  .buttons .button2 {
+    background-position: 0 -82px;
+  }
+
+  /* При наведении на 2-ю кнопку сместить её фон так,
+     чтобы было видно её Hover состояние            */
+  .buttons .button2:hover {
+    background-position: -144px -82px;
+  }
+
+  /* При нажатии на 2-ю кнопку сместить её фон так,
+     чтобы было видно её Active состояние            */
+  .buttons .button2:active {
+    background-position: -286px -82px;
+  }
+
+/* Работа со 3-й кнопкой */
+
+  /* Сместить фон 3-го li так, чтобы было видно
+     состояние Button для этой кнопки          */
+    .buttons .button3 {
+      background-position: 0 -158px;
+    }
+
+    /* При наведении на 3-ю кнопку сместить её фон так,
+       чтобы было видно её Hover состояние            */
+    .buttons .button3:hover {
+      background-position: -143px -158px;
+    }
+
+  /* При наведении на 3-ю кнопку сместить её фон так,
+     чтобы было видно её Active состояние            */
+  .buttons .button3:active {
+    background-position: -289px -158px;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+

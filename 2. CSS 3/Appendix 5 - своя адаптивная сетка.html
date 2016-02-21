@@ -1,0 +1,337 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+CSS 3.
+Appendix 5 - своя адаптивная сетка
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------- -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>Appendix 5 - своя адаптивная сетка</title>
+  <link rel="stylesheet" type="text/css" href="Appendix%205%20-%20своя%20адаптивная%20сетка.css">
+	<script src='http://code.jquery.com/jquery-1.10.2.min.js'></script>
+	<script src='http://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js'></script>
+	<script src='http://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js'></script>
+	<link rel="stylesheet" href="http//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.3/normalize.min.css">
+</head>
+<body>
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="header span3">
+			<h1>CSS Grid</h1>
+		</div>
+		<div class="search span3 offset6"><input type="text" name="" id=""/></div>
+	</div>
+	<div class="row">
+		<div class="slider span12"></div>
+	</div>
+	<div class="row">
+		<div class="thumb span2"><img src="http://placehold.it/140x100"></div>
+		<div class="thumb span2"><img src="http://placehold.it/140x100"></div>
+		<div class="thumb span2"><img src="http://placehold.it/140x100"></div>
+		<div class="thumb span2"><img src="http://placehold.it/140x100"></div>
+		<div class="thumb span2"><img src="http://placehold.it/140x100"></div>
+		<div class="thumb span2"><img src="http://placehold.it/140x100"></div>
+	</div>
+	<div class="row">
+		<div class="sidebar span2">
+			<nav>
+				<ul>
+					<li><a href="">Item 1</a></li>
+					<li><a href="">Item 2</a></li>
+					<li><a href="">Item 3</a></li>
+					<li><a href="">Item 4</a></li>
+					<li><a href="">Item 5</a></li>
+					<li><a href="">Item 6</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div class="content span10">
+			<h2>Lorem ipsum dolor sit amet.</h2>
+
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aperiam autem consequatur debitis deleniti esse est
+				exercitationem incidunt, iusto necessitatibus nihil officiis porro quasi, rerum tempora. Aliquam consequuntur
+				cupiditate dolore et, eveniet inventore itaque libero minima, repudiandae rerum suscipit tenetur veniam
+				voluptas. Animi aspernatur est iste libero nobis omnis ratione recusandae unde, vero voluptas? Cum dolor
+				expedita incidunt iusto magni quasi sequi similique velit voluptate, voluptates! Alias iure non sint?</p>
+
+			<p>At, commodi consectetur consequuntur delectus hic iste, iure labore maiores modi molestiae mollitia nihil nisi
+				obcaecati porro praesentium quaerat quo repellat repudiandae sequi sint suscipit, tenetur velit? Accusantium
+				aliquid assumenda at autem, cum debitis dolorem ducimus error, harum hic illum iusto minima minus modi molestias
+				nostrum obcaecati optio porro quod ratione recusandae, sed suscipit veniam voluptatem voluptates! Accusantium
+				consequuntur dolore, eaque necessitatibus quam voluptatibus! Aliquam architecto atque ipsa modi vero!</p>
+
+			<p>Accusamus aliquam animi asperiores aut autem consequuntur doloremque eveniet excepturi illo, laboriosam laborum
+				minus, necessitatibus officiis quod sequi tempora unde veniam voluptatem? Ab aspernatur aut dicta dignissimos
+				distinctio dolore, ducimus quae quam rem, rerum tenetur totam, unde veritatis? Ab aliquam architecto
+				consectetur, cum cumque delectus dignissimos distinctio eius enim eos error ex, illum ipsa libero necessitatibus
+				neque officia perspiciatis provident quibusdam quidem quis ratione, recusandae repellendus soluta tenetur ut
+				veniam?</p>
+
+			<p>A accusantium assumenda, beatae culpa dignissimos harum incidunt iure labore libero molestias nisi officia
+				provident quam quis quos reiciendis similique suscipit tempora tempore totam. Dignissimos dolorem explicabo
+				itaque nostrum reiciendis voluptatem. Ab accusamus architecto assumenda blanditiis consequuntur cum cupiditate
+				eius eligendi esse facere laudantium magni, nemo nobis nulla officiis optio perferendis quibusdam quos
+				repudiandae ullam vel voluptates voluptatum? Accusantium dolores eaque ex nulla qui ratione voluptatem
+				voluptatibus. Expedita, facere voluptatem.</p>
+
+			<p>Dolorum itaque minus neque omnis porro possimus provident ratione repellendus soluta veniam. Consequatur
+				dolorum iusto magni neque nostrum quasi rem sunt tempore! Ab asperiores aut autem beatae blanditiis consequatur
+				corporis culpa cum cupiditate delectus deserunt dignissimos dolorem doloribus eligendi et expedita fuga, fugit
+				in incidunt ipsam iure labore laboriosam laudantium magni minima molestias nam natus nesciunt odio odit
+				perspiciatis possimus similique sint sunt vitae voluptas voluptatem. Autem nobis omnis repellat?</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="footer span12">
+			<small>Lorem ipsum dolor sit amet.</small>
+		</div>
+	</div>
+</div>
+
+
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+Ссылки:
+
+
+  > Видео-урок по созданию макета сайта с адаптивным дизайном от Sorax:
+  		http://www.youtube.com/watch?v=3MfxQAt49dE&list=PL026CCEB5125879C2&index=22
+
+	> Ссылка на фронт-енд фреймворк Twitter Bootstrap с адаптивной CSS-сеткой:
+			http://getbootstrap.com/2.3.2/
+
+	> Ссылка на фронт-енд фрейморк Foundation с адаптивной CSS-сеткой:
+			http://foundation.zurb.com/
+
+	> Ссылка на CSS-фреймворк Skeleton с адаптивной CSS-сеткой:
+			http://www.getskeleton.com/
+
+	> Сайт, на котором тонны разных фоновых картинок:
+			http://www.goodfon.com/
+
+
+
+*****************************************************
+Оглавление:
+
+	> Примечание по поводу поддержки некоторых селекторов в ранних версиях IE
+	> Что такое адаптивная CSS-сетка
+	> Фреймворки, в которых есть своя адапривная CSS-сетка
+	> Описание процесса создания адаптивной CSS-сетки
+
+
+
+
+
+*****************************************************
+
+	> Примечание по поводу поддержки некоторых селекторов в ранних версиях IE
+		> Для создания адапривной CSS-сетки, в CSS-файле, использованы селекторы,
+		  которые могут не поддерживаться в ранних версиях IE.
+		> Это такие CSS-селекторы, как:
+
+				[class*='span']
+				[class*='span']:last-child
+
+		> Чтобы это исправить, к проекту подключен JS скрипт selectivizr. А чтобы
+			он работал, перед ним подключен jQuery.
+		> Также для того, чтобы можно было опускать префиксы, здесь использован
+			PrefixFree.js.
+
+
+	> Что такое адаптивная CSS-сетка
+		1. Создают блок-контейнер, который полностью содержит документ.
+		2. В контейнере создают блоки-ряды (по 1-му в ряд), с отступом в
+			 Y пикселей друг от друга. Их может быть сколько угодно.
+			 > Высота ряда вычисляется автоматически, по высоте самого высокого
+			 	 контена из всех колонок ряда.
+		3. Для блока-ряда подготавливают N классов блоков-колонок, где N
+			 - желаемоеколичество колонок в сетке.
+			 > Имена всех этих классов должны иметь сходную уникальную черту,
+			 	 чтобы можно было обратиться ко всем им с помощью медиа запроса.
+			 	 Например, начинаться со слова "span".
+			 > Блоки колонки имеют отступ X по горизонтали друг от друга.
+			 > 1-ая блок-колонка не имеет отступа слева, как и последняя - справа.
+			 	 Т.Е. ширина 1-й и последней колонок меньше на Xpx, чем ширина остальных.
+			 > Блоки колонки имеют display = inline внутри рядов.
+		4. Также для блока-ряда подготавливат N классов смещений margin-left,
+			 имеющих ту же ширину, что соответствующщий номер класса колонки.
+			 > Имена всех этих классов должны иметь сходную уникальную черту,
+			 	 чтобы можно было обратиться ко всем им с помощью медиа запроса.
+			 	 Например, начинаться со слова "offset".
+		5. Для придания адаптивности дизайну, для классов колонок и отступов
+			 используют медиазапросы.
+			 > Например, если ширина экрана меньше 940 px, то можно селектором
+			   выбрать все стили, начинающиеся со "span", и поделить их ширину
+			   на некий делитель. Аналогичную операцию можно провести со всеми
+			   стилями, начинающимися с "offset":
+			   	[class*='span'] { ... }
+		6. Создают ряды и заполняют их колонками. Где требуется, делают
+			 смещение слева с помощью подготовленных классов.
+
+
+	> Фреймворки, в которых есть своя адапривная CSS-сетка
+		> Чаще всего нет смысла писать свою адаптивную CSS-сетку, потому что
+			эту сетку уже написали за тебя. Однако в этом файле создана своя
+			простейшая сетка для того, чтобы понять внутренние механизмы работы
+			подобных структур.
+		> Например, такая сетка есть в следующих CSS-фреймворках, ссылки на
+			сайты которых доступны сверху в раздле "ссылки":
+			- Twitter Bootstrap
+			- Foundation
+			- Skeleton
+
+	> Описание процесса создания адаптивной CSS-сетки для этого документа
+		0. Подготовка документа
+			> Чтобы макет не поехал, задать box-sizing: border-box
+				Тогда width = заданному X, а не width = X + padding + margin + ...
+
+		1. Контейнер
+			> Выбрать ширину контейнера, например 940px.
+			> Выровнять его по центру
+
+		2. Ряд
+			> Выбрать вертикальный отступ между рядами, например 20px.
+			> Создать CSS-класс для рядов, зададать там margin-bottom: 20px;
+			> Также для рядов добавляется clear fix, поскольку все колонки в рядах
+				имеют свойство float: left.
+
+		3. Колонки
+			> Выбрать кол-во колонок в макете. Например, 12.
+			> Выбрать отступ между колонками, например 20px.
+			> Рассчитать ширину 12 колонк: 940 - 20*12 = 720px.
+			> Рассчитать ширину 1 колонки: 720px/12 = 60px
+			> Рассчитать ширину 2, 3, ..., 11 колонок с учетом отступа.
+				Сделать это удобно в JS консоли Chrome (CTRL + SHIFT + J):
+
+				 a=[], i=0;
+				 while(a.push(60+80*i++)<=12) { console.log(i); }
+
+				 a=[], i=0;
+				 while(a.push(60+80*i)<=12) { console.log(a[i]); i++; }
+
+				Результат:
+
+					1
+					2
+					3
+					4
+					5
+					6
+					7
+					8
+					9
+					10
+					11
+					12
+
+					60
+					140
+					220
+					300
+					380
+					460
+					540
+					620
+					700
+					780
+					860
+					940
+
+			> Создать 12 классов колонок. Имена классов должны иметь нечто общее
+				и уникальное. Например, span1, span2 ... . Каждый из классов
+				содержит 1 из 12-ти ширин в px, вычисленных в столбце выше.
+				Например:
+
+					.span1   { width:  60px; }
+					.span2   { width: 140px; }
+						...
+					.span12  { width: 940px; }
+
+			> Задать стили для колонок:
+
+					[class*='span'] {
+						float: left;
+						display: inline;
+						margin-right: 20px;  /* правый отступ */
+					}
+
+			> Убрать правый отступ у последней колонки:
+
+					[class*='span']:last-child {
+						margin-right: 0;
+						float:right;
+					}
+
+		4. Отступы
+			> Создать 12 классов для отступов. Имена классов должны иметь нечто общее
+				и уникальное. Например, offset1, offset2 ... . Каждый из классов
+				содержит отступ, размер которого соответствует 1 из 12-ти ширин в px,
+				вычисленные в столбце выше.
+
+					.offset1   { margin-left:  60px; }
+					.offset2   { margin-left: 140px; }
+						...
+					.offset12  { margin-left: 940px; }
+
+		5. Для быстрого создания HTML-разметки пишем (используя Emmet) следующее
+			 и разворачиваем это (не забыв склеить в 1 ряд без разделителя):
+
+				.container>
+				.row>.header.span3>h1{CSS Grid}^.search.span3.offset6>input:text^^
+				.row>.slider.span12^
+				.row>(.thumb.span2*6>ph140)^
+				.row>.sidebar.span2>nav>ul>(li*6>a{Item $})^^^.content.span10>h2>lorem5^(p*5>lorem70)^^
+				.row>.footer.span12>small>lorem5
+
+
+
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

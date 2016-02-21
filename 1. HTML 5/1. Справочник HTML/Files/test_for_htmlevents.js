@@ -1,0 +1,5 @@
+
+
+function sayHi() {
+  alert('Привет!');
+}

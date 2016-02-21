@@ -1,0 +1,12 @@
+{
+    "name": "Administrator/vendors",
+    "autoload": {
+        "psr-0": {
+            "MyApp": "src"
+        }
+    },
+		"minimum-stability": "dev",
+		"require-dev": {
+				"phpunit/phpunit": "3.9.*"
+		}
+}

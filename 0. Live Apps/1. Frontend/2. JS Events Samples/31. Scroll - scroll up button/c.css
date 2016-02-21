@@ -1,0 +1,87 @@
+body {
+	margin: 0;
+	padding: 0;
+
+	height: 2000px;
+	font: 1em 'PT Sans', Arial, Helvetica, sans-serif;
+}
+
+
+
+/*Стили для кнопок up и down*/
+#container {
+	position: fixed;
+	top: 50px;
+	left: 10px;
+	padding: 0;
+	opacity: .8;
+	z-index: 1;
+
+	width: 100px;
+	height: 100px;
+
+}
+
+#upButton {
+	display: none;
+
+	width: 100px;
+	height: 100px;
+	margin: 0;
+	cursor: pointer;
+
+	background: url(up.png) no-repeat;
+	background-size: 100px 100px;
+}
+
+#downButton {
+	display: none;
+
+	width: 100px;
+	height: 100px;
+	margin: 0;
+	cursor: pointer;
+
+	background: url(down.png) no-repeat;
+	background-size: 100px 100px;
+}
+
+
+
+/*Прочие стили*/
+#showScroll {
+	position: fixed;
+	margin: 0;
+	padding: 0;
+
+	line-height: 700px;
+	text-align: center;
+
+	font-size: 20em;
+	text-shadow: 4px 4px 20px RGBA(0,0,0,.5);
+	color: #c4422c;
+
+	width: 100%;
+	height: 100%;
+}
+
+#info {
+	position: fixed;
+	text-align: center;
+	padding: 10px;
+	background: #c5ce84;
+
+	top: 160px;
+	border: 1px solid #ccc;
+	box-shadow: 1px 2px 10px RGBA(0,0,0,.5);
+
+	width: 100%;
+}
+
+#bgText {
+	line-height: 40px;
+	color: #eee;
+	font-size: 2em;
+	font-style: italic;
+	text-align: justify;
+}

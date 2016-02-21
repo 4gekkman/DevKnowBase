@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Блок с градиентом</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+   body {
+    background: url("54. Фон.png") repeat;
+    line-height: 0px;
+   }
+   h2 {
+    font: bold 16px sans-serif;
+    max-width: 250px;
+    z-index: 1;
+    margin: 0px;
+    padding: 0px 10px;
+        
+    border: 2px solid #6DA92C;    
+    border-radius: 15px 15px 0 0;
+    -webkit-border-radius: 15px 15px 0 0;
+    -moz-border-radius: 15px 15px 0 0;     
+    border-bottom: none; 
+   }
+   .tab {
+    display: inline-block;
+    position: relative;
+    z-index: auto;
+    background: #C9E39C;
+
+    font: bold 1.2em sans-serif;     
+  
+    
+    border-bottom: none;     
+    border-radius: 15px 15px 0 0;
+    -webkit-border-radius: 15px 15px 0 0;
+    -moz-border-radius: 15px 15px 0 0;
+   }
+   .tab:before {
+    content: "";
+    position: absolute;   
+    z-index: -2;
+    top: 0px;
+    left:0px;
+    right: 0px;
+    bottom: 0px;
+    
+    border-radius: 15px 15px 0 0;
+    -webkit-border-radius: 15px 15px 0 0;
+    -moz-border-radius: 15px 15px 0 0;   
+    
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.8); 
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.8); 
+    box-shadow: 0 0 10px rgba(0,0,0,0.8); 
+   }
+   .content {
+    position: relative;
+    margin-top: -2px;
+    z-index: -1;
+    background: #C9E39C;
+    height: 150px;
+    padding: 10px 10px;    
+    font: normal 0.7em sans-serif;  
+    
+    border-radius: 0px 15px 15px 15px;
+    -webkit-border-radius: 0px 15px 15px 15px;
+    -moz-border-radius: 0px 15px 15px 15px;
+    border: 2px solid #6DA92C;
+   
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,0.8); 
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.8); 
+    box-shadow: 0 0 10px rgba(0,0,0,0.8); 
+   }
+  </style>   
+ </head>
+ <body>
+  <section class="tab"><h2>Заголовок</h2></section>
+  <section class="content">Содержание блока</section>
+ </body>
+</html>

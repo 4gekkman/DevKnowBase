@@ -1,0 +1,19 @@
+#view, #area {
+  min-height: 150px;
+  width:400px;
+  font: 14px 'PT Sans', Arial, sans-serif;
+	padding: 4px;
+}
+
+#view {
+  border:1px solid black;
+	word-wrap:break-word;
+}
+
+#area {
+  display:none;
+  border: 1px groove blue;
+}
+#area:focus {
+  outline: none; /* remove focus border in Safari */
+}

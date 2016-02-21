@@ -1,0 +1,22 @@
+
+#wrapper {
+	position: relative;
+	top: 50px;
+	left: 50px;
+}
+
+#largeImg {
+	border: 1px solid #ddd;
+	padding: 5px;
+	box-shadow: 2px 2px 10px RGBA(0,0,0,.5);
+}
+
+#thumbs img {
+	border: 1px solid #eee;
+	padding: 4px;
+	cursor: pointer;
+}
+
+#thumbs img:hover {
+	border: 1px solid #FAA1A1;
+}

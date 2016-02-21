@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js'></script>
+	<![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+  #field {
+    width: 200px;
+    height: 150px;
+    border: 10px groove black;
+    background-color: #00FF00;
+    position: relative;
+    overflow: hidden;
+
+		cursor: pointer;
+  }
+
+  #ball {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+		transition: all .7s ease-in-out;
+  }
+
+	</style>
+</head>
+<body style="height:2000px">
+
+Кликните на любое место поля, чтобы мяч перелетел туда.<br>
+Мяч никогда не вылетит за границы поля.
+
+
+<div id="field">
+<img src="ball.gif" id="ball">
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+</div>
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

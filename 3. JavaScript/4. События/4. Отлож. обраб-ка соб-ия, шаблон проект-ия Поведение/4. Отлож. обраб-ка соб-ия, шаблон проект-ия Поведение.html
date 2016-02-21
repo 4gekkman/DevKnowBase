@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+
+	</style>
+</head>
+<body>
+
+<mark>Демонстрация последовательной "по очереди" обработки АСИНХронных событий</mark><br>
+<ul>
+	<li>Кликни по textarea и увидишь, в каком порядке выполняются события клика</li>
+</ul>
+<textarea rows="6" cols="40" placeholder="Кликни меня"></textarea><br><br>
+
+<mark>Демонстрация того, как выполнение СИНХронного события всегда "лезет без очереди"</mark><br>
+<input id='i1' type="button" value="Нажми меня">
+<input id='i2' type="text" size="60"><br><br>
+
+
+<mark>Сделать синхронное событие асинхронным, отложив исполнение его обработчика</mark><br>
+<ul>
+	<li>Здесь тоже самое, что в другом примере.</li>
+	<li>Только вызов text.focus() завернут в setImmediate</li>
+	<li>В результате чего задача выполнения функции-обработчика события focus
+			попадает не в начало стека задач главного потока, а в конец</li>
+	<li>... и Т.О. 3-й уже не лезет без очереди</li>
+</ul>
+<input id='i3' type="button" value="Нажми меня">
+<input id='i4' type="text" size="60"><br><br>
+
+
+<h3>Пропустить вперед все задачи в стеке, и только затем выполнить указанный код</h3><br>
+<mark>Позволить родителю обработать событие раньше, чем потомку</mark><br>
+<ul>
+	<li>Надпись 'document' написал обработчик document.onclick</li>
+	<li>Надпись 'input' написал обработчик input.onclick</li>
+	<li>input - это дочерний элемент элемента document</li>
+	<li>И не смотря на это, обработчик document.onclick попал в стек раньше обработчика
+	input.onclick</li>
+	<li>Потому что для обработчика input.onclick была применена архитектура, откладывающая
+	его выполнение в конец стека с помощью функции setImmediate</li>
+</ul>
+<input id="b1" type="button" value="Нажми меня"><br><br>
+
+<mark>Позволить действию браузера "по умолчанию" завершиться раньше, чем сработает обработчик</mark><br>
+Что надо делать:
+<ul>
+	<li>Вводить текст в нижнем регистре</li>
+	<li>Узреть, как незаметно он превращается в текст в верхнем регистре</li>
+</ul>
+<input id="my" type="text" placeholder="keydown">
+
+
+
+
+	<script src="4.%20Отлож.%20обраб-ка%20соб-ия,%20шаблон%20проект-ия%20Поведение.js"></script>
+</body>
+</html>
+
+
+
+
+

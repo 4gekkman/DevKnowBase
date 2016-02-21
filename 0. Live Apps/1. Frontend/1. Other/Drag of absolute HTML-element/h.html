@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="c.css">
+</head>
+<body>
+
+	<!-- буксируемый элемент -->
+	<div class="dragParent">
+
+		<!-- "заголовок" окна -->
+		<div class="dragHeader" onmousedown="drag(this.parentNode, event);">
+			Ухватись за меня и перетащи!
+		</div>
+
+		<p class="text">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque cum excepturi fugit itaque labore odit soluta suscipit vero voluptas voluptate? Aliquam at atque cupiditate eaque facilis iure maiores non provident quaerat voluptatibus. Doloribus natus praesentium quia temporibus. Laborum, odio tempora.
+		</p>
+
+	</div>
+
+
+<script src="j.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+	</style>
+
+	<link rel="stylesheet" href="c.css"/>
+</head>
+<body>
+
+
+
+	<div id="wrapper">
+		<p id="header">МММ калькулятор</p>
+
+
+
+		<!--Элементы формы для выбора параметров-->
+
+			<!--Сумма вклада-->
+			<div class="inputField" id="sum">
+				Сумма вклада:<br>
+				<input id="sumInput" type="text" placeholder="0" />руб.
+			</div>
+
+			<!--Выбор срока вклада-->
+			<div class="inputField" id="depo">
+				Срок вклада:<br>
+				<select id="sel" size="1">
+					<option value='1'>1 месяц</option>
+					<option value='3'>3 месяца</option>
+					<option value='6'>6 месяцев</option>
+					<option value='12'>12 месяцев</option>
+				</select>
+			</div>
+
+			<!--Льготный ли вклад-->
+			<div class="inputField" id="benefits">
+				Льготный?:<br>
+				<input type="checkbox" id="check" /> <span>Льготник</span>
+			</div>
+
+
+		<!--Отображение итоговой процентной ставки по вкладу-->
+		<div id="persent">
+			<span id="resultPersent">20</span> - итоговая %-ая ставка (в месяц)
+		</div>
+
+
+
+		<div id="WrapperForBars">
+
+		<!--Полоса "стало"-->
+			Было: <span id="wasSpan">0.00</span> руб.
+			<div id="was"></div>
+
+		<!--Полоса "было"-->
+			Стало: <span  id="nowSpan">0.00</span> руб.
+			<div id="now"></div>
+
+		</div>
+
+
+	</div>
+
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

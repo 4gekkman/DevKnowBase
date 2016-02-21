@@ -1,0 +1,270 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+CSS 3.
+
+1. Positioning  | позиционирование
+  > float       | должен ли блок быть плавающим
+  > display     | как этот HTML-элемент должен отображаться
+  > position    | тип позиционирования элемента (static, relative, absolute, fixed)
+  > top         | расстояние сверху от элемента до того, относительно чего он позиционируется
+  > right       | расстояние справа от элемента до того, относительно чего он позиционируется
+  > left        | расстояние слева от элемента до того, относительно чего он позиционируется
+  > bottom      | расстояние снизу от элемента до того, относительно чего он позиционируется
+  > overflow    | определяет, что происходит, когда контент переполняет элемент
+  > visibility  | определяет, элемент видим или невидим
+  > z-index     | регулирует относительное позиционирование элементов по оси z (перпендикулярно к экрану)
+  > clear       | запретить/разрешить элементу обтекать float элементы
+  > clip        | обрезать элемент с position: absolute.
+  > cursor      | определяет тип курсора мыши
+
+
+Подробнее о каждом свойстве (его значения, единицы измерения ... ):
+
+  > float       | должен ли блок быть плавающим
+    - left          | элемент обтекает слева
+    - right         | элемент обтекает справа
+    - none          | отключено
+    - inherit       | наследует от родительского элемента
+
+  > display     | как этот HTML-элемент должен отображаться
+   Наиболее часто используемые значения
+    - inline         | (по умолчанию) Отображает элемент, как встроенный (inline, как <span>)
+    - block          | Отображает элемент, как блочный (block, как <p>)
+    - inline-block   | Внутри - block, а сам элемент - inline.
+    - none           | Элемент не отображается (так его можно скрыть)
+    - inherit        | Наследует это свойство у родителя
+   Прочие:
+    - inline-table   | отображается, как inline таблица
+    - list-item      | ведет себя, как элемент <li>
+    - run-in         | отображает элемент как inline или block, в зависимости от контента
+    - table          | ведет себя, как элемент <table>
+    - table-caption  | ведет себя, как элемент <caption>
+    - table-column-group | ведет себя, как элемент <colgroup>
+    - table-header-group | ведет себя, как элемент <thead>
+    - table-footer-group |  ведет себя, как элемент <tfoot>
+    - table-row-group | ведет себя, как элемент <tbody>
+    - table-cell     | ведет себя, как элемент <td>
+    - table-column   | ведет себя, как элемент <col>
+    - table-row      | ведет себя, как элемент <tr>
+
+  > position    | тип позиционирования элемента (static, relative, absolute, fixed)
+    - static        | (по умолчанию) элемент отображается в порядке появления в потоке документа
+    - absolute      | позиционируется относительно 1-го своего предка, у которого position не static
+    - fixed         | позиционируется относительно окна браузера
+    - relative      | позиционируется относительно своей обычной static позиции
+    - inherit       | Наследует это свойство у родителя
+
+  > top         | расстояние сверху от элемента до того, относительно чего он позиционируется
+  > right       | расстояние справа от элемента до того, относительно чего он позиционируется
+  > left        | расстояние слева от элемента до того, относительно чего он позиционируется
+  > bottom      | расстояние снизу от элемента до того, относительно чего он позиционируется
+    - auto          | (по умолчанию) браузер сам рассчитывает
+    - length        | размер в px, pt или др. допустимых единицах
+    - %             | в %-ах от размера содержащего элемента. Отрицательные значения разрешены.
+    - inherit       | Наследует это свойство у родителя
+
+  > overflow    | определяет, что происходит, когда контент переполняет элемент
+    - visible       | (по умолчанию) переполнивший элемент контент виден и за пределами элемента
+    - hidden        | контент, выходящий за пределы элемента, обрезается
+    - scroll        | появляются скрол бары по осям X и Y
+    - auto          | появляются скрол бары только по той оси, по которой нужно
+    - inherit       | Наследует это свойство у родителя
+
+  > visibility  | определяет, элемент видим или невидим
+    - visible       | (по умолчанию) элемент видим
+    - hidden        | элемент не видим (но он есть, и занимает место)
+    - collapse      | (только для таблиц) скрывает поле, однако положение ячеек таблицы не меняется
+    - inherit       | Наследует это свойство у родителя
+
+  > z-index     | регулирует относительное позиционирование элементов по оси z (перпендикулярно к экрану)
+    - auto          | (по умолчанию) У всех 0.
+    - number        | Число. Чем больше число, тем выше в стопке элемент. По умолчанию у всех 0.
+    - inherit       | Наследует это свойство у родителя
+
+  > clear       | запретить/разрешить элементу обтекать float элементы
+    - left          | с левой стороны плавающие элемента запрещены
+    - right         | с правой стороны плавающие элемента запрещены
+    - both          | с левой и правой сторон плавающие элемента запрещены
+    - none          | отключено
+    - inherit       | Наследует это свойство у родителя
+
+  > clip        | обрезать элемент с position: absolute.
+    - auto          | (по умолчанию) обрезание отключено
+    - shape         | rect (top, right, bottom, left)
+    - inherit       | Наследует это свойство у родителя
+
+
+  > cursor      | определяет тип курсора мыши
+    - Виды курсоров можно посмотреть здесь:
+        http://www.w3schools.com/cssref/pr_class_cursor.asp
+
+
+
+
+-------------------------------------------------- -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>1. Вводный tutorial в CSS + общая информация</title>
+  <link rel="stylesheet" type="text/css" href="1. Positioning.css">
+</head>
+<body>
+
+
+<mark>float - clear fix</mark>
+
+  <div class="c25">
+    <b>С Clear Fix</b>
+    <img src="Files/duck.png">
+    <p class="c26">
+      This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text.
+    </p>
+    <p class="c27">
+      This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text.
+    </p>
+  </div><br>
+
+  <div class="c28">
+    <b>Без Clear Fix</b>
+    <img src="Files/duck.png">
+    <p class="c29">
+      This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text.
+    </p>
+    <p class="c30">
+      This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text.
+    </p>
+  </div><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<mark>float</mark>
+  <div class="c1">
+    <div class="c2">float: right</div>
+    <div class="c3">float: left</div>
+    This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text. This is some text.
+  </div>
+
+<mark>display</mark>
+  <div class="c4">
+    <div class="c5">display: inline</div>
+    <div class="c5">display: inline</div>
+    <div class="c6">display: block</div>
+    <div class="c7">display: none</div>
+    <div class="c6">display: block</div>
+  </div>
+
+<br><mark>position, top, left, right, bottom</mark>
+  <div class="c12">
+    <div class="c8">positon: static</div>
+    <div class="c9">positon: absolute<br>Позиционируется относительно внешнего блока,
+      а не body, потому что это первый предок, у которого position не static</div>
+    <div class="c10">positon: fixed</div>
+    <div class="c11">positon: relative + (left: 200px, top: 200px) к своему static положению</div>
+  </div>
+
+<br><mark>overflow</mark>
+  <p class="c13">
+    overflow: visible; (по умолчанию) overflow: visible; (по умолчанию)overflow: visible; (по умолчанию)overflow: visible; (по умолчанию)
+  </p><br>
+  <p class="c14">
+    overflow: hidden; overflow: hidden;overflow: hidden;overflow: hidden;overflow: hidden;overflow: hidden;overflow: hidden;overflow: hidden;overflow: hidden;
+  </p>
+  <p class="c15">
+    overflow: scroll; overflow: scroll; overflow: scroll; overflow: scroll; overflow: scroll; overflow: scroll; overflow: scroll; overflow: scroll;
+  </p>
+  <p class="c16">
+    overflow: auto; overflow: auto; overflow: auto; overflow: auto; overflow: auto; overflow: auto; overflow: auto;overflow: auto; overflow: auto; overflow: auto; overflow: auto;
+  </p>
+
+<br><mark>visibility</mark>
+  <div class="c17">Ниже есть блок, он...</div>
+  <div class="c18"></div>
+  <div class="c17">занимает место, но его visibility: hidden</div>
+
+<br><mark>z-index</mark>
+  <div class="c19">
+    <div class="c20"></div>
+    <div class="c21"></div>
+    <div class="c22"></div>
+  </div>
+
+<br><mark>cursor</mark>
+  <div class="c23">
+    Тут курсор мыши один ...
+  </div>
+  <div class="c24">
+    ... а тут другой
+  </div>
+
+
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+Ссылки:
+
+  > Справочное руководство по всем CSS-свойствам:
+      http://www.w3schools.com/cssref/default.asp
+
+
+*****************************************************
+Оглавление:
+
+  > Что такое Clear Fix?
+
+
+
+*****************************************************
+
+> Что такое Clear Fix?
+
+  > Описание проблемы:
+    > Если:
+      > Для контейнера явно не задана его высота с помощью CSS-свойства
+        height.
+      > Контейнер содержит другое контейнер или контейнеры с заданным
+        CSS-свойством float.
+    > То:
+      > Родительский контейнер ведет себя по отношению к дочерним контейнерам
+        с float так, как будто они не имеют размера. То есть блоки с float
+        никак не влияют на высоту родительского контейнера, и если, например,
+        в нем нет никаких других элементов, кроме блоков с float, то его
+        высота (предназначенная для контента) может схлопнуться и стать равной 0.
+    > См. пример выше в примерах.
+
+  > Решения:
+    > Вариант 1 (не удобный)
+      > Написать в классе контейнера:
+          overflow: hidden.
+    > Вариант 2
+      > Создать в элементе контейнера еще один элемент:
+        > Он должен быть блочный
+        > Его CSS не должен содержать float.
+        > Его CSS должен содержать:
+            clear: both;
+    > Вариант 3
+      > Использовать Clear Fix.
+      > Это тоже самое, что вариант 2, только этот доп. элемент добавлен
+        в виде псевдоэлемента с помощью :after или :before.
+      > Вариантов Clear Fix есть много.
+      > См. пример выше в примерах.
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

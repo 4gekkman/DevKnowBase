@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>19. Связка click - простой пример</mark><br><br>
+
+
+	<ul data-bind="foreach: places">
+			<li>
+					<span data-bind="text: $data"></span>
+					<a href="#" data-bind="click: $parent.removePlace">Удалить</a>
+			</li>
+	</ul>
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

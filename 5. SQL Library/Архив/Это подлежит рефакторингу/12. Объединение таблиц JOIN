@@ -1,0 +1,146 @@
+/* INFO
+Объединение таблиц JOIN
+
+-> SELECT может брать данные одновременно из нескольких таблиц.
+   Но для этого надо эти таблицы объединить определенным образом.
+   Объединять можно разными способами:
+   -> INNER JOIN            |  Выводит только удовлетворяющие условию результаты. Наиболее часто используемый.
+   -> LEFT [OUTER] JOIN     |  Выводит все значения левой таблицы, удовлетворяющие условию значения правой, а если не найдено то NULL вместо них
+   -> RIGHT [OUTER] JOIN    |  Выводит все значения правой таблицы, удовлетворяющие условию значения левой, а если не найдено то NULL вместо них
+   -> FULL OUTER JOIN       |  (не поддерживается MySQL) Выводит все значения всех таблиц, удовлетворяющие условию строки ставятся в соответствие друг другу, а если таких не найдено заменяются NULL
+   -> CROSS JOIN            |  (практически не используется) Копирует строку в 1-й таблице столько же раз, сколько записей во 2-й таблице. Кол-во записей в результате произведение записей 1-й и 2-й таблиц.
+
+*/
+
+-- подготовка учебной таблицы
+CREATE DATABASE 12testjoin;
+CREATE TABLE employee(LastName VARCHAR(20)
+                               NOT NULL
+                               COMMENT 'Фамилия работника',
+                      DepartmentID SMALLINT UNSIGNED
+                                   DEFAULT 0
+                                   COMMENT 'Номер отдела'
+) COMMENT 'Работники';
+CREATE TABLE department(DepartmentName VARCHAR(20)
+                                       NOT NULL
+                                       COMMENT 'Название отдела',
+                        DepartmentID SMALLINT UNSIGNED
+                                     DEFAULT 0
+                                     COMMENT 'Номер отдела'
+) COMMENT 'Отделы';
+INSERT INTO employee VALUES
+('Smith',34),
+('Jones',33),
+('Robinson',34),
+('Jasper',36),                         -- обращаю внимание, что в department нет 36-го отдела
+('Steinberg',33),
+('Rafferty',31);
+INSERT INTO department VALUES
+('Sales',31),
+('Engineering',33),
+('Clerical',34),
+('Marketing',35);
+
+USE fselect;
+UPDATE courses SET description = 'Этот курс PHP научит Вас WEB-программированию на самом популярном для этого языке'
+               WHERE id = 1;
+UPDATE courses SET description = 'Этот курс ASP дает Вам возможность изучить WEB-программирование на языке от Microsoft'
+               WHERE id = 3;
+
+-- -----------------------> INNER JOIN <----------------------- --
+-- -> Выводит только те записи, для которых найдено соответствие
+
+-- Получить фамилии работников, и для каждого название отдела, в котором от работает
+--   объединить колонки 2-х таблиц employee и department,
+--   для каждого ID работника из employee найти равный ID
+--   из department, и добавить к строке с этим ID работника в
+--   employee строку с соответствующим ID из department;
+--   если для какого-нибудь работника соответствие не найдено,
+--   не выводить информацию об этом работнике.
+SELECT * FROM employee
+    INNER JOIN department
+    ON employee.DepartmentID = department.departmentID;  -- логика объединения
+
+-- Вывести преподавателей (без повторений), которые читают курсы,
+--  в названии или описании которых встречается слово 'web'
+-- -> Для этого объедить 3 таблицы INNER JOIN'ом
+-- -> и LIKE'ом найти, где встречается 'web'
+USE fselect;
+SELECT DISTINCT teachers.lastname, courses.title, courses.description
+  FROM teachers
+    INNER JOIN timetable ON teachers.id = timetable.teacher
+    INNER JOIN courses ON courses.id = timetable.course
+  WHERE courses.title LIKE '%web%'
+  OR courses.description LIKE '%web%';
+
+-- Вывести города с названием страны, в которых официальный
+--  язык английский или испанский, население больше 50000 человек,
+--  и государственный строй содержит в названии 'Republic'
+USE world;
+SELECT DISTINCT city.Name, country.Name, city.population, country.governmentform,
+                countrylanguage.language, countrylanguage.isofficial  -- выбрать эти колонки
+  FROM city
+    INNER JOIN country ON city.CountryCode = country.Code                             -- присобачить country к city по этому условию
+    INNER JOIN countrylanguage ON city.CountryCode = countrylanguage.CountryCode      -- присобачить countrylanguage к city по этому условию
+  WHERE (countrylanguage.Language = 'English'    -- где язык English
+  OR countrylanguage.Language = 'Spanish')       -- ... или Spanish
+  AND countrylanguage.IsOfficial = 'T'           -- ... и он официальный
+  AND city.Population >= 50000                   -- а население > 50000 человек
+  AND country.GovernmentForm LIKE '%republic%';  -- и в названии формы правления есть слово republic
+
+-- Вывести список имен городов миллионников, население города, название строны
+SELECT country.name, city.name, city.population
+  FROM country
+    INNER JOIN city ON country.code = city.CountryCode
+  WHERE city.population >= 1000000;
+
+-- Вывести список стран, в которых есть города-миллионники,
+SELECT DISTINCT country.name AS 'Страна, в которой есть города-миллионники'
+FROM country
+  INNER JOIN city ON country.code = city.CountryCode
+WHERE city.population >= 1000000;
+
+-- Вывести список стран, в которых нет городов миллионников
+SELECT country.Name
+  FROM country
+  WHERE country.Code
+  NOT IN (
+
+  -- списоке стран, в которых есть города-миллионники
+SELECT DISTINCT city.CountryCode
+  FROM city
+  WHERE city.Population >= 1000000
+         );
+
+
+-- -----------------------> LEFT JOIN, RIGHT JOIN <----------------------- --
+-- LEFT JOIN
+-- -> Выводит все записи левой таблицы, и по возможности им ставится
+--    в соответствии с условием записи из правой таблицы. Если в правой
+--    данные отсутствуют, ставится NULL.
+USE 12testjoin;
+SELECT * FROM employee   -- employee это левая таблица
+  LEFT JOIN department   -- department это правая таблица
+  ON employee.DepartmentID = department.DepartmentID;
+
+-- RIGHT JOIN
+-- -> Выводит все записи правой таблицы, и по возможности им ставится
+--    в соответствии с условием записи из левой таблицы. Если в левой
+--    данные отсутствуют, ставится NULL.
+SELECT * FROM employee    -- employee это правая таблица
+  RIGHT JOIN department   -- department это левая таблица
+    ON employee.DepartmentID = department.DepartmentID;
+
+-- -----------------------> FULL JOIN <----------------------- --
+-- FULL JOIN     !!! не поддерживается в MySQL !!!
+-- -> Выводит все значения всех таблиц, удовлетворяющие условию
+--    строки ставятся в соответствие друг другу, а если таких не
+--    найдено заменяются NULL
+SELECT * FROM employee
+  FULL JOIN department
+  ON employee.DepartmentID = department.DepartmentID;
+
+-- -----------------------> CROSS JOIN <----------------------- --
+-- CROSS JOIN
+SELECT * FROM employee
+  CROSS JOIN department;

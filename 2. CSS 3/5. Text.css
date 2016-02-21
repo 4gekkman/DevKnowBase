@@ -1,0 +1,200 @@
+/* color */
+.c1 {
+  color: #f00;
+}
+
+
+/* letter-spacing */
+.c2 {
+  letter-spacing: 5px;
+}
+
+
+/* line-height */
+.c3 {
+  line-height: 150%;
+  border: 1px solid #F6967D;
+}
+.c4 {
+  line-height: 1.5;
+  border: 1px solid #f6a9e1;
+}
+.c5 {
+  line-height: 60px;
+  border: 1px solid #3fa7f6;
+}
+
+
+/* text-align */
+.c6 {
+  border: 1px solid #3fa7f6;
+  width: 200px;
+  text-align: left;
+}
+.c7 {
+  border: 1px solid #f69ea1;
+  width: 200px;
+  text-align: right;
+}
+.c8 {
+  border: 1px solid #60f642;
+  width: 200px;
+  text-align: center;
+}
+.c9 {
+  border: 1px solid #f6cf32;
+  width: 200px;
+  text-align: justify;
+}
+
+
+/* vertical-align */
+.c11 {
+  border: 2px solid #752641;
+  line-height: 40px;
+}
+.c12 {
+  color: #752641;
+  vertical-align: 4px;
+}
+.c13 {
+  color: #752641;
+  vertical-align: -30%;
+}
+.c14 {
+  color: #752641;
+  vertical-align: baseline;
+}
+.c15 {
+  color: #752641;
+  vertical-align: sub;
+}
+.c16 {
+  color: #752641;
+  vertical-align: super;
+}
+
+/* text-decoration */
+.c17 {
+  text-decoration: underline;
+}
+.c18 {
+  text-decoration: overline;
+}
+.c19 {
+  text-decoration: line-through;
+}
+
+/* text-indent */
+.c20 {
+  border: 1px solid #f6cf32;
+  text-indent: 10%;
+}
+.c21 {
+  border: 1px solid #f6cf32;
+  text-indent: 35px;
+}
+
+/* text-transform */
+.c22 {
+  border: 1px solid #fcbfbb;
+  text-transform: uppercase;
+}
+.c23 {
+  border: 1px solid #fcbfbb;
+  text-transform: lowercase;
+}
+.c24 {
+  border: 1px solid #fcbfbb;
+  text-transform: capitalize;
+}
+
+/* white-space */
+.c25 {
+  width: 400px;
+  border: 1px solid #fcbfbb;
+  white-space: nowrap;
+}
+.c26 {
+  width: 400px;
+  border: 1px solid #fcbfbb;
+  white-space: normal;
+}
+
+/* word-spacing */
+.c27 {
+  width: 700px;
+  word-spacing: 10px;
+}
+
+/* direction */
+.c28 {
+  width: 700px;
+  border: 1px solid #fcbfbb;
+  direction: ltr;
+}
+.c29 {
+  width: 700px;
+  border: 1px solid #fcbfbb;
+  direction: rtl;
+}
+
+/* text-overflow */
+.c30 {
+  width: 300px;
+  border: 1px solid #6b94fc;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow: ellipsis;
+}
+.c31 {
+  width: 300px;
+  border: 1px solid #6b94fc;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow: clip;
+}
+
+/* text-shadow */
+.c32 {
+  border: 1px solid #6b94fc;
+  font-size: 20px;
+  color: #fff;
+  background: #000;
+  line-height: 40px;
+  text-shadow: 5px 5px 3px #ff0;
+}
+
+/* word-wrap */
+.c33 {
+  width: 100px;
+  border: 1px solid #6b94fc;
+  word-wrap: break-word;
+}
+.c34 {
+  width: 100px;
+  border: 1px solid #6b94fc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

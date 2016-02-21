@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+<table border="1" style="border-collapse:collapse">
+<tr><td>timetable</td><td>CREATE TABLE `timetable` (<br/>  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,<br/>  `date` datetime NOT NULL DEFAULT &#39;0000-00-00 00:00:00&#39; COMMENT &#39;Дата и время занятия&#39;,<br/>  `course` int(10) unsigned NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;Название курса&#39;,<br/>  `teacher` int(10) unsigned NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;Преподаватель, который будет вести занятие&#39;,<br/>  PRIMARY KEY (`ID`),<br/>  KEY `course_2` (`course`),<br/>  KEY `teacher_2` (`teacher`),<br/>  CONSTRAINT `fkCourse` FOREIGN KEY (`course`) REFERENCES `courses` (`ID`) ON UPDATE CASCADE,<br/>  CONSTRAINT `fkTeacher` FOREIGN KEY (`teacher`) REFERENCES `teachers` (`ID`) ON UPDATE CASCADE<br/>) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8</td></tr>
+</table>
+</body>
+</html>

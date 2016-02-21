@@ -1,0 +1,343 @@
+/* border-width */
+.c1 {
+  border: 1px solid #000;
+  border-width: 6px;
+
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c2 {
+  border: 1px solid #000;
+  border-width: thin;
+
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c3 {
+  border: 1px solid #000;
+  border-width: medium;
+
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c4 {
+  border: 1px solid #000;
+  border-width: thick;
+
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+
+/* border-style */
+.c5 {
+  border-width: 5px;
+  border-style: none;
+
+  background: #e9e9e9;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c6 {
+  border-width: 5px;
+  border-style: solid;
+
+  background: #e9e9e9;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c7 {
+  border-width: 5px;
+  border-style: dashed;
+
+  background: #e9e9e9;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c8 {
+  border-width: 5px;
+  border-style: dotted;
+
+  background: #e9e9e9;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c9 {
+  border-width: 5px;
+  border-style: double;
+
+  background: #e9e9e9;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c10 {
+  border-width: 5px;
+  border-style: inset;
+
+  background: #e9e9e9;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c11 {
+  border-width: 5px;
+  border-style: groove;
+
+  background: #e9e9e9;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c12 {
+  border-width: 5px;
+  border-style: ridge;
+
+  background: #e9e9e9;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+.c13 {
+  border-width: 5px;
+  border-style: outset;
+
+  background: #e9e9e9;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+
+
+/* outline */
+.c14 {
+  outline: 4px solid #c92c2d;
+
+  background: #e9e9e9;
+  width: 150px;
+  height: 100px;
+  display: inline-block;
+}
+
+
+/* border-radius */
+.c15 {
+  border-radius: 20px;
+
+  padding: 10px;
+  border: 2px solid #F6967D;
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  vertical-align: top;
+}
+.c16 {
+  border-radius: 40px 40px 0px 0px / 40px 40px 0px 0px;
+
+  padding: 10px;
+  border: 2px solid #dbb5f6;
+  width: 125px;
+  height: 100px;
+  display: inline-block;
+  vertical-align: top;
+}
+.c17 {
+  border-radius: 0px 40px 40px 0px / 0px 40px 40px 0px;
+
+  padding: 10px;
+  border: 2px solid #78f68d;
+  width: 125px;
+  height: 100px;
+  display: inline-block;
+  vertical-align: top;
+}
+.c18 {
+  border-radius: 0px 40px 0px / 0px 40px 0px;
+
+  font-size: 14px;
+  padding: 10px;
+  border: 2px solid #f67d94;
+  width: 125px;
+  height: 100px;
+  display: inline-block;
+  vertical-align: top;
+}
+.c19 {
+  border-radius: 40px 0px / 40px 0px;
+
+  font-size: 14px;
+  padding: 10px;
+  border: 2px solid #58ecf6;
+  width: 125px;
+  height: 100px;
+  display: inline-block;
+  vertical-align: top;
+}
+.c20 {
+  border-radius: 60px / 20px;
+
+  font-size: 14px;
+  padding: 10px;
+  border: 2px solid #6154f6;
+  width: 125px;
+  height: 100px;
+  display: inline-block;
+  vertical-align: top;
+}
+.c21 {
+  border-radius: 100px 10px;
+
+  text-align: center;
+  background-color: #f6ea50;
+  font-size: 14px;
+  padding: 10px;
+  border: 2px solid #000;
+  width: 125px;
+  height: 100px;
+  display: inline-block;
+  vertical-align: top;
+}
+.c22 {
+  width: 200px;
+  height: 200px;
+  border: 20px solid black;
+  -webkit-border-image:url('Files/lemon.png') 0 30 0 repeat; /* Safari 5 */
+  -o-border-image:url('Files/lemon.png') 0 30 0 repeat; /* Opera */
+  border-image:url('Files/lemon.png') 0 30 0 repeat;
+}
+
+/* box-shadow */
+.c23 {
+  box-shadow: 10px 10px 5px #888888;
+
+  padding: 10px;
+  border: 2px solid #000;
+  width: 150px;
+  height: 150px;
+  display: inline-block;
+  vertical-align: top;
+}
+.c24 {
+  box-shadow: 2px 2px 2px #000 inset;
+
+  padding: 10px;
+  border: 2px solid #000;
+  width: 150px;
+  height: 150px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+
+/* Треугольники на CSS с помощью border */
+.c25 {
+  width: 0;
+  height: 0;
+  border-bottom: 100px solid #000;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+
+  display: inline-block;
+}
+.c26 {
+  width: 0;
+  height: 0;
+  border-left: 100px solid #000;
+  border-top: 50px solid transparent;
+  border-bottom: 50px solid transparent;
+
+  display: inline-block;
+}
+.c27 {
+  width: 0;
+  height: 0;
+  border-top: 100px solid #000;
+  border-left: 50px solid #eee;
+  border-right: 50px solid transparent;
+
+  display: inline-block;
+}
+.c28 {
+  width: 0;
+  height: 0;
+  border-right: 100px solid #000;
+  border-top: 50px solid #eee;
+  border-bottom: 50px solid #eee;
+
+  display: inline-block;
+}
+.c29 {
+  width: 0;
+  height: 0;
+  border-right: 100px solid #000;
+  border-top: 100px solid #eee;
+  border-bottom: 0 solid #eee;
+
+  display: inline-block;
+}
+
+
+/* Стиль всплывающей подсказки на CSS с применением треугольников и content (:before) */
+.c30 {
+  width: 150px;
+  height: 80px;
+  background: #556677;
+  border-radius: 5px;
+  padding: 2px;
+
+  position: relative;
+}
+.c30:after {
+  content: '';
+
+  width: 0;
+  height: 0;
+  border-top: 10px solid #556677;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+
+  position: absolute;
+  bottom: -10px;
+  left: 65px;
+}
+.c31 {
+  color: #fff;
+  text-align: center;
+  font: normal 22px "Comic Sans MS", cursive, sans-serif;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

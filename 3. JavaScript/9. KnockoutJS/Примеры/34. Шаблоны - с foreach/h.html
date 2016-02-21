@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>34. Шаблоны - с foreach</mark><br><br>
+
+<ul>
+	<li>Попробуй выбрать несколько значений (зажав shift)</li>
+	<li>Список выбранных значений отобразится ниже</li>
+</ul>
+
+
+
+
+	<!-- шаблон -->
+	<script type="text/html" id="person-template">
+		<h3 data-bind="text: name"></h3>
+		<p>Кредиты: <span data-bind="text: credits"></span></p>
+	</script>
+
+	<!-- представление -->
+	<h2>Покупатели</h2>
+	<div data-bind="template: { name: 'person-template', foreach: people }"></div>
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

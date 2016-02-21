@@ -1,0 +1,272 @@
+3. URL
+Генерация URL
+Laravel 4.2
+
+> Ссылки
+
+    - Официальный справочник (Illuminate\Routing\UrlGenerator) (en):
+        http://laravel.com/api/4.2/
+
+    - Хорошая статья про генерацию URL в laravel (en):
+        http://clivern.com/laravel-url-generation/
+
+
+--------------------------------
+Оглавление
+
+3. URL  | Генерация URL  | v4.2 - Illuminate\Routing\UrlGenerator - url
+
+  > current   | Возвращает текущий URL без query string
+  > full      | Возвращает полный текущий URL
+  > previous  | Возвращает URL без query string предыдущего запроса
+  > to        | Принимает URI и генерирует по нему абсолютный URL
+  > secure    | Принимает URL и генерирует по нему URL с HTTPS
+  > route     | Возвращает URL/URI, с которым связан именованный (с помощью 'as') роут
+  > action    | Возвращает URL/URI, с которым связан метод контроллера
+  > asset     | Возвращает абсол. URL на ресурс: css, js, png и т.д.
+
+--------------------------------
+
+|---------------------------------------------------------
+| > current ()
+|---------------------------------------------------------
+| Возвращает текущий URL без query string
+
+  1. Вернуть в ответ на запрос текущий URL без query string
+  ====================================================================
+
+      Route::get('/', function(){
+
+        return URL::current();
+
+      });
+
+
+|---------------------------------------------------------
+| > full ()
+|---------------------------------------------------------
+| Возвращает полный текущий URL
+
+  1. Вернуть в ответ на запрос полный текущий URL
+  ====================================================================
+
+      Route::get('/', function(){
+
+        return URL::full();
+
+      });
+
+
+|---------------------------------------------------------
+| > previous ()
+|---------------------------------------------------------
+| Возвращает URL без query string предыдущего запроса
+
+  1. Вернуть в ответ на запрос URL без query string предыдущего запроса
+  ====================================================================
+
+      Route::get('/', function(){
+
+        return URL::previous();
+
+      });
+
+
+|---------------------------------------------------------
+| > to (string $path, mixed $extra = array(), bool $secure = null)
+|---------------------------------------------------------
+| Принимает URI и генерирует по нему абсолютный URL
+|
+|   $path     | URL
+|   $extra    | Массив доп. параметров, которые добавятсяв конец URL
+|   $secure   | Если указать true, то абсол. URL будет с HTTPS вместо HTTP.
+
+  1. Сгенерировать URL на URI '/m1/modules/'
+  ====================================================================
+
+      Route::get('/', function(){
+
+        return URL::to('/m1/modules');  // 'http://lk.grumart.ru/m1/modules'
+
+      });
+
+
+  2. Сгенерировать URL на URI '/m1/' + передать несколько параметров
+  ====================================================================
+
+      Route::get('/', function(){
+
+        // Получится: 'http://lk.grumart.ru/m1/tables/1/settings'
+        $url = URL::to('/m1', array('tables', '1', 'settings'));
+
+        // Вернуть значение
+        return $url;
+
+      });
+
+
+  3. Сгенерировать URL на URI '/m1/modules/' с протоколом HTTPS
+  ====================================================================
+
+      Route::get('/', function(){
+
+        return URL::to('/m1/modules','',true);  // 'https://lk.grumart.ru/m1/modules'
+
+      });
+
+
+|---------------------------------------------------------
+| > secure (string $path, array $parameters = array())
+|---------------------------------------------------------
+| Принимает URL и генерирует по нему URL с HTTPS
+|
+|   $path     | URL
+|   $extra    | Массив доп. параметров, которые добавятсяв конец URL
+|
+| По сути, это тоже самое, что to с параметром $secure == true.
+
+  1. Сгенерировать URL на URI '/m1/modules/' с протоколом HTTPS
+  ====================================================================
+
+      Route::get('/', function(){
+
+        return URL::secure('/m1/modules');  // 'https://lk.grumart.ru/m1/modules'
+
+      });
+
+
+|---------------------------------------------------------
+| > route (string $name, mixed $parameters = array(), bool $absolute = true, Route $route = null)
+|---------------------------------------------------------
+| Возвращает URL/URI, с которым связан именованный (с помощью 'as') роут
+|
+|   $name         | Имя именованного роута
+|   $parameters   | Массив query string параметров
+|   $absolute     | true (по умолчанию) - выдаст URL. false - URI.
+|   $route        | ?
+|
+| Особенности
+| - Даже если query string отсутствует, ставить ? в конце URL
+
+  1. Получить URL роута 'myRoute' без query string параметров
+  ====================================================================
+
+      Route::get('/m2', array('as' => 'myRoute', function(){
+
+        return URL::route('myRoute');  // 'http://lk.grumart.ru/m2?'
+
+      }));
+
+
+  2. Получить URL роута 'myRoute' с query string параметрами
+  ====================================================================
+
+      Route::get('/m2', array('as' => 'myRoute', function(){
+
+        // Получится: 'http://lk.grumart.ru/m2?ivan=1&lena=2'
+        $url = URL::route('myRoute', array('ivan'=>1, 'lena'=>2), true);
+
+        // Вернуть значение
+        return $url;
+
+      }));
+
+
+  3. Получить URI роута 'myRoute' без query string параметров
+  ====================================================================
+
+      Route::get('/m2', array('as' => 'myRoute', function(){
+
+        return URL::route('myRoute', '', false);  // '/m2?'
+
+      }));
+
+
+|---------------------------------------------------------
+| > action (string $action, mixed $parameters = array(), bool $absolute = true)
+|---------------------------------------------------------
+| Возвращает URL/URI, с которым связан метод контроллера
+|
+|   $action       | Имя метода контроллера
+|   $parameters   | Массив query string параметров
+|   $absolute     | true (по умолчанию) - выдаст URL. false - URI.
+
+  1. Получить URL метода контроллера без query string параметров
+  ====================================================================
+
+      Route::get('/m2', 'UserController@controllerMethod');
+      Route::get('/test', function() {
+
+        // Вернёт: 'http://lk.grumart.ru/m2?'
+        $url = URL::action('UserController@controllerMethod');
+
+        // Вернуть результат
+        return $url;
+
+      });
+
+
+  2. Получить URL метода контроллера с query string параметрами
+  ====================================================================
+
+      Route::get('/m2', 'UserController@controllerMethod');
+      Route::get('/test', function() {
+
+        // Вернёт: 'http://lk.grumart.ru/m2?ivan=1&lena=2'
+        $url = URL::action('UserController@controllerMethod',
+                           array('ivan'=>1, 'lena'=>2));
+
+        // Вернуть результат
+        return $url;
+
+      });
+
+
+  3. Получить URI метода контроллера без query string параметров
+  ====================================================================
+
+      Route::get('/m2', 'UserController@controllerMethod');
+      Route::get('/test', function() {
+
+        // Вернёт: '/m2?'
+        $url = URL::action('UserController@controllerMethod', '', false);
+
+        // Вернуть результат
+        return $url;
+
+      });
+
+
+|---------------------------------------------------------
+| > asset (string $path, bool $secure = null)
+|---------------------------------------------------------
+| Возвращает абсол. URL на ресурс: css, js, png и т.д.
+|
+|   $path       | Путь к ресурсу
+|   $secure     | Если указать true, то абсол. URL будет с HTTPS вместо HTTP.
+|
+| Особенности:
+| - Корневой папкой для $path является папка laravel/public.
+
+  1. Получить абсолютный URL к файлу '/files/lk_grumart/i12_m1_modules/css/i12.css'
+  ====================================================================
+
+      Route::get('/', function(){
+
+        // Результат: 'http://lk.grumart.ru/files/lk_grumart/i12_m1_modules/css/i12.css'
+        return URL::asset('/files/lk_grumart/i12_m1_modules/css/i12.css');
+
+      });
+
+
+  2. Получить тот же абсолютный URL, тольк с протоколом HTTPS
+  ====================================================================
+
+      Route::get('/', function(){
+
+        // Результат: 'https://lk.grumart.ru/files/lk_grumart/i12_m1_modules/css/i12.css'
+        return URL::asset('/files/lk_grumart/i12_m1_modules/css/i12.css', true);
+
+      });
+
+

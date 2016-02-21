@@ -1,0 +1,42 @@
+/* INFO
+Про выражения, функции и операторы
+
+-> Выражения можно использовать в следующих точках SQL:
+1) SELECT:   ORDER BY, HAVING, WHERE
+2) DELETE:   WHERE
+3) UPDATE:   WHERE
+4) SET.
+-> Выражения с NULL всегда дают NULL
+
+*/
+
+-- ------------------ Подготовка учебной таблицы
+
+-- использую базу test
+USE test;
+
+-- создаю учебную таблицу
+CREATE TABLE IF NOT EXISTS myTable
+(
+  ID int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  name VARCHAR(120) NOT NULL DEFAULT '' COMMENT 'Имя',
+  num int UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Номер 1',
+  num2 int UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Номер 2',
+  PRIMARY KEY (ID)
+) COMMENT 'Учебная таблица';
+
+-- вставляю значения в таблицу
+INSERT INTO mytable(name, num, num2) VALUES
+    ('Имя 1', 10, 15),
+    ('Имя 22', 3, 53),
+    ('Имя 333', 12, 6),
+    ('Имя 4444', 23, 64),
+    ('Имя 55555', 64, 23),
+    ('Имя 666666', 10, 54),
+    ('Имя 7777777', 20, 65),
+    ('Имя 88888888', 6, 4),
+    ('Имя 999999999', 35, 1);
+
+-- ------------------ Учебные примеры
+-- ---------> СТРОКОВЫЕ ФУНКЦИИ
+-- > CHAR_LENGTH()  |  длина строки

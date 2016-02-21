@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Тактико-технические характеристики</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+   section.battery {
+    position: relative;
+    width: 400px;
+    margin-bottom: 10px;
+    background: #878F94;
+    color: white;
+    padding: 15px 25px;
+    font: 1.1em sans-serif;
+   }
+   ul.indicator {
+    position: absolute;
+    top: 0px;
+    right: 30px;
+   }
+   ul.indicator li {
+    display: inline-block;
+    width: 20px;
+    height: 15px;
+    margin-left: 10px;
+    background: #D3D5D4;
+    transform:skewX(-30deg);
+    -webkit-transform:skewX(-30deg);
+    -moz-transform:skewX(-30deg);
+    -o-transform:skewX(-30deg);
+    -ms-transform:skewX(-30deg);
+   }
+   ul.indicator li.low {
+    background: #51DBB3;
+   }
+   ul.indicator li.medium {
+    background: #DBD651;
+   }
+   ul.indicator li.high {
+    background: #DB8F51;
+   }
+   section.battery:before {
+    content:'';
+    border-top: 28px solid white;
+    border-right:16px solid transparent;
+    position:absolute;
+    top:0;
+    left:0;
+   }
+   section.battery:after {
+    content:'';
+    border-bottom: 28px solid #fff;
+    border-left:16px solid transparent;
+    position:absolute;
+    bottom:0;
+    right:0;
+   }
+  </style>   
+ </head>
+ <body>
+  <p>Тактико-технические характеристики вооружения ЫЩ-35У (образца 2035 года)</p>
+  <section class="battery">Уровень зарядки
+   <ul class="indicator">
+    <li class="low"></li>
+    <li class="low"></li>
+    <li class="medium"></li>
+    <li class="medium"></li>
+    <li class="high"></li>
+    <li class="high"></li>
+   </ul>
+  </section>
+  <section class="battery">Убойная сила
+   <ul class="indicator">
+    <li class="low"></li>
+    <li class="low"></li>
+    <li class="medium"></li>
+    <li></li>
+    <li></li>
+    <li></li>
+   </ul>  
+  </section>
+  <section class="battery">Перезарядка
+   <ul class="indicator">
+    <li class="low"></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+   </ul>   
+  </section>
+ </body>
+</html>

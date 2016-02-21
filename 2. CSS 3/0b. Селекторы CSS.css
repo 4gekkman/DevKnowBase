@@ -1,0 +1,249 @@
+
+/* #### Селекторы CSS1 + CSS2 #### */
+
+
+/* .class */
+.c1 {
+  color: #008BCE;
+}
+.c2 {
+  color: #18b60a;
+}
+
+/* #id  */
+#myId1 {
+  color: #ff6b5b;
+}
+
+/*   *   */
+* {
+  font-family: tahoma, arial, sans-serif;
+}
+
+/* element */
+p {
+  border: 1px solid #eee;
+}
+
+/* element,element */
+p.c3, p.c4 {
+  border: 1px solid #eeae0c;
+}
+
+/* element element */
+div.c5 p {
+  color: #00a508;
+}
+
+/* element>element */
+div.c6>p {
+  color: #a51f0b;
+}
+
+/* element+element */
+div.c7+p {
+  color: #bced8e;
+}
+div.c7 {
+  border: 1px solid #eee;
+}
+
+/* [attribute] */
+[onclick] {
+  color: #0000FF;
+}
+
+/* [attribute=value] */
+[onclick=abc] {
+  color: #d12f19;
+}
+
+/* [attribute~=value] */
+[onclick~=oyoy] {
+  color: #35a5e5;
+}
+
+/* :link */
+a.c8:link {
+  font-size: 20px;
+}
+
+/* :visited (примечание: в chrome этот селектор ограничен, чтобы избежать вынюхивания истории) */
+a.c9 {
+  background-color: white;
+}
+a.c9:visited {
+  background-color: #a58f8d;
+}
+
+/* :active */
+a.c10 {
+  background-color: white;
+}
+a.c10:active {
+  background-color: #6a78a5;
+}
+
+/* :hover */
+a.c11 {
+  background-color: white;
+}
+a.c11:hover {
+  background-color: #54a55d;
+}
+
+/* :focus */
+input.c12:focus {
+  background-color:yellow;
+}
+
+/* :first-letter */
+p.c13:first-letter {
+  font-size: 20px;
+ color: #d12f19;
+}
+
+/* :first-line */
+p.c14:first-line {
+  color: #416ed1;
+}
+
+/* :first-child */
+p.c15:first-child {
+  color: #d1cd28;
+}
+
+/* :before */
+p.c16:before {
+  content: "тыц - ";
+}
+
+/* :after */
+p.c17:after {
+  content: " - тыц";
+}
+
+/* :lang */
+p.c18:lang(it) {
+  color: #eeae0c;
+}
+
+
+
+/* #### Селекторы CSS3 #### */
+
+
+
+/* element1~element2 */
+p~div.c19 {
+  color: #00a508;
+}
+
+/* [attribute^=value] */
+a[src^='http://'] {
+  color: #4c053e;
+}
+
+/* [attribute$=value] */
+a[src$='.pdf'] {
+  color: #1d33b6;
+}
+
+/* [attribute*=value] */
+a[src*='Армения'] {
+  color: #b63727;
+}
+
+/* :first-of-type */
+p.c23:first-of-type {
+  color: #9d9c47;
+}
+
+/* :last-of-type */
+p.c24:last-of-type {
+  color: rgba(148, 80, 157, 0.66);
+}
+
+/* :only-of-type */
+p.c25:only-of-type {
+  color: #2f399d;
+}
+
+/* :only-child */
+p.c26:only-child {
+  color: #17979d;
+}
+
+/* :nth-child(n) */
+p.c27:nth-child(3) {
+  color: #9d383b;
+}
+
+/* :nth-last-child(n) */
+p.c28:nth-last-child(3) {
+  color: #279d38;
+}
+
+/* :nth-of-type(n) */
+p.c29:nth-of-type(3) {
+  color: #24799d;
+}
+
+/* :nth-last-of-type(n) */
+p.c30:nth-last-of-type(3) {
+  color: #94249d;
+}
+
+/* :last-child */
+p.c31:last-child {
+  color: #9d1e1b;
+}
+
+/* :root */
+:root
+{
+  background: #fefefe;
+}
+
+/* :empty */
+p.c32:empty {
+  background: #fae5cb;
+  height: 20px;
+}
+
+/* :target */
+:target
+{
+  border: 2px solid #D4D4D4;
+  background-color: #e5eecc;
+}
+
+/* :enabled */
+input.c33:enabled
+{
+  background: #dbff10;
+}
+
+/* :disabled */
+input.c34:disabled
+{
+  background:#dddddd;
+}
+
+/* not(selector) */
+div.c35>p:not(.c33) {
+  color: #F6967D;
+}
+
+/* ::section */
+p.c36::selection
+{
+  color:#ff0000;
+}
+p.c36::-moz-selection
+{
+  color:#ff0000;
+}
+
+
+

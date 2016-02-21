@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>Редактируемые вычисляемые наблюдаемые</mark>
+
+<ul>
+	<li>При редактировании 1 и 2 поля, 3-е меняется (наблюдаемые св-ва модели)</li>
+	<li>При редактировании 3-го поля, 2 и 1 меняюся (редактируемое вычисляемое наблюдаемое св-во модели)</li>
+</ul>
+
+
+
+	<label><input type="text" data-bind="value: name"> - имя</label><br>
+	<label><input type="text" data-bind="value: surname"> - фамилия</label><br>
+	<label><input type="text" data-bind="value: fullname"> - фамилия и имя</label><br>
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

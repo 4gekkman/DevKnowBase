@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+ <meta charset="utf-8"/>
+ <title></title>
+ <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+ <style>
+  article, aside, details, figcaption, figure,
+  footer, header, hgroup, menu, nav, section {
+   display: block;
+  }
+
+  blockquote {
+   background:#f9f9f9;
+   border-left:10px solid #ccc;
+   margin: 0 0 0 100px;
+   padding:.5em 10px;
+   quotes:"\201C""\201D""\2018""\2019";
+   display: inline-block;
+   white-space: pre;
+  }
+  blockquote:before {
+   color: #ccc;
+   content: open-quote;
+   font-size:4em;
+   line-height:.1em;
+   margin-right:.25em;
+   vertical-align:-.4em;
+  }
+  .note {
+   position: absolute;
+   padding: 5px;
+   border: 1px solid black;
+   background: white;
+   text-align: center;
+   font: italic 14px Georgia;
+   opacity: 0.5;
+	 z-index: 1;
+  }
+
+#example {
+     width: 600px;
+     height: 900px;
+     border: 25px solid #F0E68C; /* рамка 25px */
+     padding: 20px;              /* поля 20px */
+     margin: 20px;               /* отступы 20px */
+     overflow: auto;             /* прокрутка */
+		 margin-left: 80px;
+		 overflow: hidden;
+
+	position: relative;
+	z-index: -1;
+}
+
+#parag {
+	margin: 0;
+	padding: 0;
+	border: 1px dashed #000;
+}
+
+#ball {
+	position: relative;
+	width: 50px;
+	left: 300px;
+	left: 250px;
+	margin: 10px;
+	border-top: 1px solid #f00;
+	border-left: 1px solid #f00;
+	border-bottom: 1px solid #00f;
+	border-right: 1px solid #00f;
+}
+
+.panel {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	width: 180px;
+	opacity: 0.9;
+	background: #fff;
+}
+
+.top1, .top2, .top7, .top8 {
+	color: #9d383b;
+}
+
+.top3, .top4, .top9, .top10 {
+	color: #0560ce;
+}
+
+p {
+	margin: 4px;
+}
+
+ </style>
+</head>
+<body>
+
+<div class="panel">
+	<p><b>Клиентские координаты и размеры мяча:</b></p>
+	<p class="top1"></p>
+	<p class="top2"></p>
+	<p class="top3"></p>
+	<p class="top4"></p>
+	<p class="top5"></p>
+	<p class="top6"></p>
+	<p><b>Документные координаты и размеры мяча:</b></p>
+	<p class="top7"></p>
+	<p class="top8"></p>
+	<p class="top9"></p>
+	<p class="top10"></p>
+	<p class="top11"></p>
+	<p class="top12"></p>
+	<p><b>Клиентские коорд. курсора мыши:</b></p>
+	<p class="top13"></p>
+	<p class="top14"></p>
+	<p><b>Документные коорд. курсора мыши:</b></p>
+	<p class="top15"></p>
+	<p class="top16"></p>
+	<p><b>Экранные коорд. курсора мыши:</b></p>
+	<p class="top17"></p>
+	<p class="top18"></p>
+</div>
+
+<section id='example'>
+	<img id="ball" src="ball.gif">
+	<p id="parag">
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid architecto aut autem consectetur, culpa debitis doloribus eius eligendi esse eveniet exercitationem expedita facilis fugiat id illo incidunt inventore iure laboriosam libero magni necessitatibus nihil nulla odit officiis optio perferendis possimus, quae quam quas quos repellat reprehenderit sed sequi velit vero voluptas? Ab aliquam culpa delectus dicta dolorem dolorum expedita labore nam necessitatibus pariatur perferendis praesentium quae quos rem, similique suscipit, ullam voluptates voluptatum. A animi at dignissimos earum esse explicabo fuga fugit laboriosam, molestias nisi, nostrum odit quae quis quod voluptates. Aliquid, consectetur deleniti dicta doloremque eius eos et inventore libero vel voluptatum. Ad aliquid amet consequatur cumque deleniti deserunt dolores, ex expedita in labore laudantium nemo nisi nobis non omnis quasi qui, quidem ratione totam ut vel velit voluptates. Ad adipisci alias atque autem consequatur consequuntur deserunt distinctio doloremque ea esse facere harum hic ipsa ipsam iusto molestias mollitia necessitatibus nemo nesciunt non odio, odit optio quae quo, repudiandae soluta tempora voluptatum. Cumque, eum ipsa magni nihil officiis quae repudiandae similique vitae! Est ipsum maxime quibusdam tenetur unde veniam. Accusantium alias aliquam aliquid animi aspernatur, consequatur dignissimos doloribus dolorum enim excepturi harum incidunt ipsa ipsum, laborum laudantium necessitatibus neque nihil nisi non nostrum numquam odit officiis placeat quia reiciendis rem totam unde ut veritatis vero. A et explicabo harum labore non optio provident quasi repudiandae ullam vero! Accusantium beatae blanditiis consequuntur dolor doloremque hic ipsum, magni modi natus nisi numquam odio provident quidem quisquam temporibus Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur, quis!
+	</p>
+
+	<p id="parag">
+	in iure nisi quidem soluta tempore temporibus tenetur unde? Ab accusamus, alias consectetur ea exercitationem facere hic ipsam magnam minima nam nihil nobis odio possimus quae quam quidem ratione reprehenderit rerum sit soluta suscipit ut velit voluptatum. Accusantium atque dolorum eligendi et numquam quibusdam, veritatis. Aliquam architecto beatae delectus dignissimos dolore, dolores eaque fugit illum, officia perferendis praesentium quam, reprehenderit! Consequatur, officia, similique. Dignissimos, minima, temporibus. Accusamus alias at consequatur dignissimos explicabo fugit id incidunt inventore iure perferendis porro, possimus quas, quasi quibusdam recusandae reiciendis rerum sapiente sequi velit voluptas? Enim officiis perspiciatis quibusdam repellat totam. Assumenda doloribus dolorum explicabo hic ipsa odio saepe sit ut? Ad alias aliquid atque, consequatur debitis ea earum eius error, expedita facilis id ipsum itaque
+	</p>
+</section>
+
+
+
+<script src="9.%20Работа%20с%20координатами.js"></script></body>
+</html>
+
+

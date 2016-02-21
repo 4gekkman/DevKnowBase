@@ -1,0 +1,192 @@
+/* background-attachment */
+.c1 {
+  max-width: 200px;
+  max-height: 160px;
+  border: 2px solid #9d1e1b;
+  overflow: scroll;
+
+  background-image: url('Files/w3css.gif');
+  background-repeat:no-repeat;
+  background-attachment: fixed;
+}
+
+/* background-color */
+.c2 {
+  background-color: #9ac1c9;
+  width: 200px;
+  height: 100px;
+}
+
+/* background-position */
+.c3 {
+  background-position: center right;
+
+  background-image: url('Files/w3css.gif');
+  background-repeat:no-repeat;
+  width: 200px;
+  height: 200px;
+  border: 2px solid #3fa7f6;
+  display: inline-block;
+}
+.c4 {
+  background-position: 70% 30%;
+
+  background-image: url('Files/w3css.gif');
+  background-repeat:no-repeat;
+  width: 200px;
+  height: 200px;
+  border: 2px solid #3fa7f6;
+  display: inline-block;
+}
+.c5 {
+  background-position: 40px 30px;
+
+  background-image: url('Files/w3css.gif');
+  background-repeat:no-repeat;
+  width: 200px;
+  height: 200px;
+  border: 2px solid #3fa7f6;
+  display: inline-block;
+}
+
+/* background-repeat */
+.c6 {
+  background-repeat: no-repeat;
+
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #43a348;
+  display: inline-block;
+}
+.c7 {
+  background-repeat: repeat;
+
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #43a348;
+  display: inline-block;
+}
+.c8 {
+  background-repeat: repeat-x;
+
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #43a348;
+  display: inline-block;
+}
+.c9 {
+  background-repeat: repeat-y;
+
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #43a348;
+  display: inline-block;
+}
+
+/* background-clip */
+.c10 {
+  background-clip: border-box;
+
+  padding: 20px;
+  background-repeat: repeat;
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #a34938;
+  display: inline-block;
+}
+.c11 {
+  background-clip: padding-box;
+
+  padding: 20px;
+  background-repeat: repeat;
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #a34938;
+  display: inline-block;
+}
+.c12 {
+  background-clip: content-box;
+
+  padding: 20px;
+  background-repeat: repeat;
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #a34938;
+  display: inline-block;
+}
+
+/* background-size */
+.c13 {
+  background-size: 60px 80px;
+
+  background-repeat: no-repeat;
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #a34938;
+  display: inline-block;
+}
+.c14 {
+  background-size: 50% 50%;
+
+  background-repeat: no-repeat;
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #a34938;
+  display: inline-block;
+}
+.c15 {
+  background-size: cover;
+
+  background-repeat: no-repeat;
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #a34938;
+  display: inline-block;
+}
+.c16 {
+  background-size: contain;
+
+  background-repeat: no-repeat;
+  background-image: url('Files/w3css.gif');
+  width: 200px;
+  height: 200px;
+  border: 2px solid #a34938;
+  display: inline-block;
+}
+.c17 {
+  /* можно написать так (длинно и неудобно)
+  background-image:
+    url('Files/duck.png'),
+    url('Files/tree_bark.png');
+  background-repeat: no-repeat, repeat;
+  background-position: center; */
+
+  /* ... или написать так (best practice) */
+  background:
+  url('Files/duck.png') center no-repeat,
+  url('Files/tree_bark.png') repeat;
+
+  width: 300px;
+  height: 300px;
+  border: 2px solid #000;
+}
+
+
+
+
+
+
+
+
+
+

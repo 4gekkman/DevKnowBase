@@ -1,0 +1,45 @@
+/*Тестируем свойство box-sizing*/
+.box {
+	width: 200px;
+	height: 100px;
+	background: #8288cc;
+	display: block;
+	padding: 10px;
+	margin: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 2px 3px 5px #bbb;
+	font-family: 'PT Sans',tahoma,arial;
+	color: #fff;
+	font-size: 16px;
+}
+.contentBox {
+	box-sizing: content-box;
+}
+.borderBox {
+	box-sizing: border-box;
+}
+
+
+/*Тестируем свойство outline-offset*/
+.c1 {
+	outline: 2px solid #f00;
+	outline-offset: 10px;
+}
+
+
+/*appearance*/
+.c2 {
+	width: 200px;
+	height: 50px;
+	padding: 3px;
+	appearance: button;
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=utf-8">
+ <title>Accordion v1</title>
+ <link rel="stylesheet" href="style.css" type="text/css"/>
+</head>
+
+
+<body>
+<div id="options">
+ <a href="javascript:parentAccordion.pr(1)">Показать все</a> |
+ <a href="javascript:parentAccordion.pr(-1)">Свернуть все</a>
+</div>
+<ul class="acc" id="acc">
+ <li>
+  <h3>About</h3>
+
+  <div class="acc-section">
+   <div class="acc-content">
+    <ul class="acc" id="nested">
+     <li>
+      <h3>Nested One</h3>
+
+      <div class="acc-section">
+       <div class="acc-content">
+        Donec elementum lobortis lorem. Sed aliquet lacus vitae nibh. Sed ullamcorper pharetra augue. Lorem ipsum dolor
+        sit amet, consectetur adipiscing elit.
+       </div>
+      </div>
+     </li>
+     <li>
+      <h3>Nested Two</h3>
+
+      <div class="acc-section">
+       <div class="acc-content">
+        Vestibulum blandit mauris elementum mauris.
+       </div>
+      </div>
+     </li>
+     <li>
+      <h3>Nested Three</h3>
+
+      <div class="acc-section">
+       <div class="acc-content">
+        Morbi felis libero, porta non, sagittis ac, consectetur in, sem.
+       </div>
+      </div>
+     </li>
+    </ul>
+    This lightweight (1.4 KB) JavaScript accordion can easily be customized to integrate with any website. For more
+    information visit <a href="http://www.leigeber.com">leigeber.com</a>.
+   </div>
+  </div>
+ </li>
+ <li>
+  <h3>Instructions</h3>
+
+  <div class="acc-section">
+   <div class="acc-content">
+    To initialize an accordion use the following code:<br/><br/>
+    <code>
+     var accordion=new TINY.accordion.slider("accordion");<br/>
+     accordion.init("accordion","h3",false,0,"selected");
+    </code><br/><br/>
+    You must create a new accordion object before initialization. The parameter taken by accordion.slider is the
+    variable name used for the object. The object.init function takes 5 parameters: the id of the accordion ul, the
+    header element tag, whether the panels should be expandable independently (optional), the index of the initially
+    expanded section (optional) and the class for the active header (optional).
+   </div>
+  </div>
+ </li>
+ <li>
+  <h3>Licensing &amp; Support</h3>
+
+  <div class="acc-section">
+   <div class="acc-content">
+    This script is provided as-is with no warranty or guarantee. It is available at no cost for any project,
+    non-commercial or commercial. Paid support is available by <a href="http://www.leigeber.com/contact/">clicking
+    here</a>
+   </div>
+  </div>
+ </li>
+</ul>
+<script type="text/javascript" src="script.js"></script>
+
+<script type="text/javascript">
+
+ var parentAccordion = new TINY.accordion.slider("parentAccordion");
+ parentAccordion.init("acc", "h3", false, 0);
+
+ var nestedAccordion = new TINY.accordion.slider("nestedAccordion");
+ nestedAccordion.init("nested", "h3", true, 1, "acc-selected");
+
+</script>
+
+
+</body>
+</html>

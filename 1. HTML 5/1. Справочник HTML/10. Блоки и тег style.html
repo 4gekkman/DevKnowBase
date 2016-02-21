@@ -1,0 +1,178 @@
+<!-- --------------------------------------------------
+---------------- О Г Л А В Л Е Н И Е ----------------
+HTML 5.
+10. Блоки и тег style.
+
+Теги:
+  > style         | определяет CSS для документа
+  > div           | блок
+  > span          | текстовый блок
+  > header        | блок для заголовка документа
+  > footer        | блок для подвала документа
+  > section       | блок для использования в теле документа
+  > article       | блок для статьи
+  > aside         | блок, который располагается в стороне от контента, в котором он расположен
+  > details       | (не поддерживается в настоящее время большинством браузеров)
+  > dialog        | (не поддерживается в настоящее время большинством браузеров)
+  > summary       | (не поддерживается в настоящее время большинством браузеров)
+
+
+Атрибуты  локальные (специфичные для каждого тега):
+
+  > style
+      # media   | дает подсказку о том, для какого устройства опримизирован этот CSS
+      # scoped  | (не поддерживается большинством современных браузеров в настоящий момент)
+      # type    | указывает MIME тип документа, куда ведет ссылка
+        > Значения MIME типов можно посмотреть здесь: http://www.iana.org/assignments/media-types
+
+
+Атрибуты глобальные (подходят к любому тегу):
+  # accesskey         | указывает горячую клавишу для активации / наведения фокуса на элемент
+  # class             | указывает имя класса или классов CSS, которые надо применить к элементу
+  # contenteditable   | указывает, можно ли редактировать контент элемента, или нет
+  # contextmenu       | указывает контекстное меню, которое открывается при щелчке правой КМ по элементу
+  # dir               | указывает направление текста внутри элемента
+  # draggable         | указывает, является ли элемент перетаскиваемым
+  # dropzone          | указывает, что будет с перетащенным элементом: скопируется, передвинется, свяжется, петеращится (упадет)
+  # hidden            | скрывает элемент
+  # id                | указывает уникальный ID для элемента
+  # lang              | указывает язык контента элемента
+  # spellcheck        | указывает, проверять ли браузеру орфографию в редактируемом элементе, или нет
+  # style             | позволяет указать локальные стили элемента
+  # tabindex          | позволяет настроить порядок навигации между элементами с помощью клавиши TAB
+  # title             | при наведении мышью на элемент всплывает подсказка со значением атрибута title
+  # translate         | указывает, должно ли value элемента быть переведено, когда страница локализована, или нет
+
+
+
+
+-------------------------------------------------- -->
+
+<!-- Подготовка документа  -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>Заголовок страницы - 3. Формы</title>
+
+  <p><mark>style</mark></p>
+  Здесь, в элементе head, в элементе style размещается код CSS. А еще с помощью link (см. 7. Ссылки) можно подключать стили из отдельных CSS-файлов
+  <br><xmp><style> ... здесь идут стили ... </style></xmp>
+  <style>
+    p { font: 14px; }
+  </style>
+
+</head>
+<body>
+
+
+
+  <p><mark>div</mark></p>
+
+    <div style="color:#0000FF">
+      <h3>This is a heading</h3>
+      <p>This is a paragraph.</p>
+    </div>
+
+
+  <p><mark>span</mark></p>
+
+    <p>My mother has <span style="color:blue">blue</span> eyes.</p>
+
+
+  <p><mark>header</mark></p>
+
+    <article>
+      <header>
+        <h1>Internet Explorer 9</h1>
+        <p><time pubdate datetime="2011-03-15"></time></p>
+      </header>
+      <p>Windows Internet Explorer 9 (abbreviated as IE9) was released to
+        the  public on March 14, 2011 at 21:00 PDT.....</p>
+    </article>
+
+
+  <p><mark>section</mark></p>
+
+    <section>
+      <h1>WWF</h1>
+      <p>The World Wide Fund for Nature (WWF) is....</p>
+    </section>
+
+
+  <p><mark>article</mark></p>
+
+    <article>
+      <h1>Internet Explorer 9</h1>
+      <p>Windows Internet Explorer 9 (abbreviated as IE9) was released to
+        the  public on March 14, 2011 at 21:00 PDT.....</p>
+    </article>
+
+
+  <p><mark>aside</mark></p>
+
+    <p>My family and I visited The Epcot center this summer.</p>
+
+    <aside>
+      <h4>Epcot Center</h4>
+      <p>The Epcot Center is a theme park in Disney World, Florida.</p>
+    </aside>
+
+
+  <p><mark>footer</mark></p>
+
+    <footer>
+      <p>Posted by: Hege Refsnes</p>
+      <p>Contact information: <a href="mailto:someone@example.com">
+        someone@example.com</a>.</p>
+    </footer>
+
+
+
+
+</body>
+</html>
+<!-- --------------------------------------------------
+---------------- И Н Ф О Р М А Ц И Я ----------------
+
+
+Ссылки:
+> Справочник по HTML 5 на сайте htmlbook.ru
+    http://htmlbook.ru/html
+
+> Справочник по HTML 5 на сайте w3schools.com
+    http://www.w3schools.com/tags/default.asp
+
+> Справочник по HTML 5 на сайте developer.mozilla.org
+    https://developer.mozilla.org/en-US/docs/Web/HTML?redirectlocale=en-US&redirectslug=HTML
+
+
+
+*****************************************************
+Оглавление:
+
+>
+
+*****************************************************
+
+
+>
+
+
+
+-------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

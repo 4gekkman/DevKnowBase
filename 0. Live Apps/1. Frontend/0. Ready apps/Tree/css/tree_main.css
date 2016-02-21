@@ -1,0 +1,269 @@
+/*
+
+
+	Инструкция по применению "Стили дерева"
+=========================================
+
+a1		.tree-container-root-ul				| Применять к корневому элементу-контейнеру
+																			UL дерева
+
+a2		.tree-container-subtree-ul		| Применять к НЕ корневым элементам-контейнерам
+																			UL дерева
+
+a3		.tree-node										| Применять ко всем эл-там LI дерева
+
+a4		.tree-last										| Применять ко всем эл-там LI дерева,
+																			которые являеются последними в своём UL.
+
+a5		.tree-icon										| Применять ко всем элементам I дерева,
+																			у которых нет никаких потомков, в т.ч.
+																	  	текстовых узлов.
+
+a6		.tree-icon-opened							| Применять к тем эл-там I, которые на текущий
+																			момент представляют узел, который имеет потомков,
+																	  	и который раскрыт.
+																	  	- Применяется вместе с .tree-icon
+
+a7		.tree-icon-closed							| Применять к тем эл-там I, которые на текущий
+																			момент представляют узел, который имеет потомков,
+																	  	и который закрыт.
+																	  	- Применяется вместе с .tree-icon
+
+a8		.tree-icon-without-children		| Применять к тем эл-там I, которые на текущий
+																			момент представляют узел, который НЕ имеет
+																			потомков.
+																			- Применяется вместе с .tree-icon
+
+a9		.tree-icon-theme							| Применять к тем эл-там I, которые находятся
+																			внутри эл-тов A в дереве, и представляют
+																			собой не навигационную, а ассоциативную
+																			иконку данного узла.
+																			- Применяется вместе с .tree-icon
+
+a10	.tree-anchor										| Применяется ко всем элементам A в дереве,
+																			которые содержат в себе ассоциативную иконку
+																	 		и текст узла.
+
+
+
+	Инструкция по применению стилей для "выделения"
+===================================================
+
+b1.		tree-nodes-selectable		| Этот класс используется для подключения "выделения" к дереву
+																(надо добавить к div дерева).
+
+b2.		tree-selected						|	Этот класс должен присутствовать у всех выделенных элементов
+
+
+
+	Инструкция по применению стилей для "открывашки"
+===================================================
+
+c1.		tree-nodes-close_open			| Этот класс используется для подключения "открывашки" к дереву
+																	(надо добавить к div дерева).
+
+c2.		tree-node-opened					| Этот стиль должен присутствовать у всех раскрытых узлов li,
+																	которые среди своих детей имеют эл-ты UL.
+
+c3.		tree-node-closed					| Этот стиль должен присутствовать у всех закрытых узлов li
+																	которые среди своих детей имеют эл-ты UL.
+
+
+
+*/
+
+
+
+/* Оформление документа и DIV'a
+================================*/
+
+
+body {
+	font-family: "PT Sans", Arial, Helvetica, sans-serif;
+}
+
+div {
+	max-width: 100%;
+	overflow: auto;
+	box-shadow: 0 0 5px #ccc;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+
+
+
+/* Стили дерева
+================================*/
+
+
+	/*a1.	Применять к корневому UL-контейнеру, содержащему дерево*/
+	.tree-container-root-ul {
+		display: block;
+		padding: 0;
+		margin: 0;										/* убрать смещение слева */
+	}
+	.tree-container-root-ul li {
+		list-style-type: none;
+		padding: 0;
+	}
+	.tree-container-root-ul ul {
+		display: block;
+		padding: 0;										/* убрать смещение слева */
+		margin: 0;
+		overflow: hidden;
+	}
+
+
+	/*a2.	Применять к НЕ корневым UL-контейнерам, содеражщим поддеревья*/
+	.tree-container-subtree-ul {
+
+	}
+	.tree-container-subtree-ul>li {
+		margin-left: 24px;
+	}
+
+
+	/*a3.	Стиль для узлов дерева, применять ко всем li:
+				- дорисовывает узловым иконкам вертикальную линию
+				- причём рисует эту линию по всей вертикали дерева*/
+	.tree-node {
+		min-height: 24px;
+		line-height: 24px;
+		min-width: 24px;
+		background-image: url("Themes & icons/theme_standard.png");
+		background-position: -292px -4px;
+		background-repeat: repeat-y;
+	}
+
+		/*a4.	Применять к последним в списке li (чтобы им вертикальная линия не дорисовывалась)*/
+		.tree-last {
+			background: 0 0;
+		}
+
+
+	/*a5.	Стили для иконок - надо применять ко всем эл-там i в дереве*/
+	.tree-icon:empty {
+		display: inline-block;
+		text-decoration: none;
+		margin: 0;
+		padding: 0;
+		vertical-align: top;
+		text-align: center;
+		width: 24px;
+		height: 24px;
+		line-height: 24px;
+		background-image: url("Themes & icons/theme_standard.png");
+	}
+
+
+	/*a6.	Стили для иконок-переключателей - раскрытый вариант*/
+	.tree-icon-opened {
+		background-position: -132px -4px;
+		cursor: pointer;
+	}
+
+	/*a7.	Стили для иконок-переключателей - скрытый вариант*/
+	.tree-icon-closed {
+		background-position: -100px -4px;
+		cursor: pointer;
+	}
+
+
+	/*a8.	Стили для иконки - узла без потомков*/
+	.tree-icon-without-children {
+		background-position: -68px -4px;
+	}
+
+
+	/*a9.	Стиль для стандартной иконки узла*/
+	.tree-icon-theme {
+		background-position: -260px -4px;
+	}
+
+	/*a10.	Стиль, который надо применять ко всем эл-там A, используемым в дереве*/
+	.tree-anchor {
+		line-height: 24px;
+		height: 24px;
+		cursor: pointer;		/* Курсор становится указателем при наведении */
+	}
+	.tree-anchor:visited,
+	.tree-anchor:hover,
+	.tree-anchor:active {
+
+		/* отменить обычный внешний вид и поведение "как у ссылок" */
+		text-decoration: none;
+		color: inherit;
+
+	}
+
+
+
+/* Стили для приложения "выделение" (выделение/развыделение узлов)
+===================================================================*/
+
+	/*b1.	Этот класс используется для подключения "выделения" к дереву
+				(надо добавить к div дерева).	*/
+	.tree-nodes-selectable {
+
+	}
+
+	/*b2.	Этот класс должен присутствовать у всех выделенных элементов*/
+	.tree-selected {
+		border-radius: 2px;
+		box-shadow: 1px 1px 1px #999;
+	}
+
+	/*b3.	Анимированная подсветка узла при наведении курсора (HTML5)
+		 		- если узел уже выделен (имеет класс .tree-selected), то он не подсвечивается при наведении*/
+	.tree-container-root-ul .tree-node .tree-anchor:hover:not([class*='tree-selected']) {
+		background-color: rgba(38, 186, 255, 0.15);
+
+		-webkit-transition: all .1s linear;
+		-moz-transition: all .1s linear;
+		-ms-transition: all .1s linear;
+		-o-transition: all .1s linear;
+		transition: all .1s linear;
+
+		border-radius: 2px;
+	}
+
+	/*b4.	Узел с этим классом (выбранный) будет подсвечен с анимацией (HTML5) */
+	.tree-container-root-ul .tree-node .tree-selected {
+		background-color: rgba(38, 186, 255, 0.30);
+	}
+
+
+
+/* Стили для приложения "открывашка" (раскрывает/закрывает узлы)
+===================================================================*/
+
+
+	/*c1.	Этот класс используется для подключения "открывашки" к дереву
+				(надо добавить к div дерева).	*/
+	.tree-nodes-close_open {
+
+	}
+
+	/*c2.	Этот стиль должен присутствовать у всех раскрытых узлов li,
+	 			которые среди своих детей имеют эл-ты UL*/
+	.tree-node-opened {
+
+	}
+	.tree-node-opened ul {
+
+	}
+
+	/*c3.	Этот стиль должен присутствовать у всех закрытых узлов li,
+	 			которые среди своих детей имеют эл-ты UL*/
+	.tree-node-closed {
+
+	}
+	.tree-node-closed > ul {
+		display: none;
+	}
+
+
+
+
+

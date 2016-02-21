@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+	</style>
+
+	<link rel="stylesheet" href="../../css/tree_main.css"/>
+
+</head>
+<body>
+
+<ul>
+
+<li>Попробуй повыделять узлы дерева ниже, кликая на них</li>
+<li>Если кликать с зажатым CTRL, можно выделить несколько узлов</li>
+<li>
+	Вкл/выкл выделение у дерева:
+	<button id="on">Вкл</button>
+	<button id="off">Выкл</button>
+	<span id="status" style="color: #000; background: #afdf9e">Включено</span>
+</li>
+<li>
+	Выделить/развыделить все узлы дерева:
+	<button id="selectAll">Выделить все</button>
+	<button id="unselectAll">Развыделить все</button>
+</li>
+<li>
+	Выделить/развыделить узел №6:
+	<button id="select6">Выделить</button>
+	<button id="unselect6">Развыделить</button>
+</li>
+<li>
+	Получить в консоль все выделенные/не выделенные узлы дерева:<br>
+	<button id="getselected">Получить выделенные</button>
+	<button id="getunselected">Получить не выделенные</button>
+</li>
+
+</ul>
+
+	<script data-main="test.js" src="../../vendors/requirejs/require.js"></script>
+
+</body>
+</html>
+
+

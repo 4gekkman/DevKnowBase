@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+		#forPositioning {
+			position: relative;
+			left: 50px;
+			top: 50px;
+		}
+
+		#grid {
+			border-spacing: 30px 10px;
+			border: 1px solid #ccc;
+			box-shadow: 1px 1px 3px RGBA(0,0,0,.5);
+		}
+
+		#grid caption {
+			border: 1px solid #ccc;
+			box-shadow: 2px 2px 5px RGBA(0,0,0,.5);
+		}
+
+		#grid th:hover {
+			background: #dbca00;
+			cursor: pointer;
+		}
+
+
+	</style>
+</head>
+<body>
+
+<div id="forPositioning">
+		<mark>Если кликнуть на заголовок столбца, происходит сортировка таблицы
+					по этому заголовку</mark><br><br>
+    <table id="grid">
+			<caption>Таблица</caption>
+      <thead>
+      <tr>
+        <th data-type="number">Возраст</th>
+        <th data-type="string">Имя</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>5</td>
+        <td>Вася</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Петя</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Женя</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Маша</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Илья</td>
+      </tr>
+      </tbody>
+    </table>
+
+</div>
+
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>14. Связка foreach - редактируемый список</mark><br><br>
+
+
+	<h4>People</h4>
+	<ul data-bind="foreach: people">
+			<li>
+					Name at position <span data-bind="text: $index"> </span>:
+					<span data-bind="text: name"> </span>
+					<a href="#" data-bind="click: $parent.removePerson">Remove</a>
+			</li>
+	</ul>
+	<button data-bind="click: addPerson">Add</button>
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

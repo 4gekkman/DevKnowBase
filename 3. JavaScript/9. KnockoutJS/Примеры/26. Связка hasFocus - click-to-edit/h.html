@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>26. Связка hasFocus - click-to-edit</mark><br><br>
+
+<ul>
+	<li>Здесь несколькими строками кода реализован паттерн click-to-edit</li>
+</ul>
+
+
+
+	<p>
+		<span data-bind="visible: !editing(), text: name, click: edit"></span>
+		<input size="100" data-bind="visible: editing, value: name, hasFocus: editing" />
+	</p>
+
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

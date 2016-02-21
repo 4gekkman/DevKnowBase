@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+
+	</style>
+</head>
+<body>
+
+<mark>В этом примере с помощью JS осуществляется валидация формы:</mark>
+<ul>
+	<li>Попробуй неправильно заполнить форму и нажать на кнопку "проверить"</li>
+	<li>И ты увидишь подсказки от JS рядом с неправильно заполненными полями</li>
+</ul>
+
+<form>
+<table>
+  <tr>
+  	<td>От кого</td>
+  	<td><input name="from" type="text"></td>
+  </tr>
+  <tr>
+  	<td>Ваш пароль</td>
+  	<td><input name="password" type="password"></td>
+  </tr>
+  <tr>
+  	<td>Повторите пароль</td>
+  	<td><input name="password2" type="password"></td>
+  </tr>
+  <tr>
+  	<td>Куда</td>
+		<td>
+			<select name="to">
+				<option></option>
+				<option value="1">Отдел снабжения</option>
+				<option value="2">Отдел разработки</option>
+				<option value="3">Директору</option>
+			</select>
+		</td>
+  </tr>
+</table>
+
+Сообщение:
+<label>
+<textarea name="message" style="display:block;width:400px;height:100px"></textarea>
+</label>
+<br>
+<input type="button" onclick="validate(this.form)" value="Проверить">
+</form>
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

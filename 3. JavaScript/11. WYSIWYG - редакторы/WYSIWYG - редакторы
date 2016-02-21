@@ -1,0 +1,186 @@
+=============================================================
+WYSIWYG - редакторы
+
+
+Ссылки:
+
+  Список готовых wysiwyg-редакторов
+  ---------------------------------
+
+    > TinyMCE:
+          http://www.tinymce.com/
+
+    > CKeditor
+          http://ckeditor.com/
+
+    > CLEditor
+          http://premiumsoftware.net/cleditor/
+
+    > NicEdit
+          http://nicedit.com/
+
+    > Markitup
+          http://markitup.jaysalvat.com/home/
+
+    > Aloha Editor
+          http://www.aloha-editor.org/
+
+    > OpenWysiwyg
+          http://www.openwebware.com/
+
+    > Реформатор
+          http://www.artlebedev.ru/tools/reformator/about/
+
+  Прочие ссылки
+  ---------------------------------
+
+    > Статья про WYSIWYG на wikipedia:
+          https://ru.wikipedia.org/wiki/WYSIWYG
+
+    > Создание кастомной связки KnockoutJS для NicEdit:
+          http://stackoverflow.com/questions/15775608/using-nicedit-with-knockout
+
+
+*****************************************************
+Оглавление:
+
+    > Что такое WYSIWYG-редактор
+    > Совместное использование WYSIWYG-редактора и KnockoutJS
+    > Пошаговая инструкция использования NicEdit + KnockoutJS
+
+
+*****************************************************
+
+> Что такое WYSIWYG-редактор
+
+  > Термин WYSIWYG
+    - Расшифровка аббревиатуры WYSIWYG - "What You See Is What You Get".
+    - По-русски: "Что Ты Видишь То И Получаешь".
+
+  > WYSIWYG-редактор на JS
+    - Визуальный редактор документа, написанный на javascript.
+    - Позволяет пользователю редактировать документ в визуальном режиме.
+    - Вместо того, чтобы писать HTML-код.
+    - Итоговый документ будет выглядеть точно также, как в редакторе.
+    - Преимущество в том, что от пользователя не требуется знание HTML.
+
+  > В том числе позволяет добавлять изображения, видео
+    - Ведь wysiwyg-редактор позволяет редактировать html-документ.
+    - А последний может содержать как изображения, так и видео.
+    - При добавлении того или другого надо просто указать его URL.
+
+> Совместное использование WYSIWYG-редактора и KnockoutJS
+  - Для успешного совместного использования требуется создать кастомную связку.
+  - И в этой связке применить выбранный WYSIWYG-редактор.
+  - Пример применения подобной связки в textarea:
+
+      <textarea id="area1" data-bind="nicedit: title" style="width: 640px"></textarea>
+
+> Пошаговая инструкция использования NicEdit + KnockoutJS
+
+  1. Подключить wysiwyg-редактор NicEdit к документу:
+    - Для этого в конце документа вставить такой скрипт:
+
+        <script src="http://js.nicedit.com/nicEdit-latest.js"></script>
+
+  2. Зарегистрировать кастомную связку nicedit
+    - Сделать это следует перед применением функции ko.applyBindings
+    - Вот код кастомной связки:
+
+      ko.bindingHandlers.nicedit = {
+
+        // 1. Сработает при применении связки
+        init: function(element, valueAccessor) {
+
+          // 1.1. Получить ссылку на связанное свойство модели
+          var value = valueAccessor();
+
+          // 1.2. Создать экземпляр nicEdit
+          var area = new nicEditor({fullPanel : true}).panelInstance(element.id, {hasPanel : true});
+
+          // 1.3. Получить ссылку на элемент с контентом wysiwyg-редактора
+          // - Для nicEdit это 1-й дочерний эл-т левого соседа эл-та element
+          var textAreaContentElement = (element.previousElementSibling).children[0];
+
+          // 1.4. Вставить значение value в кач-ве html в element
+          // - Функция unwrapObservable безопасно извлекает значение наблюдаемой
+          textAreaContentElement.innerHTML = ko.utils.unwrapObservable(value);
+
+          // 1.5. Написать функцию обновления
+          // - Она будет обновлять value при внесении изменения в редакторе
+          var updateFunc = function(event, params) {
+            value($(textAreaContentElement).html());
+          };
+
+          // 1.6. Назначить эл-ту textAreaContentElement обработчик updateFunc события input
+          addEvent(textAreaContentElement, 'input', updateFunc, {id: element.id});
+
+          // 1.7. Назначить эл-ту element обработчик updateFunc события DOMNodeInserted
+          addEvent(textAreaContentElement, 'DOMNodeInserted', updateFunc, {id: element.id});
+
+          // 1.8. Назначить эл-ту element обработчик updateFunc события DOMNodeInserted
+          addEvent(textAreaContentElement, 'DOMNodeRemoved', updateFunc, {id: element.id});
+
+        },
+
+        // 2. Будет срабатывать при обновлении связанного значения
+        update: function(element, valueAccessor) {
+
+          // 2.1. Получить имя связанного свойства модели
+          var value = valueAccessor();
+
+          // 2.2. Получить ссылку на элемент с контентом wysiwyg-редактора
+          // - Для nicEdit это 1-й дочерний эл-т левого соседа эл-та element
+          var textAreaContentElement = (element.previousElementSibling).children[0];
+
+          // 2.3. Обновить значение в редакторе при изменеии value
+          textAreaContentElement.innerHtml = value();
+
+        }
+      };
+
+  3. Зарегистрировать кастомную связку nicedit_oninput
+    - Сделать это следует перед применением функции ko.applyBindings
+    - Эта связка позволяет назначенить wysiwyg-редактору nicEdit обработчик события input
+
+      ko.bindingHandlers.nicedit_oninput = {
+
+        // 1. Сработает при применении связки
+        init: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+
+          // 1.1. Получить ссылку на связанное свойство модели
+          var value = valueAccessor();
+
+          // 1.2. Получить ссылку на элемент с контентом wysiwyg-редактора
+          // - Для nicEdit это 1-й дочерний эл-т левого соседа эл-та element
+          try {
+            var textAreaContentElement = (element.previousElementSibling).children[0];
+          }
+          catch(err) {
+
+            // Вывести ошибку на экран
+            console.log('Ошибка в nicedit_oninput: '+err.message);
+
+          }
+
+          // 1.3. Прикрепить к textAreaContentElement обработчик value() события input
+          addEvent(textAreaContentElement, 'input', value, {});
+
+        },
+
+        // 2. Будет срабатывать при обновлении связанного значения
+        update: function(element, valueAccessor) {
+
+        }
+
+      };
+
+  4. Пример использования кастомной связки
+    - У связанной textarea обязательно должен быть атрибут id.
+    - Иначе связка работать не будет.
+    - Пример использования:
+
+      <textarea id="area1" data-bind="nicedit: my_func1, nicedit_oninput: my_func2"></textarea>
+
+
+

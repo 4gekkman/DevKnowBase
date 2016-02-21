@@ -1,0 +1,9 @@
+
+div {
+	width: 300px;
+	height: 300px;
+	border: 1px solid #000;
+	background: no-repeat url('http://www.textilgroup.ru//upload/iblock/3aa/3aa9f5224ba490dac8751aeab8391f86.jpg');
+	background-size: cover;
+	border-radius: 50px;
+}

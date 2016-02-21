@@ -1,0 +1,60 @@
+body {
+	margin: 0;
+	padding: 0;
+	height: 1000px;
+	font: 1em 'PT Sans', Arial, Helvetica, sans-serif;
+}
+
+
+/*Выравнивание элемента div переменных размеров по центру
+клиентской области браузера*/
+
+
+	/*Это полупрозрачный щит, который закрывает собой всю страницу, кроме
+		самого модального окна*/
+	.shield {
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background: #567;
+		opacity: .2;
+
+		z-index: 1000;
+	}
+
+
+	/*Это контейнер для модального окна, которое может быть переменных размеров,
+	так что этот контейнер помогает выровнять его по центру окна браузера по
+	горизонтали и по вертикали*/
+	.container {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		text-align: center;
+
+		z-index: 1001;
+	}
+	.container:before {
+		display: inline-block;
+		height: 100%;
+		vertical-align: middle;
+		content: '';
+	}
+
+
+	/*Это само модальное окно, которое выравнивается по центру окна браузера.*/
+	.centered {
+		display: inline-block;
+		vertical-align: middle;
+		padding: 5px;
+		background: #567;
+		border-radius: 10px;
+		box-shadow: 2px 2px 8px RGBA(0,0,0,.5);
+		border: 1px solid #aaa;
+		color: #fff;
+	}
+

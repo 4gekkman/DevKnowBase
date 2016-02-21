@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+<mark>22. Связка enable - включение-выключение элементов</mark><br><br>
+
+<ul>
+	<li>Попробуй включить чекбокс, и поле для ввода телефона включится</li>
+	<li>Попробуй выключить чекбокс, и поле для ввода телефона включится</li>
+</ul>
+
+
+
+	<p>
+			<input type='checkbox' data-bind="checked: hasCellphone" />
+			I have a cellphone
+	</p>
+	<p>
+			Your cellphone number:
+			<input type='text' data-bind="value: cellphoneNumber, enable: hasCellphone" />
+	</p>
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>
+
+

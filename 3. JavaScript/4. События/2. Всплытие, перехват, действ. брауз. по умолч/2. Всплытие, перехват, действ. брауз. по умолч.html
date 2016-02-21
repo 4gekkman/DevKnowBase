@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+		body {
+			font: 1em, 'PT Sans',Arial,Helvetica, sans-serif;
+		}
+
+		#div1 {
+			position: relative;
+
+			width: 600px;
+			height: 600px;
+			background: #0560ce;
+			margin: 0 auto;
+			color: #fff;
+			font-size: 4em;
+			text-align: center;
+		}
+
+		#div2 {
+			position: absolute;
+			left: 25%;
+			top: 25%;
+			width: 300px;
+			height: 300px;
+			background: #ab7e38;
+			color: #fff;
+			font-size: 1em;
+			text-align: center;
+		}
+
+		#div3 {
+			position: absolute;
+			left: 25%;
+			top: 25%;
+			width: 150px;
+			height: 150px;
+			background: #cf4a32;
+			color: #fff;
+			font-size: 1em;
+			text-align: center;
+			line-height: 150px;
+		}
+
+		#ol {
+			list-style: none;
+		}
+	</style>
+</head>
+<body>
+
+<mark>Что надо делать?</mark>
+Щелкни по квадрату с цифрой "3" и смотри в консоль.<br>
+Там увидишь все 3 стадии распространения события - перехвата, цели, всплытия.<br>
+<ol id="ol">
+	Вот так будет распространяться событие по квадратам:
+	<li>1 - перехват</li>
+	<li>2 - перехват</li>
+	<li>3 - цель</li>
+	<li>2 - всплытие</li>
+	<li>1 - всплытие</li>
+</ol>
+
+<div id="div1">1
+	<div id="div2">2
+		<div id="div3">3</div>
+	</div>
+</div>
+
+	<script src="2.%20Всплытие,%20перехват,%20действ.%20брауз.%20по%20умолч.js"></script>
+</body>
+</html>
+
+

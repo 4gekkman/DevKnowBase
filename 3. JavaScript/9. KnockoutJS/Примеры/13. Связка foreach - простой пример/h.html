@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+
+</head>
+<body>
+	<mark>13. Связка foreach - простой пример</mark><br><br>
+
+
+	<div data-bind="foreach: people">
+
+		<mark data-bind="text: $index"></mark>
+		<p>Имя: <span data-bind="text: name"></span></p>
+		<p>Возраст: <span data-bind="text: age"></span></p>
+
+	</div>
+
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>

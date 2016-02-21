@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+	</style>
+
+	<!-- Подключить CSS-стили c.css -->
+	<link rel="stylesheet" type="text/css" href="c.css">
+
+</head>
+<body>
+
+<mark>Что здесь происходит?</mark>
+<pre>
+> JS-код из файла j.js находит все элементы с классом 'fileDropTarget',
+  и регистрирует обработчики событий механизма drag-n-drop, чтобы они
+  могли откликаться на операции буксировки файлов.
+> При сбросе файлов на эти элементы, они выгружают их на URL-адрес,
+  указанный в пользовательском атрибуте data-upload найденного элемента
+  класса 'fileDropTarget'.
+</pre>
+<mark>Блок, куда можно сбрасывать файл</mark>
+<div id="receiverText" class="fileDropTarget" data-uploadto="p.php"></div>
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

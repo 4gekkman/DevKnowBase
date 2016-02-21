@@ -1,0 +1,16 @@
+/* Позиционирование блока посередине,
+по оси x (margin: 0 auto) */
+.c1 {
+  max-width: 1000px;
+  height: 200px;
+  border: 1px solid #000;
+
+}
+.c2 {
+  width: 300px;
+  height: 200px;
+  border: 1px solid #e60006;
+
+  position: relative;
+  margin: 0 auto;
+}

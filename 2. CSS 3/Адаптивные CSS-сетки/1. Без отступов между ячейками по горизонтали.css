@@ -1,0 +1,84 @@
+
+
+
+/* ----------------- Классы CSS-сетки (начало) ------------------ */
+
+
+/* Делаем блок-обёртку для всей CSS-сетки, назначаем ширину и выравниваем его по центру. */
+.container {
+	width: 1000px;
+	margin: 0 auto;  /* выровнять контейнер по центру */
+	background: #eeeeee;
+}
+
+/* Набор “span” - для управления шириной колонки. */
+.span1   { width: 12.5%; }
+.span2   { width: 25%;   }
+.span3   { width: 37.5%; }
+.span4   { width: 50%;   }
+.span5   { width: 62.5%; }
+.span6   { width: 75%;   }
+.span7   { width: 87.5%; }
+.span8   { width: 100%;  }
+
+/* Набор “offset” - для управления смещением колонок */
+.offset1   { margin-left:  12.5%; }
+.offset2   { margin-left: 25%;    }
+.offset3   { margin-left: 37.5%;  }
+.offset4   { margin-left: 50%;    }
+.offset5   { margin-left: 62.5%;  }
+.offset6   { margin-left: 75%;    }
+.offset7   { margin-left: 87.5%;  }
+.offset8   { margin-left: 100%;   }
+
+/* Набор “mt” - от фразы “margin top” - для управления отступами колонок сверху */
+.mt0  { margin-top: 0;    }
+.mt5  { margin-top: 5px;  }
+.mt10 { margin-top: 10px; }
+.mt15 { margin-top: 15px; }
+.mt20 { margin-top: 20px; }
+.mt25 { margin-top: 25px; }
+.mt30 { margin-top: 30px; }
+.mt40 { margin-top: 40px; }
+.mt50 { margin-top: 50px; }
+
+/*  Отменить влияние margin, padding и border на ширину всех CSS-элементов */
+*, *:after, *:before { box-sizing: border-box; }
+
+/* Создаём класс “row” и делаем clear-fix для него */
+.row {}
+.row:after {
+	display: block;
+	content: '';
+	height: 0;
+	visibility: hidden;
+	clear: both;
+}
+
+/* Делаем все блоки класса “span” инлайновыми (inline) и плавающими (float) */
+[class*='span'] {
+	float: left;
+	display: inline;
+	border: 1px solid #000;
+}
+
+
+/* ----------------- Классы CSS-сетки (конец) ------------------ */
+
+/* Убираем лишний отступ под изображениями */
+img {
+	vertical-align:bottom;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

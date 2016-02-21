@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>1. Tutorial 1 - демонстрация MVVM</title>
+
+</head>
+<body>
+<p><mark>Кастомный биндинг. Если в input будет > 5 символов, шрифт станет 40px</mark></p>
+
+
+	<input type="text" data-bind="text: num,
+																value: val,
+																bigFont: num() > 5">
+
+	<span data-bind="text: num"></span>
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>

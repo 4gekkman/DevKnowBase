@@ -1,0 +1,89 @@
+/*Пример бесконечной анимации*/
+.cube {
+	animation: animation1 3s ease-in-out infinite;
+
+	width: 100px;
+	height: 100px;
+	background: #aaa;
+	position: relative;
+}
+@keyframes animation1 {
+	0% {left: 0px;}
+	100% {left: 200px;}
+}
+
+
+/*Пример бесконечной анимации в обратную сторону (reverse)*/
+.cube2 {
+	animation: animation1 3s ease-in-out reverse infinite;
+
+	width: 100px;
+	height: 100px;
+	background: #515baa;
+	position: relative;
+}
+
+
+/*Пример анимации с несколькими ключевыми кадрами (с 6-Ю)*/
+.cube3 {
+	position: relative;
+	animation: animation2 3s ease-in-out infinite;
+
+	width: 100px;
+	height: 100px;
+	background: #aaaa2b;
+}
+@keyframes animation2 {
+	0% {left: 0px; transform: rotateZ(0deg);}
+	10% {left: -10px;}
+	25% {left: 50px;}
+	50% { top: 100px;left: 100px;}
+	75% {left: 150px;}
+	100% {left: 200px; transform: rotateZ(360deg);}
+}
+
+
+/*Анимация полосы загрузки*/
+.container {
+	width: 200px;
+	height: 30px;
+	border: 3px solid #fff;
+	background: #999;
+	border-radius: 7px;
+	overflow: hidden;
+	margin: 40px;
+	box-shadow: 0 3px 4px rgba(0,0,0,.3);
+}
+.bar {
+	height: 30px;
+	width: 400px;
+	background: repeating-linear-gradient(45deg, rgba(255,255,255,.9) 0,
+		rgba(255,255,255,.9) 5px, transparent 5px, transparent 10px);
+	animation: slide 3s linear infinite;
+}
+@keyframes slide {
+	0% {
+		margin-left: 0;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		margin-left: -100%;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

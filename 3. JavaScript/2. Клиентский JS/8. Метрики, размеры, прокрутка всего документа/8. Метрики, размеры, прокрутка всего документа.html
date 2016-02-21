@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+ <meta charset="utf-8"/>
+ <title></title>
+ <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+ <style>
+  article, aside, details, figcaption, figure,
+  footer, header, hgroup, menu, nav, section {
+   display: block;
+  }
+
+#example {
+     width: 600px;
+     height: 900px;
+     border: 25px solid #F0E68C; /* рамка 25px */
+     padding: 20px;              /* поля 20px */
+     margin: 20px;               /* отступы 20px */
+     overflow: auto;             /* прокрутка */
+		 margin-left: 80px;
+		 overflow: hidden;
+}
+
+#parag {
+	margin: 0;
+	padding: 0;
+	border: 1px dashed #000;
+}
+
+
+.panel {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	width: 180px;
+	opacity: 0.9;
+	background: #fff;
+}
+
+.top1 {	top: 10px; }
+.top2 {	top: 35px; }
+.top3 {	top: 60px; }
+.top4 {	top: 85px; }
+
+#ball {
+	position: relative;
+	width: 50px;
+	left: 300px;
+	left: 250px;
+	margin: 10px;
+}
+
+ </style>
+</head>
+<body>
+
+<div class="panel">
+	<p class="top1"></p>
+	<p class="top2"></p>
+	<p class="top3"></p>
+	<p class="top4"></p>
+	<button class="info" onclick="forbidScroll(document.documentElement);">Запретить прокрутку</button>
+	<button class="info" onclick="allowScroll(document.documentElement);">Разрешить прокрутку</button>
+	<button class="info" onclick="window.scrollTo(100,100);">Сделать scrollTo(100,100)</button>
+	<button class="info" onclick="window.scrollBy(0,10);">Сделать scrollBy(0,10)</button>
+	<button class="info" onclick="document.getElementById('ball').scrollIntoView();">мяч.scrollIntoView()</button>
+	<button class="info" onclick="document.getElementById('ball').scrollIntoView(false);">мяч.scrollIntoView(false)</button>
+</div>
+<section id='example'>
+	<p id="parag">
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid architecto aut autem consectetur, culpa debitis doloribus eius eligendi esse eveniet exercitationem expedita facilis fugiat id illo incidunt inventore iure laboriosam libero magni necessitatibus nihil nulla odit officiis optio perferendis possimus, quae quam quas quos repellat reprehenderit sed sequi velit vero voluptas? Ab aliquam culpa delectus dicta dolorem dolorum expedita labore nam necessitatibus pariatur perferendis praesentium quae quos rem, similique suscipit, ullam voluptates voluptatum. A animi at dignissimos earum esse explicabo fuga fugit laboriosam, molestias nisi, nostrum odit quae quis quod voluptates. Aliquid, consectetur deleniti dicta doloremque eius eos et inventore libero vel voluptatum. Ad aliquid amet consequatur cumque deleniti deserunt dolores, ex expedita in labore laudantium nemo nisi nobis non omnis quasi qui, quidem ratione totam ut vel velit voluptates. Ad adipisci alias atque autem consequatur consequuntur deserunt distinctio doloremque ea esse facere harum hic ipsa ipsam iusto molestias mollitia necessitatibus nemo nesciunt non odio, odit optio quae quo, repudiandae soluta tempora voluptatum. Cumque, eum ipsa magni nihil officiis quae repudiandae similique vitae! Est ipsum maxime quibusdam tenetur unde veniam. Accusantium alias aliquam aliquid animi aspernatur, consequatur dignissimos doloribus dolorum enim excepturi harum incidunt ipsa ipsum, laborum laudantium necessitatibus neque nihil nisi non nostrum numquam odit officiis placeat quia reiciendis rem totam unde ut veritatis vero. A et explicabo harum labore non optio provident quasi repudiandae ullam vero! Accusantium beatae blanditiis consequuntur dolor doloremque hic ipsum, magni modi natus nisi numquam odio provident quidem quisquam temporibus Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur, quis!
+	</p>
+
+		<img id="ball" src="ball.gif">
+
+	<p id="parag">
+	in iure nisi quidem soluta tempore temporibus tenetur unde? Ab accusamus, alias consectetur ea exercitationem facere hic ipsam magnam minima nam nihil nobis odio possimus quae quam quidem ratione reprehenderit rerum sit soluta suscipit ut velit voluptatum. Accusantium atque dolorum eligendi et numquam quibusdam, veritatis. Aliquam architecto beatae delectus dignissimos dolore, dolores eaque fugit illum, officia perferendis praesentium quam, reprehenderit! Consequatur, officia, similique. Dignissimos, minima, temporibus. Accusamus alias at consequatur dignissimos explicabo fugit id incidunt inventore iure perferendis porro, possimus quas, quasi quibusdam recusandae reiciendis rerum sapiente sequi velit voluptas? Enim officiis perspiciatis quibusdam repellat totam. Assumenda doloribus dolorum explicabo hic ipsa odio saepe sit ut? Ad alias aliquid atque, consequatur debitis ea earum eius error, expedita facilis id ipsum itaque
+	</p>
+</section>
+
+
+
+
+
+
+
+<script src="8.%20Метрики,%20размеры,%20прокрутка%20всего%20документа.js"></script>
+</body>
+</html>
+
+

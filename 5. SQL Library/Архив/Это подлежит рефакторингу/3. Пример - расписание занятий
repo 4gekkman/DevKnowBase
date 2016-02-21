@@ -1,0 +1,40 @@
+/* INFO
+
+- создание системы связанных таблиц на основе нарисованной в файле
+"02 - нормальные формы на примере" схемы
+*/
+
+-- создание БД "Учеба"
+CREATE DATABASE IF NOT EXISTS univer;
+
+-- выбор текущей БД
+USE univer;
+
+-- создание таблицы "Расписание занятий"
+CREATE TABLE IF NOT EXISTS timetable
+(
+  ID int UNSIGNED NOT NULL AUTO_INCREMENT  COMMENT 'ID занятия',
+  date DATETIME NOT NULL DEFAULT 0  COMMENT 'Дата и время занятия',
+  course int UNSIGNED NOT NULL DEFAULT 0  COMMENT 'Название курса',
+  teacher int UNSIGNED NOT NULL DEFAULT 0  COMMENT 'Преподаватель, который будет вести занятие',
+  PRIMARY KEY (ID)
+) COMMENT 'Расписание занятий';
+
+-- создание таблицы "Справочник курсов"
+CREATE TABLE IF NOT EXISTS courses
+(
+  ID int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID курса',
+  title VARCHAR(120) NOT NULL DEFAULT '' COMMENT 'Название курса',
+  length int UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Длительность курса [часов]',
+  description varchar(1000) NOT NULL DEFAULT '' COMMENT 'Описание курса',
+  PRIMARY KEY (ID)
+) COMMENT 'Справочник курсов';
+
+-- создание таблицы "Справочник преподавателей"
+CREATE TABLE IF NOT EXISTS teachers
+(
+  ID int UNSIGNED NOT NULL AUTO_INCREMENT  COMMENT 'ID преподавателя',
+  lastname VARCHAR(20) NOT NULL DEFAULT '' COMMENT 'Фамилия преподавателя',
+  postindex int UNSIGNED NOT NULL DEFAULT 0  COMMENT 'Почтовый индекс преподавателя',
+  PRIMARY KEY (ID)
+) COMMENT 'Справочник преподавателей';

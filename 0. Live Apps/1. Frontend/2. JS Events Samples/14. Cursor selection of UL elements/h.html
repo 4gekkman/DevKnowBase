@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+		#ul {
+			cursor: pointer;
+		}
+
+	</style>
+</head>
+<body>
+
+	<mark>Выделение элементов списка курсором</mark>
+	<ul>
+		<li>Клик на элементе выделяет/развыделяет только его.</li>
+		<li>Ctrl(Cmd)+Клик добавляет/убирает элемент из выделенных</li>
+		<li>Shift+Клик добавляет промежуток элементов от последнего кликнутого к выделению включительно.</li>
+	</ul>
+	---------- Ниже список, в котором можно выделять:
+
+	<ul id="ul">
+		<li>Кристофер Робин</li>
+		<li>Винни-Пух</li>
+		<li>Ослик Иа</li>
+		<li>Мудрая Сова</li>
+		<li>Кролик. Просто кролик.</li>
+	</ul>
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

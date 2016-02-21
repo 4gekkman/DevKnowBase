@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Так-тикс</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+   }
+   .in {
+    display: none;
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display: block; 
+   }
+   
+   body, table, tr, td {
+    margin: 0px;
+    padding: 0px;
+   }
+   
+   table {
+    border-collapse: collapse;
+   }
+  
+   /*Ячейка*/
+   td {
+    width: 60px;
+    height: 60px;
+    border: 1px solid black;
+   }
+   
+   /*Фишка*/
+   td:after {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: blue;
+    left: 0;
+    top: 0;
+    border-radius: 50%;
+    margin: 10px;
+   }
+   
+   /*Подсветка фишки*/
+   td:hover:after {
+    background: black;
+   } 
+   
+   /*Подсветка строки*/
+   tr:hover {
+    background: #FFE581;
+   }   
+
+   /*Подсветка столбца*/
+   td:hover:before {
+    height: 306px;
+    width: 60px;
+    background: #FFE581;
+    position: absolute;
+    top: 0px;
+    z-index: -1;
+    content: "";    
+   }
+   
+  </style>   
+ </head>
+ <body>
+  <table>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+   </tr>
+  </table>
+ </body>
+</html>
+
+

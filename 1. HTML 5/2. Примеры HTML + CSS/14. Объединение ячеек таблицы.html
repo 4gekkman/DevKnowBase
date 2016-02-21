@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html />
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Объединение ячеек таблицы</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+   .tablestyle {
+    padding: 1px;
+	border-spacing: 1px;
+	border: 1px solid black;
+	width: 100%;
+   }
+   .tablestyle tr th, .tablestyle tr td {
+	border: 1px solid black;
+	padding: 4px;
+   }
+  </style>
+ </head>
+ <body>
+  <table class="tablestyle">
+   <caption>Добыча драгоценных камней</caption>
+   <tr>
+    <th></th>
+    <th>2010</th>
+    <th>2012</th>
+    <th>2014</th>
+   </tr>
+   <tr>
+    <td>Сапфиры</td>
+	<td rowspan="2">1483</td>
+	<td>4532</td>
+	<td>6743</td>
+   </tr>
+   <tr>
+    <td>Рубины</td>
+	<td>3835</td>
+	<td>7482</td>
+   </tr>   
+   <tr>
+    <td>Алмазы</td>
+	<td>683</td>
+	<td colspan="2" align="center">238</td>
+   </tr>
+  </table>
+ </body>
+</html>

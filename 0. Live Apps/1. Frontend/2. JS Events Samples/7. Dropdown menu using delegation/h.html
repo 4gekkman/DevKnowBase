@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+
+
+			/* menu
+			---------------------------------------------- */
+
+* html body {
+  /* IE6 behavior must be in HEAD */
+  /* http://www.xs4all.nl/~peterned/csshover.html */
+  behavior:url("csshover.htc");
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+}
+
+li {
+  display: inline;
+  position: relative;
+}
+
+li a {
+  text-decoration: none;
+  color: blue;
+}
+
+
+li ul {
+  position: absolute;
+  left: 0px;
+  top: 25px;
+  display: none;
+  padding-left: 5px;
+  padding-top: 5px;
+}
+
+li li {
+  display: block;
+}
+
+li:hover ul, li ul:hover {
+  display: block;
+}
+
+li li:hover a {
+  color: blue;
+  border-bottom: 1px solid blue;
+}
+
+
+
+			/* button
+			---------------------------------------------- */
+			.button {
+				display: inline-block;
+				zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+				*display: inline;
+				vertical-align: baseline;
+				margin: 0 2px;
+				outline: none;
+				cursor: pointer;
+				text-align: center;
+				text-decoration: none;
+				font: 14px/100% Arial, Helvetica, sans-serif;
+				padding: .5em 2em .55em;
+				text-shadow: 0 1px 1px rgba(0,0,0,.3);
+				-webkit-border-radius: .5em;
+				-moz-border-radius: .5em;
+				border-radius: .5em;
+				-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+				-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+				box-shadow: 0 1px 2px rgba(0,0,0,.2);
+				/* blue */
+				color: #d9eef7;
+				border: solid 1px #0076a3;
+				background: #0095cd;
+				background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
+				background: -moz-linear-gradient(top,  #00adee,  #0078a5);
+				filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
+			}
+			li:hover .button {
+				position: relative;
+				text-decoration: none;
+				/* blue */
+				background: #007ead;
+				background: -webkit-gradient(linear, left top, left bottom, from(#0095cc), to(#00678e));
+				background: -moz-linear-gradient(top,  #0095cc,  #00678e);
+				filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#0095cc', endColorstr='#00678e');
+			}
+
+
+
+
+
+	</style>
+</head>
+<body>
+
+<mark>Открой консоль, наведи курсор на кнопку, и кликай по ссылкам в drop-down меню</mark><br><br>
+
+<ul id="menu">
+  <li>
+		<a class="button" href="/php">PHP</a>
+		<ul>
+			<li><a href="/php/manual">Справочник</a></li>
+			<li><a href="/php/snippets">Сниппеты</a></li>
+		</ul>
+	</li>
+  <li>
+		<a class="button" href="/html">HTML</a>
+		<ul>
+			<li><a href="/html/information">Информация</a></li>
+			<li><a href="/html/examples">Примеры</a></li>
+		</ul>
+	</li>
+</ul>
+
+
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

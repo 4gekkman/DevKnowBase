@@ -1,0 +1,61 @@
+/* INFO
+- information schema - служебная база данных сервера MySQL
+- она есть у любого пользователя
+- он видит только то из нее, что ему доступно
+- ее нельзя модифицировать
+
+-> TABLE_CATALOG      |
+-> TABLE_SCHEMA       |    в какой БД эта таблица
+-> TABLE_NAME         |    имя таблицы
+-> TABLE_TYPE         |    тип таблицы
+-> ENGINE             |    движок таблицы
+-> VERSION            |    версия таблицы
+-> ROW_FORMAT         |    формат рядов
+-> TABLE_ROWS         |    количество рядов таблицы
+-> AVG_ROW_LENGTH     |    средняя длина ряда
+-> DATA_LENGTH        |    длина данных таблицы
+-> MAX_DATA_LENGTH    |    максимальная длина данных
+-> INDEX_LENGTH       |    длина индексов
+-> DATA_FREE          |    сколько данных свободно в исходном файле
+-> AUTO_INCREMENT     |    положение автоинкримента, на чем остановился
+-> CREATE_TIME        |    дата создания таблицы
+-> UPDATE_TIME        |    дата обновления таблицы
+-> CHECK_TIME         |    дата проверки таблицы
+-> TABLE_COLLATION    |    какой алгоритм collation - сравнения строк
+-> CHECKSUM           |    контрольная сумма
+-> CREATE_OPTIONS     |    доп. опции на клиенте
+-> TABLE_COMMENT      |    комментарии к таблице
+
+*/
+
+-- выбрать служебную БД сервера
+USE information_schema;
+
+-- вывести список названий таблиц
+SHOW TABLES;          -- !! устаревшая команда!!
+
+-- вместо нее использовать SELECT
+SELECT table_name, table_comment  -- выбери имя таблицы и комментарий к таблице
+  FROM information_schema.tables  -- из этой БД
+  WHERE table_schema = 'univer';  -- только таблицы из БД univer
+
+-- вывести структуру-содержимое таблицы
+DESC TABLES;
+
+-- посмотреть количество записей таблицы COLUMNS
+SELECT count(*) FROM COLUMNS;
+
+-- вывести спецификацию колонок таблицы 'courses' базы данных 'univer'
+SELECT column_name, data_type, column_comment  -- выбрать эти колнки
+  FROM information_schema.columns              -- из служебной БД
+  WHERE table_schema = 'univer'       -- принадлежащие БД univer
+  AND table_name = 'courses';         -- и в ней таблице courses
+
+
+
+
+
+
+
+
+

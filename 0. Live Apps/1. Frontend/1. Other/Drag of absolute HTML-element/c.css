@@ -1,0 +1,30 @@
+body {
+	font: 1em 'PT Sans', Arial, Helvetica, sans-serif;
+}
+
+.dragParent {
+	position: absolute;
+	width: 300px;
+
+	top: 100px;
+	left: 100px;
+
+	background: #fffdff;
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 3px 3px rgba(0,0,0,.4);
+}
+
+.dragHeader {
+	background: #eceaec;
+	border: 1px solid #000;
+	border-radius: 5px;
+	padding: 4px;
+
+	cursor: move;
+}
+
+.text {
+	padding: 15px;
+	text-align: justify;
+}

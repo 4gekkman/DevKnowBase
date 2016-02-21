@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>  </title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+
+   #iframe {
+     width: 640px;
+     height: 480px;
+     border: 1px solid #eee;
+     box-shadow: 2px 2px 8px RGBA(0,0,0,.5) inset;
+   }
+   
+  </style>   
+ </head>
+ <body>
+
+ <mark>Описание задачи:</mark>
+ <ul>
+   <li>Отправляя XHR-запрос на сервер можно дать серверу знать, что это AJAX-запрос</li>
+   <li>Сделать это можно, отправив HTTP-заголовок setRequestHeader("X-Requested-With", "XMLHttpRequest")</li>
+   <li>Сервер же, зная - AJAX это запрос или нет - может и ответить в каждом из этих случаев по-разному</li>
+   <b>Конкретно в этой задаче: </b>
+   <li>Если это AJAX-запрос, то сервер вернёт серверную дату и время</li>
+   <li>Отправить такой запрос можно, нажав на соответствующую кнопку ниже,
+   серверные дата и время появятся в её тексте</li>
+   <li>Если это НЕ AJAX-запрос, то сервер вернёт HTML-страницу со списком
+   из цифр от 0 до 100</li>
+   <li>Отправить такой запрос, можно нажав на соотв. кнопку ниже, и страница
+   отобразится в iframe ниже</li>
+ </ul>
+
+ <button id="ajax">Отправить AJAX-запрос - получить серверные дату и время</button>
+ <br>
+ <button id="noajax">Отправить НЕ AJAX-запрос - получить HTML-документ в iframe ниже</button>
+
+  <br><br><br>
+
+ <iframe id="iframe"></iframe>
+
+
+
+   <script src="j.js"></script>
+ </body>
+</html>
+ 

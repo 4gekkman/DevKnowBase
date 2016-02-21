@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>1. Tutorial 1 - демонстрация MVVM</title>
+
+	<link rel="stylesheet" href="c.css"/>
+
+</head>
+<body>
+<p><mark>ToDo list</mark></p>
+<h3>Задачи</h3>
+
+
+
+
+
+<!-- Форма для добавления задачи -->
+<form data-bind="submit: addTask">
+    Новая задача: <input data-bind="value: newTaskText" placeholder="Что требуется сделать?" />
+    <button type="submit">Добавить</button>
+</form>
+
+<!-- Вывод списка задач -->
+<ul data-bind="foreach: tasks, visible: tasks().length > 0">
+    <li>
+        <input type="checkbox" data-bind="checked: isDone" />
+        <input data-bind="value: title, disable: isDone" />
+        <a href="#" data-bind="click: $parent.removeTask">Delete</a>
+    </li>
+</ul>
+
+<!-- Отобразить кол-во не законченных задач -->
+У тебя <b data-bind="text: incompleteTasks().length">&nbsp;</b> не законченных задач(s)
+
+<!-- Если не законченных задач не осталось, сказать об этом -->
+<span data-bind="visible: incompleteTasks().length == 0"> - ну всё, сделал дело - гуляй смело!</span>
+
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>

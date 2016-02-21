@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+	.errorClass {
+		outline: 1px solid #f00;
+	}
+
+	#error {
+		color: #f00;
+	}
+
+	</style>
+</head>
+<body>
+
+<mark>Валидация на число при потере фокуса (blur)</mark>
+<ul>
+	<li>Введи не число в текстовое поле</li>
+	<li>Щелкни где-нибудь в другом месте, Т.О. текстовое поле потеряет фокус,
+			и произойдет валидация. Будет выведено сообщение об ошибке.</li>
+	<li>Щелкни снова по текстовому полю. Оно получит фокус, и сообщение об ошибке исчезнет.</li>
+</ul>
+
+	<form id="myForm">
+		<input placeholder="Введи число" type="text"><span id="error"></span>
+	</form>
+
+	<script src="j.js"></script>
+</body>
+</html>
+
+

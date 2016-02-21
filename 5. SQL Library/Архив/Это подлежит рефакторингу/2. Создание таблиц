@@ -1,0 +1,89 @@
+/* INFO
+   Про создание таблиц
+
+- Создать таблицу можно 3 способами:
+   -- Прямое описание структуры
+   -- По образцу
+   -- По запросу
+- Таблицы бывают 2-х видов:
+   -- Обычные
+   -- Временные
+- Примечание о кодировке:
+   -- Отдельная кодировка указывается для сервера, БД, таблицы, и даже
+   --  отдельной колонки.
+- CHARACTER SET задает кодировку, а COLLATION задает правила сравнения строк
+http://dev.mysql.com/doc/refman/5.7/en/charset-general.html
+
+*/
+
+-- СПОСОБ 1: создать таблицу из 2 колонок прямым описанием
+--  (имя_колонки    тип_колонки    доп_характеристики)
+CREATE TABLE table1  -- таблица без доп. характеристик
+(
+  Колонка_1 CHAR(20),
+  Колонка_2 INT
+);
+CREATE TABLE table2(Колонка_1 VARCHAR(45)
+                              CHARACTER SET utf8  -- кодировка столбца utf8
+                              COLLATE utf8_bin);  -- http://dev.mysql.com/doc/refman/5.7/en/charset-collation-names.html
+
+CREATE TABLE table3(ID        int UNSIGNED              -- тип значений
+                              NOT NULL                  -- поле не может не сожержать значнеие
+                              -- DEFAULT 0              -- значения поля по умолчанию
+                              AUTO_INCREMENT            -- авто инкремент (не может задаваться одновременно с DEFAULT)
+                              COMMENT 'ID товара',      -- комментарий
+                    name      VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'Название товара',
+                    price     FLOAT NOT NULL DEFAULT 0 COMMENT 'Цена товара',
+                    PRIMARY KEY (ID, name)    -- указание первичного ключа (в данном случае составного)
+) COMMENT 'Табилца товаров';
+
+
+-- СПОСОБ 2: создать таблицу по образцу
+--  - полностью копируется структура, но не копируются данные
+CREATE TABLE table4 LIKE table3;
+
+
+-- СПОСОБ 3: создание таблицы по SQL запросу
+-- - ключи, комменты, ограничения и т.д. не сохраняются
+CREATE TABLE table5 COMMENT 'Создать таблицу из результата запроса'
+  SELECT user, host, password
+  FROM mysql.user;
+
+-- создать временную таблицу (в этом примере создана на основе запроса)
+-- - видна только мне (через show table не посмотреть)
+-- - автоматом удалится после отключения сервера
+CREATE TEMPORARY TABLE table6 COMMENT 'Создать таблицу из результата запроса'
+  SELECT user, host, password
+  FROM mysql.user;
+
+
+
+-- посмотреть структуру таблицы
+DESCRIBE table3;    -- DESC синоним DESCRIBE
+
+-- посмотреть данные таблицы
+SELECT * FROM table5;
+
+-- удалить таблицу
+DROP          -- удалить
+TABLE         -- таблицу
+IF EXISTS     -- если существует
+table2        -- имя таблицы
+RESTRICT;     -- не удалять связанные с этой таблицей таблицы
+              -- ... или CASCADE - удалить также связанные с этой таблицей таблицы
+
+DROP TEMPORARY TABLE IF EXISTS table2;   -- удалить временную таблицу
+
+
+-- изменение таблицы
+ALTER TABLE table3 DROP COLUMN price;  -- удалить колонку price в таблице table3
+ALTER TABLE table3 CHANGE name name_new VARCHAR(55);  -- в таблице table3 переименовать
+                                                       -- name в name_new и сделать ее тип VARCHAR(55)
+ALTER TABLE table3 MODIFY name_new VARCHAR(45) NOT NULL;  -- изменить тип колонки и добавить параметр
+
+
+
+
+
+
+

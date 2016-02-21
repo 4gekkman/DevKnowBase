@@ -1,0 +1,305 @@
+/* INFO
+Хранимые процедуры и триггеры
+
+Как работает сервер БД:
+1. Получает текст
+2. Делает синтаксический анализ
+3. Строит план - компилирует (какие таблицы подключить и т.д)
+4. Выполняет - передает результат.
+
+--------------> Хранимые процедуры
+
+Общее
+-> ХП - это функция (routine) на языке SQL.
+-> ХП нужны для того, чтобы при множественном использовании одной
+   и той же последовательности SQL кода сервер каждый раз не повторял
+   компиляцию (пункт №3). С ХП он делает это только в 1 раз в момент создания ХП.
+   В результате получается существенное ускорение работы.
+-> ХП - такой же объект БД, как таблицы.
+-> На английском ХП - это Stored Procedure
+-> Имя ХП принято начинать с sp_
+-> Чтобы PHP мог принимать более чем 1 результирующую таблицу,
+   нужно использовать в нем модуль PHP MySQLi, где i - improved.
+   Иначе он может принять только первый из нескольких.
+
+   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          Но желательно,
+                        чтобы ХП возвращала 1 результат,
+                                                        тогда проблем не будет
+   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Параметры ХП бывают 3 видов:
+1) IN    |  (идет по умолчанию) передает параметр в ХП по значению
+2) OUT   |  передает параметр в ХП по ссылке
+3) NOW   |
+-> Переменные-параметры в ХП должны быть без @.
+
+В ХП возможна таже логика, что в обычном языке программирования: переменные, циклы и т.д.
+-> внутри процедуры можно создать локальные переменные командой DECLARE
+-> в ХП нет механизма обработки ошибок вроде try ... catch
+
+--------------> Курсоры
+-> Курсор - это результат запроса, который можно считывать по рядам.
+
+--------------> Триггеры (обработчики)
+-> Справочник кодов ошибок: https://dev.mysql.com/doc/refman/5.6/en/error-messages-server.html
+-> Т.К. в ХП нет механизма обработки ошибок вроде try ... catch, вместо него
+есть триггеры-обработчики, которые срабатывают при определенных условиях.
+-> Триггеры-обработчики можно использовать только в Хранимых Процедурах.
+-> Есть 3 вида триггеров-обработчиков:
+    1. CONTINUE  |  продолжай работать, не обращай внимание
+    2. EXIT      |  все бросай, выходи из процедуры
+    3. UNDO      |
+-> Есть несколько условий срабатывания:
+     -> Код ошибки               |  mysql_error_code          |  (см. справочник кодов ошибок)
+     -> Состояние MySQL          |  SQLSTATE sqlstate_value   |  (см. справочник кодов ошибок)
+     -> Имя состояния MySQL      |  condition_name            |  (см. справочник кодов ошибок)
+     -> NOT FOUND
+     -> SQLEXCEPTION
+
+--------------> Управляющие конструкции в хранимых процедурах
+Управляющие конструкции можно применять внутри ХП
+Операторы:
+-> IF   |   IF a THEN список_выражений    ELSEIF c THEN список_выражений     ENDIF
+-> CASE
+-> LOOP
+-> LEAVE
+-> ITERATE
+-> REPEAT
+-> WHILE
+
+--------------> Хранимые функции
+-> Возвращают скаляр (в отличие от ХП, которые возвращают таблицу)
+
+*/
+
+-- ------------------> Хранимые процедуры <------------------ --
+USE fselect;
+
+-- удалить процедуру
+DROP PROCEDURE  IF EXISTS  sp_myProcedure_1;
+
+-- создать процедуру без параметров
+CREATE PROCEDURE sp_myProcedure_1 ()
+  BEGIN
+    SELECT lastname FROM teachers ORDER BY lastname;
+  END;
+
+-- вызвать процедуру
+CALL sp_myProcedure_1 ();
+
+-- создать процедуру с IN параметрами    |   возвращает список уроков, которые проводил учитель в указанную дату
+CREATE PROCEDURE sp_course_by_date (IN teacher_id INT, IN course_date DATE)  -- создать процедуру с параметрами
+  BEGIN                                                                      -- 1. ID учителя  2. дата курса
+    SELECT courses.id, courses.title
+      FROM courses
+        INNER JOIN timetable ON courses.id = timetable.course
+      WHERE timetable.date = course_date
+      AND timetable.teacher = teacher_id;
+  END;
+
+-- вызвать процедуру с параметрами
+CALL sp_course_by_date (3,'2013.05.24');  -- какие уроки были у учителя id=3 в этот день
+CALL sp_course_by_date (1,'2013.07.05');  -- какие уроки были у учителя id=1 в этот день
+
+-- процедура с OUT параметром counter  |  какие занятия были между указанными датами и сколько их было (recCounter)
+CREATE PROCEDURE sp_course_by_dates (IN startDate DATE, IN endDate DATE, OUT recCounter INT)
+  BEGIN
+    -- создать временную таблицу
+    CREATE TEMPORARY TABLE courseByDatesResults
+      SELECT courses.id, courses.title
+        FROM courses
+          INNER JOIN timetable ON courses.id = timetable.course
+        WHERE timetable.date BETWEEN startDate AND endDate;
+    -- посчитать кол-во записей и записать результат в recCounter
+    SELECT COUNT(*) INTO recCounter            -- запись результата в переменную
+      FROM courseByDatesResults;
+    -- вернуть результат
+    SELECT *
+      FROM courseByDatesResults;
+    -- удалить временную таблицу
+    DROP TEMPORARY TABLE courseByDatesResults;
+  END;
+
+-- вызвать процедуру с OUT параметром counter
+CALL sp_course_by_dates('2013-05-01','2013-08-30',@count);
+SELECT @count;  -- вывести содержимое переменной
+
+-- создать ХП с локальными переменными
+CREATE PROCEDURE spTest1()
+  BEGIN
+    DECLARE x INT;  -- создать переменную x
+    DECLARE y INT;  -- создать переменную y
+    DECLARE z INT;  -- создать переменную z
+    SET x = 5;      -- присвоить переменной x знаение 5
+    SET y = 10;     -- присвоить переменной y знаение 10
+    SET z = x + y;  -- присвоить переменной z знаение, равное x+y
+
+    SELECT z;  -- вывести значение переменной z
+  END;
+CALL spTest1();  -- вызвать ХП
+
+-- создать ХП, которая возвращает дату последнего занятия по расписанию и фамилию препода
+CREATE PROCEDURE lastLesson()
+  BEGIN
+    DECLARE lastLessonDate DATE;          -- создать переменную дату
+    DECLARE teachersLastname VARCHAR(20); -- создать переменное имя
+    SELECT date, lastname INTO lastLessonDate, teachersLastname  -- выбрать последнюю по дате запись и записать данные в соответствующие переменные
+      FROM timetable INNER JOIN teachers ON timetable.teacher = teachers.id
+      ORDER BY date DESC LIMIT 1;
+    SELECT lastLessonDate, teachersLastname;  -- вывести содержимое переменных
+  END;
+CALL lastLesson();
+
+-- ------------------> Триггеры (обработчики) <------------------ --
+-- подготовка учебной таблицы
+CREATE TABLE test.t(s1 INT, PRIMARY KEY (s1));
+
+-- создание ХП с триггером
+CREATE PROCEDURE hendlerDemo ()
+  BEGIN
+-- если возникнет ошибка с дублированием ключа, продолжать работу и сделать следующее действие
+    DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SET @x2 = 1;  -- @x2 здесь флаг - ошибка сработала
+    SET @x = 1;
+    INSERT INTO test.t VALUES (1);
+    SET @x = 2;
+    INSERT INTO test.t VALUES (1);  -- ошибка №1169 состояние 23000  |  дублирование первичного ключа
+    SET @x = 3;
+  END;
+CALL hendlerDemo();
+SELECT @x;  -- 3   значит ХП выполнилась до конца
+SELECT @x2;  -- 1   значит обработчик сработал
+
+-- ------------------> Курсоры <------------------ --
+-- создание учебных таблиц
+DROP DATABASE IF EXISTS test;
+CREATE DATABASE test;
+USE test;
+CREATE TABLE t1(id int, data VARCHAR(50));
+CREATE TABLE t2(otherData VARCHAR(50));
+CREATE TABLE t3(id int, data VARCHAR(50));
+INSERT INTO t1 VALUES
+(1,'Data 1'),(2,'Data 2'),(3,'Data 3'),(4,'Data 4');
+INSERT INTO t2 VALUES
+('otherData 1'),('otherData 2'),('otherData 3'),('otherData 4');
+
+-- демонстрация работы курсора
+CREATE PROCEDURE cordemo()
+  BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE a INT;
+    DECLARE b,c VARCHAR(50);
+    DECLARE cursor1 CURSOR FOR SELECT id,data FROM test.t1;   -- создание курсора для запроса, который я собираюсь считывать по рядам
+    DECLARE cursor2 CURSOR FOR SELECT otherData FROM test.t2; -- создание курсора для запроса, который я собираюсь считывать по рядам
+    DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;  -- флаг done, включится если больше нет строк
+
+    OPEN cursor1;  -- открыть курсор
+    OPEN cursor2;  -- открыть курсор
+
+    REPEAT  -- цикл вроде do ... while
+      FETCH cursor1 INTO a, b;  -- записывать инфу из курсора в переменные
+      FETCH cursor2 INTO c;     -- записывать инфу из курсора в переменную
+      IF NOT done THEN
+        INSERT INTO test.t3 VALUES (a,b);  -- если еще есть строки
+      ELSE
+        INSERT INTO test.t3 VALUES (a+1,c);  -- если уже нет строк
+      END IF;
+    UNTIL done END REPEAT;  -- пока не выполнится это условие
+
+    CLOSE cursor1;  -- закрыть курсор
+    CLOSE cursor2;  -- закрыть курсор
+  END;
+CALL cordemo();
+SELECT * FROM t3;  -- вывести результат
+
+
+-- ------------------> Управляющие конструкции в хранимых процедурах <------------------ --
+-- демонстрация управляющих конструкций
+CREATE TABLE t4(x INT);
+CREATE PROCEDURE demo()
+  BEGIN
+    DECLARE a INT;
+    DECLARE b INT;
+    DECLARE c INT;
+    DECLARE d INT;
+    DECLARE res INT;
+    SET a = 2;
+    SET b = 3;
+    SET c = 4;
+    SET d = 5;
+    SET res = 0;
+
+-- оператор IF  |  аналог оператора if
+    IF d > a THEN
+      SET res = a + d;                     -- 7 (1)
+      INSERT INTO test.t4 VALUES(res);
+    ELSEIF b < c THEN
+      SET res = b + c;                     -- 7 (2)
+      INSERT INTO test.t4 VALUES(res);
+    END IF;
+
+-- оператор CASE   |   аналог оператора switch
+    CASE a+b
+      WHEN 1 THEN SELECT 0;
+      WHEN 2 THEN SELECT 0;
+      WHEN 3 THEN SELECT 0;
+      WHEN 4 THEN SELECT 0;
+      WHEN 5 THEN   SET res = 5; INSERT INTO test.t4 VALUES(res);  -- 5 (3)
+    ELSE SELECT 0;
+    END CASE;
+
+-- оператор LOOP     | безусловный цикл  ***
+-- оператор LEAVE    | аналог break  ***
+-- оператор ITERATE  |  аналог continue
+    SET res = 0;
+      someLabel: LOOP
+    SET res = res + 1;
+    IF res = 10 THEN
+      ITERATE someLabel;  -- перейти к следующей итерации цикла
+    ELSEIF res = 12 THEN
+      LEAVE someLabel;  -- покинуть цикл
+    END IF;
+    END LOOP;
+    INSERT INTO test.t4 VALUES(res);  -- 12 (4)
+
+    -- оператор REPEAT  |  аналог do ... while
+    SET res = 0;
+      begin_label: REPEAT
+    SET res = res + 2;
+    UNTIL res = 20
+    END REPEAT begin_label;
+    INSERT INTO test.t4 VALUES(res);  -- 20 (5)
+
+    -- оператор WHILE  |  аналог while
+    SET res = 0;
+      begin_label: WHILE res < 50 DO
+    SET res = res + 1;
+    END WHILE begin_label;
+    INSERT INTO test.t4 VALUES(res);  -- 50 (6)
+
+  END;
+CALL demo();
+SELECT * FROM t4;
+
+
+-- ------------------> Хранимые функции <------------------ --
+-- создать хранимую функцию
+CREATE FUNCTION myFunc (text VARCHAR(6)) returns INT
+  BEGIN
+    IF text = 'привет' THEN
+      RETURN 1;
+    ELSE
+      RETURN 0;
+    END IF;
+  END;
+
+-- использовать хранимую функцию в SLQ-запросах
+SELECT myFunc('привет');  -- 1
+SELECT myFunc('Иван');    -- 0
+
+
+
+
+
+
+

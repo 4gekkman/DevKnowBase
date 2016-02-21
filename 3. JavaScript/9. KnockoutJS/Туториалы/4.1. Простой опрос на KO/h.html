@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>1. Tutorial 1 - демонстрация MVVM</title>
+
+	<link rel="stylesheet" href="с.css"/>
+
+</head>
+<body>
+<p><mark>Простой опрос на КО</mark></p>
+
+
+
+
+	<!-- Вопрос опроса -->
+	<h3 data-bind="text: question"></h3>
+
+	<!-- MAX кол-во пунктов, которые надо распределить -->
+	<p>Распредели <b data-bind="text: pointsBudget"></b> очков среди следующих вариантов ответа:</p>
+
+	<!-- Вывести доступные ответы в виде таблицы -->
+	<table>
+			<thead><tr><th>Option</th><th>Importance</th></tr></thead>
+			<tbody data-bind="foreach: answers">
+					<tr>
+							<td data-bind="text: answerText"></td>
+							<td><select data-bind="options: [1,2,3,4,5], value: points"></select></td>
+					</tr>
+			</tbody>
+	</table>
+
+	<!-- Надпись с предупреждением, появляется если выбрано больше MAX числа пунктов -->
+	<h3 data-bind="visible: pointsUsed() > pointsBudget">Ты распределил слишком много очков. Удали часть.</h3>
+
+	<!-- Сколько пунктов уже израсходовано -->
+	<p>У тебя осталось <b data-bind="text: pointsBudget - pointsUsed()"></b> очков для распределения</p>
+
+	<!-- Кнопка для отправки результатов. Не активна, если выбрано более MAX кол-ва пунктов. -->
+	<button data-bind="enable: pointsUsed() <= pointsBudget, click: save">Готово</button>
+
+
+
+
+	<!-- Подключаем скрипты -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
+	<script src="j.js"></script>
+
+</body>
+</html>

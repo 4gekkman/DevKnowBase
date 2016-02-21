@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+	<style>
+		article, aside, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+
+	body {
+		border: 1px solid #000;
+		height: 1500px;
+		font: 1em 'PT Sans', Arial, Helvetica, sans-serif;
+	}
+
+	#fix {
+		background: #99bcff;
+		opacity: .7;
+	}
+
+	#move {
+		position: relative;
+		background: #ced29d;
+		opacity: .7;
+		height: 200px;
+	}
+
+	.objectInMove {
+		position: absolute;
+		text-align: center;
+		color: white;
+	}
+
+	#RED {
+		left: 10px;
+		top: 50px;
+		width: 100px;
+		height: 50px;
+		background: #9d383b;
+		line-height: 50px;
+	}
+
+	#BLUE {
+		left: 200px;
+		top: 70px;
+		width: 100px;
+		height: 50px;
+		background: #43439d;
+		line-height: 50px;
+	}
+
+	#GREEN {
+		left: 460px;
+		top: 30px;
+		width: 100px;
+		height: 50px;
+		background: #5f9d60;
+		line-height: 50px;
+	}
+
+	#object4 {
+		position: absolute;
+		left: 0px;
+		top: 150px;
+		width: 700px;
+		height: 50px;
+		background: #eceaec;
+		color: #000;
+	}
+
+		#mouseoverSpan, #mouseoutSpan {
+			border: 1px dashed #9d383b;
+		}
+
+	</style>
+</head>
+<body>
+
+<div id="fix">
+
+	<h2>Клики, клавиши-модификаторы, координаты курсора</h2>
+
+	<mark>Что делать:</mark>
+	<ul>
+		<li>Прокручивать окно и кликать в разных местах</li>
+		<li>Наблюдать разницу между клиентскими и документными координатами</li>
+	</ul>
+
+	<mark>Клиентские координаты курсора мыши относительно окна браузера (надо кликнуть):</mark><br>
+	<span>X: </span><span id="clientX"></span>
+	<span>Y: </span><span id="clientY"></span>
+
+	<br><br>
+	<mark>Документные координаты курсора мыши относительно document (кроссбраузерный вариант, надо кликнуть)</mark><br>
+	<span>X: </span><span id="docX"></span>
+	<span>Y: </span><span id="docY"></span>
+
+</div>
+
+
+<div id="move">
+
+	<h2>Движение курсора мыши</h2>
+
+	<div id="RED" class="objectInMove">Красный</div>
+	<div id="BLUE" class="objectInMove">Синий</div>
+	<div id="GREEN" class="objectInMove">Зеленый</div>
+
+	<div id="object4">
+		Mouseover: <span id="mouseoverSpan"></span>
+		Mouseout: <span id="mouseoutSpan"></span>
+
+	</div>
+
+</div>
+
+
+
+	<script src="5.%20События%20мыши.js"></script>
+</body>
+</html>
+
+

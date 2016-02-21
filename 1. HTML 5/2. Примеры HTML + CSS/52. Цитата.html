@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8" />
+  <title>Цитата</title>
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <style>
+   article,aside,details,figcaption,figure,
+   footer,header,hgroup,menu,nav,section { 
+   display:block; 
+   }
+    section.box {
+    position: relative;
+    width: 500px;
+    margin: 0 auto;
+    } 
+    
+    section.left {
+     position: absolute;
+     left: 0; top: 0;
+     width: 50px;
+     height: 50px;
+     color: maroon;
+     font: 4em bold sans-serif;
+     margin-top: -30px;
+    }
+    section.center {
+     width: 300px;
+     border: 0;
+     margin: 0 auto;
+    } 
+    section.right {
+     position: absolute;
+     right: 0; bottom: 0;
+     width: 50px;
+     height: 50px;
+     color: maroon;
+     font: 4em bold sans-serif;
+     border: 0;
+     float: right;
+    }
+    
+  </style>   
+ </head>
+ <body>
+  <section class="box">  <!-- вшешний блок -->
+   <section class="right">   <!-- правый блок -->
+    &raquo;
+   </section>  
+   <section class="center">   <!-- центральный блок -->
+    <p></laquo>Не ошибается лишь тот, кто ничего не делает! Не бойтесь ошибаться, бойтесь повторять ошибки.</p>
+    <p>Теодор Рузвельт</p>
+   </section>  
+   <section class="left">   <!-- левый блок -->
+    &laquo;
+   </section>
+  </section>
+ </body>
+</html>

@@ -1,0 +1,94 @@
+/* INFO
+Про полнотекстовый поиск (индекс)
+!!! Работает только на движке MyISAM !!!
+
+
+-> Главное преимущество перед поиском, например, оператором LIKE -
+    полнотекстовый индекс не использует для поиска перебор, ведь это индекс.
+    Следствие - поиск происходит гораздо быстрее. Поэтому работает на
+    больших массивах информации.
+
+-> Он склеивает индексируемые колонки. В нашем примере title и description.
+-> Дальше текст он разбивает по словам и фильтрует
+-> Выбрасывает короткие слова - меньше 3 букв (можно отрегулировать)
+-> Обычно при создании сайта все текстовые поля вроде title,
+    description и т.д. сливают в 1 полнотекстовый индекс.
+-> Если задать поиск из 2 и более слов, то он найдет фразы, в которых
+    эти слова могут быть на расстоянии друг от друга, в других падежах.
+-> Можно сортировать по релевантности - чем слова ближе друг к другу,
+    тем результат поиска релевантнее.
+
+-----> Про режим поиска IN NATURAL LANGUAGE MODE
+Все, что описано выше - относится к этому режиму.
+
+-----> Про режим поиска IN BOOLEAN MODE
+- В этом режиме не оценивается релевантность, а только наличие слов.
+- В этом режиме практически нет сортировки.
+- Возможны такие фишки:
++ есть такое слово
+- нет такого слова
+* искать по части слова. Например: программи*
+...  Подробнее см. dev.mysql.com/doc/refman/5.5/en/fulltext-boolean.html
+
+-----> Смешанный режим поиска
+Отбор в Boolean Mode + сортировка в режиме Natural LM
+
+--------------
+СТОП-СЛОВА - которые FULLTEXT поиск отсеивает при поиске
+!!! с хостером могут возникнуть проблемы !!!
+-> Все стоп-слова по умолчанию на английском языке, полный список здесь:  dev.mysql.com/doc/refman/5.6/en/fulltext-stopwords.html
+-> Можно указать свой список СТОП-слов, приложив тхт файл.
+   ft_stopword_file, подробнее здесь:  dev.mysql.com/doc/refman/5.6/en/fulltext-fine-tuning.html
+-> У разных движков разный список СТОП-слов
+-> Как установить min кол-во букв для поиска:
+   в php.ini вписать ft_min_word_len = N, где N - желаемое число букв
+
+*/
+
+-- подготовка учебной БД
+CREATE DATABASE fullTextS;
+CREATE TABLE fulltexts.timetable ENGINE=MyISAM SELECT * FROM fselect.courses;
+
+-- создать полнотекстовый индекс
+CREATE
+   FULLTEXT INDEX                 -- создать полнотекстовый индекс
+   ixFullText                     -- имя индекса
+   ON
+   timetable(title,description);  -- в таблице timetable, проиндексировать
+                                  --  колонки title,description
+
+--
+SELECT title, length                         -- искать title, length
+   FROM timetable                            -- в таблице timetable
+   WHERE MATCH (title,description)           -- у которых в полнотекстовом индексе (title,description) - указывается не имя, а именно колонки вот в такой форме
+   AGAINST ('ASP' IN NATURAL LANGUAGE MODE); -- есть слово ASP,
+                                             -- поиск производить в режиме IN NATURAL LANGUAGE MODE
+                                             --  а еще есть режим IN BOOLEAN MODE
+-- РЕЗУЛЬТАТ: ничего не нашел, потому что ASP - слово из 3 букв, и полнотекстовый индекс его выкинул
+
+-- попробую найти Java вместо ASP (сработало)
+SELECT title, length
+FROM timetable
+WHERE MATCH (title,description)
+AGAINST ('Java' IN NATURAL LANGUAGE MODE);
+
+-- поиск в режиме IN BOOLEAN MODE
+SELECT title, length
+FROM timetable
+WHERE MATCH (title,description)
+AGAINST ('+курс -Java' IN BOOLEAN MODE);  -- найти строки, в которых есть 'курс',
+                                          --  и нет 'Java'.
+
+-- поиск в смешанном режиме
+SELECT title, length,
+    MATCH (title,description) AGAINST ('Курс' IN NATURAL LANGUAGE MODE) AS score
+    -- где score - число от 0 до 1, отражающее релевантность
+    FROM timetable
+    WHERE MATCH (title,description)
+    AGAINST ('Курс' IN BOOLEAN MODE)
+    ORDER BY score DESC;   -- сортирую по score
+
+-- переиндексация индексов
+--  когда, например, подключили новый список СТОП-слов, надо
+--  все переиндексировать
+REPAIR TABLE timetable QUICK;

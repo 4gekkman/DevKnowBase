@@ -1,0 +1,135 @@
+/* INFO
+-> Скалярная функция - у которой на входе 1 значение (число/строка/дата) и на выходе тоже
+-> Функция-агрегат - на входе массив данных, на выходе 1 значение.
+Подробнее здесь:   http://dev.mysql.com/doc/refman/5.0/en/group-by-functions.html
+
+Функции-агрегаты (наиболее часто используемые):
+-> AVG(колонка)           |  среднее по колонке значение или 0, если нечего сравнивать
+-> COUNT(колонка)         |  количество ненулевых строк в столбце
+-> GROUP_CONCAT(колонка)  |  возвращает склеенную строку
+-> MIN(колонка)           |  минимальное значение по стобцу
+-> MAX(колонка)           |  максимальное значение по стобцу
+-> STD(колонка)           |  стандартное отклонение или 0, если нет чисел (это квадратный корень от дисперсии, подробнее здесь ru.wikipedia.org/wiki/Среднеквадратическое_отклонение)
+-> VARIANCE(колонка)      |  дисперсия или 0, если нет чисел (подробнее здесь ru.wikipedia.org/wiki/Среднеквадратическое_отклонение)
+-> SUM(колонка)           |  сумма по столбцу или 0, если нет чисел
+
+-> Функция-агрегат(колонка_y) + GROUP BY(колонка_х) - позволяет
+   для каждого значения колонки_х слить в 1 все значение колонки_y
+
+*/
+
+-- подготовка учебной таблицы
+USE fselect;
+UPDATE timetable SET length = 5 WHERE id = 1;  -- изменить значение в этой строке
+UPDATE timetable SET length = 10 WHERE id = 3;
+
+-- AVG(колонка)   |   возвращает среднее по колонке значение или 0, если нечего сравнивать
+SELECT AVG(length) FROM timetable; -- 5+10+13 = 39; 39/3 = 13
+
+-- COUNT(колонка)   |   возвращает количество ненулевых строк в столбце
+SELECT COUNT(length) FROM timetable;  -- 3
+SELECT COUNT(DISTINCT id) FROM timetable;  -- количество неповторяющихся строк в таблице
+SELECT COUNT(*) FROM timetable WHERE teacher = 1;  -- сколько раз учитель 2 читал у нас курсы
+
+
+-- GROUP_CONCAT(колонка)   |   возвращает склеенную строку
+SELECT GROUP_CONCAT(description SEPARATOR '') FROM timetable;
+
+-- MIN(колонка)   |   возвращает минимальное значение
+SELECT MIN(length) FROM timetable;  -- 5
+SELECT MIN(description) FROM timetable;  -- Это курс ASP
+
+-- MAX(колонка)   |   возвращает максимальное значение
+SELECT MAX(length) FROM timetable;  -- 24
+SELECT MAX(description) FROM timetable;  -- Это курс PHP
+
+-- STD(колонка)   |   возвращает стандартное отклонение или 0, если нет чисел (это квадратный корень от дисперсии, подробнее здесь ru.wikipedia.org/wiki/Среднеквадратическое_отклонение)
+SELECT STD(length) FROM timetable;
+
+-- SUM(колонка)   |   возвращает сумму или 0, если нет чисел
+SELECT SUM(length) FROM timetable;
+
+-- VARIANCE(колонка)   |   возвращает дисперсию или 0, если нет чисел (подробнее про дисперсию здесь: ru.wikipedia.org/wiki/Среднеквадратическое_отклонение)
+SELECT VARIANCE(length) FROM timetable;
+
+
+/* Реверс-инжениринг
+
+-> Реверс-инжениринг - создание модели из существующей БД
+-> Для реверс-инжениринга будет использована стандартная учебная база
+   MySQL - World. Скачать ее можно здесь: http://dev.mysql.com/doc/index-other.html
+
+------> БД World
+// моделирование
+1. Открыть workbench
+2. В меню Data Modeling выбрать Create ERR Model From Existing Database
+3. В моем случае выбрать там базу с портом 3307
+4. Выбрать базу world.
+
+// задачи
+1. Средняя продолжительность жизни по всем странам
+2. Сколько городов в России
+*/
+
+-- подготовка учебной БД
+USE world;
+
+-- Средняя продолжительность жизни по всем странам
+SELECT AVG(LifeExpectancy) FROM country;  -- 66.48604 лет
+
+-- Средняя продолжительность жизни в США
+SELECT AVG(LifeExpectancy) FROM country
+WHERE LocalName = 'United States';     -- 77.1
+
+-- Средняя продолжительность жизни в РФ
+SELECT AVG(LifeExpectancy) FROM country
+WHERE LocalName = 'Rossija';               -- 67.2
+
+-- Сколько городов в России
+SELECT COUNT(*) FROM city
+WHERE CountryCode = 'RUS';             -- 189
+
+-- Сколько жителей проживает в городах в каждой стране
+-- -> используется группировка по стране, т.е. для каждой
+--    страны будет 1 запись в результирующей таблице
+SELECT CountryCode, SUM(Population) FROM city
+  GROUP BY CountryCode;  -- для каждого CountryCode запрос суммирует население всех городов этой страны, и выводит 1 запись
+
+-- вернуть таблицу с 3 столбцами (CountryCode, Name, Population)
+--  с подитогами - подсчитывать сумму городского населения каждой страны
+SELECT CountryCode, Name, SUM(Population) FROM city
+GROUP BY CountryCode,
+  Name WITH ROLLUP;  -- если null, значит это строка с подитогами
+
+-- какова средняя продолжительность жизни на каждом континенте
+SELECT Continent, AVG(LifeExpectancy)
+  FROM country
+  GROUP BY Continent  -- на каждый 1 континент 1 запись со средней продолжительностью жизни (всего 7)
+  ORDER BY AVG(LifeExpectancy) DESC;  -- отсортировать в порядке убывания
+
+-- какова средняя продолжительность жизни в каждом регионе
+SELECT Region, AVG(LifeExpectancy)
+FROM country
+GROUP BY Region  -- на каждый 1 континент 1 запись со средней продолжительностью жизни (всего 7)
+ORDER BY AVG(LifeExpectancy) DESC;  -- отсортировать в порядке убывания
+
+-- какова средняя продолжительность жизни на каждом континенте в странах-республиках
+SELECT Continent, AVG(LifeExpectancy)
+FROM country
+WHERE GovernmentForm in ('Republic','Federal Republic','Islamic Republic')
+GROUP BY Continent  -- на каждый 1 континент 1 запись со средней продолжительностью жизни (всего 7)
+ORDER BY AVG(LifeExpectancy) DESC;
+
+-- какова средняя продолжительность жизни на каждом континенте
+--  в странах-республиках; показать - только если превышает 65 лет
+SELECT Continent, AVG(LifeExpectancy)
+FROM country
+WHERE GovernmentForm in ('Republic','Federal Republic','Islamic Republic')
+GROUP BY Continent  -- на каждый 1 континент 1 запись со средней продолжительностью жизни (всего 7)
+HAVING AVG(LifeExpectancy) > 65    -- 2-ая фильтрация по результатам группировки
+ORDER BY AVG(LifeExpectancy) DESC;
+
+
+
+
+

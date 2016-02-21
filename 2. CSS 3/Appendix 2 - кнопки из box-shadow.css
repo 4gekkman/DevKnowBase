@@ -1,0 +1,97 @@
+body {
+  background: url('Files/nice_snow.png');
+}
+
+/* Стили кнопки в состоянии покоя */
+.button {
+  /* Отображение, размеры, фон, отступ, курсор кнопки */
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  background: url('Files/nice_snow.png');;
+  cursor: pointer;
+
+  /* Сделать блок круглым */
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+
+  /* Тени, создающие эффект кнопки */
+  -moz-box-shadow:  0 3px 20px rgba(0,0,0,.25),
+              inset 0 2px 0 rgba(255,255,255,.6),
+              0 2px 0 rgba(0,0,0,.1),
+              inset 0 0 20px rgba(0,0,0,.1);
+  -webkit-box-shadow: 0 3px 20px rgba(0,0,0,.25),
+                inset 0 2px 0 rgba(255,255,255,.6),
+                0 2px 0 rgba(0,0,0,.1),
+                inset 0 0 20px rgba(0,0,0,.1);
+  box-shadow: 0 3px 20px rgba(0,0,0,.25),    /* Тень 1 */
+        inset 0 2px 0 rgba(255,255,255,.6),  /* Тень 2 */
+        0 2px 0 rgba(0,0,0,.1),              /* Тень 3 */
+        inset 0 0 20px rgba(0,0,0,.1);       /* Тень 4 */
+
+  /* Подробнее о 4-х тенях выше и итоговом 3d эффекте:
+     > Тень 1
+       > Создает, собственно, основную круглую тень для кнопки.
+     > Тень 2
+       > Внутренняя тень, белый ободок на верхней части кнопки
+     > Тень 3
+       > Аналог тени 2, внешняя, темный ободок под кнопкой.
+     > Тень 4
+       > Тень без смещения и с большим блуром, что создает
+         эффект того .что кнопка высоко над поверхностью
+  */
+}
+
+/* Стили кнопки при наведении на ее курсора мыши */
+.button:hover {
+  -moz-box-shadow:
+        inset 0 0 20px rgba(0,0,0,.2),
+        0 2px 0 rgba(255,255,255,.4),
+        inset 0 2px 0 rgba(0,0,0,.1);
+  -webkit-box-shadow:
+        inset 0 0 20px rgba(0,0,0,.2),
+        0 2px 0 rgba(255,255,255,.4),
+        inset 0 2px 0 rgba(0,0,0,.1);
+  box-shadow:
+        inset 0 0 20px rgba(0,0,0,.2),
+        0 2px 0 rgba(255,255,255,.4),
+        inset 0 2px 0 rgba(0,0,0,.1);
+}
+
+/* Добавление иконок кнопкам */
+  .button:after {
+    content: '';
+    width: 100px;
+    height: 100px;
+    display: block;
+    opacity: .7;
+  }
+  .btn-photo:after {
+    background: url('Files/photo-icon.png') center no-repeat;
+  }
+  .btn-settings:after {
+    background: url('Files/settings-icon.png') center no-repeat;
+  }
+  .btn-tag:after {
+    background: url('Files/tag-icon.png') center no-repeat;
+  }
+
+  /* Сделать так, чтобы иконки смещались при наведении */
+  .button:hover:after {
+    background-position: center 52%;  /* Смещаются вниз на 2% от размера родителя */
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+* {
+	transition: all .2s;
+}
+
+body {
+	font: 1em 'PT Sans', Arial, Helvetica, sans-serif;
+	background: url(Files/mooning.png);
+	padding-top: 15px;
+}
+
+/*Тестируем media queries*/
+.block {
+	background: #604848;
+	width: 940px;
+	height: 200px;
+	margin: 5px auto;
+	border-radius: 5px;
+	box-shadow: 0 2px 2px rgba(0,0,0,.4);
+	position: relative;
+}
+
+
+/*Это элемент будет отображаться, только если ширина окна >= 610px*/
+	@media only screen and (min-width: 610px) {
+			.block:after {
+				content: 'New element';
+				position: absolute;
+				top: 10px;
+				left: -10px;
+				background: #222;
+				border-right: 5px;
+				padding: 10px;
+				color: #eeeeee;
+			}
+	}
+
+	/*Когда ширина окна меньше 950px*/
+	@media only screen and (max-width: 950px) {
+		.block {
+			width: 600px;
+			background: #789048;
+		}
+	}
+
+	/*Когда ширина окна меньше 610px*/
+	@media only screen and (max-width: 610px) {
+		.block {
+			width: 320px;
+			background: #A85265;
+		}
+
+		.second, .third {
+			height: 50px;
+		}
+	}

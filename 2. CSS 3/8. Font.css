@@ -1,0 +1,66 @@
+/* @font-face */
+@font-face {
+  font-family: myFont;
+  src: url('Files/Sansation_Light.ttf'),
+       url('Files/Sansation_Light.eot');  /* IE9 */
+}
+.c1 {
+  font-family: myFont, arial;
+}
+
+/* font */
+.c2 {
+  font: normal 22px Georgia, serif;
+}
+.c3 {
+  font: normal 22px "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+.c4 {
+  font: normal 22px "Times New Roman", Times, serif;
+}
+.c5 {
+  font: normal 22px Arial, Helvetica, sans-serif;
+}
+.c6 {
+  font: normal 22px "Arial Black", Gadget, sans-serif;
+}
+.c7 {
+  font: normal 22px "Comic Sans MS", cursive, sans-serif;
+}
+.c8 {
+  font: normal 22px Impact, Charcoal, sans-serif;
+}
+.c9 {
+  font: normal 22px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+.c10 {
+  font: normal 22px Tahoma, Geneva, sans-serif;
+}
+.c11 {
+   font: normal 22px "Trebuchet MS", Helvetica, sans-serif;
+ }
+.c12 {
+  font: normal 22px Verdana, Geneva, sans-serif;
+}
+.c13 {
+  font: normal 22px "Courier New", Courier, monospace;
+}
+.c14 {
+  font: normal 22px "Lucida Console", Monaco, monospace;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
