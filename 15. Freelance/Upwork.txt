@@ -15,6 +15,9 @@
     # Оф.сайт биржи upwork
         https://www.upwork.com/
 
+    # Топ-фрилансеры upwork
+        https://www.upwork.com/o/profiles/browse/c/web-mobile-software-dev/nss/90/
+
   // Видео //
   //-------//
 
