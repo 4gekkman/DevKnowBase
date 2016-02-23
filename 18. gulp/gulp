@@ -235,7 +235,7 @@
       - Второй gulp установить глобально.
       - Глобально установить gulp 4 можно так:
 
-          npm install -g gulp#4.0
+          npm install gulpjs/gulp#4.0 -g
 
       - Локально в выбранный каталог, его можно установить так.
       - Сначала создать там package.json (конфиг для NPM):
@@ -1265,41 +1265,85 @@
 
     # Пояснение к примеру
       - Допустим, мы хотим следить за всеми файлами в frontend/styles.
-      - Тогда применяем glob-паттерн: 'frontend/styles/**/*.*'.
-      - И хотим, чтобы при их изменении, запускалась задача styles.
-      - Тогда надо добавить в gulpfile вот такую строку:
+      - И за всеми файлами в frontend/assets.
+      - Тогда применяем glob-паттерны: 'frontend/styles/**/*.*'
+        и 'frontend/assets/**/*.*'
+      - И хотим, чтобы при их изменении, запускалась задача build.
+      - Тогда надо добавить в gulpfile вот такие строки:
 
           gulp.watch('frontend/styles/**/*.*', gulp.series('styles'));
+          gulp.watch('frontend/assets/**/*.*', gulp.series('assets'));
+
+    # Примечание по поводу отслеживания стилей
+      - В gulp-sass есть внутренний кэш.
+      - Поэтому, при изменении в исходники пересобирается не всё.
+      - А данные берутся из кэша, и лишь вносится малое изменени.
+      - Поэтому, операция проходит очень быстро.
+
+    # Примечение по поводу отслеживания assets
+      - Вот тут как раз при любом изменении public перезаписывается.
+      - А этом долго, поэтому надо указать gulp'у, чтобы он перезаписывал
+        только те файлы, которые изменились с момента его прошлого
+        срабатывания.
+      - Для этого в gulp.src задаётся параметр:
+          {since: gulp.lastRun('assets')}
 
     # Пример
       - Код примера
 
-        'use strict';
+          'use strict';
 
-        // 1] Подключить модули
-        const gulp = require('gulp');
-        const sass = require('gulp-sass');
+          // 1] Подключить модули
+          const gulp = require('gulp');
+          const sass = require('gulp-sass');
+          const del = require('del');
 
-        // 2] Задача №1: Обработка scss-файлов
-        gulp.task('styles', function(callback){
+          // 2] Задача №1: Обработка scss-файлов
+          gulp.task('styles', function(callback){
 
-          // 3.1] Найти и обработать .scss файлы, записать в public
-          gulp.src('frontend/styles/main.scss')
-              .pipe(sass())
-              .pipe(gulp.dest('public'));
+            // 3.1] Найти и обработать .scss файлы, записать в public
+            return gulp.src('frontend/styles/main.scss')
+                .pipe(sass())
+                .pipe(gulp.dest('public'));
 
-          // 3.2] Сигнализировать о завершении задачи
-          callback();
+            // 3.2] Сигнализировать о завершении задачи
+            //callback();
 
-        });
+          });
 
-        // 3] Следить за файлами, запускать задачу при их изменении
-        gulp.watch('frontend/styles/**/*.*', gulp.series('styles'));
 
-      - Теперь надо запустить задачу styles.
+          // 3] Задача №2: удаление каталога public
+          gulp.task('clean', function(){
+            return del('public');
+          });
+
+          // 4] Задача №3: копирует всё из assets в public
+          gulp.task('assets', function(){
+            return gulp.src('frontend/assets/**', {since: gulp.lastRun('assets')})
+                .pipe(gulp.dest('public'));
+          });
+
+          // 5] Задача №4:
+          // - Сначала выполняет задачу 'clean'.
+          // - А затем, параллельно, задачи styles и assets
+          gulp.task('build', gulp.series(
+            'clean',
+            gulp.parallel('styles', 'assets')
+          ));
+
+          // 6] Задача №5: следить за файлами, запускать задачу при их изменении
+          gulp.task('watch', function(){
+            gulp.watch('./frontend/styles/**/*.*', gulp.series('styles'));
+            gulp.watch('./frontend/assets/**/*.*', gulp.series('assets'));
+          });
+
+          // 7] Задача №6: сначала запустить build, затем watch
+          gulp.task('dev', gulp.series('build', 'watch'));
+
+      - Теперь надо запустить задачу build.
       - Для этого выполнить:
 
-          npm run gulp styles
+          npm run gulp build
 
       - В терминале будет запущен демон, отслеживающий изменения.
       - Для теста, можно внести изменения в какой-либо исходник.
