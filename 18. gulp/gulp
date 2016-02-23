@@ -456,6 +456,7 @@
       - Чтение файлов только начиная с указаной даты (since: ...)
       - Создать для каждого файла readable-поток (buffer: false)
       - Явно указать cwd для задачи (cwd: "...")
+      - Указать base в явном виде (base: "...")
 
   --------------------------------------
 
@@ -734,6 +735,12 @@
       - То есть, это тот каталог, где лежит gulpfile.js.
       - Но для каждой задачи можно явно указать cwd с помощью опции.
 
+    # Указать base в явном виде (base: "...")
+      - По умолчанию base вычисляется из 1-го аргумента в src.
+      - Но можно указать его и в явном виде.
+
+          gulp.src('frontend/styles/**/*.scss', {base: 'frontend'})
+
 
 А4. Делаем систему для сборки стилей на gulp
 
@@ -742,7 +749,14 @@
 
     # Ссылки
     # Введение
-    #
+    # Исходные условия
+
+    # [gulp-sass] *.sass ---> *.css
+    # [gulp-concat] *.sass ---> *.css ---> all.css
+    # [gulp-debug] Выводить инфу о действиях gulp в терминал
+    # [] Применение @import в sass
+    # [gulp-sourcemaps] Формировать sourcemaps
+    # [gulp-of] Задавать if-условия при pipe-инге
 
   --------------------------------------
 
@@ -753,13 +767,277 @@
   > Введение
     - В этой главе мы рассмотрим создание системы сборки стилей на gulp.
     - Для стилей будем использовать препроцессор SASS.
+    - Будем в процессе рассматривать различные важные плагины.
     - В конце концов, это будет готовое для продакшн решение.
 
+  > Исходные условия
 
+    /project
+      /public
+      /frontend
+        /assets
+          /img
+          index.html
+        /styles
+          header.scss
+          main.scss
 
+  > [gulp-sass] *.sass ---> *.css
 
+    # Формулировка
+      - Надо найти все ".scss" стили в каталоге "/project/frontend/styles/"
+      - Преобразовать их в ".css"
+      - И сохранить в каталог "/project/public/"
 
+    # Описание решения
+      - Для преобразования scss->css применим плагин gulp-sass.
+      - Для этого его надо установить в проект
+        (и записать в devDependencies в package.json):
 
+          npm i -D gulp-sass
+
+      - Для поиска .scss применяем glob-паттерн 'frontend/styles/**/*.scss'.
+      - Результаты записываем в каталог public.
+
+    # Код решения
+
+        'use strict';
+
+        // 1] Подключить модули
+        const gulp = require('gulp');
+        const sass = require('gulp-sass');
+
+        // 2] Найти в указаном каталоге все *.scss файлы
+        // - И сохранить их в public проекта
+        gulp.task('styles', function(callback){
+
+          // 2.1] Найти и обработать .scss файлы, записать в public
+          gulp.src('frontend/styles/**/*.scss')
+              .pipe(sass())
+              .pipe(gulp.dest('public'));
+
+          // 2.2] Сигнализировать о завершении задачи
+          callback();
+
+        });
+
+    # А что, если нам надо положить все стили в конкретный каталог внутри public
+
+      ## Вариант №1
+        - Можно явно указать base для gulp.src.
+        - Пример:
+
+            gulp.src('frontend/styles/**/*.scss', {base: 'frontend'})
+
+      ## Вариант №2
+        - Можно изменить base в glob-паттерн.
+        - На вот такой:
+
+            gulp.src('frontend/**/*.scss')
+
+        - В итоге base == 'frontend'.
+        - И т.к. .scss лежат в каталоге frontend/styles,
+          то они будут скопированы в frontend/styles.
+
+  > [gulp-concat] *.sass ---> *.css ---> all.css
+
+    # Формулировка
+      - Надо сделать тоже самое, что в задаче №1.
+      - Плюс объединить весь css в 1 файл "all.css".
+
+    # Описание решения
+      - Для объединения css-файлов нам понадобится плагин gulp-concat.
+      - Его надо установить в проект
+        (и записать в devDependencies в package.json):
+
+          npm i -D gulp-concat
+
+    # Код решения
+
+        'use strict';
+
+        // 1] Подключить модули
+        const gulp = require('gulp');
+        const sass = require('gulp-sass');
+        const concat = require('gulp-concat');
+
+        // 2] Найти в указаном каталоге все *.scss файлы
+        // - И сохранить их в public проекта
+        gulp.task('styles', function(callback){
+
+          // 2.1] Найти и обработать .scss файлы, записать в public
+          gulp.src('frontend/styles/**/*.scss', {base: 'frontend'})
+              .pipe(sass())
+              .pipe(concat('all.css'))
+              .pipe(gulp.dest('public'));
+
+          // 2.2] Сигнализировать о завершении задачи
+          callback();
+
+        });
+
+  > [gulp-debug] Выводить инфу о действиях gulp в терминал
+
+    # Формулировка
+      - По умолчанию gulp не выводит в терминал, что он делает.
+      - Иногда такая информация требуется.
+      - Задача: выводить в терминал, что делаег gulp.
+
+    # Описание решения
+      - Для этого нам понадобится плагин gulp-debug.
+      - Его надо установить в проект
+        (и записать в devDependencies в package.json):
+
+          npm i -D gulp-debug
+
+      - В итоге, получим вывод типа:
+
+          [03:31:46] src frontend/styles/header.scss
+          [03:31:46] src frontend/styles/main.scss
+          [03:31:46] src 2 items
+          [03:31:46] sass frontend/styles/header.css
+          [03:31:46] sass frontend/styles/main.css
+          [03:31:46] sass 2 items
+          [03:31:46] concat frontend/all.css
+          [03:31:46] concat 1 item
+
+    # Код решения
+
+        'use strict';
+
+        // 1] Подключить модули
+        const gulp = require('gulp');
+        const sass = require('gulp-sass');
+        const concat = require('gulp-concat');
+        const debug = require('gulp-debug');
+
+        // 2] Найти в указаном каталоге все *.scss файлы
+        // - И сохранить их в public проекта
+        gulp.task('styles', function(callback){
+
+          // 2.1] Найти и обработать .scss файлы, записать в public
+          gulp.src('frontend/styles/**/*.scss', {base: 'frontend'})
+              .pipe(debug({title: 'src'}))
+              .pipe(sass())
+              .pipe(debug({title: 'sass'}))
+              .pipe(concat('all.css'))
+              .pipe(debug({title: 'concat'}))
+              .pipe(gulp.dest('public'));
+
+          // 2.2] Сигнализировать о завершении задачи
+          callback();
+
+        });
+
+  > [] Применение @import в sass
+
+    # Формулировка
+      - Допустим, у нас имеются 2 .scss файла: "main" и "header".
+      - И мы хотим их объединить в один файл main.css.
+      - Причём, чтобы сначала шёл "header", а потом "main".
+      - Аналогичным образом можно объединять сколько угодно файлов.
+
+    # Описание решения
+      - Для этого нам надо в начале "main" добавить строку:
+
+          @import "header.scss";
+
+      - И после этого можно уже работать с main.
+      - При его обработке gulp'ом файл "header" будет подтянут и обработан.
+
+    # Код решения
+
+        'use strict';
+
+        // 1] Подключить модули
+        const gulp = require('gulp');
+        const sass = require('gulp-sass');
+
+        // 2] Найти в указаном каталоге все *.scss файлы
+        // - И сохранить их в public проекта
+        gulp.task('styles', function(callback){
+
+          // 2.1] Найти и обработать .scss файлы, записать в public
+          gulp.src('frontend/styles/main.scss')
+              .pipe(sass())
+              .pipe(gulp.dest('public'));
+
+          // 2.2] Сигнализировать о завершении задачи
+          callback();
+
+        });
+
+  > [gulp-sourcemaps] Формировать sourcemaps
+
+    # Что такое sourcemaps
+      - Это специальная структура данных, актуальная при их преобразовании.
+      - В ней содержатся данные о том, что было, и что стало, и где всё это.
+      - Эта структура данных может быть:
+
+        1) В конце самого модифицированного файла
+        2) В отдельном одноимённом файле, в том же каталоге, с .map на конце.
+
+      - По sourcemap браузер находит исходники для преобразованного файла.
+      - И при отладке, если возникают ошибки, указывает на ошибку в исходнике.
+      - Таким образом, sourcemaps незаменимый инструмент при разработке.
+
+    # Формулировка
+      - Необходимо обеспечить наличие sourcemaps при работе gulp.
+
+    # Описание решения
+      - Для этого нам понадобится плагин gulp-sourcemaps.
+      - Его надо установить в проект
+        (и записать в devDependencies в package.json):
+
+          npm i -D gulp-sourcemaps
+
+      - Плагин "gulp-sourcemaps" один из основных, и написан разработчиками gulp.
+      - Интегрирован чуть менее, чем со всеми инструментами, меняющими содержимое файлов.
+      - Что он делает:
+
+        1) Перед изменением файла мы пропускаем его через sourcemaps.init()
+          - Когда в него поступает новый vinyl-файл, плагин создаёт у него
+            новое пустое свойство sourceMap (пустое, т.к. с файлом ещё ничего не делали).
+
+        2) Каждый инструмент дописывает в sourceMap файла информацию
+          - Как упоминалось выше, почти все инструменты поддерживают работу с sourceMap.
+          - Если инструмент видит, что у файла есть это св-во, он дописывает туда инфу.
+
+        3) Когда все изменения файла завершены, применяем sourcemaps.write()
+          - К этому моменту св-во sourceMap содержит всю необходимую инфу.
+          - Теперь его надо записать:
+
+            3.1) В итоговый файл
+              - Тогда надо применить write() без агрументов.
+
+            3.2) В файл по указанному адресу
+              - Например, в файл по соседству, с .map на конце.
+              - Тогда надо применить write('.').
+
+    # Код решения
+
+        'use strict';
+
+        // 1] Подключить модули
+        const gulp = require('gulp');
+        const sass = require('gulp-sass');
+        const sourcemaps = require('gulp-sourcemaps');
+
+        // 2] Найти в указаном каталоге все *.scss файлы
+        // - И сохранить их в public проекта
+        gulp.task('styles', function(callback){
+
+          // 2.1] Найти и обработать .scss файлы, записать в public
+          gulp.src('frontend/styles/main.scss')
+              .pipe(sourcemaps.init())
+              .pipe(sass())
+              .pipe(gulp.dest('public'))
+              .pipe(sourcemaps.write());
+
+          // 2.2] Сигнализировать о завершении задачи
+          callback();
+
+        });
 
 
 
