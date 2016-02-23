@@ -400,7 +400,7 @@
               gulp.task('example', gulp.series('hello', 'example:promise', 'example:stream', 'example:process'));
 
         2) Параллельно
-          - Для этого надо использовать метод parallel.
+          - Для этого надо использовать метод v.
           - Пример:
 
               gulp.task('example', gulp.parallel('hello', 'example:promise', 'example:stream', 'example:process'));
@@ -756,7 +756,11 @@
     # [gulp-debug] Выводить инфу о действиях gulp в терминал
     # [] Применение @import в sass
     # [gulp-sourcemaps] Формировать sourcemaps
-    # [gulp-of] Задавать if-условия при pipe-инге
+    # [gulp-if] Задавать if-условия при pipe-инге
+    # [gulp-ignore] Исключать файлы по условию при pipe-инге
+
+    # Применение gulp.series
+    # Применение gulp.parallel
 
   --------------------------------------
 
@@ -975,7 +979,7 @@
       - Эта структура данных может быть:
 
         1) В конце самого модифицированного файла
-        2) В отдельном одноимённом файле, в том же каталоге, с .map на конце.
+        2) В отдельном файле, а в сам мод-ый файл дописывается лишь путь.
 
       - По sourcemap браузер находит исходники для преобразованного файла.
       - И при отладке, если возникают ошибки, указывает на ошибку в исходнике.
@@ -1031,13 +1035,223 @@
           gulp.src('frontend/styles/main.scss')
               .pipe(sourcemaps.init())
               .pipe(sass())
-              .pipe(gulp.dest('public'))
-              .pipe(sourcemaps.write());
+              .pipe(sourcemaps.write())
+              .pipe(gulp.dest('public'));
 
           // 2.2] Сигнализировать о завершении задачи
           callback();
 
         });
+
+  > [gulp-if] Задавать if-условия при pipe-инге
+
+    # Что делает gulp-if
+      - Позволяет задавать if-условия при pipe-инге.
+      - Это намного удобнее, чем делать это традиционным путём через if() {}
+      - Принимает 3 аргумента:
+
+        1) Условие (true/false или callback)
+        2) Если условие true (типа if)
+        3) Если условие false (типа else)
+
+    # Установка
+      - Нам понадобится плагин gulp-if.
+      - Его надо установить в проект
+        (и записать в devDependencies в package.json):
+
+          npm i -D gulp-if
+
+    # Пример №1: true/false условие
+      - Допустим, надо применять sourcemaps, только если x == true.
+
+        'use strict';
+
+        // 1] Подключить модули
+        const gulp = require('gulp');
+        const sass = require('gulp-sass');
+        const sourcemaps = require('gulp-sourcemaps');
+        const gulpif = require('gulp-if');
+
+        // 2] Задать условия
+        var x = true;
+
+        // 3] Найти в указаном каталоге все *.scss файлы
+        // - И сохранить их в public проекта
+        gulp.task('styles', function(callback){
+
+          // 3.1] Найти и обработать .scss файлы, записать в public
+          gulp.src('frontend/styles/main.scss')
+              .pipe(gulpif(x, sourcemaps.init()))
+              .pipe(sass())
+              .pipe(sourcemaps.write())
+              .pipe(gulpif(x, gulp.dest('public')));
+
+          // 3.2] Сигнализировать о завершении задачи
+          callback();
+
+        });
+
+    # Пример №2: callback-условие
+      - Допустим, надо применять sass() только если расширение
+        файла равно ".scss".
+
+        'use strict';
+
+        // 1] Подключить модули
+        const gulp = require('gulp');
+        const sass = require('gulp-sass');
+        const gulpif = require('gulp-if');
+
+        // 2] Задать условия
+        var x = true;
+
+        // 3] Найти в указаном каталоге все *.scss файлы
+        // - И сохранить их в public проекта
+        gulp.task('styles', function(callback){
+
+          // 3.1] Найти и обработать .scss файлы, записать в public
+          gulp.src('frontend/styles/main.scss')
+              .pipe(gulpif(function(file){
+                return file.extname == ".scss";
+              }, sass()))
+              .pipe(gulp.dest('public'));
+
+          // 3.2] Сигнализировать о завершении задачи
+          callback();
+
+        });
+
+  > [gulp-ignore] Исключать файлы по условию при pipe-инге
+
+    # Что делает gulp-if
+      - Позволяет фильтровать файлы в зависимости от условия.
+      - Это намного удобнее, чем делать это традиционным путём через if() {}
+      - Имеет 2 метода:
+
+        include(condition)    // включить файл, если condition == true
+        exclude(condition)    // исключить файл, если condition == true
+
+    # Установка
+      - Нам понадобится плагин gulp-if.
+      - Его надо установить в проект
+        (и записать в devDependencies в package.json):
+
+          npm i -D gulp-ignore
+
+    # Пример
+      - Допустим, надо применять sass() только если расширение
+        файла равно ".scss".
+      - В противном случае, исключить vinyl-файл из потока.
+
+        'use strict';
+
+        // 1] Подключить модули
+        const gulp = require('gulp');
+        const sass = require('gulp-sass');
+        const ignore = require('gulp-ignore');
+
+        // 2] Задать условия
+        var x = true;
+
+        // 3] Найти в указаном каталоге все *.scss файлы
+        // - И сохранить их в public проекта
+        gulp.task('styles', function(callback){
+
+          // 3.1] Найти и обработать .scss файлы, записать в public
+          gulp.src('frontend/styles/main.scss')
+              .pipe(ignore.exclude(function(file){
+                return file.extname != ".scss";
+              }))
+              .pipe(sass())
+              .pipe(gulp.dest('public'));
+
+          // 3.2] Сигнализировать о завершении задачи
+          callback();
+
+        });
+
+  > Применение gulp.series
+    - Позволяет последовательно выполнить несколько gulp-задач.
+    - Пример:
+
+        'use strict';
+
+        // 1] Подключить модули
+        const gulp = require('gulp');
+        const sass = require('gulp-sass');
+        const del = require('del');
+
+        // 2] Задать условия
+        var x = true;
+
+        // 3] Задача №1: Обработка scss-файлов
+        gulp.task('styles', function(callback){
+
+          // 3.1] Найти и обработать .scss файлы, записать в public
+          gulp.src('frontend/styles/main.scss')
+              .pipe(sass())
+              .pipe(gulp.dest('public'));
+
+          // 3.2] Сигнализировать о завершении задачи
+          callback();
+
+        });
+
+        // 4] Задача №2: удаление каталога public
+        gulp.task('clean', function(){
+          return del('public');
+        });
+
+        // 5] Задача №3: сначала выполняет 'clean', а потом 'styles'
+        gulp.task('build', gulp.series('clean', 'styles'));
+
+  > Применение gulp.parallel
+    - Позволяет параллельно выполнить несколько gulp-задач.
+    - Пример:
+
+        'use strict';
+
+        // 1] Подключить модули
+        const gulp = require('gulp');
+        const sass = require('gulp-sass');
+        const del = require('del');
+
+        // 2] Задать условия
+        var x = true;
+
+        // 3] Задача №1: Обработка scss-файлов
+        gulp.task('styles', function(callback){
+
+          // 3.1] Найти и обработать .scss файлы, записать в public
+          gulp.src('frontend/styles/main.scss')
+              .pipe(sass())
+              .pipe(gulp.dest('public'));
+
+          // 3.2] Сигнализировать о завершении задачи
+          callback();
+
+        });
+
+        // 4] Задача №2: удаление каталога public
+        gulp.task('clean', function(){
+          return del('public');
+        });
+
+        // 5] Задача №3: копирует всё из assets в public
+        gulp.task('assets', function(){
+          return gulp.src('frontend/assets/**')
+              .pipe(gulp.dest('public'));
+        });
+
+        // 6] Задача №4:
+        // - Сначала выполняет задачу 'clean'.
+        // - А затем, параллельно, задачи styles и assets
+        gulp.task('build', gulp.series(
+          'clean',
+          gulp.parallel('styles', 'assets')
+        ));
+
+
 
 
 
