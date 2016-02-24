@@ -14260,15 +14260,15 @@ Domain Driven Design ------------------------------------------------------|--- 
           name: dev.app
           provider: virtualbox
 
-          authorize: C:\WebDev\bin\ssh_keys_for_homestead\id_rsa.pub
+          authorize: C:\WebDev\bin\ssh\Homestead - app.dev\id_rsa.pub
 
           keys:
-              - C:\WebDev\bin\ssh_keys_for_homestead\id_rsa
+              - C:\WebDev\bin\ssh\Homestead - app.dev\id_rsa
 
-          folders:
-              - map: "C:/WebDev/dev.app"
-                to: "/home/vagrant/dev.app"
-          #     type: nfs
+          # folders:
+          #     - map: "C:/WebDev/dev.app"
+          #       to: "/home/vagrant/dev.app"
+          #       type: nfs
 
           sites:
               - map: dev.app
@@ -14283,14 +14283,26 @@ Domain Driven Design ------------------------------------------------------|--- 
           #       client-id: foo
           #       client-token: bar
 
-          # ports:
-          #     - send: 50000
-          #       to: 5000
+          ports:
+            - send: 3000
+              to: 3000
+            - send: 3001
+              to: 3001
           #     - send: 7777
           #       to: 777
           #       protocol: udp
       
-    4) Запускаем нужный бокс homestead
+    4) Отключаем mapping каталогов (если надо)
+      - Открываем Vagrantfile в корне проекта.
+      - В него прописываем:
+
+          Сразу после строки:
+            Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+          Вставляем строку
+            config.vm.synced_folder ".", "/vagrant", disabled: true
+
+    5) Запускаем нужный бокс homestead
       - Можно получить последнюю версию бокса homestead,
         выполнив vagrant box update
       - Выполняем команду vagrant up.
@@ -14299,7 +14311,7 @@ Domain Driven Design ------------------------------------------------------|--- 
       - Таким образом, надо выполнять vagrant up в каталоге проекта.
       - И тогда будет запущен бокс именно для этого проекта.
 
-    5) Подключаемся через putty по 127.0.0.1:2222
+    6) Подключаемся через putty по 127.0.0.1:2222
       - Сабж.
   
 
