@@ -18,6 +18,12 @@
     # Оф.панель управления и хаб Docker
         https://hub.docker.com/
 
+    # Серия оф.вводных видео-тренингов по Docker
+        https://training.docker.com/self-paced-training
+
+    # Официальная документация Docker
+        https://docs.docker.com/
+
   // Видео //
   //-------//
 
@@ -27,6 +33,9 @@
   // Текст //
   //-------//
 
+    # 350+ полезных статей про Docker
+        https://habrahabr.ru/company/1cloud/blog/275015/
+
     # Docker for PHP Developers
     # - Efficient Nginx, PHP, and MySQL development environments with Docker
     # - Подробнейшая, потрясающая статья про Docker from JOSH LOCKHART
@@ -35,7 +44,6 @@
     # Laravel 5 with dockerized Gulp, PHP-FPM, MySQL and nginx
     # Краткий how-to
         http://harshjv.github.io/blog/laravel-5-with-dockerized-gulp-php-fpm-mysql-and-nginx/
-
 
 
 ////==================================================////
