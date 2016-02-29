@@ -3879,6 +3879,22 @@
     # Ссылки
     # Введение
 
+    # Создание аккаунта и аутентификация в Docker Hub
+
+      - Создание аккаунта
+      - Аутентификация
+      - Файл для хранения данных для аутентификации
+
+    # Поиск образов
+    # Добавление образов на Docker Hub
+    # Особенности Docker Hub
+
+      - Приватные репозитории
+      - Организации и команды
+      - Автоматизированные сборки
+      - Вебхуки
+
+
   --------------------------------------
 
   > Ссылки
@@ -3887,7 +3903,120 @@
         https://docs.docker.com/engine/userguide/containers/dockerrepos/
 
   > Введение
-    -
+    - В главе описано использование Docker Hub для улучшения рабочего процесса.
+    - Docker Hub, это публичный репозиторий от создателей Docker.
+    - В нём хранятся образы, которые можно скачивать и использовать.
+    - Также он поддерживает:
+
+      • Аутентификацию
+      • Рабочие группы
+      • Инструменты для рабочего процесса (webhooks, build triggers)
+      • Приватные репозитории (платные)
+
+  > Создание аккаунта и аутентификация в Docker Hub
+
+    # Создание аккаунта
+      - Создать аккаунт можно 2-мя способами:
+
+        • На сайте http://hub.docker.com/
+        • С помощью команды docker login
+          - Она первым делом запросит у тебя username.
+          - И если такового не окажется в их БД, запустит
+            процесс создания нового акаунта.
+
+    # Аутентификация
+      - Аутентифицироваться можно той же командой docker login.
+      - Без аутентификации добавлять образы на Docker Hub нельзя.
+
+    # Файл для хранения данных для аутентификации
+      - Они будут автоматически сохранены в:
+          ~/.docker/config.json
+
+  > Поиск образов
+    - Искать можно на сайте Docker Hub или через CLI.
+    - Через CLI поиск производится командой docker searh.
+    - Искать можно по следующим параметрам:
+
+        • Имя образа
+        • Имя автора
+        • Описание
+
+    - Пример поиска через CLI: docker search centos
+    - Результат будет такой:
+
+        $ docker search centos
+        NAME           DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+        centos         The official build of CentOS                    1223      [OK]
+        tianon/centos  CentOS 5 and 6, created using rinse instea...   33
+        ...
+
+    - Обсудим этот результат:
+
+        • Рассмотрим 2-ва найденных образа: centos и tianon/centos
+        • В имене centos не указан vendor, это значит:
+          - То есть его имя находится в глобальном пр.имён репозитория.
+          - Это значит, что этот репозиторий является официальным.
+          - Об этом также свидетельствует флаг official.
+          - Такие репозитории отличаются высокой надёжностью, безопасностью, качеством.
+        • В имене tianon/centos мы видим имя вендора tianon
+          - Это значит, что репозиторий не является официальным.
+          - И автор мог там наворотить всё, что угодно.
+
+    - Когда ты нашёл интересующий образ, его можно скачать:
+
+        docker pull <imagename>
+
+    - В pull ещё можно уточнить версию пакета для загрузки.
+    - Неявно применяется версия letest:
+
+        docker pull <imagename>:latest
+
+    - Подробнее об этом см.в справочнике по docker.
+
+  > Добавление образов на Docker Hub
+    - Чтобы добавить в репозиторий надо иметь именованный образ.
+    - Теперь можно сделать push в репозиторий:
+
+        docker push yourname/newimage
+
+    - Образ будет загружен на Docker Hub и доступен всем для использования.
+
+  > Особенности Docker Hub
+
+    # Приватные репозитории
+      - Они доступны только владельцу приватного репозитория.
+      - И тем, кому он явно даст доступ к нему.
+      - Являются платными.
+
+    # Организации и команды
+      - Доступны только для приватных репозиториев.
+      - Позволяют сделать их доступными для организаций и команд.
+
+    # Автоматизированные сборки
+      - Можно связать свой реп-рий на github с реп-ем на Docker Hub.
+      - В репозитории на github должен быть DockerFile, в корне.
+      - Можно указать конкретную ветку реп-рия на github.
+      - При все изменения будут синхронизироватсья по
+        направлению github -> docker hub
+      - Делать push в автоматизированные сборки не получится,
+        вместо этого надо вносить изменения в код на github.
+      - Как настроить автоматизированную сборку:
+
+        1. Создай акк на Docker Hub, и залогинься.
+        2. Связы свой GitHub аккаунт с Docker Hub аккаунтом
+          - https://registry.hub.docker.com/account/accounts/
+        3. Настрой автоматическую сборку
+          - https://registry.hub.docker.com/builds/add/
+        4. Укажи реп. на github с DockerFile
+        5. Укажи ветку этого репа (по умолчанию master).
+        6. Задай имя автоматизированной сборке.
+        7. Назначь Docker Tag сборке.
+        8. Укажи, где находится DockerFile ("/" по умолчанию).
+
+    # Вебхуки
+      - Это обработчики, отслеживающие события с репозиториями.
+      - Могут посылать JSON с данными в случае их возникновения
+        по указанному URL.
 
 
 А10. Справочник по командам docker
@@ -3897,13 +4026,476 @@
 
     # Ссылки
     # Введение
+    # Общий синтаксис команды docker
+    # Поддерживемые переменные среды
+
+      - DOCKER_API_VERSION            | указать, какую версию API использовать (например, 1.19)
+      - DOCKER_CONFIG                 | путь к конфигам клиента
+      - DOCKER_CERT_PATH              | путь к аутентификационным ключам
+      - DOCKER_DRIVER                 | the graph driver to use
+      - DOCKER_HOST                   | к какому сокету демона подключаться
+      - DOCKER_NOWARN_KERNEL_VERSION  | prevent warnings that your Linux kernel is unsuitable for Docker
+      - DOCKER_RAMDISK                | отключить pivot_root
+      - DOCKER_TLS_VERIFY             | when set Docker uses TLS and verifies the remote
+      - DOCKER_CONTENT_TRUST          | when set Docker uses notary to sign and verify images. Equates to --disable-content-trust=false for build, create, pull, push, run
+      - DOCKER_CONTENT_TRUST_SERVER   | the URL of the Notary server to use. This defaults to the same URL as the registry
+      - DOCKER_TMPDIR                 | путь ко временным файлам Docker'а
+
+    # Конфиги Docker'а
+    # Справочник команды docker
+
+      - daemon              | Запустить docker-демон, самодостаточную среду для работы с linux-контейнерами
+      - attach              |
+      - build               |
+      - commit              |
+      - cp                  |
+      - create              |
+      - diff                |
+      - events              |
+      - exec                |
+      - export              |
+      - history             |
+      - images              |
+      - import              |
+      - info                |
+      - inspect             |
+      - kill                |
+      - load                |
+      - login               |
+      - logout              |
+      - logs                |
+      - network connect     |
+      - network disconnect  |
+      - network ls          |
+      - network rm          |
+      - pause               |
+      - port                |
+      - ps                  |
+      - pull                |
+      - push                |
+      - rename              |
+      - restart             |
+      - rm                  |
+      - rmi                 |
+      - run                 |
+      - save                |
+      - search              |
+      - start               |
+      - stop                |
+      - tag                 |
+      - top                 |
+      - unpause             |
+      - update              |
+      - version             |
+      - volume create       |
+      - volume inspect      |
+      - volume ls           |
+      - volume rm           |
+      - wait                |
 
   --------------------------------------
 
   > Ссылки
 
+    # Оф.статья "Use the Docker command line"
+        https://docs.docker.com/engine/reference/commandline/cli/
 
   > Введение
-    -
+    - Это глава-справочник для команды docker.
+
+  > Общий синтаксис команды docker
+    - В обычном дистрибутиве лучше использовать команду docker с sudo.
+    - Ну или можно создать группу docker и добавить туда пользователей.
+    - В boot2docker можно не пользоваться sudo.
+    - Вот общий синтаксис команды docker:
+
+        docker [OPTIONS] COMMAND [arg...]
+        docker daemon [ --help | ... ]
+        docker [ --help | -v | --version ]
+
+          -H, --host=[]: The socket(s) to talk to the Docker daemon in the format of tcp://host:port/path, unix:///path/to/socket, fd://* or fd://socketfd.
+
+  > Поддерживемые переменные среды
+    - См.оглавление.
+
+  > Конфиги Docker'а
+    - По умолчанию хранятся в: ~/.docker
+    - Но можно указать другой путь с помощью переменной среды DOCKER_CONFIG.
+    - Или с помощью флага --config в CLI, который приоритетнее:
+
+        docker --config ~/testconfigs/ ps
+
+    - В каталоге с конфигами Docker'а не надо ничего трогать.
+    - Кроме файла config.json - его можно редактировать:
+
+      • HttpHeaders
+        - Список заголовков при клиент-серверном общении Docker'а.
+
+      • psFormat
+        - Настраивает формат для docker ps.
+
+      • detachKeys
+        - Once attached to a container, users detach from it and leave it running using the using CTRL-p CTRL-q key sequence.
+        - This detach key sequence is customizable using the detachKeys property.
+
+      • imagesFormat
+        - Настраивает формат для docker images.
+
+    - Пример файла config.json:
+
+        {
+          "HttpHeaders": {
+            "MyHeader": "MyValue"
+          },
+          "psFormat": "table {{.ID}}\\t{{.Image}}\\t{{.Command}}\\t{{.Labels}}",
+          "imagesFormat": "table {{.ID}}\\t{{.Repository}}\\t{{.Tag}}\\t{{.CreatedAt}}",
+          "detachKeys": "ctrl-e,e"
+        }
+
+  > Справочник команды docker
+
+    // daemon //
+    //--------//
+    // - Запустить docker-демон, самодостаточную среду для работы с linux-контейнерами.
+    // - Docker использует одни и те же исходними и для демона, и для клиента.
+
+      # Формат
+
+          docker daemon [OPTIONS]
+
+      # Опции
+
+        --api-cors-header=""                   Set CORS headers in the remote API
+        --authorization-plugin=[]              Set authorization plugins to load
+        -b, --bridge=""                        Attach containers to a network bridge
+        --bip=""                               Specify network bridge IP
+        --cgroup-parent=                       Set parent cgroup for all containers
+        -D, --debug                            Enable debug mode
+        --default-gateway=""                   Container default gateway IPv4 address
+        --default-gateway-v6=""                Container default gateway IPv6 address
+        --cluster-store=""                     URL of the distributed storage backend
+        --cluster-advertise=""                 Address of the daemon instance on the cluster
+        --cluster-store-opt=map[]              Set cluster options
+        --config-file=/etc/docker/daemon.json  Daemon configuration file
+        --dns=[]                               DNS server to use
+        --dns-opt=[]                           DNS options to use
+        --dns-search=[]                        DNS search domains to use
+        --default-ulimit=[]                    Set default ulimit settings for containers
+        --exec-opt=[]                          Set exec driver options
+        --exec-root="/var/run/docker"          Root of the Docker execdriver
+        --fixed-cidr=""                        IPv4 subnet for fixed IPs
+        --fixed-cidr-v6=""                     IPv6 subnet for fixed IPs
+        -G, --group="docker"                   Group for the unix socket
+        -g, --graph="/var/lib/docker"          Root of the Docker runtime
+        -H, --host=[]                          Daemon socket(s) to connect to
+        --help                                 Print usage
+        --icc=true                             Enable inter-container communication
+        --insecure-registry=[]                 Enable insecure registry communication
+        --ip=0.0.0.0                           Default IP when binding container ports
+        --ip-forward=true                      Enable net.ipv4.ip_forward
+        --ip-masq=true                         Enable IP masquerading
+        --iptables=true                        Enable addition of iptables rules
+        --ipv6                                 Enable IPv6 networking
+        -l, --log-level="info"                 Set the logging level
+        --label=[]                             Set key=value labels to the daemon
+        --log-driver="json-file"               Default driver for container logs
+        --log-opt=[]                           Log driver specific options
+        --mtu=0                                Set the containers network MTU
+        --disable-legacy-registry              Do not contact legacy registries
+        -p, --pidfile="/var/run/docker.pid"    Path to use for daemon PID file
+        --registry-mirror=[]                   Preferred Docker registry mirror
+        -s, --storage-driver=""                Storage driver to use
+        --selinux-enabled                      Enable selinux support
+        --storage-opt=[]                       Set storage driver options
+        --tls                                  Use TLS; implied by --tlsverify
+        --tlscacert="~/.docker/ca.pem"         Trust certs signed only by this CA
+        --tlscert="~/.docker/cert.pem"         Path to TLS certificate file
+        --tlskey="~/.docker/key.pem"           Path to TLS key file
+        --tlsverify                            Use TLS and verify the remote
+        --userns-remap="default"               Enable user namespace remapping
+        --userland-proxy=true                  Use userland proxy for loopback traffic
+
+      # 
+
+    // attach //
+    //--------//
+    // -
+
+
+    // build //
+    //-------//
+    // -
+
+
+    // commit //
+    //--------//
+    // -
+
+
+    // cp //
+    //----//
+    // -
+
+
+    // create //
+    //--------//
+    // -
+
+
+    // diff //
+    //------//
+    // -
+
+
+    // events //
+    //--------//
+    // -
+
+
+    // exec //
+    //------//
+    // -
+
+
+    // export //
+    //--------//
+    // -
+
+
+    // history //
+    //---------//
+    // -
+
+
+    // images //
+    //--------//
+    // -
+
+
+    //  //
+    //---------//
+    // -
+
+
+    // import //
+    //--------//
+    // -
+
+
+    // info //
+    //------//
+    // -
+
+
+    // inspect //
+    //---------//
+    // -
+
+
+    // kill //
+    //------//
+    // -
+
+
+    // load //
+    //------//
+    // -
+
+
+    // login //
+    //-------//
+    // -
+
+
+    // logout //
+    //--------//
+    // -
+
+
+    // logs //
+    //------//
+    // -
+
+
+    // network connect //
+    //-----------------//
+    // -
+
+
+    // network disconnect //
+    //--------------------//
+    // -
+
+
+    // network ls //
+    //------------//
+    // -
+
+
+    // network rm //
+    //------------//
+    // -
+
+
+    // pause //
+    //-------//
+    // -
+
+
+    // port //
+    //------//
+    // -
+
+
+    // ps //
+    //----//
+    // -
+
+
+    // pull //
+    //------//
+    // -
+
+
+    // push //
+    //------//
+    // -
+
+
+    //  //
+    //---------//
+    // -
+
+
+    // rename //
+    //--------//
+    // -
+
+
+    // restart //
+    //---------//
+    // -
+
+
+    // rm //
+    //----//
+    // -
+
+
+    // rmi //
+    //-----//
+    // -
+
+
+    // run //
+    //-----//
+    // -
+
+
+    //  //
+    //---------//
+    // -
+
+
+    // save //
+    //------//
+    // -
+
+
+    // search //
+    //--------//
+    // -
+
+
+    //  //
+    //---------//
+    // -
+
+
+    // start //
+    //-------//
+    // -
+
+
+    // stop //
+    //------//
+    // -
+
+
+    // tag //
+    //-----//
+    // -
+
+
+    // top //
+    //-----//
+    // -
+
+
+    // unpause //
+    //---------//
+    // -
+
+
+    // update //
+    //--------//
+    // -
+
+
+    // version //
+    //---------//
+    // -
+
+
+    // volume create //
+    //---------------//
+    // -
+
+
+    // volume inspect //
+    //----------------//
+    // -
+
+
+    // volume ls //
+    //-----------//
+    // -
+
+
+    // volume rm //
+    //-----------//
+    // -
+
+
+    // wait //
+    //------//
+    // -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
