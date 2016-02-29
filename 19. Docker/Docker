@@ -1748,7 +1748,7 @@
     # Управление общими папками в VirtualBox
     # Создание объектов volume
 
-      - Вывод списка всеъ объектов volume на host-машине
+      - Вывод списка всех объектов volume на host-машине
       - Именованные / Не именованные
       - С авто ссылкой / С ручной ссылкой
       - Создание объекта volume в DockerFile
@@ -1834,7 +1834,7 @@
 
   > Создание объектов volume
 
-    # Вывод списка всеъ объектов volume на host-машине
+    # Вывод списка всех объектов volume на host-машине
       - Можно просмотреть все объекты volume на host-машине.
       - В том числе увидеть именованный ли тот или иной объект.
       - Здесь предполагаем, что client и host это разные машины.
@@ -4158,6 +4158,17 @@
     //--------//
     // - Запустить docker-демон, самодостаточную среду для работы с linux-контейнерами.
     // - Docker использует одни и те же исходними и для демона, и для клиента.
+    // - Подоглавление:
+    //
+    //  • Формат
+    //  • Опции
+    //  • Подробнее об опции -H
+    //  • Подробнее об опции -s
+    //  • Подробнее об опции --dns
+    //  • Запуск docker-демона за HTTPS_PROXY
+    //  • Подробнее об опции --default-ulimit
+    //  • Конфиг демона
+    //
 
       # Формат
 
@@ -4215,262 +4226,1236 @@
         --userns-remap="default"               Enable user namespace remapping
         --userland-proxy=true                  Use userland proxy for loopback traffic
 
-      # 
+      # Подробнее об опции -H
+        - Она позволяет указать, API через какой тип сокетов слушать.
+        - Из коробки доступны 3-ри типа:
+
+          • unix    | По умолчанию, в /var/run/docker.sock, с root-правами
+          • tcp     |
+          • fd
+
+        - Для удалённого доступа к демону нужно использовать сокет tcp.
+        - Можно одновременно указать несколько сокетов:
+
+            docker daemon -H unix:///var/run/docker.sock -H tcp://192.168.59.106 -H tcp://10.10.10.2
+
+      # Подробнее об опции -s
+        - Она позволяет указать драйвер для хранилища (storage driver).
+        - Из коробки доступны следующие драйвера:
+
+          • aufs
+          • devicemapper
+          • btrfs
+          • zfs
+          • overlay
+
+      # Подробнее об опции --dns
+        - Установить DNS-сервер для всех Docker-контейнеров можно так:
+
+            docker daemon --dns 8.8.8.8
+
+        - Установить DNS-search domain для всех Docker-контейнеров можно так:
+
+            docker daemon --dns-search example.com
+
+      # Запуск docker-демона за HTTPS_PROXY
+        - Что происходит при запуске внутри LAN с HTTPS-прокси.
+        - Сертификаты Docker Hub будут заменены на сертификаты прокси.
+        - Эти сертификаты необходимо добавить в конфиг docker-хоста:
+
+          1. Установить пакет ca-certificates через apt-get.
+          2. Добавить сертификаты прокси в /etc/pki/tls/certs/ca-bundle.crt
+          3. Запустить docker-демон со следующей переменной среды
+            - Заменив все данные на актуальные.
+            - Код:
+
+              HTTPS_PROXY=http://username:password@proxy:port/ docker daemon
+
+            - Это лишь добавит прокси и аутентификацию к запросам docker-демона.
+            - Но docker build требует доп.настройки для использования прокси.
+
+      # Подробнее об опции --default-ulimit
+        - Позволяет установить ulimit по умолчанию для всех контейнеров.
+        - Ulimit, это возможность в Linux задать ограничения на использование ресурсов.
+        - В docker run тоже есть флаг --ulimit, он приоритетнее.
+
+      # Конфиг демона
+        - Можно все опции для docker daemon описать в json-конфиге.
+        - А в опциях команды лишь указать путь к этому конфигу.
+        - По умолчанию, docker ищет конфиг в:
+
+          /etc/docker/daemon.json                   // Linux
+          %programdata%\docker\config\daemon.json   // Windows
+
+        - Опции в конфиге и при запуске команды не должны конфликтовать.
+        - Иначе демон не запустится.
+        - Полный список разрешённых для конфига опций:
+
+            {
+              "authorization-plugins": [],
+              "dns": [],
+              "dns-opts": [],
+              "dns-search": [],
+              "exec-opts": [],
+              "exec-root": "",
+              "storage-driver": "",
+              "storage-opts": "",
+              "labels": [],
+              "log-driver": "",
+              "log-opts": [],
+              "mtu": 0,
+              "pidfile": "",
+              "graph": "",
+              "cluster-store": "",
+              "cluster-store-opts": [],
+              "cluster-advertise": "",
+              "debug": true,
+              "hosts": [],
+              "log-level": "",
+              "tls": true,
+              "tlsverify": true,
+              "tlscacert": "",
+              "tlscert": "",
+              "tlskey": "",
+              "api-cors-headers": "",
+              "selinux-enabled": false,
+              "userns-remap": "",
+              "group": "",
+              "cgroup-parent": "",
+              "default-ulimits": {},
+                   "ipv6": false,
+                   "iptables": false,
+                   "ip-forward": false,
+                   "ip-mask": false,
+                   "userland-proxy": false,
+                   "ip": "0.0.0.0",
+                   "bridge": "",
+                   "bip": "",
+                   "fixed-cidr": "",
+                   "fixed-cidr-v6": "",
+                   "default-gateway": "",
+                   "default-gateway-v6": "",
+                   "icc": false
+            }
 
     // attach //
     //--------//
-    // -
+    // - Подключиться к контейнеру (доступ через командную строку).
+    // - Отключиться, можно нажав: ctrl-p, ctrl-q
 
+      # Формат
+
+            docker attach [OPTIONS] CONTAINER
+
+      # Опции
+
+        --detach-keys="<sequence>"       Set up escape key sequence
+        --help                           Print usage
+        --no-stdin                       Do not attach STDIN
+        --sig-proxy=true                 Proxy all received signals to the process
 
     // build //
     //-------//
-    // -
+    // - Собрать новый образ из DockerFile и контекста по указанному адресу
 
+      # Формат
+
+          docker build [OPTIONS] PATH | URL | -
+
+      # Примеры использования
+
+        • docker build .
+          - Здесь мы указываем текущий каталог в качестве контекста.
+          - DockerFile должен лежать в этом каталоге.
+          - Все файлы из . архивируются и отправляются docker-демону.
+
+        • docker build github.com/creack/docker-firefox
+          - Здесь мы указываем github repo в качестве контекста.
+          - Он скачивается в tmp каталог docker'a.
+          - Затем этот каталог архивируется и отправляется docker-демону.
+          - А вообще можно указать любой git-репозиторий с помощью:
+              git:// или git@
+
+        • docker build - < Dockerfile
+          - Здесь docker прочитает DockerFile из stdin без контекста.
+          - То есть никакого контекста docker'у не будет отправлено.
+
+        • docker build - < context.tar.gz
+          - Здесь docker возьмёт DockerFile и контекст из архива.
+
+
+      # Опции
+
+        --build-arg=[]                  Set build-time variables
+        --cpu-shares                    CPU Shares (relative weight)
+        --cgroup-parent=""              Optional parent cgroup for the container
+        --cpu-period=0                  Limit the CPU CFS (Completely Fair Scheduler) period
+        --cpu-quota=0                   Limit the CPU CFS (Completely Fair Scheduler) quota
+        --cpuset-cpus=""                CPUs in which to allow execution, e.g. `0-3`, `0,1`
+        --cpuset-mems=""                MEMs in which to allow execution, e.g. `0-3`, `0,1`
+        --disable-content-trust=true    Skip image verification
+        -f, --file=""                   Name of the Dockerfile (Default is 'PATH/Dockerfile')
+        --force-rm                      Always remove intermediate containers
+        --help                          Print usage
+        --isolation=""                  Container isolation technology
+        -m, --memory=""                 Memory limit for all build containers
+        --memory-swap=""                A positive integer equal to memory plus swap. Specify -1 to enable unlimited swap.
+        --no-cache                      Do not use cache when building the image
+        --pull                          Always attempt to pull a newer version of the image
+        -q, --quiet                     Suppress the build output and print image ID on success
+        --rm=true                       Remove intermediate containers after a successful build
+        --shm-size=[]                   Size of `/dev/shm`. The format is `<number><unit>`. `number` must be greater than `0`.  Unit is optional and can be `b` (bytes), `k` (kilobytes), `m` (megabytes), or `g` (gigabytes). If you omit the unit, the system uses bytes. If you omit the size entirely, the system uses `64m`.
+        -t, --tag=[]                    Name and optionally a tag in the 'name:tag' format
+        --ulimit=[]                     Ulimit options
+
+      # Общее описание
+        - Команда позволяет создать новый образ.
+        - Образ создаётся на основе DockerFile и контекста.
+        - Адрес к корню контекста можно указать в PATH/URL команды.
+        - В URL можно указать git-репозиторий, который станет конекстом.
+          • Docker качает репозиторий командой: git clone --depth 1 --recursive
+          • Всё это скачивается в tmp-каталог docker'а.
+          • Путь к этому каталогу и отправляется docker'у.
+
+      # Уточнить путь к DockerFile относительно корня контекста
+        - Можно с помощью опции -f
+        - По умолчанию это корень контекста.
+        - Новое положение должно быть в каталоге контекста.
+        - Это особенно полезно, когда один и тот же набор файлов
+          используется для создания разных образов.
+
+      # Параметры при использовании URL
+        - При использовании URL можно указать 2 доп.параметра.
+        - Их формат: http://github.com/<vendor>/<repo>#<param1>:<param2>
+        - Здесь имеются в виду параметры <param1>:<param2>
+        - В <param1> можно указать:
+
+          • Тег
+          • Ветку
+          • SHA коммита
+
+        - В <param2> можно указать каталог относительно корня репозитория.
+        - Этот каталог и будет использован, как контекст.
+        - Примеры:
+
+            • myrepo.git	refs/heads/master	/
+            • myrepo.git#mytag	refs/tags/mytag	/
+            • myrepo.git#mybranch	refs/heads/mybranch	/
+            • myrepo.git#abcdef	sha1 = abcdef	/
+            • myrepo.git#:myfolder	refs/heads/master	/myfolder
+            • myrepo.git#master:myfolder	refs/heads/master	/myfolder
+            • myrepo.git#mytag:myfolder	refs/tags/mytag	/myfolder
+            • myrepo.git#mybranch:myfolder	refs/heads/mybranch	/myfolder
+            • myrepo.git#abcdef:myfolder	sha1 = abcdef	/myfolder
 
     // commit //
     //--------//
-    // -
+    // - Создать новый образ из изменений контейнера.
+
+      # Формат
+
+          docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+
+      # Опции
+
+        -a, --author=""     Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
+        -c, --change=[]     Apply specified Dockerfile instructions while committing the image
+        --help              Print usage
+        -m, --message=""    Commit message
+        -p, --pause=true    Pause container during commit
+
+      # Не пользуйся этой возможностью
+        - Лучше вообще не пользоваться этой возможностью.
+        - Потому что её никак нельзя отнести к best practice.
+        - Вместо этого следует пользоваться DockerFile.
+
+      # Ряд примечаний
+
+        • Все смонтированные volumes из контейнера игнорируются.
+        • Во вреям commit'а все процессы контейнера будут поставлены на паузу.
+        • Опцией --change можно применить указанный DockerFile
+          - Но поддерживаются не все инструкции.
+          - А лишь следующие:
+              CMD|ENTRYPOINT|ENV|EXPOSE|LABEL|ONBUILD|USER|VOLUME|WORKDIR
 
 
     // cp //
     //----//
-    // -
+    // - Копирование файлов между контейнером и docker-хостом.
+    // - Копировать можно как оттуда-сюда, так и отсюда-туда.
+    // - Подоглавление:
+    //
+    //  • Формат
+    //  • Опции
+    //  • Двустороннее копирование
+    //  • Стриминг
+    //  • Все пути к docker-контейнеру берутся относительно его /
+    //  • cp ведёт себя, как linux'овская cp -a
+    //  • Поведение в разных условиях, если SRC_PATH это файл
+    //  • Поведение в разных условиях, если SRC_PATH это каталог
+    //  • Невозможно скопировать системные файлы
+    //
 
+      # Формат
+
+          docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH | -
+          docker cp [OPTIONS] SRC_PATH | - CONTAINER:DEST_PATH
+
+      # Опции
+
+        -L, --follow-link          Always follow symbol link in SRC_PATH
+        --help                     Print usage
+
+      # Двустороннее копирование
+        - cp копирует содержимое из SRC_PATH в DEST_PATH.
+        - Копировать можно как из ФС контейнера в ФС docker-хоста.
+        - Таки из ФС docker-хоста в ФС контейнера.
+
+      # Стриминг
+
+        • Если вместо SRC_PATH tar-архив
+          - То есть с использованием -
+          - Тогда в DEST_PATH попадает содержимое этого tar-архива.
+          - В этом случае в DEST_PATH должен быть каталог.
+
+        • Если вместо DEST_PATH стрим
+          - Это стримит контент в STDOUT.
+
+      # Все пути к docker-контейнеру берутся относительно его /
+        - То есть можно не указывать / в начале каждого пути.
+        - Но для путей docker-хоста это не применимо.
+
+      # cp ведёт себя, как linux'овская cp -a
+        - Каталоги копируются рекурсивно.
+        - Все права сохраняются теми же, если это возможно.
+        - Владельцем устанавливается пользователь и основная группа.
+
+      # Поведение в разных условиях, если SRC_PATH это файл
+
+        • DEST_PATH не существует
+          - То есть по адресу DEST_PATH не существует файла.
+          - Тогда этот файл туда копируется.
+
+        • DEST_PATH не существует и кончается на /
+          - То есть DEST_PATH это не существующий каталог.
+          - Возникает ошибка.
+
+        • DEST_PATH существует и это файл
+          - Старый файл перезаписывается новым.
+
+        • DEST_PATH существует и это каталог
+          - Файл копируется в этот каталог.
+
+      # Поведение в разных условиях, если SRC_PATH это каталог
+
+        • DEST_PATH не существует
+          - Создаётся новый каталог DEST_PATH.
+          - И туда копируется содержимое из SRC_PATH.
+
+        • DEST_PATH существует и это файл
+          - Ошибка.
+
+        • DEST_PATH существует и это каталог, не заканчивающийся на /
+          - Весь каталог SRC_PATH копируется внутрь каталога DEST_PATH
+
+        • DEST_PATH существует и это каталог, заканчивающийся на /
+          - Содержимое каталога SRC_PATH копируется внутрь каталога DEST_PATH
+
+      # Невозможно скопировать системные файлы
+        - Такие как /proc, /sys, /dev, и смонтировать в контейнер
 
     // create //
     //--------//
-    // -
+    // - Создать новый контейнер.
 
+      # Формат
+
+          docker create [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+      # Опции
+
+        -a, --attach=[]               Attach to STDIN, STDOUT or STDERR
+        --add-host=[]                 Add a custom host-to-IP mapping (host:ip)
+        --blkio-weight=0              Block IO weight (relative weight)
+        --blkio-weight-device=[]      Block IO weight (relative device weight, format: `DEVICE_NAME:WEIGHT`)
+        --cpu-shares=0                CPU shares (relative weight)
+        --cap-add=[]                  Add Linux capabilities
+        --cap-drop=[]                 Drop Linux capabilities
+        --cgroup-parent=""            Optional parent cgroup for the container
+        --cidfile=""                  Write the container ID to the file
+        --cpu-period=0                Limit CPU CFS (Completely Fair Scheduler) period
+        --cpu-quota=0                 Limit CPU CFS (Completely Fair Scheduler) quota
+        --cpuset-cpus=""              CPUs in which to allow execution (0-3, 0,1)
+        --cpuset-mems=""              Memory nodes (MEMs) in which to allow execution (0-3, 0,1)
+        --device=[]                   Add a host device to the container
+        --device-read-bps=[]          Limit read rate (bytes per second) from a device (e.g., --device-read-bps=/dev/sda:1mb)
+        --device-read-iops=[]         Limit read rate (IO per second) from a device (e.g., --device-read-iops=/dev/sda:1000)
+        --device-write-bps=[]         Limit write rate (bytes per second) to a device (e.g., --device-write-bps=/dev/sda:1mb)
+        --device-write-iops=[]        Limit write rate (IO per second) to a device (e.g., --device-write-iops=/dev/sda:1000)
+        --disable-content-trust=true  Skip image verification
+        --dns=[]                      Set custom DNS servers
+        --dns-opt=[]                  Set custom DNS options
+        --dns-search=[]               Set custom DNS search domains
+        -e, --env=[]                  Set environment variables
+        --entrypoint=""               Overwrite the default ENTRYPOINT of the image
+        --env-file=[]                 Read in a file of environment variables
+        --expose=[]                   Expose a port or a range of ports
+        --group-add=[]                Add additional groups to join
+        -h, --hostname=""             Container host name
+        --help                        Print usage
+        -i, --interactive             Keep STDIN open even if not attached
+        --ip=""                       Container IPv4 address (e.g. 172.30.100.104)
+        --ip6=""                      Container IPv6 address (e.g. 2001:db8::33)
+        --ipc=""                      IPC namespace to use
+        --isolation=""                Container isolation technology
+        --kernel-memory=""            Kernel memory limit
+        -l, --label=[]                Set metadata on the container (e.g., --label=com.example.key=value)
+        --label-file=[]               Read in a line delimited file of labels
+        --link=[]                     Add link to another container
+        --log-driver=""               Logging driver for container
+        --log-opt=[]                  Log driver specific options
+        -m, --memory=""               Memory limit
+        --mac-address=""              Container MAC address (e.g. 92:d0:c6:0a:29:33)
+        --memory-reservation=""       Memory soft limit
+        --memory-swap=""              A positive integer equal to memory plus swap. Specify -1 to enable unlimited swap.
+        --memory-swappiness=""        Tune a container's memory swappiness behavior. Accepts an integer between 0 and 100.
+        --name=""                     Assign a name to the container
+        --net="bridge"                Connect a container to a network
+                                      'bridge': create a network stack on the default Docker bridge
+                                      'none': no networking
+                                      'container:<name|id>': reuse another container's network stack
+                                      'host': use the Docker host network stack
+                                      '<network-name>|<network-id>': connect to a user-defined network
+        --net-alias=[]                Add network-scoped alias for the container
+        --oom-kill-disable            Whether to disable OOM Killer for the container or not
+        --oom-score-adj=0             Tune the host's OOM preferences for containers (accepts -1000 to 1000)
+        -P, --publish-all             Publish all exposed ports to random ports
+        -p, --publish=[]              Publish a container's port(s) to the host
+        --pid=""                      PID namespace to use
+        --privileged                  Give extended privileges to this container
+        --read-only                   Mount the container's root filesystem as read only
+        --restart="no"                Restart policy (no, on-failure[:max-retry], always, unless-stopped)
+        --security-opt=[]             Security options
+        --stop-signal="SIGTERM"       Signal to stop a container
+        --shm-size=[]                 Size of `/dev/shm`. The format is `<number><unit>`. `number` must be greater than `0`.  Unit is optional and can be `b` (bytes), `k` (kilobytes), `m` (megabytes), or `g` (gigabytes). If you omit the unit, the system uses bytes. If you omit the size entirely, the system uses `64m`.
+        -t, --tty                     Allocate a pseudo-TTY
+        -u, --user=""                 Username or UID
+        --ulimit=[]                   Ulimit options
+        --uts=""                      UTS namespace to use
+        -v, --volume=[host-src:]container-dest[:<options>]
+                                      Bind mount a volume. The comma-delimited
+                                      `options` are [rw|ro], [z|Z], or
+                                      [[r]shared|[r]slave|[r]private]. The
+                                      'host-src' is an absolute path or a name
+                                      value.
+        --volume-driver=""            Container's volume driver
+        --volumes-from=[]             Mount volumes from the specified container(s)
+        -w, --workdir=""              Working directory inside the container
+
+      # Общее описание
+        - Команда позволяет создать новый контейнер из указанного образа.
+        - После создания контейнер не запускается (в отличие от docker run).
+        - ID нового контейнера выводится пользователю через STDOUT.
+        - Короче, аналог docker run -d, только не запускает контейнер.
+        - После создания, запустить контейнер можно: docker start <id контейнера>.
+
+      # Примеры
+
+        • Создать и запустить контейнер
+
+            docker create -it ubuntu bash     // 6d8af538ec5
+            docker start -a -i 6d8af538ec5
+
+        • Создать контейнер с объектом volume с авто.ссылкой
+          - Который использовать в качестве пула ссылок на объекты
+            volume при запуске другого контейнера.
+          - Код:
+
+              docker create -v /data --name data ubuntu
+              docker run --rm --volumes-from data ubuntu ls -la /data
+
+        • Создать контейнер с объектом volume с ручной.ссылкой
+          - Который использовать в качестве пула ссылок на объекты
+            volume при запуске другого контейнера.
+          - Код:
+
+              docker create -v /c/users/german:/data --name data ubuntu
+              docker run --rm --volumes-from data ubuntu ls -la /data
+
+      # Выбор способа изоляции контейнеров на Windows
+        - С помощью опции --isolation можно указать оный.
+        - Например: --isolation="default"
+        - Вот доступные варианты:
+
+          • default     | По умолчанию, 1-нный доступный для Linux вариант
+          • process     |
+          • hyperv      |
 
     // diff //
     //------//
-    // -
+    // - Вывести список изменений в ФС контейнера.
 
+      # Формат
+
+          Usage: docker diff [OPTIONS] CONTAINER
+
+      # Опции
+
+        --help              Print usage
+
+      # Описание
+        - В выводе в начале каждой строки стоит символ [ADC].
+        - Вот что они означают:
+
+          • А - Add
+          • D - Delete
+          • C - Change
+
+      # Пример
+        - Вводим: docker diff 7bb0e258aefe
+        - Получаем:
+
+            C /dev
+            A /dev/kmsg
+            C /etc
+            A /etc/mtab
+            A /go
+            A /go/src
+            A /go/src/github.com
+            A /go/src/github.com/docker
+            A /go/src/github.com/docker/docker
+            A /go/src/github.com/docker/docker/.git
+            ....
 
     // events //
     //--------//
-    // -
+    // - Получать события от docker-server в реалтайм.
 
+      # Формат
+
+          docker events [OPTIONS]
+
+      # Опции
+
+        -f, --filter=[]    Filter output based on conditions provided
+        --help             Print usage
+        --since=""         Show all events created since timestamp
+        --until=""         Stream events until this timestamp
+
+      # Пример
+        - Открываем 2 шелла в терминале.
+        - В одном запускаем демон, который слушает события:
+
+            docker events
+
+        - В другом генерируем какие-нибудь события.
+        - Например:
+
+            docker start 4386fb97867d
+            docker stop 4386fb97867d
+            docker stop 7805c1d35632
+
+      # Фильтрация событий
+        - С помощью -f можно фильтровать слушаемые события.
+
+      # Список возможных событий от docker-контейнера
+        - attach, commit, copy, create, destroy, die, exec_create, exec_start, export, kill, oom, pause, rename, resize, restart, start, stop, top, unpause, update
+
+      # Список возможных событий от docker-образов
+        - delete, import, pull, push, tag, untag
+
+      # Список возможных событий от docker-volumes
+        - create, mount, unmount, destroy
+
+      # Список возможных событий от docker-networks
+        - create, connect, disconnect, destroy
 
     // exec //
     //------//
-    // -
+    // - Выполнить команду в работающем контейнере.
 
+      # Формат
+
+          docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+      # Опции
+
+        -d, --detach               Detached mode: run command in the background
+        --detach-keys              Specify the escape key sequence used to detach a container
+        --help                     Print usage
+        -i, --interactive          Keep STDIN open even if not attached
+        --privileged               Give extended Linux capabilities to the command
+        -t, --tty                  Allocate a pseudo-TTY
+        -u, --user=                Username or UID (format: <name|uid>[:<group|gid>])
+
+      # Описание
+        - Команда выполнится, если PID == 1 контейнера работает.
+        - И она не перезапустится при рестарте контейнера.
+        - При постанове контейнера на паузу, запущенная с помощью
+          docker exec команда отвалится с ошибкой.
+
+      # Примеры
+
+          docker run --name ubuntu_bash --rm -i -t ubuntu bash
+          docker exec -d ubuntu_bash touch /tmp/execWorks
+          docker exec -it ubuntu_bash bash
 
     // export //
     //--------//
-    // -
+    // - Экспортирует содержимое ФС контейнера в tar-архив.
 
+      # Формат
+
+          docker export [OPTIONS] CONTAINER
+
+      # Опции
+
+        --help             Print usage
+        -o, --output=""    Write to a file, instead of STDOUT
+
+      # Внимание!
+        - Не экспортирует контент из volume-каталогов.
+        - Как делать backup/restore для данных из volume см.часть 7.
+
+      # Примеры
+
+          docker export red_panda > latest.tar
+          docker export --output="latest.tar" red_panda
 
     // history //
     //---------//
-    // -
+    // - Показывает историю образа.
 
+      # Формат
+
+          docker history [OPTIONS] IMAGE
+
+      # Опции
+
+        -H, --human=true     Print sizes and dates in human readable format
+        --help               Print usage
+        --no-trunc           Don't truncate output
+        -q, --quiet          Only show numeric IDs
+
+      # Примеры
+
+        • Общая история образа
+          - Выполняем: docker history docker
+          - Получаем:
+
+              IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
+              3e23a5875458        8 days ago          /bin/sh -c #(nop) ENV LC_ALL=C.UTF-8            0 B
+              8578938dd170        8 days ago          /bin/sh -c dpkg-reconfigure locales &&    loc   1.245 MB
+              be51b77efb42        8 days ago          /bin/sh -c apt-get update && apt-get install    338.3 MB
+              4b137612be55        6 weeks ago         /bin/sh -c #(nop) ADD jessie.tar.xz in /        121 MB
+              750d58736b4b        6 weeks ago         /bin/sh -c #(nop) MAINTAINER Tianon Gravi <ad   0 B
+              511136ea3c5a        9 months ago
 
     // images //
     //--------//
-    // -
+    // - Выводит список образов.
 
+      # Формат
 
-    //  //
-    //---------//
-    // -
+          docker images [OPTIONS] [REPOSITORY[:TAG]]
+
+      # Опции
+
+        -a, --all            Show all images (default hides intermediate images)
+        --digests            Show digests
+        -f, --filter=[]      Filter output based on conditions provided
+        --help               Print usage
+        --no-trunc           Don't truncate output
+        -q, --quiet          Only show numeric IDs
+
+      # Описание
+        - Команда покажет список всех топ-левел образов.
+        - А также их репозитории, теги и размер.
+        - Промежуточные образы не показываются.
+
+      # Что имеется в виду под топ-левел образами
+        - При создании образа всегда указывается во FROM базовый образ.
+        - Затем на него накладываются слои.
+        - При наложении каждого слоя образуется "промежуточный" образ.
+        - А когда процесс создания закончен, получается топ-левел образ.
+
+      # Примеры
+
+        • Вывести все доступные топ-левел образы с короткими ID
+
+            docker images
+
+        • Вывести все доступные топ-левел образы с полными ID
+
+            docker images --no-trunc
+
+        • Вывести все доступные топ-левел образы дайджестами
+          - Digests появились в формате образов версии v2.
+          - Их можно использовать также в качестве ID образов.
+          - Код:
+
+            docker images --digests
+
+        • Фильтрация вывода по имени и тегу
+          - В этом примере имя это "java", тег "8".
+          - Код:
+
+            docker images java:8
+
+        • Фильтрация образов
+          - С помощью опции -f.
+          - Показать все образы-зомби:
+
+              docker images --filter "dangling=true"
+
+          - Это не промежуточные образы.
+          - Зомби появляются, когда новый билд образа удаляет
+            repo:tag из ID образа, оставляя его <none>:<none>
+            или без тега.
+          - Массово зарубить всех зомби можно так:
+
+          
 
 
     // import //
     //--------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // info //
     //------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // inspect //
     //---------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // kill //
     //------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // load //
     //------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // login //
     //-------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // logout //
     //--------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // logs //
     //------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // network connect //
     //-----------------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // network disconnect //
     //--------------------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // network ls //
     //------------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // network rm //
     //------------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // pause //
     //-------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // port //
     //------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // ps //
     //----//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // pull //
     //------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // push //
     //------//
     // -
 
+      # Формат
 
-    //  //
-    //---------//
-    // -
 
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // rename //
     //--------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // restart //
     //---------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // rm //
     //----//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // rmi //
     //-----//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // run //
     //-----//
     // -
 
+      # Формат
 
-    //  //
-    //---------//
-    // -
 
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // save //
     //------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // search //
     //--------//
     // -
 
+      # Формат
 
-    //  //
-    //---------//
-    // -
 
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // start //
     //-------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // stop //
     //------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // tag //
     //-----//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // top //
     //-----//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // unpause //
     //---------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // update //
     //--------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // version //
     //---------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // volume create //
     //---------------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // volume inspect //
     //----------------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // volume ls //
     //-----------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // volume rm //
     //-----------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
     // wait //
     //------//
     // -
 
+      # Формат
+
+
+      # Опции
+
+
+      # Описание
+
+
+      # Примеры
 
 
 
