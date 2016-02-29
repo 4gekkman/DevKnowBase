@@ -4045,53 +4045,53 @@
     # Справочник команды docker
 
       - daemon              | Запустить docker-демон, самодостаточную среду для работы с linux-контейнерами
-      - attach              |
-      - build               |
-      - commit              |
-      - cp                  |
-      - create              |
-      - diff                |
-      - events              |
-      - exec                |
-      - export              |
-      - history             |
-      - images              |
-      - import              |
-      - info                |
-      - inspect             |
-      - kill                |
-      - load                |
-      - login               |
-      - logout              |
-      - logs                |
-      - network connect     |
-      - network disconnect  |
-      - network ls          |
-      - network rm          |
-      - pause               |
-      - port                |
-      - ps                  |
-      - pull                |
-      - push                |
-      - rename              |
-      - restart             |
-      - rm                  |
-      - rmi                 |
-      - run                 |
-      - save                |
-      - search              |
-      - start               |
-      - stop                |
-      - tag                 |
-      - top                 |
-      - unpause             |
-      - update              |
-      - version             |
-      - volume create       |
-      - volume inspect      |
-      - volume ls           |
-      - volume rm           |
-      - wait                |
+      - attach              | Подключиться к контейнеру (доступ через командную строку)
+      - build               | Собрать новый образ из DockerFile и контекста по указанному адресу
+      - commit              | Создать новый образ из изменений контейнера
+      - cp                  | Копирование файлов между контейнером и docker-хостом
+      - create              | Создать новый контейнер
+      - diff                | Вывести список изменений в ФС контейнера
+      - events              | Получать события от docker-server в реалтайм
+      - exec                | Выполнить команду в работающем контейнере
+      - export              | Экспортирует содержимое ФС контейнера в tar-архив
+      - history             | Показывает историю образа
+      - images              | Выводит список образов
+      - import              | Создаёт пустой образ с ФС и импортирует туда содержимое архива
+      - info                | Отображает информацию о Docker
+      - inspect             | Выводит информацию об образе или контейнере
+      - kill                | Прибить процесс контейнера
+      - load                | Загружает образ из tar-архива или STDIN
+      - login               | Создать аккаунт в репозитории, или аутентифицироваться
+      - logout              | Выйти из учётной записи репозитория
+      - logs                | Извлекает логи контейнера
+      - network connect     | Подключает контейнер к сети
+      - network disconnect  | Создать новую сеть с указанным именем
+      - network ls          | Выводит список всех сетей, созданных пользователем
+      - network rm          | Удалить одну или более сетей
+      - pause               | Ставит на паузу все процессы в контейнере
+      - port                | Выводит информацию о port mapping контейнера
+      - ps                  | Выводит список контейнеров
+      - pull                | Извлечь образ с Docker Hub
+      - push                | Залить свой образ на Docker Hub
+      - rename              | Переименовать контейнер
+      - restart             | Перезапустить контейнер
+      - rm                  | Удалить 1-ин или более контейнеров
+      - rmi                 | Удалить 1 или более образов
+      - run                 | Создать контейнер, запустить и выполнить в нём команду
+      - save                | Сохранить образ(ы) в tar-архив
+      - search              | Искать образы на Docker Hub
+      - start               | Запустить 1 или более контейнеров
+      - stop                | Остановить контейнер сигналом SIGTERM, а затем SIGKILL
+      - tag                 | Пометить образ тегом в репозитории
+      - top                 | Вывести запущенные процессы в контейнере
+      - unpause             | Снять с паузы все процессы в контейнере
+      - update              | Обновляет ограничения контейнера на ресурсы
+      - version             | Показать информацию о версии Docker
+      - volume create       | Создать новый объект volume
+      - volume inspect      | Вывести информацию об 1-м или нескольких объектах volume
+      - volume ls           | Вывести список доступных объектов volume
+      - volume rm           | Удалить 1 или более объектов volume
+      - wait                | Заблокировать до остановки контейнера, затем вывести его exit code
 
   --------------------------------------
 
@@ -4356,7 +4356,7 @@
 
     // build //
     //-------//
-    // - Собрать новый образ из DockerFile и контекста по указанному адресу
+    // - Собрать новый образ из DockerFile и контекста по указанному адресу.
 
       # Формат
 
@@ -5854,217 +5854,324 @@
 
     // save //
     //------//
-    // -
+    // - Сохранить образ(ы) в tar-архив.
 
       # Формат
 
+        docker save [OPTIONS] IMAGE [IMAGE...]
 
       # Опции
 
+          --help             Print usage
+          -o, --output=""    Write to a file, instead of STDOUT
 
       # Описание
-
+        - Возвращает результат в STDOUT.
+        - Содержит все родительские слои и все теги + версии.
+        - Или можно указать тег через :
 
       # Примеры
+        - Без указания тегов:
+
+          docker save busybox > busybox.tar
+          ls -sh busybox.tar
+          docker save --output busybox.tar busybox
+          ls -sh busybox.tar
+          docker save -o fedora-all.tar fedora
+          docker save -o fedora-latest.tar fedora:latest
+
+        - С указанием тегов:
+
+          docker save -o ubuntu.tar ubuntu:lucid ubuntu:saucy
 
     // search //
     //--------//
-    // -
+    // - Искать образы на Docker Hub.
 
       # Формат
 
+          docker search [OPTIONS] TERM
 
       # Опции
 
-
-      # Описание
-
+        --automated          Only show automated builds
+        --help               Print usage
+        --no-trunc           Don't truncate output
+        -s, --stars=0        Only displays with at least x stars
 
       # Примеры
+
+        • Искать по имени
+
+            docker search busybox
+
+        • Искать по имени и кол-ву звёзд
+
+            docker search --stars=3 busybox
+
+        • Искать автоматизированные образы
+
+            docker search --stars=3 --automated busybox
+
+        • Показывать не обрезанное описание
+
+            docker search --stars=3 --no-trunc busybox
+
 
     // start //
     //-------//
-    // -
+    // - Запустить 1 или более контейнеров.
 
       # Формат
 
+          docker start [OPTIONS] CONTAINER [CONTAINER...]
 
       # Опции
 
+        -a, --attach               Attach STDOUT/STDERR and forward signals
+        --detach-keys              Specify the escape key sequence used to detach a container
+        --help                     Print usage
+        -i, --interactive          Attach container's STDIN
+
+    // stats //
+    //-------//
+    // - Отобразить статистику потребления ресурсов контейнера в реальном времени.
+
+      # Формат
+
+          docker stats [OPTIONS] [CONTAINER...]
+
+      # Опции
+
+        -a, --all          Show all containers (default shows just running)
+        --help             Print usage
+        --no-stream        Disable streaming stats and only pull the first result
 
       # Описание
-
+        - Возвращает потко с данными.
 
       # Примеры
+
+        • Получать статистику от 1-го контейнера
+
+            docker stats
+
+        • От нескольких контейнеров
+
+            docker stats fervent_panini 5acfcb1b4fd1
 
     // stop //
     //------//
-    // -
+    // - Остановить контейнер сигналом SIGTERM, а затем SIGKILL.
+    // - SIGKILL посылается после истечения grace period.
 
       # Формат
 
+          docker stop [OPTIONS] CONTAINER [CONTAINER...]
 
       # Опции
 
-
-      # Описание
-
-
-      # Примеры
+        --help             Print usage
+        -t, --time=10      Seconds to wait for stop before killing it
 
     // tag //
     //-----//
-    // -
+    // - Пометить образ тегом в репозитории.
 
       # Формат
 
+          docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]
 
       # Опции
 
-
-      # Описание
-
-
-      # Примеры
+        --help               Print usage
 
     // top //
     //-----//
-    // -
+    // - Вывести запущенные процессы в контейнере.
 
       # Формат
 
+          docker top [OPTIONS] CONTAINER [ps OPTIONS]
 
       # Опции
 
-
-      # Описание
-
-
-      # Примеры
+        --help          Print usage
 
     // unpause //
     //---------//
-    // -
+    // - Снять с паузы все процессы в контейнере.
 
       # Формат
 
+          docker unpause [OPTIONS] CONTAINER [CONTAINER...]
 
       # Опции
 
+        Unpause all processes within a container
 
       # Описание
-
+        - Как и pause, использует cgroups freezer.
 
       # Примеры
 
     // update //
     //--------//
-    // -
+    // - Обновляет ограничения контейнера на ресурсы.
 
       # Формат
 
+          docker update [OPTIONS] CONTAINER [CONTAINER...]
 
       # Опции
 
+        --help=false               Print usage
+        --blkio-weight=0           Block IO (relative weight), between 10 and 1000
+        --cpu-shares=0             CPU shares (relative weight)
+        --cpu-period=0             Limit the CPU CFS (Completely Fair Scheduler) period
+        --cpu-quota=0              Limit the CPU CFS (Completely Fair Scheduler) quota
+        --cpuset-cpus=""           CPUs in which to allow execution (0-3, 0,1)
+        --cpuset-mems=""           Memory nodes (MEMs) in which to allow execution (0-3, 0,1)
+        -m, --memory=""            Memory limit
+        --memory-reservation=""    Memory soft limit
+        --memory-swap=""           A positive integer equal to memory plus swap. Specify -1 to enable unlimited swap
+        --kernel-memory=""         Kernel memory limit: container must be stopped
 
       # Описание
+        - Используется для предотвращения потребления контейнером
+          большого кол-ва ресурсов docker-хоста.
+        - Одной командой, можно наложить ограничения на контейнер.
+        - Или одновременно на несколько контейнеров (имена через пробел).
 
+      # Можно применять на запущенных и остановленных контейнеров
+        - Кроме опции --kernel-memory.
+        - Её только на остановленном контейнере.
 
       # Примеры
+
+          docker update --cpu-shares 512 abebf7571666
+          docker update --cpu-shares 512 -m 300M abebf7571666 hopeful_morse
 
     // version //
     //---------//
-    // -
+    // - Показать информацию о версии Docker.
 
       # Формат
 
+          Usage: docker version [OPTIONS]
 
       # Опции
 
-
-      # Описание
-
+        -f, --format=""    Format the output using the given go template
+        --help             Print usage
 
       # Примеры
+
+          docker version
 
     // volume create //
     //---------------//
-    // -
+    // - Создать новый объект volume.
 
       # Формат
 
+          docker volume create [OPTIONS]
 
       # Опции
 
+        -d, --driver=local    Specify volume driver name
+        --help                Print usage
+        --name=               Specify volume name
+        -o, --opt=map[]       Set driver specific options
 
       # Описание
-
+        - Создаёт новый объект volume.
+        - Его потом можно связать с контейнерами.
+        - Если не указать имя, то docker сам сгенерирует.
+        - Один volume могут одновременно использовать много контейнеров.
+        - Надо только следить, чтобы они не писали в него одновременно.
+        - Имена volumes должны быть уникальны среди всех драйверов.
 
       # Примеры
+
+          docker volume create --name hello
+          docker run -d -v hello:/world busybox ls /world
 
     // volume inspect //
     //----------------//
-    // -
+    // - Вывести информацию об 1-м или нескольких объектах volume.
 
       # Формат
 
+          docker volume inspect [OPTIONS] VOLUME [VOLUME...]
 
       # Опции
 
+        -f, --format=       Format the output using the given go template.
+        --help              Print usage
 
       # Описание
-
+        - Возвращает JSON-массив с информацией о volume.
 
       # Примеры
+
+          docker volume create --name hello
+          docker volume inspect hello
 
     // volume ls //
     //-----------//
-    // -
+    // - Вывести список доступных объектов volume.
 
       # Формат
 
+          docker volume ls [OPTIONS]
 
       # Опции
 
+        -f, --filter=[]      Provide filter values (i.e. 'dangling=true')
+        --help               Print usage
+        -q, --quiet          Only display volume names
 
       # Описание
-
+        - Выводит список всех объектов volume, про которые Docker знает.
+        - Их можно фильтровать, используя флаг -f.
 
       # Примеры
+
+          docker volume ls
+          docker volume ls --filter "dangling=true"
 
     // volume rm //
     //-----------//
-    // -
+    // - Удалить 1 или более объектов volume.
 
       # Формат
 
+        docker volume rm [OPTIONS] VOLUME [VOLUME...]
 
       # Опции
 
+          --help             Print usage
 
       # Описание
-
+        - Нельзя удалить volume, который связан хотя бы с 1 контейнером.
 
       # Примеры
+
+          docker volume create --name bye
+          docker volume rm bye
 
     // wait //
     //------//
-    // -
+    // - Заблокировать до остановки контейнера, затем вывести его exit code.
 
       # Формат
 
+          docker wait [OPTIONS] CONTAINER [CONTAINER...]
 
       # Опции
 
-
-      # Описание
-
-
-      # Примеры
-
-
-
-
+        --help          Print usage
 
 
 
