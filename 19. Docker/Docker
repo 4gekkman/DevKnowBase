@@ -4914,338 +4914,943 @@
             или без тега.
           - Массово зарубить всех зомби можно так:
 
-          
+              docker rmi $(docker images -f "dangling=true" -q)
 
+          - Докер предупредит, если контейнеры существуют и работают.
 
     // import //
     //--------//
-    // -
+    // - Создаёт пустой образ с ФС и импортирует туда содержимое архива.
 
       # Формат
 
+          docker import file|URL|- [REPOSITORY[:TAG]]
 
       # Опции
 
+        -c, --change=[]     Apply specified Dockerfile instructions while importing the image
+        --help              Print usage
+        -m, --message=      Set commit message for imported image
 
-      # Описание
-
+      # Какие архивы может переварить
+        - .tar, .tar.gz, .tgz, .bzip, .tar.xz, .txz
 
       # Примеры
+
+          cat exampleimage.tgz | docker import - exampleimagelocal:new
+          cat exampleimage.tgz | docker import --message "New image imported from tarball" - exampleimagelocal:new
+          docker import /path/to/exampleimage.tgz
+          sudo tar -c . | docker import - exampleimagedir
+          sudo tar -c . | docker import --change "ENV DEBUG true" - exampleimagedir
 
     // info //
     //------//
-    // -
+    // - Отображает информацию о Docker.
 
       # Формат
 
+          docker info [OPTIONS]
 
       # Опции
 
-
-      # Описание
+        --help              Print usage
 
 
       # Примеры
+
+          docker -D info
 
     // inspect //
     //---------//
-    // -
+    // - Выводит информацию об образе или контейнере.
 
       # Формат
 
+        docker inspect [OPTIONS] CONTAINER|IMAGE [CONTAINER|IMAGE...]
 
       # Опции
 
+          -f, --format=""         Format the output using the given go template
+          --help                  Print usage
+          --type=container|image  Return JSON for specified type, permissible
+                                  values are "image" or "container"
+          -s, --size              Display total file sizes if the type is container
 
       # Описание
-
+        - По умолчанию выводит информацию в JSON-массиве.
 
       # Примеры
+
+        • Получить IP:
+
+          docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $INSTANCE_ID
+
+        • Получить MAC адрес
+
+          docker inspect --format='{{range .NetworkSettings.Networks}}{{.MacAddress}}{{end}}' $INSTANCE_ID
+
+        • Получить путь к логу
+
+          docker inspect --format='{{.LogPath}}' $INSTANCE_ID
+
+        • Получить все связки портов
+
+          docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' $INSTANCE_ID
+
+        • Получить подсекцию в формате JSON
+
+          docker inspect --format='{{json .Config}}' $INSTANCE_ID
 
     // kill //
     //------//
-    // -
+    // - Прибить процесс контейнера.
 
       # Формат
 
+          docker kill [OPTIONS] CONTAINER [CONTAINER...]
 
       # Опции
 
+        --help                 Print usage
+        -s, --signal="KILL"    Signal to send to the container
 
       # Описание
+        - Посылает сигнал SIGKILL, или указанный в --signal, конейнеру.
 
-
-      # Примеры
+      # Проблема с /bin/sh -c
+        - ENTRYPOINT и CMD в shell-форме запускаются, как подкоманда
+          процесса /bin/sh -c, который не пропускает сигналов.
+        - Это значит, что эта исполняемая не является PID == 1 контейнера,
+          и не получает unix-сигналов.
 
     // load //
     //------//
-    // -
+    // - Загружает образ из tar-архива или STDIN.
 
       # Формат
 
+          docker load [OPTIONS]
 
       # Опции
 
-
-      # Описание
-
+        --help             Print usage
+        -i, --input=""     Read from a tar archive file, instead of STDIN. The tarball may be compressed with gzip, bzip, or xz
 
       # Примеры
+        - Будем загружать образы из STDIN и tar-архива.
+        - И проверять с помощью docker images, загрузились ли они.
+        - Код:
+
+            docker images
+            docker load < busybox.tar.gz
+            docker images
+            docker load --input fedora.tar
+            docker images
 
     // login //
     //-------//
-    // -
+    // - Создать аккаунт в репозитории, или аутентифицироваться.
+    // - Попросит ввести логин, если такого нет, то создание аккаунта.
+    // - Если сервер не указан, то по умолчанию: "https://index.docker.io/v1/"
 
       # Формат
 
+          docker login [OPTIONS] [SERVER]
 
       # Опции
 
-
-      # Описание
-
-
-      # Примеры
+        -e, --email=""       Email
+        --help               Print usage
+        -p, --password=""    Password
+        -u, --username=""    Username
 
     // logout //
     //--------//
-    // -
+    // - Выйти из учётной записи репозитория.
+    // - Если сервер не указан, то по умолчанию: "https://index.docker.io/v1/"
 
       # Формат
 
+          docker logout [SERVER]
 
       # Опции
 
-
-      # Описание
-
+        --help          Print usage
 
       # Примеры
+
+          docker logout localhost:8080
 
     // logs //
     //------//
-    // -
+    // - Извлекает логи контейнера.
 
       # Формат
 
+          docker logs [OPTIONS] CONTAINER
 
       # Опции
 
+        -f, --follow              Follow log output
+        --help                    Print usage
+        --since=""                Show logs since timestamp
+        -t, --timestamps          Show timestamps
+        --tail="all"              Number of lines to show from the end of the logs
 
-      # Описание
+      # Внимание!
+        - Эта команда доступна не для всех контейнеров.
+        - А только для (и/и):
 
-
-      # Примеры
+          • Тех, у которых есть json-file
+          • У кототорых драйверы ведения лога journald
 
     // network connect //
     //-----------------//
-    // -
+    // - Подключает контейнер к сети.
 
       # Формат
 
+        docker network connect [OPTIONS] NETWORK CONTAINER
 
       # Опции
 
+          --alias=[]         Add network-scoped alias for the container
+          --help             Print usage
+          --ip               IPv4 Address
+          --ip6              IPv6 Address
+          --link=[]          Add a link to another container
 
       # Описание
+        - Подключает контейнер к сети.
+        - Можно использовать ID или имя контейнера.
+        - Подклченные к 1-ой сети контейнеры могут общаться.
+        - Один контейнер можно добавть во много сетей.
+        - И эти сети не обязаны быть одного типа.
 
+      # Пауза и остановка контейнера
+
+        • Если поставить на паузу, он остаётся подключенным к сети.
+        • Если остановить контейнер, он отключается от сети.
+        • Если указан IP, но перепременяется после рестарта контейнера
+        • Если IP уже недоступен, контейнер не стартует.
+          - С помощью --ip-range можно подстраховаться.
+          - Например:
+
+              docker network create --subnet 172.20.0.0/16 --ip-range 172.20.240.0/20 multi-host-network
+
+      # Проверить, подключен ли контейнер к сети
+        - Можно командой: docker network inspect.
+
+      # Удалить контейнер из сети
+        - Можно командой: docker network disconnect
+
+      # Общение контейнеров в одной сети
+        - Они могут общаться, используя IP или имена друг друга.
+        - Это касается не только bridge-сетей, но и overlay.
 
       # Примеры
+
+        • Подключить контейнер к сети
+
+            docker network connect multi-host-network container1
+
+        • Подключить контейнер к сети при создании и запуске
+
+            docker run -itd --net=multi-host-network busybox
+
+        • Указать, какой IP присвоить подключенному контейнеру
+
+            docker network connect --ip 10.10.36.122 multi-host-network container2
+
+        • Назначить контейнеру псевдоним
+          - Соединить с указанным контейнером, назначив ему псевдоним.
+          - Код:
+
+            docker network connect --link container1:c1 multi-host-network container2
+
+        • --alias option can be used to resolve the container by another name in the network being connected to.
+
+            docker network connect --alias db --alias mysql multi-host-network container2
 
     // network disconnect //
     //--------------------//
-    // -
+    // - Создать новую сеть с указанным именем.
 
       # Формат
 
+          docker network create [OPTIONS] NETWORK-NAME
 
       # Опции
 
+        --aux-address=map[]      Auxiliary ipv4 or ipv6 addresses used by network driver
+        -d --driver=DRIVER       Driver to manage the Network bridge or overlay. The default is bridge.
+        --gateway=[]             ipv4 or ipv6 Gateway for the master subnet
+        --help                   Print usage
+        --internal               Restricts external access to the network
+        --ip-range=[]            Allocate container ip from a sub-range
+        --ipam-driver=default    IP Address Management Driver
+        --ipam-opt=map[]         Set custom IPAM driver specific options
+        -o --opt=map[]           Set custom driver specific options
+        --subnet=[]              Subnet in CIDR format that represents a network segment
 
       # Описание
+        - Создаёт новую сеть.
 
+      # Драйвер сети
+        - Из коробки доступны 2 драйвера:
+
+          • bridge    | применяется по умолчанию
+          • overlay
+
+        - Но можно установить и свой, кастомный драйвер.
+        - Драйвер можно указать в опции -d
+
+      # Bridge-сеть по умолчанию
+        - При установке Docker Engine он создаёт bridge-сеть "docker0" автоматически.
+        - При запуске контейнера командой docker run он автоматом подключается к ней.
+        - Эту сеть по умолчанию нельзя удалить.
+
+      # Bridge- и Overlay-сети
+
+        • Bridge-сеть
+          - Это изолированные сети в рамках одного docker-хоста.
+
+        • Overlay-сеть
+          - Эта сеть может работать между разными docker-хостами.
+          - Чтобы создать такие сети, д.б. выполнены условия:
+
+            • Доступ к key-value хранилищу
+              - Поддерживаются: Consul, Etcd, and ZooKeeper.
+            • Кластер хостов с подключением к key-value хранилищу.
+            • Правильно настроенный daemon на каждом хосте кластера.
+
+          - Опции docker daemon, поддерживающие overlay сети:
+
+            • --cluster-store
+            • --cluster-store-opt
+            • --cluster-advertise
+
+      # Docker Swarm
+        - Поможет управлять overlay-сетью.
+        - Не обязателен.
 
       # Примеры
+
+        • Создать новую bridge-сеть
+
+            docker network create -d bridge my-bridge-network
+
+        • Создать новую overlay-сеть (после всех настроек)
+
+            docker network create -d overlay my-multihost-network
+
+    // network disconnect //
+    //--------------------//
+    // - Отключить контейнер от сети.
+
+      # Формат
+
+        docker network disconnect [OPTIONS] NETWORK CONTAINER
+
+      # Опции
+
+          -f, --force        Force the container to disconnect from a network
+          --help             Print usage
+
+      # Описание
+        - Отключает контейнер от сети.
+        - Контейнер в этот момент должен быть запущен.
+
+      # Примеры
+
+          docker network disconnect multi-host-network container1
+
+    // network inspect //
+    //-----------------//
+    // - Выводит детальную информацию о сети.
+
+      # Формат
+
+          docker network inspect [OPTIONS] NETWORK [NETWORK..]
+
+      # Опции
+
+        -f, --format=       Format the output using the given go template.
+        --help             Print usage
+
+      # Описание
+        - Возвращает информацию в формате JSON.
+
+      # Примеры
+
+          sudo docker network inspect bridge
 
     // network ls //
     //------------//
-    // -
+    // - Выводит список всех сетей, созданных пользователем.
 
       # Формат
 
+          docker network ls [OPTIONS]
 
       # Опции
 
+        -f, --filter=[]       Filter output based on conditions provided
+        --help                Print usage
+        --no-trunc            Do not truncate the output
+        -q, --quiet           Only display numeric IDs
 
       # Описание
-
+        - Выводит список всех сетей, о которых знает docker-daemon.
+        - Включая overlay-сети между хостами.
+        - Чтобы отображать полные ID сетей используй опцию --no-trunc
 
       # Примеры
+
+          docker network ls --no-trunc
 
     // network rm //
     //------------//
-    // -
+    // - Удалить одну или более сетей.
 
       # Формат
 
+          docker network rm [OPTIONS] NETWORK [NETWORK...]
 
       # Опции
 
+         --help             Print usage
 
       # Описание
-
+        - Чтобы удалить сеть, надо сначала отключить от неё все контейнеры.
+        - При удалении нескольких сетей одновременно, команда пытается
+          удалить каждую из них даже, если удалить одну или несколько
+          не удалось.
 
       # Примеры
+
+          docker network rm my-network
 
     // pause //
     //-------//
-    // -
+    // - Ставит на паузу все процессы в контейнере.
 
       # Формат
 
+        docker pause [OPTIONS] CONTAINER [CONTAINER...]
 
       # Опции
 
+          --help          Print usage
 
       # Описание
+        - Команда использует cgroups freezer для приостановке всех
+          процессов в контейнере.
 
-
-      # Примеры
 
     // port //
     //------//
-    // -
+    // - Выводит информацию о port mapping контейнера.
 
       # Формат
 
+        docker port [OPTIONS] CONTAINER [PRIVATE_PORT[/PROTO]]
 
       # Опции
 
+          --help          Print usage
 
       # Описание
-
+        - Какие порты куда проброшены.
 
       # Примеры
+
+          docker ps
+          docker port test
+          docker port test 7890/tcp
+          docker port test 7890
 
     // ps //
     //----//
-    // -
+    // - Выводит список контейнеров.
 
       # Формат
 
+        docker ps [OPTIONS]
 
       # Опции
 
+          -a, --all             Show all containers (default shows just running)
+          -f, --filter=[]       Filter output based on these conditions:
+                                - exited=<int> an exit code of <int>
+                                - label=<key> or label=<key>=<value>
+                                - status=(created|restarting|running|paused|exited)
+                                - name=<string> a container's name
+                                - id=<ID> a container's ID
+                                - before=(<container-name>|<container-id>)
+                                - since=(<container-name>|<container-id>)
+                                - ancestor=(<image-name>[:tag]|<image-id>|<image@digest>) - containers created from an image or a descendant.
+          --format=[]           Pretty-print containers using a Go template
+          --help                Print usage
+          -l, --latest          Show the latest created container (includes all states)
+          -n=-1                 Show n last created containers (includes all states)
+          --no-trunc            Don't truncate output
+          -q, --quiet           Only display numeric IDs
+          -s, --size            Display total file sizes
 
       # Описание
 
+        • Показать только запущенные контейнеры
 
-      # Примеры
+            docker ps
+
+        • Показать все контейнеры (и запущенные, и нет)
+
+            docker ps -a
 
     // pull //
     //------//
-    // -
+    // - Извлечь образ с Docker Hub.
 
       # Формат
 
+          docker pull [OPTIONS] NAME[:TAG] | [REGISTRY_HOST[:REGISTRY_PORT]/]NAME[:TAG]
 
       # Опции
 
-
-      # Описание
-
+        -a, --all-tags                Download all tagged images in the repository
+        --disable-content-trust=true  Skip image verification
+        --help                        Print usage
 
       # Примеры
+
+        • Извлечь образ debian:latest и его промежуточные слои
+
+            docker pull debian
+
+        • Извлечь debian:testing и его промежуточные слои
+
+            docker pull debian:testing
+
+        • Извлечь образ из репозитория debian и его промежуточные слои.
+          - Используя указанный digest.
+          - Код:
+
+              docker pull debian@sha256:cbbf2f9a99b47fc460d422812b6a5adff7dfee951d8fa2e4a98caa0382cfbdbf
+
+        • Извлечь образы со всеми тегами из репозитория centos
+
+            docker pull --all-tags centos
 
     // push //
     //------//
-    // -
+    // - Залить свой образ на Docker Hub.
 
       # Формат
 
+        docker push [OPTIONS] NAME[:TAG]
 
       # Опции
 
+          --disable-content-trust=true   Skip image signing
+          --help                         Print usage
 
       # Описание
-
-
-      # Примеры
+        - Если прибить процесс во время push, это отменит операцию.
 
     // rename //
     //--------//
-    // -
+    // - Переименовать контейнер.
 
       # Формат
 
+          docker rename [OPTIONS] OLD_NAME NEW_NAME
 
       # Опции
 
-
-      # Описание
-
-
-      # Примеры
+        --help          Print usage
 
     // restart //
     //---------//
-    // -
+    // - Перезапустить контейнер.
 
       # Формат
 
+        docker restart [OPTIONS] CONTAINER [CONTAINER...]
 
       # Опции
 
-
-      # Описание
-
-
-      # Примеры
+        --help             Print usage
+        -t, --time=10      Seconds to wait for stop before killing the container
 
     // rm //
     //----//
-    // -
+    // - Удалить 1-ин или более контейнеров.
 
       # Формат
 
+        docker rm [OPTIONS] CONTAINER [CONTAINER...]
 
       # Опции
 
-
-      # Описание
-
+          -f, --force            Force the removal of a running container (uses SIGKILL)
+          --help                 Print usage
+          -l, --link             Remove the specified link
+          -v, --volumes          Remove the volumes associated with the container
 
       # Примеры
+
+        • Удалить контейнер по ссылке /redis
+
+            docker rm /redis
+
+        • Удалить link между контейнерами
+
+            docker rm --link /webapp/redis
+
+        • Убить процесс с PID == 1 в контейнере, удалить контейнер
+
+            docker rm --force redis
+
+        • Удалить все остановленные контейнеры
+
+            $ docker rm $(docker ps -a -q)
+
+        • Удалить контейнер и все volume-объекты с ним связанные
+
+            docker rm -v redis
+
+        • В этом примере volume /foo останется, а /bar будет удалён
+          - Аналогичное поведение и для --volumes-from.
+          - Код:
+
+              docker create -v awesome:/foo -v /bar --name hello redis
+              docker rm -v hello
 
     // rmi //
     //-----//
-    // -
+    // - Удалить 1 или более образов.
 
       # Формат
 
+        docker rmi [OPTIONS] IMAGE [IMAGE...]
 
       # Опции
 
+          -f, --force          Force removal of the image
+          --help               Print usage
+          --no-prune           Do not delete untagged parents
 
-      # Описание
+      # Удалить образ можно используя:
 
+        • Его короткий ID.
+        • Его длинный ID.
+        • Его тег.
+        • Его Digest.
+
+      # Сначала надо удалить все теги
+        - Если образ связан с одним или более тегами.
+        - То надо удалить сначала все эти тега, а потом уже образ.
 
       # Примеры
+
+        • Примеры удаления образов
+
+            docker images
+            docker rmi fd484f19954f
+            docker rmi test1
+            docker images
 
     // run //
     //-----//
-    // -
+    // - Создать контейнер, запустить и выполнить в нём команду.
 
       # Формат
 
+          docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 
       # Опции
 
+        -a, --attach=[]               Attach to STDIN, STDOUT or STDERR
+        --add-host=[]                 Add a custom host-to-IP mapping (host:ip)
+        --blkio-weight=0              Block IO weight (relative weight)
+        --blkio-weight-device=[]      Block IO weight (relative device weight, format: `DEVICE_NAME:WEIGHT`)
+        --cpu-shares=0                CPU shares (relative weight)
+        --cap-add=[]                  Add Linux capabilities
+        --cap-drop=[]                 Drop Linux capabilities
+        --cgroup-parent=""            Optional parent cgroup for the container
+        --cidfile=""                  Write the container ID to the file
+        --cpu-period=0                Limit CPU CFS (Completely Fair Scheduler) period
+        --cpu-quota=0                 Limit CPU CFS (Completely Fair Scheduler) quota
+        --cpuset-cpus=""              CPUs in which to allow execution (0-3, 0,1)
+        --cpuset-mems=""              Memory nodes (MEMs) in which to allow execution (0-3, 0,1)
+        -d, --detach                  Run container in background and print container ID
+        --detach-keys                 Specify the escape key sequence used to detach a container
+        --device=[]                   Add a host device to the container
+        --device-read-bps=[]          Limit read rate (bytes per second) from a device (e.g., --device-read-bps=/dev/sda:1mb)
+        --device-read-iops=[]         Limit read rate (IO per second) from a device (e.g., --device-read-iops=/dev/sda:1000)
+        --device-write-bps=[]         Limit write rate (bytes per second) to a device (e.g., --device-write-bps=/dev/sda:1mb)
+        --device-write-iops=[]        Limit write rate (IO per second) to a device (e.g., --device-write-bps=/dev/sda:1000)
+        --disable-content-trust=true  Skip image verification
+        --dns=[]                      Set custom DNS servers
+        --dns-opt=[]                  Set custom DNS options
+        --dns-search=[]               Set custom DNS search domains
+        -e, --env=[]                  Set environment variables
+        --entrypoint=""               Overwrite the default ENTRYPOINT of the image
+        --env-file=[]                 Read in a file of environment variables
+        --expose=[]                   Expose a port or a range of ports
+        --group-add=[]                Add additional groups to run as
+        -h, --hostname=""             Container host name
+        --help                        Print usage
+        -i, --interactive             Keep STDIN open even if not attached
+        --ip=""                       Container IPv4 address (e.g. 172.30.100.104)
+        --ip6=""                      Container IPv6 address (e.g. 2001:db8::33)
+        --ipc=""                      IPC namespace to use
+        --isolation=""                Container isolation technology
+        --kernel-memory=""            Kernel memory limit
+        -l, --label=[]                Set metadata on the container (e.g., --label=com.example.key=value)
+        --label-file=[]               Read in a file of labels (EOL delimited)
+        --link=[]                     Add link to another container
+        --log-driver=""               Logging driver for container
+        --log-opt=[]                  Log driver specific options
+        -m, --memory=""               Memory limit
+        --mac-address=""              Container MAC address (e.g. 92:d0:c6:0a:29:33)
+        --memory-reservation=""       Memory soft limit
+        --memory-swap=""              A positive integer equal to memory plus swap. Specify -1 to enable unlimited swap.
+        --memory-swappiness=""        Tune a container's memory swappiness behavior. Accepts an integer between 0 and 100.
+        --name=""                     Assign a name to the container
+        --net="bridge"                Connect a container to a network
+                                      'bridge': create a network stack on the default Docker bridge
+                                      'none': no networking
+                                      'container:<name|id>': reuse another container's network stack
+                                      'host': use the Docker host network stack
+                                      '<network-name>|<network-id>': connect to a user-defined network
+        --net-alias=[]                Add network-scoped alias for the container
+        --oom-kill-disable            Whether to disable OOM Killer for the container or not
+        --oom-score-adj=0             Tune the host's OOM preferences for containers (accepts -1000 to 1000)
+        -P, --publish-all             Publish all exposed ports to random ports
+        -p, --publish=[]              Publish a container's port(s) to the host
+        --pid=""                      PID namespace to use
+        --privileged                  Give extended privileges to this container
+        --read-only                   Mount the container's root filesystem as read only
+        --restart="no"                Restart policy (no, on-failure[:max-retry], always, unless-stopped)
+        --rm                          Automatically remove the container when it exits
+        --shm-size=[]                 Size of `/dev/shm`. The format is `<number><unit>`. `number` must be greater than `0`.  Unit is optional and can be `b` (bytes), `k` (kilobytes), `m` (megabytes), or `g` (gigabytes). If you omit the unit, the system uses bytes. If you omit the size entirely, the system uses `64m`.
+        --security-opt=[]             Security Options
+        --sig-proxy=true              Proxy received signals to the process
+        --stop-signal="SIGTERM"       Signal to stop a container
+        -t, --tty                     Allocate a pseudo-TTY
+        -u, --user=""                 Username or UID (format: <name|uid>[:<group|gid>])
+        --ulimit=[]                   Ulimit options
+        --uts=""                      UTS namespace to use
+        -v, --volume=[host-src:]container-dest[:<options>]
+                                      Bind mount a volume. The comma-delimited
+                                      `options` are [rw|ro], [z|Z], or
+                                      [[r]shared|[r]slave|[r]private]. The
+                                      'host-src' is an absolute path or a name
+                                      value.
+        --volume-driver=""            Container's volume driver
+        --volumes-from=[]             Mount volumes from the specified container(s)
+        -w, --workdir=""              Working directory inside the container
 
       # Описание
+        - Рассмотрим, что делает команда run:
 
+          • Создаёт контейнер из указанного образа (docker create).
+          • Запускает этот контейнер (docker start).
+          • Запускает указанную команду.
 
       # Примеры
+      // Подоглавление:
+      //
+      //  • Сделать run, назначив имя и определив псевдо-терминал
+      //  • Сделать run, и записать ID нового контейнера в файл
+      //  • Сделать run, и запустить контейнер в режиме бога
+      //  • Сделать run, и указать рабочий каталог
+      //  • Сделать run, и смонтировать пустую tmpfs
+      //  • Сделать run, и создать объекты volume
+      //  • Сделать run, и опубиковать или выставить порт
+      //  •
+      //  •
+      //
+
+
+
+
+
+        • Сделать run, назначив имя и определив псевдо-терминал
+          - Имя назначить опцией --name.
+          - Псевдотерминал определить 2-мя опциями: -it
+          - Псевдотерминал подключается к STDIN контейнера.
+          - Код:
+
+              docker run --name test -it debian
+
+        • Сделать run, и записать ID нового контейнера в файл
+          - С помощью опции --cidfile.
+          - Код:
+
+              docker run --cidfile /tmp/docker_test.cid ubuntu echo "test"
+
+        • Сделать run, и запустить контейнер в режиме бога
+          - С помощью опции --privileged.
+          - Тогда ему станут доступны доп.возможности.
+          - Код:
+
+              docker run -t -i --privileged ubuntu bash
+              mount -t tmpfs none /mnt
+              df -h
+
+        • Сделать run, и указать рабочий каталог
+
+            docker  run -w /path/to/dir/ -i -t  ubuntu pwd
+
+        • Сделать run, и смонтировать пустую tmpfs
+
+            docker run -d --tmpfs /run:rw,noexec,nosuid,size=65536k my_image
+
+        • Сделать run, и создать объекты volume
+          - В данном случае смонтировать текущий каталог в контейнер.
+          - А с помощью -w назначить текущий каталог рабочим каталогом.
+          - Это позволит переданной команде исполнится в этом рабочем каталоге.
+          - В итоге эта комбинация выполняет команду с использованием
+            контейнера, но в текущем рабочем каталоге.
+          - Сделать это с помощью опций -v, --read-only
+          - Код:
+
+              docker run -v /doesnt/exist:/foo -w /foo -i -t ubuntu bash
+
+          - Если монтируемый каталог отсутствует у хоста, docker автоматически
+            создаст этот каталог на хосте.
+
+        • Сделать run, и опубиковать или выставить порт
+          - В этом примере связывается порт 8080 хоста с портом 80 контейнера.
+          - На ip 127.0.0.1 хост машины.
+          - Сделать это с помощью опций -p, --expose
+          - Код:
+
+              docker run -p 127.0.0.1:80:8080 ubuntu bash
+
+          - А в этом примере выставляется порт 80.
+          - Но он не публикуется на хост:
+
+              docker run --expose 80 ubuntu bash
+
+        • Сделать run, и установить переменные среды
+          - Сделать это с помощью опций -e, --env, --env-file.
+          - Добавить в контейнер несколько простых переменных среды.
+          - Для примера, все 3 флага здесь использованы.
+          - Если = не применён, то значение соотв. переменной среды
+            из хоста передаётся соотв.переменной среды в контейнере.
+
+              docker run -e MYVAR1 --env MYVAR2=foo --env-file ./env.list ubuntu bash
+
+        • Сделать run, и добавить метаданные контейнеру
+          - Сделать это с помощью опций -l, --label, --label-file
+          - --label позволяет добавить контейнеру метаданные в виде ключа=значения.
+          - Пример:
+
+              docker run -l my-label --label com.example.foo=bar ubuntu bash
+
+          - По умолчанию значение значения --label это "".
+          - Можно добавлять много лейблов.
+          - Ключи должны быть уникальны в пределах контейнера.
+          - С помощью --label-file можно загрузить много лейблов из файла:
+
+              docker run --label-file ./labels ubuntu bash
+
+        • Сделать run, и подключить контейнер к сети
+          - При старте контейнера используй --net для подключения его к сети.
+          - В этом примере мы добавим busybox в сеть my-net:
+
+              docker run -itd --net=my-net busybox
+
+          - Можно также выбрать IP для контейнера:
+
+              docker run -itd --net=my-net --ip=10.10.9.75 busybox
+
+          - Добавить работающий контейнер в сеть можно командой
+            docker network connect.
+
+        • Сделать run, и смонтировать пул объектов volume из контейнера
+          - Это можно сделать с помощью --volumes-from.
+          - Пример:
+
+              docker run --volumes-from 777f7dc92da7 --volumes-from ba8c0c54f0f2:ro -i -t ubuntu pwd
+
+        • Сделать run, и подключиться к STDIN/STDOUT/STDERR контейнера
+          - С помощью флага -a
+          - В примере ниже в контейнер передаётся строка "test".
+          - Но подключение произошло только к stdin контейнера.
+          - Поэтому мы видим STDOUT хоста, и видим вывод ID контейнера.
+          - Однако мы не увидим вывода и ошибок контейнера, т.к. к нему не подключены.
+
+              echo "test" | docker run -i -a stdin ubuntu cat -
+
+        • Сделать run, и добавить устройство с хоста в контейнер
+          - Бывает нужно давать доступ к устрйоствам контейнеру.
+          - Это можно сделать с помощью опции --device.
+          - Пример:
+
+              docker run --device=/dev/sdc:/dev/xvdc --device=/dev/sdd --device=/dev/zero:/dev/nulo -i -t ubuntu ls -l /dev/{xvdc,sdd,nulo}
+
+        • Сделать run, и назначить политику перезагрузки контейнера
+          - Можно с помощью опции --restart.
+          - Поддерживаются следующие политики:
+
+            • no (по умолчанию)
+              - Не перезагружать автоматически контейнер при его остановке.
+
+            • on-failure[:max-retries]
+              - Перезагружать если контейнер завершился с не 0 статусом.
+              - Можно ограничить кол-во попыток.
+
+            • always
+              - Всегда перезагружать контейнер при завершении вне зависимости от статуса.
+              - Docker будет пытаться запустить контейнер бесконечно.
+              - Контейнер всегда будет подниматься при старте демона,
+                вне зависимости от текущего состояния контейнера.
+
+            • unless-stopped
+              - Тоже самое, что always, только:
+
+                • Не стартовать при запуске демона
+                  - Если контейнер был остановлен ранее.
+
+          - Например, мы хотим всегда держать redis включенным:
+
+              docker run --restart=always redis
+
+        • Сделать run, и добавить записи в hosts контейнера
+          - С помощью опции --add-host
+          - Можно добавить записи в /etc/hosts контейнера.
+          - Можно применять сколько угодно флагов в одной команде.
+          - Пример:
+
+              docker run --add-host=docker:10.180.0.1 --rm -it debian
+
+          - Иногда может понадобиться подключиться из контейнера к хосту.
+          - Для этого надо передать с --add-host ip адрес хоста.
+          - Узнать IP хоста можно командой: ip addr show
+
+        • Сделать run, и установить ulimits контейнеру
+          - С помощью опции -ulimit
+          - Пример:
+
+              docker run --ulimit nofile=1024:1024 --rm debian sh -c "ulimit -n"
+
+        • Остановить контейнер сигналом
+          - Можно с помощью опции --stop-signal.
+          - Посылает контейнеру unix-сигнал на выход.
+          - Например, 9.
+
+        • Позволяет назначить технологию изоляции контейнера
+          - Например: --isolation="default"
+          - Вот доступные варианты:
+
+            • default     | По умолчанию, 1-нный доступный для Linux вариант
+            • process     |
+            • hyperv      |
 
     // save //
     //------//
