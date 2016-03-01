@@ -65,8 +65,7 @@
     А8. Сборка образов из DockerFile и контекста
     А9. Поиск и добавление образов на Docker Hub
     А10. Справочник по командам docker
-
-    А11. ... Docker Compose ...
+    А11. Docker Compose
 
   # Б.  Рецепты и наработки
 
@@ -1626,9 +1625,24 @@
       - Опция -P (в верхнем регистре)
       - Опция -p (в нижнем регистре)
 
-    # Немного практики работы с кастомной bridge-сетью
+    # Список команд для работы с docker-сетями
+
+      - docker network create       | создать новую docker-сеть
+      - docker network connect      | подключить контейнер к существующей docker-сети
+      - docker network ls           | вывести список всех доступных docker-сетей
+      - docker network rm           | удалить docker-сеть
+      - docker network disconnect   | отключиться от существующей docker-сети
+      - docker network inspect      | получить информацию о существующей docker-сети
+
+    # Немного практики
 
       - Создать новую кастомную bridge-сеть
+      - Добавить в сеть 2 именованных контейнера, сделать ping по имени
+      - Подключить и отключить контейнер от существующей сети
+      - Подключиться к контейнеру, проверить его network stack
+
+    # Реальный пример общения контейнеров в одной кастомной bridge-сети
+
 
 
 
@@ -1654,6 +1668,9 @@
 
     # Статья "A Brief Primer on Docker Networking Rules: EXPOSE, -p, -P, --link"
         https://www.ctl.io/developers/blog/post/docker-networking-rules/
+
+    # Статья "Docker Tutorial Series : Part 8 : Linking Containers"
+        http://rominirani.com/2015/07/31/docker-tutorial-series-part-8-linking-containers/
 
   > Введение
     - В этой главе будут рассмотрены docker-сети.
@@ -1962,6 +1979,15 @@
 
       - Если не задать hostPort, он будет подобран автоматически.
 
+  > Список команд для работы с docker-сетями
+
+    • docker network create
+    • docker network connect
+    • docker network ls
+    • docker network rm
+    • docker network disconnect
+    • docker network inspect
+
   > Немного практики работы с кастомной bridge-сетью
 
     # Создать новую кастомную bridge-сеть
@@ -1972,90 +1998,95 @@
 
     # Добавить в сеть 2 именованных контейнера, сделать ping по имени
 
-      
+      • Создать контейнеры и добавить их в сеть
 
+        docker run -itd --net="my-bridge-network" --name="name1" ubuntu bash
+        docker run -itd --net="my-bridge-network" --name="name2" ubuntu bash
+        docker ps
 
+      • Подключиться к контейнеру name1
 
+        docker-machine ssh <имя вирт.машины>  | например, default
+        docker attach name1
 
+      • Сделать ping контейнера name2
 
+        ping name2
 
-  > Два доступных из коробки драйвера: bridge и overlay
+    # Подключить и отключить контейнер от существующей сети
 
-    # Вводная информация
-      - Можно написать собственный сетевой плагин.
-      - Но вообще, Docker из коробки имеет 2-ва сетевых драйвера:
+      • Подключить
 
-        1) bridge
-        2) overlay
+        docker network connect my-bridge-network name1  // подключить
+        docker network inspect my-bridge-network        // проверить
 
-      - Прикаждой установке Docker Engine автоматически создаются
-        3 сети по умолчанию:
+      • Отключить
 
-          1) Имя: none, driver: null
-          2) Имя: host, driver: host
-          3) Имя: bridge, driver: bridge
-            - Это особая сеть.
-            - По умолчанию, Docker запускает контейнеры в ней.
-            - Убедитсья в этом легко:
+        docker network desconnect my-bridge-network name1   // отключить
+        docker network inspect my-bridge-network            // проверить
 
-                docker run -itd --name=networktest ubuntu   // запустить контейнер
-                docker network inspect bridge               // увидеть контейнер в сети
+    # Подключиться к контейнеру, проверить его network stack
 
-            - Удалить контейнер из сети bridge можно так:
+      docker attach name1
+      ifconfig
 
-                docker network disconnect bridge networktest
+  > Реальный пример общения контейнеров в одной кастомной bridge-сети
 
-            - Но удалить саму сеть bridge нельзя.
+    # Постановка задачи
+      - Исходим из того, что работа с docker ведётся на Windows.
+      - Будем в этой задаче работать с in-memory хранилищем данных Redis.
+      - Это хранилище имеет клиент-серверную архитектуру.
+      - Мы хотим поместить redis-сервер в контейнер X.
+      - Мы хотим поместить redis-клиент в контейнер Y.
+      - Контейнеры X и Y мы поместим в одну кастомную bridge-сеть.
+      - Затем из Y подключимся к X, убедимся что всё работает.
 
-      - Вообще, сети удобный способ изолировать контейнеры.
-      - Как от других контейнеров, так и от других сетей.
-      - По мере набора опыта с Docker, вам захочется создать свои сети.
+    # Реализация
 
-    # Bridge
-      - Для объединения в сеть контейнеров на 1-ом Docker Host'е.
+      • Создадим сначала новую кастомную bridge-сеть
 
-    # Overlay
-      - Для объединения в сеть контейнеров на разных Docker Host'ах.
+        docker network create -d bridge my-bridge-network
 
-  > Создание своей bridge-сети
+      • Создадим и запустим 2 контейнера, с redis-сервером и клиентом
 
-      docker network create -d bridge my-bridge-network   // создать
-      docker network ls                                   // вывести список сетей
-      docker network inspect my-bridge-network            // убедиться, что в новой сети нет контейнеров
+        docker run -d --name redisserver redis            | сервер
+        docker run -itd --name redisclient redis bash     | клиент
+        docker network inspect my-bridge-network          | удостоверимся
 
-  > Добавление контейнеров в bridge-сеть
-    - Обычно веб-приложение состоит из нескольких контейнеров.
-    - Эти контейнеры должны безопасно друг с другом взаимодействовать.
-    - Они могут делать это по сети, для этого их надо поместить в 1 сеть.
-    - Каждый контейнер можно поместить в любое количество сетей.
-    - Для примера, поместим ubuntu и nginx в 1-ну сеть my-bridge-network:
+      • Подключим redis-сервер и redis-клиент к сети my-bridge-network
 
-        // 1] Объединить контейнеры в 1-ну сеть
+        docker network connect my-bridge-network redisserver
+        docker network connect my-bridge-network redisclient
 
-          // Если контейнеры ещё не запущены
-            docker run -t -i -d --net=my-bridge-network --name ubuntu ubuntu /bin/bash
-            docker run -d --net=my-bridge-network --name nginx nginx
+      • Подключимся к клиенту, пропингуем сервер
 
-          // Если контейнеры уже запущены
-            docker network connect my-bridge-network ubuntu
-            docker network connect my-bridge-network nginx
+        docker-machine ssh default    | подключаемся из Win к boot2docker
+        docker attach redisclient     | подключаемся к клиенту
+        ping redisserver              | внутри клиента пингуем сервер
 
-        // 2] Убедиться, что сеть содержит контейнеры
-        docker network inspect my-bridge-network
+      • Из клиента подключимся к серверу, потестируем его
 
-        // 3] Получим IP-адреса каждого контейнера
-        docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ubuntu
-        docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nginx
+        redis-cli -h redisserver      | через порт 6379
+        PING                          | PONG
+        set myvar DOCKER              | OK
+        get myvar                     | "DOCKER"
 
-        // 4] Пропингуем каждый из контейнеров из другого
+      • Отключимся от redis-клиента, от контейнера, от boot2docker
 
-          // Контейнер nginx из контейнера ubuntu
-          docker exec -it ubuntu bash
-          ping nginx
+        ctrl-c          | выход из redis-клиента
+        ctrl-p, ctrl-q  | detach из контейнера
+        exit            | отключение ssh от boot2docker
 
-          // Контейнер ubuntu из контейнера nginx
-          docker exec -it nginx bash
-          ping ubuntu
+      • Удалим созданные контейнеры и сеть
+
+        docker stop dockerserver dockerclient
+        docker rm dockerserver dockerclient
+        docker network rm my-bridge-network
+
+    # Примечания
+
+      • Для имён контейнеров используй только [a-zA-Z0-9]
+        - Иначе могут быть проблемы при общении контейнеров через имена.
 
 
 А7. Управление данными в/между контейнерами
@@ -6498,6 +6529,45 @@
       # Опции
 
         --help          Print usage
+
+
+А11. Docker Compose
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+    #
+
+  --------------------------------------
+
+  > Ссылки
+
+    # Оф.документация по Docker Composer
+        https://docs.docker.com/compose/overview/
+        https://docs.docker.com/compose/install/
+        https://docs.docker.com/compose/gettingstarted/
+        https://docs.docker.com/compose/extends/
+        https://docs.docker.com/compose/networking/
+        https://docs.docker.com/compose/production/
+        https://docs.docker.com/compose/compose-file/
+        https://docs.docker.com/compose/reference/overview/
+
+    # Running Laravel and Angularjs on Docker
+        http://ewanvalentine.io/running-laravel-and-angularjs-on-docker/
+
+  > Введение
+
+
+
+
+
+
+
+
+
+
 
 
 
