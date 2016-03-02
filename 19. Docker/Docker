@@ -7270,15 +7270,13 @@
     # Введение
     # Переменные среды для CLI docker-compose
 
-      - COMPOSE_PROJECT_NAME
-      - COMPOSE_FILE
-      - COMPOSE_API_VERSION
-      - DOCKER_HOST
-      - DOCKER_TLS_VERIFY
-      - DOCKER_CERT_PATH
-      - COMPOSE_HTTP_TIMEOUT
-      -
-      -
+      - COMPOSE_PROJECT_NAME  | Устанавливает имя проекта
+      - COMPOSE_FILE          | Имя файла с compose-конфигурацией
+      - COMPOSE_API_VERSION   | Вручную установить версию docker-сервера для docker-compose
+      - DOCKER_HOST           | Установить URL docker-демона
+      - DOCKER_TLS_VERIFY     | Если не пустая строка, включает TLS-сообщение с docker-демоном.
+      - DOCKER_CERT_PATH      | Позволяет указать путь к файлам-сертификатам для TLS-верификации
+      - COMPOSE_HTTP_TIMEOUT  | Указать таймаут в сек. для запроса от composer к демону
 
     # Справочник
 
@@ -7298,7 +7296,7 @@
       - pull            | Скачать образы сервисов
       - restart         | Перезапустить сервисы
       - rm              | Удалить остановленные контейнеры
-      - run             | Выполнить одну команду
+      - run             | Выполнить одну команду для указанного сервиса
       - scale           | Установить число контейнеров для сервиса
       - start           | Стартануть сервисы
       - stop            | Остановить сервисы
@@ -7315,6 +7313,70 @@
 
   > Введение
     - В этой главе справочник по CLI-приложению docker-compose.
+
+  > Переменные среды для CLI docker-compose
+
+    # COMPOSE_PROJECT_NAME
+      - Устанавливает имя проекта.
+      - Этим именем префиксятся имена контейнеров при создании.
+      - Например:
+
+          COMPOSE_PROJECT_NAME == myapp   | имя проекта
+          myapp_db_1                      | имя контейнера сервиса db
+          myqpp_web_1                     | имя контейнера сервиса web
+
+      - Можно не устанавливать эту переменную среды.
+      - Если не установлена, то:
+
+        • Либо можно задать имя проекта опцией -p
+        • Либо если -p не использована, имя проекта == имени его каталога
+
+    # COMPOSE_FILE
+      - Имя файла с compose-конфигурацией.
+      - Можно не устанавливать эту переменную среды.
+      - Если не установлена, то:
+
+        • Либо можно указать несколько файлов с помощью опций -f.
+
+          ▪ Они будут скомбинированы overlay-способом в порядке появления.
+
+        • Если -f не использованы, то:
+
+          ▪ Ищет файлы docker-compose.yml и docker-compose.override.yml
+          ▪ В текущем каталоги, и каталогах вверх по дереву.
+          ▪ Если оба лежат в 1-ом каталоге, комбинирует их.
+
+    # COMPOSE_API_VERSION
+      - Вручную установить версию docker-сервера для docker-compose.
+      - Docker API принимает запросы лишь от клиентов, сообщающих версию.
+      - Если вдруг при использовании docker-compose возникнет ошибка:
+
+          "client and server don't have same version error"
+
+      - С ней можно справиться, указав значение для этой переменной среды.
+      - Нужно будет поставить значение версии, соответствующее версии сервера.
+
+    # DOCKER_HOST
+      - Установить URL docker-демона.
+      - Как и у docker-клиента, по умолчанию стоит:
+
+          unix:///var/run/docker.sock
+
+    # DOCKER_TLS_VERIFY
+      - Если не пустая строка, включает TLS-сообщение с docker-демоном.
+
+    # DOCKER_CERT_PATH
+      - Позволяет указать путь к файлам-сертификатам для TLS-верификации:
+
+        • ca.pem
+        • cert.pem
+        • key.pem
+
+      - По умолчанию: ~/.docker
+
+    # COMPOSE_HTTP_TIMEOUT
+      - Указать таймаут в сек. для запроса от composer к демону.
+      - По умолчанию, 60 секунд.
 
   > Справочник
 
@@ -7372,11 +7434,13 @@
 
       # Формат
 
+        build [options] [SERVICE...]
+
       # Опции
 
-      # Описание
-
-      # Примеры
+          --force-rm  Always remove intermediate containers.
+          --no-cache  Do not use cache when building the image.
+          --pull      Always attempt to pull a newer version of the image.
 
     // config //
     //--------//
@@ -7384,11 +7448,12 @@
 
       # Формат
 
+          config [options]
+
       # Опции
 
-      # Описание
-
-      # Примеры
+        -q, --quiet     Only validate the configuration, don't print anything.
+        --services      Print the service names, one per line.
 
     // create //
     //--------//
@@ -7396,11 +7461,15 @@
 
       # Формат
 
+          create [options] [SERVICE...]
+
       # Опции
 
-      # Описание
-
-      # Примеры
+        --force-recreate       Recreate containers even if their configuration and
+                               image haven't changed. Incompatible with --no-recreate.
+        --no-recreate          If containers already exist, don't recreate them.
+                               Incompatible with --force-recreate.
+        --no-build             Don't build an image, even if it's missing
 
     // down //
     //------//
@@ -7408,11 +7477,20 @@
 
       # Формат
 
+          down [options]
+
       # Опции
 
-      # Описание
+        --rmi type      Remove images, type may be one of: 'all' to remove
+                        all images, or 'local' to remove only images that
+                        don't have an custom name set by the `image` field
+        -v, --volumes   Remove data volumes
 
-      # Примеры
+      # Описание
+        - Удаляет указанные ресурсы, созданные командой up.
+        - По умолчанию, удаляются только контейнеры и сети.
+        - А для удаления образов/volumes надо указывать
+          доп.параметры --rmi, -v
 
     // events //
     //--------//
@@ -7420,11 +7498,15 @@
 
       # Формат
 
+        events [options] [SERVICE...]
+
       # Опции
 
-      # Описание
+          --json      Output events as a stream of json objects
 
-      # Примеры
+      # Описание
+        - С флагом JSON каждое событие будет выводиться в формате JSON.
+        - Причём, в красиво отформатированном.
 
     // help //
     //------//
@@ -7432,11 +7514,7 @@
 
       # Формат
 
-      # Опции
-
-      # Описание
-
-      # Примеры
+          help COMMAND
 
     // kill //
     //------//
@@ -7444,11 +7522,19 @@
 
       # Формат
 
+          kill [options] [SERVICE...]
+
       # Опции
 
+        -s SIGNAL         SIGNAL to send to the container. Default signal is SIGKILL.
+
       # Описание
+        - Посылает работающим контейнерам сигнал SIGKILL.
+        - С помощью -s можно указать и другой сигнал (см.пример).
 
       # Примеры
+
+          docker-compose kill -s SIGINT
 
     // logs //
     //------//
@@ -7456,11 +7542,11 @@
 
       # Формат
 
+          logs [options] [SERVICE...]
+
       # Опции
 
-      # Описание
-
-      # Примеры
+        --no-color  Produce monochrome output.
 
     // pause //
     //-------//
@@ -7468,11 +7554,7 @@
 
       # Формат
 
-      # Опции
-
-      # Описание
-
-      # Примеры
+          pause [SERVICE...]
 
     // port //
     //------//
@@ -7480,11 +7562,13 @@
 
       # Формат
 
+          port [options] SERVICE PRIVATE_PORT
+
       # Опции
 
-      # Описание
-
-      # Примеры
+        --protocol=proto  tcp or udp [default: tcp]
+        --index=index     index of the container if there are multiple
+                          instances of a service [default: 1]
 
     // ps //
     //----//
@@ -7492,11 +7576,11 @@
 
       # Формат
 
+          ps [options] [SERVICE...]
+
       # Опции
 
-      # Описание
-
-      # Примеры
+        -q    Only display IDs      | !! Помечена красным, видать depricated
 
     // pull //
     //------//
@@ -7504,11 +7588,11 @@
 
       # Формат
 
+          pull [options] [SERVICE...]
+
       # Опции
 
-      # Описание
-
-      # Примеры
+        --ignore-pull-failures  Pull what it can and ignores images with pull failures.
 
     // restart //
     //---------//
@@ -7516,7 +7600,11 @@
 
       # Формат
 
+          restart [options] [SERVICE...]
+
       # Опции
+
+        -t, --timeout TIMEOUT      Specify a shutdown timeout in seconds. (default: 10)
 
       # Описание
 
@@ -7528,23 +7616,58 @@
 
       # Формат
 
+          rm [options] [SERVICE...]
+
       # Опции
 
-      # Описание
+        -f, --force   Don't ask to confirm removal                | !! Помечена красным, видать depricated
+        -v            Remove volumes associated with containers   | !! Помечена красным, видать depricated
 
-      # Примеры
+      # Описание
+        - По умолчанию связанны с контейнером volumes не удаляются.
 
     // run //
     //-----//
-    // - Выполнить одну команду.
+    // - Выполнить одну команду для указанного сервиса.
 
       # Формат
 
+          run [options] [-e KEY=VAL...] SERVICE [COMMAND] [ARGS...]
+
       # Опции
 
-      # Описание
+        -d                    Detached mode: Run container in the background, print
+                                  new container name.
+        --name NAME           Assign a name to the container
+        --entrypoint CMD      Override the entrypoint of the image.
+        -e KEY=VAL            Set an environment variable (can be used multiple times)
+        -u, --user=""         Run as specified username or uid
+        --no-deps             Don't start linked services.
+        --rm                  Remove container after run. Ignored in detached mode.
+        -p, --publish=[]      Publish a container's port(s) to the host
+        --service-ports       Run command with the service's ports enabled and mapped to the host.
+        -T                    Disable pseudo-tty allocation. By default `docker-compose run` allocates a TTY.
 
-      # Примеры
+      # Описание
+        - Запускает указанную команду для указанного сервиса.
+        - Например, эта команда стартует сервис web и запускает в нём bash:
+
+            docker-compose run web bash
+
+        - Запущенные т.о. команды стартуют вместе с сервисом в новом контейнере.
+        - Для него применяется та вся та же самая конфигурация.
+        - Однако есть 2 отличия:
+
+          • Команда переданная в run перезаписывает команду в конфигурации сервиса
+          • Никакие порты не пробрасываются
+            - То есть те, которые указаны в конфигурации сервиса.
+            - Это позволяет избежать портовых коллизий.
+            - Чтобы они всё же пробросились, используй --service-ports
+            - Также можно вручную пробросить порты с помощью -p
+
+        - Если сервис web связан с другими, compose поднимет и их.
+        - И только после после этого поднимет web.
+        - Но чтобы не стартовать связанные контейнеры, используй --no-deps.
 
     // scale //
     //-------//
@@ -7552,11 +7675,14 @@
 
       # Формат
 
-      # Опции
+        scale [SERVICE=NUM...]
 
       # Описание
+        - Кол-во указывается, как аргумент, в формате service=num.
 
       # Примеры
+
+        docker-compose scale web=2 worker=3
 
     // start //
     //-------//
@@ -7564,11 +7690,7 @@
 
       # Формат
 
-      # Опции
-
-      # Описание
-
-      # Примеры
+          start [SERVICE...]
 
     // stop //
     //------//
@@ -7576,11 +7698,15 @@
 
       # Формат
 
+          stop [options] [SERVICE...]
+
       # Опции
 
-      # Описание
+        -t, --timeout TIMEOUT      Specify a shutdown timeout in seconds (default: 10).
 
-      # Примеры
+      # Описание
+        - Останавливает работающие контейнеры, но не удаляет их.
+        - Их можно запустить снова, используя start.
 
     // unpause //
     //---------//
@@ -7588,11 +7714,7 @@
 
       # Формат
 
-      # Опции
-
-      # Описание
-
-      # Примеры
+        unpause [SERVICE...]
 
     // up //
     //----//
@@ -7600,11 +7722,59 @@
 
       # Формат
 
+          up [options] [SERVICE...]
+
       # Опции
+
+        -d                         Detached mode: Run containers in the background,
+                                   print new container names.
+                                   Incompatible with --abort-on-container-exit.
+        --no-color                 Produce monochrome output.
+        --no-deps                  Don't start linked services.
+        --force-recreate           Recreate containers even if their configuration
+                                   and image haven't changed.
+                                   Incompatible with --no-recreate.
+        --no-recreate              If containers already exist, don't recreate them.
+                                   Incompatible with --force-recreate.
+        --no-build                 Don't build an image, even if it's missing
+        --abort-on-container-exit  Stops all containers if any container was stopped.
+                                   Incompatible with -d.
+        -t, --timeout TIMEOUT      Use this timeout in seconds for container shutdown
+                                   when attached or when containers are already
+                                   running. (default: 10)
 
       # Описание
 
-      # Примеры
+        • Что делает
+
+          ▪ Builds
+          ▪ (re)Creates
+          ▪ Starts
+          ▪ Attaches to containers
+          ▪ Если они ещё не работают, команда также стартует связанные сервисы.
+
+        • Собирает вывод всех контейнеров
+          - Ты выполнил: docker-compose up
+          - Теперь ты получаешь в командной строке вывод всех контейнеров.
+          - Но если ты нажмёшь ctrl-c, все контейнеры будут остановлены (stop).
+
+        • Демонизация
+          - Чтобы запустить всё в фоновом режиме, используй флаг -d.
+
+        • Пересоздание контейнеров
+          - Если при выполнении команды есть работающие контейнеры.
+          - И конфигурация для этих контейнеров изменилась.
+          - Тогда эти контейнеры будут уничтожаны, созданы, запущены.
+          - Все сетевые соединения с ними будут прерваны.
+          - Можно это изменить:
+
+            ▪ Выполнить docker-compose up без применения новых изменений
+              - Можно флагом --no-recreate
+              - Изменения из конфигов считаны не будут.
+              - Никакие контейнеры не будут пересоздаваться.
+
+            ▪ Выполнить docker-compose up и пересоздать ВСЕ контейнеры
+              - Можно флагом --force-recreate
 
     // version //
     //---------//
@@ -7612,12 +7782,7 @@
 
       # Формат
 
-      # Опции
-
-      # Описание
-
-      # Примеры
-
+          docker-compose version
 
 
 А13. Docker Compose: справочник по compose-файлу
@@ -7627,7 +7792,78 @@
 
     # Ссылки
     # Введение
-    # Справочник
+    # Что такое compose-файл, и предисловие к справочнику
+
+      - Что такое compose-файл
+      - Принцип работы compose-файла
+      - Настройки из DockerFile учитываются в полном объёме
+      - Переменные среды в compose-файле можно использовать в кач-ве переменных
+
+    # Справочник для конфигурации сервисов
+
+      - build                   |
+      - cap_add, cap_drop       |
+      - command                 |
+      - cgroup_parent           |
+      - container_name          |
+      - devices                 |
+      - depends_on              |
+      - dns                     |
+      - dns_search              |
+      - entrypoint              |
+      - env_file                |
+      - environment             |
+      - expose                  |
+      - extends                 |
+      - external_links          |
+      - extra_hosts             |
+      - image                   |
+      - labels                  |
+      - links                   |
+      - logging                 |
+      - log_driver              |
+      - log_opt                 |
+      - net                     |
+      - network_mode            |
+      - networks                |
+      - pid                     |
+      - ports                   |
+      - security_opt            |
+      - stop_signal             |
+      - ulimits                 |
+      - volumes, volume_driver  |
+      - volumes_from            |
+      - working_dir             |
+      - cpu_shares              |
+      - cpu_quota               |
+      - cpuset                  |
+      - domainname              |
+      - hostname                |
+      - ipc                     |
+      - mac_address             |
+      - mem_limit               |
+      - memswap_limit           |
+      - privileged              |
+      - read_only               |
+      - restart                 |
+      - stdin_open              |
+      - tty                     |
+      - user                    |
+      - working_dir             |
+
+    # Справочник для конфигурации volumes
+
+      - driver        |
+      - driver_opts   |
+      - external      |
+
+    # Справочник для конфигурации сетей
+
+      - driver        |
+      - driver_opts   |
+      - ipam          |
+      - external      |
+
 
   --------------------------------------
 
@@ -7637,8 +7873,470 @@
         https://docs.docker.com/compose/compose-file/
 
   > Введение
+    - Это глава-справочник по compose-файлу для Docker Compose.
+
+  > Что такое compose-файл, и предисловие к справочнику
+
+    • Что такое compose-файл
+      - Это YAML-файл.
+      - Он позволяет определять:
+
+        ▪ Сервисы
+        ▪ Сети
+        ▪ Volumes
+
+      - Путь к нему по умолчанию:
+
+          ./docker-compose.yml
+
+    • Принцип работы compose-файла
+      - Контейнер, сеть или volume можно создать и командой docker:
+
+        ▪ docker create           | создать контейнер
+        ▪ docker network create   | создать сеть
+        ▪ docker volume create    | создать volume
+
+      - В каждом из вариантом команде можно передавать опции.
+      - А можно все эти опции описать в compose-файле.
+      - Тогда docker-compose up сможет сама всё это создать.
+
+    • Настройки из DockerFile учитываются в полном объёме
+      - То есть нет необходимости повторять их в compose-файле.
+
+    • Переменные среды в compose-файле можно использовать в кач-ве переменных
+      - Например: ${VARIABLE}
+
+  > Справочник для конфигурации сервисов
+
+    // build //
+    //-------//
+    // - Информация для применения во время сборки: контекст, DockerBuild, аргументы
+
+      # 2-ва варианта формата
+
+        • Можно указать просто строку с путём к каталогу с контекстом
+
+            build: ./dir
+
+        • Можно указать объект, где расписать всё подробнее
+
+            build:
+              context: ./dir
+              dockerfile: Dockerfile-alternate
+              args:
+                buildno: 1
+
+      # Подробнее о св-вах объекта
+
+        • context
+
+          ▪ Обязательное св-во
+            - Это св-во является обязательным в объекте.
+
+          ▪ Путь или URL
+            - Можно указать путь к каталогу с контекстом (абсолютный/относительный).
+            - А можно URL к git-репозиторию.
+
+          ▪ Относительный путь - относительно каталога с compose-файлом
+            - Если путь относительный, то относительно каталога с compose-файлом.
+
+          ▪ Пример:
+
+              build:
+                context: ./dir
+
+        • dockerfile
+
+          ▪ Уточнить путь к DockerFile
+            - По умолчанию DockerFile должен лежать в context.
+            - И название этого файла такое и должно быть: "DockerFile".
+            - Это св-во позволяет уточнить путь к DockerFile и его имя.
+
+          ▪ Пример:
+
+              build:
+                context: .
+                dockerfile: Dockerfile-alternate
+
+        • args
+
+          ▪ Аргументы для сборки
+            - Св-во args позволяет передать аргументы для сборки.
+            - Те самые, которые задаются инструкцией ARG в DockerFile.
+
+          ▪ Значения аргументов надо заключить в кавычки
+            - Иначе YML парсер превратит их в true или false.
+
+          ▪ Аргументы только с ключём получают значение из переменной среды
+            - С той машины, на которой Docker Compose выполняется.
+
+          ▪ Примеры:
+
+              build:
+                args:
+                  buildno: 1
+                  user: someuser
+
+              build:
+                args:
+                  - buildno=1
+                  - user=someuser
+
+    // cap_add, cap_drop //
+    //-------------------//
+    // - Добавляет или убирает возможности контейнера.
+    // - Это фича Linux, полный список capabilities см.здесь:
+    //   http://man7.org/linux/man-pages/man7/capabilities.7.html
+
+      # Примеры
+
+          cap_add:
+            - ALL
+
+          cap_drop:
+            - NET_ADMIN
+            - SYS_ADMIN
+
+    // command //
+    //---------//
+    // - Перезаписать команду по умолчанию.
+
+      # Примеры
+
+          command: bundle exec thin -p 3000
+          command: [bundle, exec, thin, -p, 3000]
+
+    // cgroup_parent //
+    //---------------//
+    // - Указать cgroup для контейнера.
+
+      # Пример
+
+          cgroup_parent: m-executor-abcd
+
+    // container_name //
+    //----------------//
+    // - Указать кастомное имя для контейнера.
+
+      # Имя контейнера по умолчанию
+        - Складывается по следующему шаблону:
+
+            [имя проекта]_[имя сервиса]_[порядковый номер]
+
+        - Например:
+
+            myapp_db_1
+
+      # Имя контейнера должно быть уникальным
+        - Иначе будет ошибка.
+
+    // devices //
+    //---------//
+    // - Подключить устройства к контейнеру.
+    // - Формат тот же, что для --device команды docker.
+
+      # Пример
+
+          devices:
+            - "/dev/ttyUSB0:/dev/ttyUSB0"
+
+    // depends_on //
+    //------------//
+    // - Указать зависимости сервиса от других сервисов.
+
+      • Что это даёт (см.пример ниже)
+
+        ▪ docker-compose up
+          - Запустит перечисленные сервисы-зависимости в указанном порядке.
+          - db и redis будут запущены до web.
+
+      • Пример
+
+          version: '2'
+          services:
+            web:
+              build: .
+              depends_on:
+                - db
+                - redis
+            redis:
+              image: redis
+            db:
+              image: postgres
+
+    // dns //
+    //-----//
+    // - Кастомные DNS-сервера.
+    // - Может быть 1 значение, или список.
+
+      # Примеры
+
+          dns: 8.8.8.8
+          dns:
+            - 8.8.8.8
+            - 9.9.9.9
+
+    // dns_search //
+    //------------//
+    // - Кастомные DNS-search домены.
+    // - Может быть 1 значение, или список.
+
+      # Примеры
+
+          dns_search: example.com
+          dns_search:
+            - dc1.example.com
+            - dc2.example.com
+
+    // entrypoint //
+    //------------//
+    // - Перезаписать entrypoint по умолчанию.
+
+      # 2-ва варианта формата
+
+        • Можно указать просто строку с новым entrypoint
+
+            entrypoint: /code/entrypoint.sh
+
+        • Можно вместо строки указать типа такой список (как если бы это была многострочная команда):
+
+            entrypoint:
+                - php
+                - -d
+                - zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20100525/xdebug.so
+                - -d
+                - memory_limit=-1
+                - vendor/bin/phpunit
+
+    // env_file //
+    //----------//
+    // -
 
 
+    // environment //
+    //-------------//
+    // -
 
 
+    // expose //
+    //--------//
+    // -
+
+
+    // extends //
+    //---------//
+    // -
+
+
+    // external_links //
+    //----------------//
+    // -
+
+
+    // extra_hosts //
+    //-------------//
+    // -
+
+
+    // image //
+    //-------//
+    // -
+
+
+    // labels //
+    //--------//
+    // -
+
+
+    // links //
+    //-------//
+    // -
+
+
+    // logging //
+    //---------//
+    // -
+
+
+    // log_driver //
+    //------------//
+    // -
+
+
+    // log_opt //
+    //---------//
+    // -
+
+
+    // net //
+    //-----//
+    // -
+
+
+    // network_mode //
+    //--------------//
+    // -
+
+
+    // networks //
+    //----------//
+    // -
+
+
+    // pid //
+    //-----//
+    // -
+
+
+    // ports //
+    //-------//
+    // -
+
+
+    // security_opt //
+    //--------------//
+    // -
+
+
+    // stop_signal //
+    //-------------//
+    // -
+
+
+    // ulimits //
+    //---------//
+    // -
+
+
+    // volumes, volume_driver //
+    //------------------------//
+    // -
+
+
+    // volumes_from //
+    //--------------//
+    // -
+
+
+    // working_dir //
+    //-------------//
+    // -
+
+
+    // cpu_shares //
+    //------------//
+    // -
+
+
+    // cpu_quota //
+    //-----------//
+    // -
+
+
+    // cpuset //
+    //--------//
+    // -
+
+
+    // domainname //
+    //------------//
+    // -
+
+
+    // hostname //
+    //----------//
+    // -
+
+
+    // ipc //
+    //-----//
+    // -
+
+
+    // mac_address //
+    //-------------//
+    // -
+
+
+    // mem_limit //
+    //-----------//
+    // -
+
+
+    // memswap_limit //
+    //---------------//
+    // -
+
+
+    // privileged //
+    //------------//
+    // -
+
+
+    // read_only //
+    //-----------//
+    // -
+
+
+    // restart //
+    //---------//
+    // -
+
+
+    // stdin_open //
+    //------------//
+    // -
+
+
+    // tty //
+    //-----//
+    // -
+
+
+    // user //
+    //------//
+    // -
+
+
+    // working_dir //
+    //-------------//
+    // -
+
+
+  > Справочник для конфигурации volumes
+
+    // driver //
+    //--------//
+    // -
+
+
+    // driver_opts //
+    //-------------//
+    // -
+
+
+    // external //
+    //----------//
+    // -
+
+  > Справочник для конфигурации сетей
+
+    // driver //
+    //--------//
+    // -
+
+
+    // driver_opts //
+    //-------------//
+    // -
+
+
+    // ipam //
+    //------//
+    // -
+
+
+    // external //
+    //----------//
+    // -
 
