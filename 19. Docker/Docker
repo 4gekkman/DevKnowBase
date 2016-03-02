@@ -71,7 +71,7 @@
 
   # Б.  Рецепты и наработки
 
-    Б1. ...
+    Б1. Локальная среда разработки на Docker для Laravel
 
 
 
@@ -2217,24 +2217,32 @@
     # Именованные / Не именованные
 
       • Не именованные объекты volume
-        - Каждый объект volume должен иметь UID в пределах host-машины.
-        - По умолчанию при создании объект volume получает примерно такой UID:
-            b82577be399e690f61e4183c38bf28282bf2c9709133b142600906e24a20f176
-        - Такие объекты volume называют не именованными.
-        - Пример создания не именованного объекта volume:
+
+        ▪ Неудобный UID
+          - Каждый объект volume должен иметь UID в пределах host-машины.
+          - По умолчанию при создании объект volume получает примерно такой UID:
+              b82577be399e690f61e4183c38bf28282bf2c9709133b142600906e24a20f176
+          - Такие объекты volume называют не именованными.
+
+        ▪ Пример создания не именованного объекта volume
 
             docker run -itd -v /myvolume ubuntu /bin/bash
 
-        - !!! При этом volume связывается с создаваемым контейнером !!!
+        ▪ Внимание!
+          - При этом volume связывается с создаваемым контейнером.
 
       • Именованные объекты volume
-        - Однако можно задать объекту volume имя при его создании.
-        - Такие объекты volume называют именованными.
-        - Пример создания объекта volume с именем "somename":
+
+        ▪ Удобное имя вместо неудобного UID
+          - Однако можно задать объекту volume имя при его создании.
+          - Такие объекты volume называют именованными.
+
+        ▪ Пример создания объекта volume с именем "somename"
 
             docker run -itd -v somename:/myvolume ubuntu /bin/bash
 
-        - !!! При этом volume НЕ связывается с создаваемым контейнером !!!
+        ▪ Внимание!
+          - При этом volume НЕ связывается с создаваемым контейнером.
 
     # С авто ссылкой / С ручной ссылкой
 
@@ -6029,13 +6037,7 @@
       //  • Сделать run, и смонтировать пустую tmpfs
       //  • Сделать run, и создать объекты volume
       //  • Сделать run, и опубиковать или выставить порт
-      //  •
-      //  •
       //
-
-
-
-
 
         • Сделать run, назначив имя и определив псевдо-терминал
           - Имя назначить опцией --name.
@@ -7799,71 +7801,109 @@
       - Настройки из DockerFile учитываются в полном объёме
       - Переменные среды в compose-файле можно использовать в кач-ве переменных
 
+    # Создание и работа с именованными volumes
+
+      - Что такое не именованные объекты volumes
+      - Что такое именованные объекты volumes
+      - Чем полезны именованные volumes
+      - Опции volumes для настройки драйвера
+      - Опция external и примеры
+
+    # Создание и работа с сетями
+
+
+
     # Справочник для конфигурации сервисов
 
-      - build                   |
-      - cap_add, cap_drop       |
-      - command                 |
-      - cgroup_parent           |
-      - container_name          |
-      - devices                 |
-      - depends_on              |
-      - dns                     |
-      - dns_search              |
-      - entrypoint              |
-      - env_file                |
-      - environment             |
-      - expose                  |
-      - extends                 |
-      - external_links          |
-      - extra_hosts             |
-      - image                   |
-      - labels                  |
-      - links                   |
-      - logging                 |
-      - log_driver              |
-      - log_opt                 |
-      - net                     |
-      - network_mode            |
-      - networks                |
-      - pid                     |
-      - ports                   |
-      - security_opt            |
-      - stop_signal             |
-      - ulimits                 |
-      - volumes, volume_driver  |
-      - volumes_from            |
-      - working_dir             |
-      - cpu_shares              |
-      - cpu_quota               |
-      - cpuset                  |
-      - domainname              |
-      - hostname                |
-      - ipc                     |
-      - mac_address             |
-      - mem_limit               |
-      - memswap_limit           |
-      - privileged              |
-      - read_only               |
-      - restart                 |
-      - stdin_open              |
-      - tty                     |
-      - user                    |
-      - working_dir             |
+      • Все
 
-    # Справочник для конфигурации volumes
+        - build                   | Информация для применения во время сборки: контекст, DockerBuild, аргументы
+        - cap_add, cap_drop       | Добавляет или убирает возможности контейнера
+        - command                 | Перезаписать команду по умолчанию
+        - cgroup_parent           | Указать cgroup для контейнера
+        - container_name          | Указать кастомное имя для контейнера
+        - devices                 | Подключить устройства к контейнеру
+        - depends_on              | Указать зависимости сервиса от других сервисов
+        - dns                     | Кастомные DNS-сервера
+        - dns_search              | Кастомные DNS-search домены
+        - entrypoint              | Перезаписать entrypoint по умолчанию
+        - env_file                | Добавить переменные среды из файла
+        - environment             | Добавляет переменные среды
+        - expose                  | Сделать expose портов без публикации на host-машину
+        - extends                 | Унаследовать конфигурацию от другого сервиса
+        - external_links          | Сделать link к внешним контейнерам
+        - extra_hosts             | Добавить записи в hosts контейнера
+        - image                   | Указать образ
+        - labels                  | Добавить в контейнер метаданные с помощью Docker Labels
+        - links                   | Связать один контейнер с другими
+        - logging                 | Настройка журналирования сервиса
+        - network_mode            | Указать режим сети
+        - networks (top-level)    | Список сетей, к которым добавиться
+        - pid                     | Sets the PID mode to the host PID mode
+        - ports                   | Пробросить порты на host-машину
+        - security_opt            | Override the default labeling scheme for each container
+        - stop_signal             | Назначить альтернативный (SIGTERM) сигнал для остановки контейнеров
+        - ulimits                 | Перезаписать ulimits по умолчанию для контейнера
+        - volumes, volume_driver  | Какие volumes создать и связать с контейнером
+        - volumes_from            | Связать этот сервис со всеми volumes из другого
+        - cpu_shares              | CPU shares (relative weight)
+        - cpu_quota               | Limit CPU CFS (Completely Fair Scheduler) quota
+        - cpuset                  | ?
+        - domainname              | ?
+        - hostname                | Container host name
+        - ipc                     | IPC namespace to use
+        - mac_address             | Container MAC address (e.g. 92:d0:c6:0a:29:33)
+        - mem_limit               | Memory limit
+        - memswap_limit           | A positive integer equal to memory plus swap. Specify -1 to enable unlimited swap
+        - privileged              | Give extended privileges to this container
+        - read_only               | Mount the container's root filesystem as read only
+        - restart                 | Restart policy (no, on-failure[:max-retry], always, unless-stopped)
+        - stdin_open              | Keep STDIN open even if not attached
+        - tty                     | Allocate a pseudo-TTY
+        - user                    | Username or UID (format: <name|uid>[:<group|gid>])
+        - working_dir             | Working directory inside the container
 
-      - driver        |
-      - driver_opts   |
-      - external      |
+      • Часто используемые
 
-    # Справочник для конфигурации сетей
+        ▪ Сборка контейнера
 
-      - driver        |
-      - driver_opts   |
-      - ipam          |
-      - external      |
+          - build                   | Информация для применения во время сборки: контекст, DockerBuild, аргументы
+          - image                   | Указать образ
 
+        ▪ Обработчик и команда
+
+          - entrypoint              | Перезаписать entrypoint по умолчанию
+          - command                 | Перезаписать команду по умолчанию
+
+        ▪ Порты
+
+          - expose                  | Сделать expose портов без публикации на host-машину
+          - ports                   | Пробросить порты на host-машину
+
+        ▪ Переменные среды
+
+          - environment             | Добавляет переменные среды
+          - env_file                | Добавить переменные среды из файла
+
+        ▪ Volumes
+
+          - volumes, volume_driver  | Какие volumes создать и связать с контейнером
+          - volumes_from            | Связать этот сервис со всеми volumes из другого
+
+        ▪ Зависимости сервисов
+
+          - links                   | Связать один контейнер с другими
+          - depends_on              | Указать зависимости сервиса от других сервисов
+
+        ▪ Наследование
+
+          - extends                 | Унаследовать конфигурацию от другого сервиса
+
+        ▪ Прочее
+
+          - working_dir             | Working directory inside the container
+          - restart                 | Restart policy (no, on-failure[:max-retry], always, unless-stopped)
+          - container_name          | Указать кастомное имя для контейнера
 
   --------------------------------------
 
@@ -7906,11 +7946,198 @@
     • Переменные среды в compose-файле можно использовать в кач-ве переменных
       - Например: ${VARIABLE}
 
+  > Создание и работа с именованными volumes
+
+    # Что такое не именованные объекты volumes
+
+      • Неудобный UID
+        - Каждый объект volume должен иметь UID в пределах host-машины.
+        - По умолчанию при создании объект volume получает примерно такой UID:
+            b82577be399e690f61e4183c38bf28282bf2c9709133b142600906e24a20f176
+        - Такие объекты volume называют не именованными.
+
+      • Пример создания не именованного объекта volume
+
+          docker run -itd -v /myvolume ubuntu /bin/bash
+
+      • Внимание!
+        - При этом volume связывается с создаваемым контейнером.
+
+    # Что такое именованные объекты volumes
+
+      • Удобное имя вместо неудобного UID
+        - Однако можно задать объекту volume имя при его создании.
+        - Такие объекты volume называют именованными.
+
+      • Пример создания объекта volume с именем "somename"
+
+          docker run -itd -v somename:/myvolume ubuntu /bin/bash
+
+      • Внимание!
+        - При этом volume НЕ связывается с создаваемым контейнером.
+
+    # Чем полезны именованные volumes
+      - Их можно одновременно использовать в N сервисах.
+      - Используя при этом удобные короткие имена.
+      - И не полагаясь на volumes_from.
+
+    # Опции volumes для настройки драйвера
+
+      • driver
+        - Можно указать любой драйвер для volumes.
+        - По умолчанию используется "local".
+        - Если Docker Engine не найдёт указанный, будет error.
+
+      • driver_opts
+        - Драйвер-специфичные опции.
+        - Должны передаваться в формате [key]:[value].
+        - Например:
+
+             driver_opts:
+               foo: "bar"
+               baz: 1
+
+    # Опция external и примеры
+
+      • Что такое
+        - Это опция для конкретного volume.
+        - Если значение true, то значит volume был создан вне Compose.
+        - Команда docker-compose up не будет пытаться создать этот volume.
+        - А будет искать среди созданных. Если не найдёт, будет error.
+
+      • Не м.б. использован одновременно с driver/driver_opts
+        - Сабж.
+
+      • Пример №1
+        - В этом примере compose не будет пытаться создать volume: [projectname]_data
+        - Вместо этого он будет искать существующий именованный volume с именем data.
+        - Код:
+
+            version: '2'
+
+            services:
+              db:
+                image: postgres
+                volumes:
+                  - data:/var/lib/postgres/data
+
+            volumes:
+              data:
+                external: true
+
+      • Пример №2
+        - В external можно указать вместо true свойство name.
+        - Тогда compose будет искать именованный volume с именем из name.
+        - А не с именем data, как в примере выше.
+        - Допустим, name == myname, тогда код будет такой:
+
+            volumes
+              data:
+                external:
+                  name: myname
+
+  > Создание и работа с сетями
+
+    # Вводная информация по работе с сетями
+      - Опция network (top level) позволяет настроить сети compose-приложения.
+
+    # Опции для network
+
+      • driver
+        - Сетевой драйвер.
+        - Драйвер по умолчанию зависит от настроек Docker Engine.
+        - Чаще всего это bridge на 1-ом хосте, или overlay для Swarm.
+        - Docker Engine вернёт error, если драйвер недоступен.
+        - Пример:
+
+            driver: overlay
+
+      • driver_opts
+        - Драйвер-специфичные опции для сетевого драйвера.
+        - Должны передаваться в формате [key]:[value].
+        - Например:
+
+             driver_opts:
+               foo: "bar"
+               baz: 1
+
+      • ipam
+        - Конфиг для задания кастомного ipam.
+        - Это объект с несколькими необязательными св-ми.
+        - Вот эти свойства:
+
+          ▪ driver            | Custom IPAM driver, instead of the default.
+          ▪ config            | A list with zero or more config blocks, each containing any of the following keys
+            ▪ subnet          | Subnet in CIDR format that represents a network segment
+            ▪ ip_range        | Range of IPs from which to allocate container IPs
+            ▪ gateway         | IPv4 or IPv6 gateway for the master subnet
+            ▪ aux_addresses   | Auxiliary IPv4 or IPv6 addresses used by Network driver, as a mapping from hostname to IP
+
+        - Полный пример:
+
+            ipam:
+              driver: default
+              config:
+                - subnet: 172.28.0.0/16
+                  ip_range: 172.28.5.0/24
+                  gateway: 172.28.5.254
+                  aux_addresses:
+                    host1: 172.28.1.5
+                    host2: 172.28.1.6
+                    host3: 172.28.1.7
+
+      • external
+
+        ▪ Внешняя сеть
+          - Если external: true, значит сеть была создана вне compose-приложения.
+          - И docker-compose up не будет пытаться создать новую сеть.
+          - Он будет пытаться найти указанную сеть.
+          - Но если её не найдёт, будет error.
+
+        ▪ Не может быть использовано одновременно с driver/driver_opts/ipam
+          - Сабж.
+
+        ▪ Пример №1
+          - В примере ниже, proxy это gateway во внешний мир.
+          - Compose не пытается создать новую сеть с именем [projectname]_outside.
+          - А он ищет существующую сеть с именем outside.
+          - И подключает контейнеры сервиса proxy к ней.
+          - Код:
+
+              version: '2'
+
+              services:
+                proxy:
+                  build: ./proxy
+                  networks:
+                    - outside
+                    - default
+                app:
+                  build: ./app
+                  networks:
+                    - default
+
+              networks:
+                outside:
+                  external: true
+
+        ▪ Пример №2
+        - В external можно указать вместо true свойство name.
+        - Тогда compose будет искать сеть с именем из name.
+        - А не с именем outside, как в примере выше.
+        - Допустим, name == myname, тогда код будет такой:
+
+            networks
+              outside:
+                external:
+                  name: myname
+
+
   > Справочник для конфигурации сервисов
 
     // build //
     //-------//
-    // - Информация для применения во время сборки: контекст, DockerBuild, аргументы
+    // - Информация для применения во время сборки: контекст, DockerBuild, аргументы.
 
       # 2-ва варианта формата
 
@@ -8110,233 +8337,567 @@
 
     // env_file //
     //----------//
-    // -
+    // - Добавить переменные среды из файла.
+    // - Может быть 1 значение, или список.
 
+      # Если ты указал docker-compose -f FILE
+        - То пути в env_file будут относительно каталога с FILE.
+
+      # Примеры
+
+          env_file: .env
+
+          env_file:
+            - ./common.env
+            - ./apps/web.env
+            - /opt/secrets.env
+
+      # Каждое значение в env_file д.б. VAR=VAL
+        - Также допустимы комменты, начинающиеся с #
+        - Пустые строки также допустимы и игнорируются.
+        - Пример:
+
+            # Set Rails/Rack environment
+            RACK_ENV=development
 
     // environment //
     //-------------//
-    // -
+    // - Добавляет переменные среды.
 
+      # Значения надо заключить в кавычки
+        - Иначе YML парсер превратит их в true или false.
+
+      # Аргументы только с ключём получают значение из переменной среды
+        - С той машины, на которой Docker Compose выполняется.
+
+      # Примеры
+
+          environment:
+            RACK_ENV: development
+            SHOW: 'true'
+            SESSION_SECRET:
+
+          environment:
+            - RACK_ENV=development
+            - SHOW=true
+            - SESSION_SECRET
 
     // expose //
     //--------//
-    // -
+    // - Сделать expose портов без публикации на host-машину.
 
+      # Пример
+
+          expose:
+           - "3000"
+           - "8000"
 
     // extends //
     //---------//
-    // -
+    // - Унаследовать конфигурацию от другого сервиса.
 
+      # Можно применять к любому сервису
+        - Extends можно применять к любому сервису.
+
+      # Значение должно быть словарём
+        - В котором свойство service обязательное, а file - опциональное.
+
+      # Пример
+
+          extends:
+            file: common.yml
+            service: webapp
+
+      # Подробнее о свойствах
+
+        • service
+          - Это обязательное свойствао.
+          - Имя сервиса, от которого надо унаследовать конфигурацию.
+          - Примеры имён: web, database.
+
+        • file
+
+          ▪ Не обязательное свойство
+            - Это не обязательное свойство.
+
+          ▪ Местоположение
+            - Это местоположение compose-файла сервиса, от которого идёт наследование.
+
+          ▪ Если file не указать
+            - Compose ищет конфигурацию сервиса в текущем файле.
+
+          ▪ Можно указать абсолютный и относительный путь
+            - Если относительный, то относ-но каталога с текущим файлом.
+
+      # Наследования могут быть множественными
+
+        • Без ограничений
+          - Вложенность наследование никак не ограничена.
+
+        • Берегись замкнутых (circular) зависимостей
+          - Docker Compose их не поддерживает.
+          - И будет error в случае их появления.
 
     // external_links //
     //----------------//
-    // -
+    // - Сделать link к внешним контейнерам.
+    // - Которые вне этого compose-файла, или вне Compose.
 
+      # Можно указать псевдоним для контейнера
+        - По шаблону: [имя контейнера]:[псевдоним].
+
+      # Линкуемые сервисы должны быть в одной сети
+        - Иначе будет fail.
+
+      # Пример
+
+          external_links:
+           - redis_1
+           - project_db_1:mysql
+           - project_db_1:postgresql
 
     // extra_hosts //
     //-------------//
-    // -
+    // - Добавить записи в hosts контейнера.
+    // - Это аналогично --add-host для команды docker.
 
+      # Пример
+
+          extra_hosts:
+           - "somehost:162.242.195.82"
+           - "otherhost:50.31.209.229"
+
+      # Какие записи в /etc/hosts контейнера создаст пример выше
+
+          162.242.195.82  somehost
+          50.31.209.229   otherhost
 
     // image //
     //-------//
-    // -
+    // - Указать образ.
 
+      # Примеры
+
+          image: ubuntu
+          image: orchardup/postgresql
+          image: a4bc65fd
 
     // labels //
     //--------//
-    // -
+    // - Добавить в контейнер метаданные с помощью Docker Labels.
 
+      # Рекоммендовано использовать reverse-DNS-нотацию
+        - To prevent your labels from conflicting with those used by other software
+
+      # Примеры
+
+          labels:
+            com.example.description: "Accounting webapp"
+            com.example.department: "Finance"
+            com.example.label-with-empty-value: ""
+
+          labels:
+            - "com.example.description=Accounting webapp"
+            - "com.example.department=Finance"
+            - "com.example.label-with-empty-value"
 
     // links //
     //-------//
-    // -
+    // - Связать один контейнер с другими.
 
+      # Можно указать псевдоним для контейнера
+        - По шаблону: [имя контейнера]:[псевдоним].
+
+      # Линкуемые сервисы должны быть в одной сети
+        - Если вы укажете одновременно links и networks.
+        - Перелинкованные сервисы должны быть хотя бы в 1-й общей сети.
+        - Иначе будет fail.
+
+      # Если псевдоним указан, то сервис доступен по нему
+        - А по своему настоящему имени не доступен.
+
+      # Links также определяет порядок запуска сервисов
+        - Они будут запускаться в том же порядке, в котором указаны.
+
+      # Пример
+
+          web:
+            links:
+             - db
+             - db:database
+             - redis
 
     // logging //
     //---------//
-    // -
+    // - Настройка журналирования сервиса.
 
+      # Пример
 
-    // log_driver //
-    //------------//
-    // -
+          logging:
+            driver: syslog
+            options:
+              syslog-address: "tcp://192.168.0.42:123"
 
+      # Подробнее о свойствах
 
-    // log_opt //
-    //---------//
-    // -
+        • driver (== json-file)
 
+          ▪ Что такое
+            - Позволяет указать драйвер для журналирования.
+            - Это аналогично --log-driver для docker run.
+            - Список драйверов см.здесь:
+                https://docs.docker.com/engine/admin/logging/overview/
 
-    // net //
-    //-----//
-    // -
+          ▪ Значение по умолчанию: "json-file"
+            - Только "json-file" делают логи доступными прямо из
+              "docker-compose up" и "docker-compose logs".
+            - Любой другой драйвер не будет отображать никаких логов.
 
+          ▪ Примеры:
+
+              driver: "json-file"
+              driver: "syslog"
+              driver: "none"
+
+        • options
+          - Это key-value пары.
+          - Опции для выбранного драйвера журналирования.
+          - Пример для драйвера syslog:
+
+              driver: "syslog"
+              options:
+                syslog-address: "tcp://192.168.0.42:123"
 
     // network_mode //
     //--------------//
-    // -
+    // - Указать режим сети.
 
+      # Примеры
 
-    // networks //
-    //----------//
-    // -
+          network_mode: "bridge"
+          network_mode: "host"
+          network_mode: "none"
+          network_mode: "service:[service name]"
+          network_mode: "container:[container name/id]"
 
+    // networks (top-level) //
+    //----------------------//
+    // - Список сетей, к которым добавиться.
+
+      # Примеры
+
+          networks:
+            - some-network
+            - other-network
+
+      # По поводу псевдонимов сервисов
+
+        • Что такое
+          - Это альтернативные имена для сервисов.
+          - По которым сервис доступен в конкретной сети другим сервисам.
+
+        • Псевдонимы контейнеров находятся в пр.имён сети
+          - 1-ин контейнер может иметь разные псевдонимы в разных сетях.
+
+        • А если у N контейнеров в сети один и тот же псевдоним
+          - То какой сервис будет по этому псевдониму отзываться?
+          - Docker отвечает, что это на волю случая.
+
+        • Можно назначить псевдонимы сервиса в разных сетях
+          - В примере ниже в сети some-network псевдонимы у сервиса:
+
+            ▪ alias1
+            ▪ alias3
+
+          - А в сети other-network псевдонимы у сервиса:
+
+            ▪ alias2
+
+          - Код примера:
+
+              networks:
+                some-network:
+                  aliases:
+                    - alias1
+                    - alias3
+                other-network:
+                  aliases:
+                    - alias2
+
+        • Реальный пример
+
+            version: 2
+
+            services:
+              web:
+                build: ./web
+                networks:
+                  - new
+
+              worker:
+                build: ./worker
+                networks:
+                - legacy
+
+              db:
+                image: mysql
+                networks:
+                  new:
+                    aliases:
+                      - database
+                  legacy:
+                    aliases:
+                      - mysql
+
+            networks:
+              new:
+              legacy:
 
     // pid //
     //-----//
-    // -
+    // - Sets the PID mode to the host PID mode.
 
+      # Пример
+
+          pid: "host"
 
     // ports //
     //-------//
-    // -
+    // - Пробросить порты на host-машину.
 
+      # Формат значений
+        - Должен соответствовать одному из:
+
+          • [порт в контейнере]
+          • [порт на хосте]:[порт в контейнере].
+
+      # Если [порт на хосте] опущен
+        - То будет автоматически выбран рандумный
+        - Из диапазона от 32768 до 61000.
+
+      # Всегда заключай значения в ""
+        - Иначе можешь испытать проблемы в виде ошибок.
+        - Особенно, если порт контейнера меньше 60.
+        - Т.К YAML парсит числа в формате xx:yy с базой 60.
+
+      # Можно указывать диапазоны через -
+        - См.примеры ниже.
+
+      # Примеры
+
+        ports:
+         - "3000"
+         - "3000-3005"
+         - "8000:8000"
+         - "9090-9091:8080-8081"
+         - "49100:22"
+         - "127.0.0.1:8001:8001"
+         - "127.0.0.1:5000-5010:5000-5010"
 
     // security_opt //
     //--------------//
-    // -
+    // - Override the default labeling scheme for each container.
 
+      # Примеры
+
+          security_opt:
+            - label:user:USER
+            - label:role:ROLE
 
     // stop_signal //
     //-------------//
-    // -
+    // - Назначить альтернативный (SIGTERM) сигнал для остановки контейнеров.
+    // - По умолчанию это SIGTERM.
+    // - Этот сигнал посылает команда stop.
 
+      # Пример
+
+          stop_signal: SIGUSR1
 
     // ulimits //
     //---------//
-    // -
+    // - Перезаписать ulimits по умолчанию для контейнера.
 
+      # Примеры
+
+          ulimits:
+            nproc: 65535
+            nofile:
+              soft: 20000
+              hard: 40000
 
     // volumes, volume_driver //
     //------------------------//
-    // -
+    // - Какие volumes создать и связать с контейнером.
 
+      # Допустимые форматы
+
+        • [путь на хосте]:[путь в контейнере]:[права доступа]
+          - Создать volume-объект с ручной ссылкой (source) и правами доступа:
+
+            ▪ Destination: [путь в контейнере]
+            ▪ Source: [путь на хосте]
+            ▪ И с правами доступа: [права доступа]
+
+        • [путь на хосте]:[путь в контейнере]
+          - Создать volume-объект с ручной-ссылкой (soruce) и полным доступом:
+
+            ▪ Destination: [путь в контейнере]
+            ▪ Source: [путь на хосте]
+
+        • [путь в контейнере]
+          - Создать volume-объект с авто-ссылкой (soruce) и полным доступом:
+
+            ▪ Destination: [путь в контейнере]
+            ▪ Source: создан автоматически по адресу типа "/mnt/sda1/var/lib/docker/volumes/..."
+
+      # Относительные пути на хосте
+
+        • Всегда должны начинаться с . или ..
+          - Сабж.
+
+        • С корнем в каталоге с compose-файлом
+          - Относительные пути относительно корня каталога с compose-файлом.
+
+      # Если не указать [путь на хосте], можно указать volume_driver
+        - Но он не будет применяться к именованным volumes.
+        - Вместо этого надо использовать опцию driver при определении volume.
+
+      # Именованные volumes д.б. указаны в volumes (top level)
+        - Сабж.
+
+      # Примеры
+
+        volumes:
+          # Just specify a path and let the Engine create a volume
+          - /var/lib/mysql
+
+          # Specify an absolute path mapping
+          - /opt/data:/var/lib/mysql
+
+          # Path on the host, relative to the Compose file
+          - ./cache:/tmp/cache
+
+          # User-relative path
+          - ~/configs:/etc/configs/:ro
+
+          # Named volume
+          - datavolume:/var/lib/mysql
 
     // volumes_from //
     //--------------//
-    // -
+    // - Связать этот сервис со всеми volumes из другого.
 
+      # Можно дополнительно указать права доступа
+        - См. пример ниже.
 
-    // working_dir //
-    //-------------//
-    // -
+      # Примеры
 
+          volumes_from:
+           - service_name
+           - service_name:ro
+           - container:container_name
+           - container:container_name:rw
 
     // cpu_shares //
     //------------//
-    // -
-
+    // - CPU shares (relative weight).
 
     // cpu_quota //
     //-----------//
-    // -
-
+    // - Limit CPU CFS (Completely Fair Scheduler) quota.
 
     // cpuset //
     //--------//
     // -
 
-
     // domainname //
     //------------//
     // -
 
-
     // hostname //
     //----------//
-    // -
-
+    // - Container host name.
 
     // ipc //
     //-----//
-    // -
-
+    // - IPC namespace to use.
 
     // mac_address //
     //-------------//
-    // -
-
+    // - Container MAC address (e.g. 92:d0:c6:0a:29:33).
 
     // mem_limit //
     //-----------//
-    // -
-
+    // - Memory limit.
 
     // memswap_limit //
     //---------------//
-    // -
-
+    // - A positive integer equal to memory plus swap. Specify -1 to enable unlimited swap.
 
     // privileged //
     //------------//
-    // -
-
+    // - Give extended privileges to this container.
 
     // read_only //
     //-----------//
-    // -
-
+    // - Mount the container's root filesystem as read only.
 
     // restart //
     //---------//
-    // -
-
+    // - Restart policy (no, on-failure[:max-retry], always, unless-stopped).
 
     // stdin_open //
     //------------//
-    // -
-
+    // - Keep STDIN open even if not attached.
 
     // tty //
     //-----//
-    // -
-
+    // - Allocate a pseudo-TTY.
 
     // user //
     //------//
-    // -
-
+    // - Username or UID (format: <name|uid>[:<group|gid>]).
 
     // working_dir //
     //-------------//
-    // -
+    // - Working directory inside the container.
 
 
-  > Справочник для конфигурации volumes
+Б1. Локальная среда разработки на Docker для Laravel
 
-    // driver //
-    //--------//
-    // -
+  --------------------------------------
+  Подоглавление:
 
+    # Ссылки
+    # Введение
 
-    // driver_opts //
-    //-------------//
-    // -
+  --------------------------------------
 
+  > Ссылки
 
-    // external //
-    //----------//
-    // -
+    # Работающий пример готовой среды SpiralOutDotEu/dockervel (29.12.2015)
+        https://github.com/SpiralOutDotEu/dockervel
+        http://www.spiralout.eu/2015/12/dockervel-laravel-development.html
 
-  > Справочник для конфигурации сетей
+    # Статья "Laravel 5 with dockerized Gulp, PHP-FPM, MySQL and nginx" (03.2015)
+        http://harshjv.github.io/blog/laravel-5-with-dockerized-gulp-php-fpm-mysql-and-nginx/
 
-    // driver //
-    //--------//
-    // -
+    # Статья "Beautiful Laravel Development with Docker & Fig" (08.10.2014)
+        http://dylanlindgren.com/laravel-development-docker-fig/
 
+  > Введение
+    - В этой главе описано, как сделать среду разработки для Laravel на Docker.
 
-    // driver_opts //
-    //-------------//
-    // -
-
-
-    // ipam //
-    //------//
-    // -
+  >
 
 
-    // external //
-    //----------//
-    // -
+
+
+
+
+
+
+
+
 
