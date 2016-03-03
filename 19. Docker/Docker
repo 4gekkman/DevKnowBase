@@ -9234,7 +9234,7 @@
         - Для этого переходить в каталоги локальных репозиториев.
         - И в для каждого из них выполнить (соответствующую) команду:
 
-          • git remote add ubuntu-nginx-phpfpm git@github.com:4gekkman/docker-image-ubuntu-nginx-phpfpm.git
+          • git remote add "ubuntu-nginx-phpfpm" git@github.com:"4gekkman/docker-image-ubuntu-nginx-phpfpm.git"
           • git remote add mysql-latest git@github.com:4gekkman/docker-image-mysql-latest.git
           • git remote add redis-latest git@github.com:4gekkman/docker-image-redis-latest.git
           • git remote add node-bower-gulp-latest git@github.com:4gekkman/docker-image-node-bower-gulp-latest.git
