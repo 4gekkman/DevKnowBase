@@ -9094,60 +9094,35 @@
       ▪ docker-image-ubuntu-artisan
       ▪ docker-image-ubuntu-node
 
-    • Создать Docker Compose проект
-
-      ▪ Подготовить каталог для всех compose-проектов
-        - Подготовить для них отдельный каталог.
-        - Каталог для всех compose-проектов: "/c/webdev/docker/environments".
-
-      ▪ Создать локальный репозиторий compose-проекта devapp
-        - У каждого compose-проекта должен быть свой каталог.
-        - Он должен лежать в каталоге для всех compose-проектов.
-        - В каждом каталоге compose-проекта должны быть следующие файлы:
-
-          ▪ docker-compose.yml
-          ▪ README.md
-          ▪ aliases.sh
-          ▪ data
-          ▪ .gitignore          | с каталогом data
-
-        - Соответственно, надо создать: "/c/webdev/docker/environments/devapp".
-        - Создать там все вышеуказанные файлы, и наполнить их.
-        - Сделать из этого каталога локальный репо. с помощью git init.
-
-      ▪ Создать удалённый репозиторий compose-проекта devapp
-        - Для каждого compose-проекта надо создать репо. на github.
-        - Формат имени репозитория: docker-environment-<название>
-        - В нашем случае надо создать:
-
-          ▪ docker-environment-devapp
-
-      ▪ Наладить auto-push
-        - Добавить необходимую запись в GitAutoPushScript.ps1.
-        - Сделать push из всех локальных репозиториев на удалённые.
-
-    • Создать проект своего приложения
+    • Создать проект
 
       ▪ Подготовить каталог для проектов
-        - Этот каталог должен быть вне каталога: "/c/webdev/docker".
         - Хороший вариант для него: "/c/webdev/projects"
 
       ▪ Подготовить локальный репозиторий для проекта
         - Это каталог с именем проекта в каталоге: "/c/webdev/projects".
         - Имя проекта может быть любым уникальным в каталоге projects.
         - Лучше всего, чтобы это имя было говорящим о сути проекта.
+        - В нашем случае это будет проект: "/c/webdev/projects/devapp"
         - Содержимое каталога проекта должно быть таким:
 
-          ▪ Project     | каталог с файлами проекта
-          ▪ README.md   | readme проекта для github
+          ▪ configs             | различные конфиги
+          ▪ data                | данные всяких баз данных
+            ▪ mysql             | данные mysql
+            ▪ redis             | данные redis
+          ▪ sites               | каталог с файлами проекта
+          ▪ www                 | каталог с файлами проекта
+          ▪ README.md           | readme проекта для github
+          ▪ DockerFile          | docker-файл проекта
+          ▪ docker-compose.yml  | compose-файл проекта
+          ▪ .gitignore          | gitignore
 
-        - Внутри Project может быть проект любого типа:
+        - Внутри www может быть проект любого типа:
 
           ▪ Laravel
           ▪ Node.js
           ▪ Любой другой
 
-        - В нашем случае это будет проект: "/c/webdev/projects/devapp"
         - Сделать из этого каталога локальный репо. с помощью git init.
 
       ▪ Подготовить удалённый репозиторий проекта на github
@@ -9234,10 +9209,10 @@
         - Для этого переходить в каталоги локальных репозиториев.
         - И в для каждого из них выполнить (соответствующую) команду:
 
-          • git remote add "ubuntu-nginx-phpfpm" git@github.com:"4gekkman/docker-image-ubuntu-nginx-phpfpm.git"
-          • git remote add mysql-latest git@github.com:4gekkman/docker-image-mysql-latest.git
-          • git remote add redis-latest git@github.com:4gekkman/docker-image-redis-latest.git
-          • git remote add node-bower-gulp-latest git@github.com:4gekkman/docker-image-node-bower-gulp-latest.git
+          • git remote add docker-image-ubuntu-nginx-phpfpm git@github.com:4gekkman/docker-image-ubuntu-nginx-phpfpm.git
+          • git remote add docker-image-mysql-latest git@github.com:4gekkman/docker-image-mysql-latest.git
+          • git remote add docker-image-redis-latest git@github.com:4gekkman/docker-image-redis-latest.git
+          • git remote add docker-image-node-bower-gulp-latest git@github.com:4gekkman/docker-image-node-bower-gulp-latest.git
 
         - Внимание! Регистр  (например, 'm1' или 'M1') имеет значение!
 
@@ -9245,41 +9220,59 @@
         - Чтобы производился авто пуш из локальных в удалённые репо.
         - Выполнить push.
 
-    3. Создать docker-compose проект
+    3. Создать проект своего приложения
 
-      3.1. Создать каталог: "/c/webdev/docker/environments"
+      3.1. Создать каталог: "/c/webdev/projects/devapp"
 
-      3.2. Создать локальный репозиторий compose-проекта devapp
+      3.2. Создать локальный репозиторий проекта devapp
 
         • По адресу
-          - "/c/webdev/docker/environments/devapp"
+          - "/c/webdev/projects/devapp"
 
-        • Добавить в него файлы и каталоги, и наполнить их
+        • Добавить в него следующие файлы и каталоги
 
-          ▪ docker-compose.yml
-          ▪ README.md
-          ▪ aliases.sh
-          ▪ data
-          ▪ .gitignore          | с каталогом data
+          ▪ configs             | различные конфиги
+          ▪ data                | данные всяких баз данных
+            ▪ mysql             | данные mysql
+            ▪ redis             | данные redis
+          ▪ sites               | каталог с файлами проекта
+          ▪ www                 | каталог с файлами проекта
+          ▪ README.md           | readme проекта для github
+          ▪ DockerFile          | docker-файл проекта
+          ▪ docker-compose.yml  | compose-файл проекта
+          ▪ .gitignore          | gitignore
 
-      3.3. Создать удалённый репозиторий compose-проекта devapp на github
+      3.3. Установить в www свежий проект laravel
+        - Для этого скачать его в виде zip.
+        - Отсюда: https://github.com/laravel/laravel.
+        - И распаковать содержимое архива в www.
+        - Затем в терминале в этом каталоге выполнить:
 
-        • docker-environment-devapp
+            composer install
 
-      3.4. Связать локальный и удалённый репозитории
+      3.4. Создать удалённый репозиторий проекта devapp на github
+
+        • project-devapp
+
+      3.5. Связать локальный и удалённый репозитории
         - Перейти в каталог локального репозитория.
         - Выполнить:
 
-          • git remote add devapp git@github.com:4gekkman/docker-environment-devapp.git
+          • git remote add project-devapp git@github.com:4gekkman/project-devapp.git
 
-      3.5. Добавить необходимые записи в GitAutoPushScript.ps1
+      3.6. Добавить необходимые записи в GitAutoPushScript.ps1
         - Чтобы производился авто пуш из локальных в удалённые репо.
         - Выполнить push.
 
+      3.7. Наладить автоматическую сборку образа
+        - См. инструкцию здесь: https://docs.docker.com/engine/userguide/containers/dockerrepos/
+        - Далее 2 варианта доставить проект на DO-сервер:
 
-
-
-
+          1) Сделать git pull в нужный каталог.
+            - При изменениях придётся вручную делать git pull.
+          2) Добавить в compose-файл сервис с образом проекта.
+            - При изменениях один этот образ можно перезапустить.
+            - Можно перезапуск даже автоматизировать, если надо.
 
 
 
