@@ -9111,7 +9111,7 @@
           ▪ data
           ▪ .gitignore          | с каталогом data
 
-        - Соответственно, надо создать: "/c/webdev/docker/environment/devapp".
+        - Соответственно, надо создать: "/c/webdev/docker/environments/devapp".
         - Создать там все вышеуказанные файлы, и наполнить их.
         - Сделать из этого каталога локальный репо. с помощью git init.
 
@@ -9245,15 +9245,36 @@
         - Чтобы производился авто пуш из локальных в удалённые репо.
         - Выполнить push.
 
+    3. Создать docker-compose проект
 
-git remote add test git@github.com:4gekkman/test
+      3.1. Создать каталог: "/c/webdev/docker/environments"
 
+      3.2. Создать локальный репозиторий compose-проекта devapp
 
+        • По адресу
+          - "/c/webdev/docker/environments/devapp"
 
+        • Добавить в него файлы и каталоги, и наполнить их
 
+          ▪ docker-compose.yml
+          ▪ README.md
+          ▪ aliases.sh
+          ▪ data
+          ▪ .gitignore          | с каталогом data
 
+      3.3. Создать удалённый репозиторий compose-проекта devapp на github
 
+        • docker-environment-devapp
 
+      3.4. Связать локальный и удалённый репозитории
+        - Перейти в каталог локального репозитория.
+        - Выполнить:
+
+          • git remote add devapp git@github.com:4gekkman/docker-environment-devapp.git
+
+      3.5. Добавить необходимые записи в GitAutoPushScript.ps1
+        - Чтобы производился авто пуш из локальных в удалённые репо.
+        - Выполнить push.
 
 
 
