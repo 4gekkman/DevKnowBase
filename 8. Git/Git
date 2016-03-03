@@ -341,7 +341,7 @@
       #	1. Подготовка необходимого функционала
       #
       #		Get-SshAgent		| 1.1. Извлечь PID текущего SSH-agent
-      #		Start-SshAgent		| 1.2. Запустить SSH-agent
+      #		Start-SshAgent  | 1.2. Запустить SSH-agent
       #		Stop-SshAgent		| 1.3. Остановить запущенный SSH-агент
       #		Add-SshKey			| 1.4. Добавить SSH-ключ в SSH-агент
       #
