@@ -9231,9 +9231,19 @@
         ▪ docker-image-ubuntu-artisan
 
       2.5. Связать локальные и удалённые репозитории
+        - Для этого переходить в каталоги локальных репозиториев.
+        - И в для каждого из них выполнить (соответствующую) команду:
+
+          • git remote add ubuntu-nginx-phpfpm git@github.com:4gekkman/docker-image-ubuntu-nginx-phpfpm.git
+          • git remote add mysql-latest git@github.com:4gekkman/docker-image-mysql-latest.git
+          • git remote add redis-latest git@github.com:4gekkman/docker-image-redis-latest.git
+          • git remote add node-bower-gulp-latest git@github.com:4gekkman/docker-image-node-bower-gulp-latest.git
+
+        - Внимание! Регистр  (например, 'm1' или 'M1') имеет значение!
 
       2.6. Добавить необходимые записи в GitAutoPushScript.ps1
         - Чтобы производился авто пуш из локальных в удалённые репо.
+        - Выполнить push.
 
 
 
