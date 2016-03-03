@@ -9246,7 +9246,7 @@
         - Выполнить push.
 
 
-
+git remote add test git@github.com:4gekkman/test
 
 
 
