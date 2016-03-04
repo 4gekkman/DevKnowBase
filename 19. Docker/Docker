@@ -9220,6 +9220,54 @@
         - Чтобы производился авто пуш из локальных в удалённые репо.
         - Выполнить push.
 
+      2.7. Добавить все docker-образы на docker hub
+
+        • Cоздать репозитории на docker hub
+          - Зайти на сайт: http://hub.docker.com/.
+          - И там создать репозитории:
+
+            ▪ docker-image-ubuntu-nginx-phpfpm
+            ▪ docker-image-mysql-latest
+            ▪ docker-image-redis-latest
+            ▪ docker-image-node-bower-gulp-latest
+
+        • Собрать образы в локальных репозиториях
+          - Заходить по очереди в каталоги образов.
+          - И выполнять следующие команды (каждую в соотв.каталоге):
+
+            ▪ docker build -t docker-image-ubuntu-nginx-phpfpm:latest .
+            ▪ docker build -t docker-image-mysql-latest:latest .
+            ▪ docker build -t docker-image-redis-latest:latest .
+            ▪ docker build -t docker-image-node-bower-gulp-latest:latest .
+
+        • Пометить правильными тегами локальные репозитории
+          - Заходить по очереди в каталоги образов.
+          - И выполнять следующие команды (каждую в соотв.каталоге):
+
+            ▪ docker tag docker-image-ubuntu-nginx-phpfpm:latest 4gekkman/docker-image-ubuntu-nginx-phpfpm:latest
+            ▪ docker tag docker-image-mysql-latest:latest 4gekkman/docker-image-mysql-latest:latest
+            ▪ docker tag docker-image-redis-latest:latest 4gekkman/docker-image-redis-latest:latest
+            ▪ docker tag docker-image-node-bower-gulp-latest:latest 4gekkman/docker-image-node-bower-gulp-latest:latest
+
+        • Аутентифицироваться на docker hub
+           - Для этого применить команду login.
+           - И ввести все необходимые данные.
+
+        • Залить все образы на docker hub
+          - Заходить по очереди в каталоги образов.
+          - И выполнять следующие команды (каждую в соотв.каталоге):
+
+            ▪ docker push 4gekkman/docker-image-ubuntu-nginx-phpfpm:latest
+            ▪ docker push 4gekkman/docker-image-mysql-latest:latest
+            ▪ docker push 4gekkman/docker-image-redis-latest:latest
+            ▪ docker push 4gekkman/docker-image-node-bower-gulp-latest:latest
+
+          - И только минут через 10 они там появятся. Зависит от размера.
+
+      2.8. Наладить автоматическую сборку образов
+        - См. инструкцию здесь: https://docs.docker.com/engine/userguide/containers/dockerrepos/
+
+
     3. Создать проект своего приложения
 
       3.1. Создать каталог: "/c/webdev/projects/devapp"
