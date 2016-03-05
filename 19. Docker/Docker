@@ -9314,6 +9314,29 @@
 
 
 
+Работа с контейнером с nodejs из под windows
+- Установить bower, например, можно так:
+
+  docker run --rm -it -v /c/WebDev:/c/WebDev -w /c/WebDev node npm install bower --no-bin-link
+
+- Чтобы сократить всё это дело, можно создать alias "nodejs" для:
+
+  docker run --rm -it -v /c/WebDev:/c/WebDev -w /c/WebDev node
+
+
+
+
+
+О невозможности делать run сервисов в интерактивном режиме с помощью docker-comopse
+- Подробнее: https://github.com/docker/compose/issues/2836
+- Это невозможно делать из windows.
+- Поэтому надо подключиться к контейнеру:
+    docker exec -it 340974fbd638 bash
+- И там уже работать с ним.
+- Например, выполнять интерактивные node-приложения.
+- А не интерактивные можно и прямо из windows:
+    docker-compose run -d nodejs
+
 
 
 
