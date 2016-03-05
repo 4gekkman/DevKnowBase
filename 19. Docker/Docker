@@ -9326,6 +9326,21 @@
 
 
 
+Запуск bower на хост-машине с помощью сервиса на docker-compose
+- Команда:
+
+    docker-compose run nodejs bower --allow-root
+
+- Без --allow-root будет ошибка: ESUDO Cannot be run with sudo
+
+
+
+Запуск gulp на хост-машине с помощью сервиса на docker-compose
+- Команда (узнать версию gulp):
+
+  docker-compose run nodejs gulp -v
+
+
 
 О невозможности делать run сервисов в интерактивном режиме с помощью docker-comopse
 - Подробнее: https://github.com/docker/compose/issues/2836
