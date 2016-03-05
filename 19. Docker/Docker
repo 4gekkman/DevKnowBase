@@ -734,17 +734,25 @@
       - Для подключение потребуется private key из этого каталога.
       - Но надо конвертировать его в PuTTY-формат с помощью puttygen.exe:
 
-        1) Откройте puttygen.exe
+        1. Открыть puttygen.exe
 
-        2) Нажмите File -> Load и загрузите private key
+        2. Нажать File -> Load и загрузить private key
           - Который в %USERPROFILE%\.docker\machine\machines\<name_of_your_machine>\id_rsa
-          - В моём случае %USERPROFILE% это: C:\Users\German\.ssh
+          - В нашем случае: C:\Users\German\.docker\machine\machines\default\id_rsa
+          - Не забыть переключить тип файла на "All Files".
 
-        3) Нажмите Save Private Key
+        3. Нажать Save Private Key
+          - Сохранить его в: C:\WebDev\bin\ssh\Docker Machines\default
 
-        4) Подключитесь к ВМ с помощью созданного ключа
-          - Используйте Login: docker
-          - IP и порт: 127.0.0.1:2022
+        4. Подключиться к машине default через путти с помощью этого ключа
+
+          • Открыть PuTTY
+          • Вписать "docker" в Connection->Data->Auto-login username
+          • Указать ключ из 3.3 в Connection->SSH->Auth->Private key file...
+          • Указать IP: 192.168.99.100
+          • Указать порт: 22
+          • Сохранить соединение, как: Docker-default
+          • Кликнуть 2 раза по соединеню, чтобы подключиться.
 
 
 А3. Запуск приложений в Docker-контейнерах
@@ -8941,13 +8949,66 @@
           sudo touch /mnt/sda1/var/lib/boot2docker/bootlocal.sh
           sudo chmod 777 /mnt/sda1/var/lib/boot2docker/bootlocal.sh
 
-        • Вставь в него следующий код, и сохрани
+        • Вставь в него следующий код, и сохранить
 
           sudo mkdir /c/WebDev
           sudo chmod 777 /c/WebDev
           sudo mount -t vboxsf c/webDev /c/WebDev
 
-    3. Окрыть profile для powershell
+    3. Настроить PuTTY-соединение с машиной default
+
+      3.1. Открыть puttygen.exe
+
+      3.2. Нажать File -> Load и загрузить private key
+          - Который в %USERPROFILE%\.docker\machine\machines\<name_of_your_machine>\id_rsa
+          - В нашем случае: C:\Users\German\.docker\machine\machines\default\id_rsa
+          - Не забыть переключить тип файла на "All Files".
+
+      3.3. Нажать Save Private Key
+        - Сохранить его в: C:\WebDev\bin\ssh\Docker Machines\default
+
+      3.4. Подключиться к машине default через PuTTY с помощью этого ключа
+
+        • Открыть PuTTY
+        • Вписать "docker" в Connection->Data->Auto-login username
+        • Указать ключ из 3.3 в Connection->SSH->Auth->Private key file...
+        • В Window->Appearance установить шрифт: Consolas - 13 - кириллица.
+        • Указать IP: 192.168.99.100
+        • Указать порт: 22
+        • Сохранить соединение, как: Docker-default
+        • Кликнуть 2 раза по соединеню, чтобы подключиться.
+
+    4. Установить несколько пакетов на машину default через tce-load
+      - Список доступных пакетов см. здесь: http://distro.ibiblio.org/tinycorelinux/tcz_2x.html
+      - Нам надо установитЬ:
+
+        • tce-load -wi nano
+        • tce-load -wi bash
+
+    5. Организовать автопереход в нужный каталог при подключении к default
+      - Открыть настройки PuTTY-соединения Docker-dafault.
+      - Указать в Connection->SSH->Remore command:
+
+          cd /c/WebDev/projects/devapp ; bash
+
+      - Сохранить соединение.
+      - Этот пункт надо делать строго после 4-го пункта.
+      - Т.К. в boot2docker bash по умолчанию не установлен.
+
+    6. Настроить автосоздание 2-х PuTTY соединений в conemu для devapp
+      - Открыть стартвый скрипт для powershell: notepad $profile
+      - Добавить туда (после задачи по запуску машины) следующу запись:
+
+        # Запустить 2-ва PuTTY-подключения к машине default
+        putty -load "Docker-default" -l docker -new_console;
+        putty -load "Docker-default" -l docker -new_console:s60H
+
+
+
+
+
+
+    7. Окрыть profile для powershell
       - Для этого ввести в powershell:
 
           notepad $profile
