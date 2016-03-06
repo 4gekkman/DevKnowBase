@@ -71,7 +71,7 @@
 
   # Б.  Рецепты и наработки
 
-    Б1. Автозапуск docker-машины default и подготовка powershell
+    Б1. Подготовка ВМ на Vagrant с Docker и автонастройкой терминала
     Б2. Процесс разработки с Docker от А до Я
 
 
@@ -8911,241 +8911,89 @@
 
 
 
-
-
-
-
-
-
-Б1. Автозапуск docker-машины default и подготовка powershell
+Б1. Подготовка ВМ на Vagrant с Docker и автонастройкой терминала
 
   --------------------------------------
   Подоглавление:
 
     # Ссылки
     # Введение
-    # Список задач дла автоматизации
-    # Пошаговая инструкция
+    # Где взять ВМ
+    # Как работать с ВМ
+    # Настройка автозапуска ВМ при старте Windows, и SSH-подключений к ВМ в терминале comemu
 
   --------------------------------------
 
   > Ссылки
 
-    # Читай раздел №5: "А5. Работа с Docker Machines"
+    # Матодичка по Vagrant
+        C:\WebDev\docs\DevKnowBase\20. Vagrant
+
+    # ВМ с оф.ubuntu 14.04, docker и docker compose
+        https://github.com/4gekkman/vagrant-ubuntu14.04-docker
 
   > Введение
-    - Ты разработчик и ведёшь свою разработку на Windows.
-    - Для работы с Docker ты используешь docker-machines.
-    - У тебя одна машина default для всех твоих проектов.
-    - Ведь на ней с помощью docker-compose можно создать
-      сколько угодно независимых окружений разработки.
-    - Тебе требуется запускать эту машину при старте windows.
-    - А также настраивать свой powershell на работу с ней,
-      то есть назначать соотв.переменные окружения.
-    - В этой главе описано, как автоматизировать процесс.
+    - Docker Machines и boot2docker являются не лучшим вариантом.
+    - Намного лучше использовать Vagrant и настроить себе ВМ самому.
+    - Это должна быть ВМ с Docker и Docker Compose на Ubuntu.
+    - ВМ должна автоматически стартовать вместе с Windows.
+    - Должны автоматически запускаться SSH-подключения к ВМ в терминале.
+    - Данная глава описывает подготовку всего вышеописанного.
 
-  > Список задач дла автоматизации при старте powershell
+  > Где взять ВМ
+    - ВМ уже настроена заранее и лежит в репчике на github.
+    - Скачать её можно по ссылке из раздела ссылок выше.
 
-    • Запуск docker-машины default
-    • Автомонтирование в неё /c/WebDev/
-    • Настройка powershell на работу с default
-    • Автозапуск локальной среды разработки devapp
-    • Создание в терминале 2-х подключений к default через PuTTY
-    • Автозапуск compose-приложения devapp.
+  > Как работать с ВМ
 
-  > Пошаговая инструкция
+    • Сделать git pull
+      - Подготовить где-нибудь папочку для ВМ.
+      - Например:
 
-    1. Сделать /c/WebDev/ общим каталогом в VirtualBox
-      - Общий каталог по умолчанию это "/c/users".
-      - И так для всех docker-машин.
-      - А у нас код лежит в "/c/webdev".
-      - Поэтому надо сначала остановить соотв.docker-машину.
-      - Затем: VirtualBox -> <машина> -> Настроить -> Общие папки
-      - И добавить туда новую общую папку со следующими св-ми:
+          C:\WebDev\boxes\vagrant-ubuntu14.04-docker
 
-        • Путь к папке:         c:\WebDev
-        • Имя:                  c/WebDev
-        • Только для чтения:    Нет
-        • Авто-подключение:     Да
+      - Перейти в эту папочку в терминале.
+      - Скачать содержимое указанного выше репозитория с ВМ:
 
-    2. Сделать автомонтирование c:\WebDev ---> /c/WebDev
-      - Просто сделать /c/WebDev общим каталогом в VB недостаточно.
-      - Его ещё и надо монтировать в ВМ каждый раз при её старте.
-      - Можно не делать этого вручную, а настроить стартовый скрипт.
-      - Для этого:
+          git pull https://github.com/4gekkman/vagrant-ubuntu14.04-docker
 
-        • Создай стартовый скрипт на виртуальной машине
+    • Запустить ВМ
+      - Перейти в папку с ВМ в терминале.
+      - Выполнить:
 
-          sudo touch /mnt/sda1/var/lib/boot2docker/bootlocal.sh
-          sudo chmod 777 /mnt/sda1/var/lib/boot2docker/bootlocal.sh
+          vagrant up
 
-        • Вставь в него следующий код, и сохранить
+    • Подключиться к ВМ по SSH
+      - Чтобы подключиться выполни:
 
-          sudo mkdir /c/WebDev
-          sudo chmod 777 /c/WebDev
-          sudo mount -t vboxsf c/webDev /c/WebDev
+          vagrant ssh
 
-    3. Организовать автозапуск вирт.машины default при старте powershell
-      - Окрыть profile для powershell.
-      - Для этого в powershell ввести: notepad $profile
-      - Туда вписать следующее
+    • Остановить ВМ
+      - Чтобы остановить машину выполни:
 
-        ##########
-        # Docker #
-        ##########
+          vagrant halt
 
-          # Запустить docker-машину default
-          docker-machine start;
+  > Настройка автозапуска ВМ при старте Windows, и SSH-подключений к ВМ в терминале comemu
 
-          # Настроить powershell на работу с docker-машиной default
-          docker-machine env --shell powershell default | Invoke-Expression;
-
-    4. Настроить PuTTY-соединение с машиной default
-
-      4.1. Открыть puttygen.exe
-
-      4.2. Нажать File -> Load и загрузить private key
-          - Который в %USERPROFILE%\.docker\machine\machines\<name_of_your_machine>\id_rsa
-          - В нашем случае: C:\Users\German\.docker\machine\machines\default\id_rsa
-          - Не забыть переключить тип файла на "All Files".
-
-      4.3. Нажать Save Private Key
-        - Сохранить его в: C:\WebDev\bin\ssh\Docker Machines\default
-
-      4.4. Подключиться к машине default через PuTTY с помощью этого ключа
-
-        • Открыть PuTTY
-        • Вписать "docker" в Connection->Data->Auto-login username
-        • Указать ключ из 3.3 в Connection->SSH->Auth->Private key file...
-        • В Window->Appearance установить шрифт: Consolas - 13 - кириллица.
-        • В Connection->SSH->Remote Command вписать:
-
-          docker run -it --rm -e LANG=C.UTF-8 --privileged -v /c/WebDev:/c/WebDev ubuntu bash -c "cd /c/WebDev/projects/devapp && bash"
-
-        • Указать IP: 192.168.99.100
-        • Указать порт: 22
-        • Сохранить соединение, как: Docker-default
-        • Кликнуть 2 раза по соединеню, чтобы подключиться.
-
-    5. Настроить автосоздание 2-х PuTTY соединений в conemu для devapp
-      - Открыть стартвый скрипт для powershell: notepad $profile
-      - Добавить туда (после задачи по запуску машины) следующу запись:
-
-        # Запустить 2-ва PuTTY-подключения к машине default
-        putty -load "Docker-default" -l docker -new_console;
-        putty -load "Docker-default" -l docker -new_console:s60H
-
-
-
-
-
-
-
-
-    1. Сделать /c/WebDev/ общим каталогом в VirtualBox
-      - Общий каталог по умолчанию это "/c/users".
-      - И так для всех docker-машин.
-      - А у нас код лежит в "/c/webdev".
-      - Поэтому надо сначала остановить соотв.docker-машину.
-      - Затем: VirtualBox -> <машина> -> Настроить -> Общие папки
-      - И добавить туда новую общую папку со следующими св-ми:
-
-        • Путь к папке:         c:\WebDev
-        • Имя:                  c/WebDev
-        • Только для чтения:    Нет
-        • Авто-подключение:     Да
-
-    2. Сделать автомонтирование c:\WebDev ---> /c/WebDev
-      - Просто сделать /c/WebDev общим каталогом в VB недостаточно.
-      - Его ещё и надо монтировать в ВМ каждый раз при её старте.
-      - Можно не делать этого вручную, а настроить стартовый скрипт.
-      - Для этого:
-
-        • Создай стартовый скрипт на виртуальной машине
-
-          sudo touch /mnt/sda1/var/lib/boot2docker/bootlocal.sh
-          sudo chmod 777 /mnt/sda1/var/lib/boot2docker/bootlocal.sh
-
-        • Вставь в него следующий код, и сохранить
-
-          sudo mkdir /c/WebDev
-          sudo chmod 777 /c/WebDev
-          sudo mount -t vboxsf c/webDev /c/WebDev
-
-    3. Настроить PuTTY-соединение с машиной default
-
-      3.1. Открыть puttygen.exe
-
-      3.2. Нажать File -> Load и загрузить private key
-          - Который в %USERPROFILE%\.docker\machine\machines\<name_of_your_machine>\id_rsa
-          - В нашем случае: C:\Users\German\.docker\machine\machines\default\id_rsa
-          - Не забыть переключить тип файла на "All Files".
-
-      3.3. Нажать Save Private Key
-        - Сохранить его в: C:\WebDev\bin\ssh\Docker Machines\default
-
-      3.4. Подключиться к машине default через PuTTY с помощью этого ключа
-
-        • Открыть PuTTY
-        • Вписать "docker" в Connection->Data->Auto-login username
-        • Указать ключ из 3.3 в Connection->SSH->Auth->Private key file...
-        • В Window->Appearance установить шрифт: Consolas - 13 - кириллица.
-        • Указать IP: 192.168.99.100
-        • Указать порт: 22
-        • Сохранить соединение, как: Docker-default
-        • Кликнуть 2 раза по соединеню, чтобы подключиться.
-
-    4. Установить несколько пакетов на машину default через tce-load
-      - Список доступных пакетов см. здесь: http://distro.ibiblio.org/tinycorelinux/tcz_2x.html
-      - Нам надо установитЬ:
-
-        • tce-load -wi nano
-        • tce-load -wi bash
-
-    5. Организовать автопереход в нужный каталог при подключении к default
-      - Открыть настройки PuTTY-соединения Docker-dafault.
-      - Указать в Connection->SSH->Remore command:
-
-          cd /c/WebDev/projects/devapp ; bash
-
-      - Сохранить соединение.
-      - Этот пункт надо делать строго после 4-го пункта.
-      - Т.К. в boot2docker bash по умолчанию не установлен.
-
-    6. Настроить автосоздание 2-х PuTTY соединений в conemu для devapp
-      - Открыть стартвый скрипт для powershell: notepad $profile
-      - Добавить туда (после задачи по запуску машины) следующу запись:
-
-        # Запустить 2-ва PuTTY-подключения к машине default
-        putty -load "Docker-default" -l docker -new_console;
-        putty -load "Docker-default" -l docker -new_console:s60H
-
-
-
-
-
-
-    7. Окрыть profile для powershell
-      - Для этого ввести в powershell:
+    • Открыть profile для powershell
+      - В powershell выполнить:
 
           notepad $profile
 
-    4. Туда вписать следующее
+    • Там в самом начале вписать следующий код
 
-      ##########
-      # Docker #
-      ##########
+      # Запустить ВМ
+      cd "C:\WebDev\boxes\vagrant-ubuntu14.04-docker"
+      vagrant up
 
-        # Запустить docker-машину default
-        docker-machine start;
+      # Создать новую вкладку с SSH к указанной ВМ
+      cd "C:\WebDev\boxes\vagrant-ubuntu14.04-docker"
+      vagrant ssh -c "cd /c/WebDev/projects/devapp && /bin/bash" -new_console
+      sleep 5
 
-        # Настроить powershell на работу с docker-машиной default
-        docker-machine env --shell powershell default | Invoke-Expression;
-
-
-
-
-
+      # Создать новую вкладку с SSH к указанной ВМ на 60% экрана
+      cd "C:\WebDev\boxes\vagrant-ubuntu14.04-docker"
+      vagrant ssh -c "cd /c/WebDev/projects/devapp && /bin/bash" -new_console:s60H
 
 
 Б2. Процесс разработки с Docker от А до Я
@@ -9167,6 +9015,8 @@
     # Шаблон для создания своих проектов
     # Запуск сервисов при старте контейнеров с помощью supervisord
     # Инструкция по организации среды для локальной разработки
+
+
 
 
 
@@ -9262,7 +9112,8 @@
           - Можно запусть конт-ер, он распакует всё, и завершится.
 
         5. Локальная среда разработки
-          - Заходишь в папочку с проектом, где лежит файл-манифест.
+          - Подключаешься к ВМ на Vagrant через SSH.
+          - Заходишь в общую папку с проектом, где лежит файл-манифест.
           - Запускаешь команду: docker-compose up -d
           - И всё, у тебя готова твоя среда разработки.
 
