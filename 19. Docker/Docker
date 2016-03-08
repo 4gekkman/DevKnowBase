@@ -9025,7 +9025,7 @@
     # Организация образа-автосборки на docker hub из репчика на github
     # Шаблон для создания своих проектов
     # Запуск сервисов при старте контейнеров с помощью supervisord
-    # Инструкция по организации среды для локальной разработки
+    # Создание нового laravel-проекта, использующего Docker
 
 
 
@@ -9303,14 +9303,16 @@
         ▪ mysql             |   данные для mysql
         ▪ redis             |   данные для redis
       ▪ other               | каталог для прочих файлов
+        ▪ production        | конфиги и прочее нужное для production
       ▪ project             | каталог с проектом
       ▪ docker-compose.yml  | шаблонный файл docker-compose
       ▪ DockerFile          | шаблонный DockerFile
       ▪ README.md           | шаблонный readme
       ▪ .gitignore          |
       ▪ .dockerignore       |
-      ▪ up.sh               | скрипт для запуска проекта и назначения алиасов
-      ▪ down.sh             | скрипт для удаления проекта и удаления алиасов
+      ▪ up                  | скрипт для запуска проекта
+      ▪ down                | скрипт для удаления проекта
+      ▪ down                | скрипт обновления проекта
 
   > Запуск сервисов при старте контейнеров с помощью supervisord
 
@@ -9345,564 +9347,45 @@
 
           CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor.d/nginx-supervisor.ini"]
 
-  > Инструкция по организации среды для локальной разработки
+  > Создание нового laravel-проекта, использующего Docker
 
-    1. Подготовить образы и проект
+    1. Скопировать и переименовать шаблон проекта
+      - Шаблон для laravel-проекта лежит здесь: C:\WebDev\projects\_new_project_laravel
+      - Надо скопировать его в "C:\WebDev\projects", и переименовать в имя проекта.
 
-      • Подготовить все образы среды разработки
-        - Залить на github, синхронизировать c docker hub.
+    2. В docker-compose.yml заменить во всех путях имя проекта на актуальное
+      - Сабж.
 
+    3. Отредакрировать сайты в configs/nginx/sites
+      - Особенно обратить внимание на секции server в nginx-конфигах.
+      - Там в директиве root надо указывать путь к index-файлу с учётом имени проекта.
 
+    4. Клонировать свежую версию laravel в каталог project
+      - Для этого в терминале перейти в каталог project.
+      - И выполнить там:
 
+          git clone https://github.com/laravel/laravel .
 
+    5. Настроить .env в laravel-проекте
+      - Переименовать .env.example в .env
+      - Указать 32-значный APP_KEY.
+      - Указать APP_URL.
+      - Настроить базу: DB_HOST=mysql, DB_DATABASE=general, DB_USERNAME=root, DB_PASSWORD=guesswho
+      - Настроить кэш: CACHE_DRIVER=SESSION_DRIVER=QUEUE_DRIVER=redis
+      - Настроить редис: REDIS_HOST=redis
 
+    6. Проверить работоспособность проекта
+      - Перейти в корневой каталог проекта в терминале.
+      - Запустить проект: . up
+      - Перейти в браузере по URL "127.0.0.1" и увидеть приветствие laravel.
+      - Обновить проекта: . update
+      - Остановить проект: . down
 
+    7. Создать github-репчик для проекта, организовать автосинхронизацию
+      - Как это сделать, см.инструкции выше.
 
-> Вся работа идёт в терминале boot2docker
-  - Чтобы полносью имитировать работа на реальном сервере.
-  - Ведь реальный сервер это не винда, а линукс.
 
-> Работа одовременно с несколькими проектами
-  - Каждый проект запускается с помощью docker-compose.
-  - Все контейнеры проекта префиксятся именем проекта.
-  - Compose для проекта создаёт отдельную bridge сеть.
-  - И помещает туда все контейнеры проекта.
-  - И задаёт им алиссы, равные именам сервисов.
-  - Но в общую сеть compose эти контейнеры не помещает.
-  - Т.О. они доступны друг для друга, но не вне проекта.
-  - Это позволяет на одном хосте запускать сразу N проектов.
 
-> По 2 подключения PuTTY в терминале к хосту на проект
-  - Для работы с проектом мне традиционно нужно 2 окошка в терминале.
-  - При работе одновременно с 2-мя проектами, нужно 4 окошка.
-  - Например, с dev.app и каким-нибудь текущим проектом.
-  - Два верхних по горизонтали для dev.app, 2 нижних для проекта.
-
-> Использование алиасов и up.sh
-  - Для запуска проекта не надо пользоваться docker-compse up
-  - Вместо этого надо написать up.sh и положить в корень проекта.
-  - Этот скрипт будет делать следующее:
-
-    • Выполнять other/aliases.sh, назначая алиасы в текущей сессии.
-    • Запускать проект с помощью docker-compose up
-
-  - Аналогичный скрипт надо написать и для down.sh.
-  - Он должен делать unalias's, и docker-compose down.
-
-> Путь к проекта на хосте и удалённым сервере не должен меняться
-  - Допустим, путь на хосте к проекту: /c/WebDev/projects/some
-  - При деплое проекта на digital ocean, путь должен быть такой же.
-  - Это упрощает все дела.
-
-
-
-
-
-> Выгрузка нового кода на сервер
-  - Я вношу изменения в проект локально.
-  - Windows делает авто push в репчк на github каждые 3 часа.
-  - При обновлении репчика на github, обновляется репчик на docker hub.
-  - Для обновления проекта на сервере:
-
-    • Захожу в каталог с проектом.
-    • Распаковываю новый код из контейнера с docker hub.
-    • Делаю рестарт проекта.
-
-> Папочка data не должна попадать в образ проекта
-  - Поэтому что она содержит постоянные данные для проекта.
-  - И её следует бэкапить отдельно от всего остального проекта.
-  - Поэтому её надо добавить в dockerignore.
-
-
-
-
-> Как осуществлять бэкап папочки data на сервере
-  - Надо использовать какой-нибудь клиент-серверный инструмент.
-  - Который также будет работать через Docker.
-  - Надо чтобы он архивировал и передавал data на другой сервер по расписанию.
-  - А на том можно было бы задавать ограничения по кол-ву и времени хранения.
-  - И чтобы он был достаточно умён, чтобы эффективно распоряжаться местом на сервере.
-
-
-
-
-
-
-
-
-
-Работа с контейнером с nodejs из под windows
-- Установить bower, например, можно так:
-
-  docker run --rm -it -v /c/WebDev:/c/WebDev -w /c/WebDev node npm install bower --no-bin-link
-
-- Чтобы сократить всё это дело, можно создать alias "nodejs" для:
-
-  docker run --rm -it -v /c/WebDev:/c/WebDev -w /c/WebDev node
-
-
-
-
-Запуск bower на хост-машине с помощью сервиса на docker-compose
-- Команда:
-
-    docker-compose run nodejs bower --allow-root
-
-- Без --allow-root будет ошибка: ESUDO Cannot be run with sudo
-
-
-
-Запуск gulp на хост-машине с помощью сервиса на docker-compose
-- Команда (узнать версию gulp):
-
-  docker-compose run nodejs gulp -v
-
-
-
-О невозможности делать run сервисов в интерактивном режиме с помощью docker-comopse
-- Подробнее: https://github.com/docker/compose/issues/2836
-- Это невозможно делать из windows.
-- Поэтому надо подключиться к контейнеру:
-    docker exec -it 340974fbd638 bash
-- И там уже работать с ним.
-- Например, выполнять интерактивные node-приложения.
-- А не интерактивные можно и прямо из windows:
-    docker-compose run -d nodejs
-
-
-
-
-
-Собрать среду
-- docker-compose up -d
-
-
-Запуск сервисов при старте контейнеров с помощью supervisord
-- https://docs.docker.com/engine/admin/using_supervisord/
-
-
-Подключение к сервисам docker-compose
-- docker exec -it 340974fbd638 bash
-
-
-Использование контейнеров-сервисов, собранных docker-compose
-- docker-compose run nodejs
-
-
-
-Посмотреть сайт с windows
-- На хосте ifconfig
-- Искать адрес типа 192.168.99.100
-- Потом на windows ввести в браузер этот адрес.
-
-
-Подключение к mysql с windows
-- На хосте ifconfig
-- Искать адрес типа 192.168.99.100
-- Потом ввести: mysql -h 192.168.99.100 -u root -p
-- Ввести пароль, и вуаля.
-
-
-
-
-
-
-
-
-
-Как обновлять проект в облаке, не перезаписывая data?
-- Предусмотреть аргумент при распаковке проекта из образа.
-- В нём можно указать, распаковывать ли каталог data.
-- И если распаковывать, то запросить подтверждение с предупреждением.
-
-
-
-
-
-
-
-
-
-
-        • Cоздать репозитории на docker hub
-          - Зайти на сайт: http://hub.docker.com/.
-          - И там создать репозитории:
-
-            ▪ docker-image-ubuntu-nginx-phpfpm
-            ▪ docker-image-mysql-latest
-            ▪ docker-image-redis-latest
-            ▪ docker-image-node-bower-gulp-latest
-
-        • Собрать образы в локальных репозиториях
-          - Заходить по очереди в каталоги образов.
-          - И выполнять следующие команды (каждую в соотв.каталоге):
-
-            ▪ docker build -t docker-image-ubuntu-nginx-phpfpm:latest .
-            ▪ docker build -t docker-image-mysql-latest:latest .
-            ▪ docker build -t docker-image-redis-latest:latest .
-            ▪ docker build -t docker-image-node-bower-gulp-latest:latest .
-
-        • Пометить правильными тегами локальные репозитории
-          - Заходить по очереди в каталоги образов.
-          - И выполнять следующие команды (каждую в соотв.каталоге):
-
-            ▪ docker tag docker-image-ubuntu-nginx-phpfpm:latest 4gekkman/docker-image-ubuntu-nginx-phpfpm:latest
-            ▪ docker tag docker-image-mysql-latest:latest 4gekkman/docker-image-mysql-latest:latest
-            ▪ docker tag docker-image-redis-latest:latest 4gekkman/docker-image-redis-latest:latest
-            ▪ docker tag docker-image-node-bower-gulp-latest:latest 4gekkman/docker-image-node-bower-gulp-latest:latest
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    - Здесь описан процесс создания локальной среды разработки.
-    - В основе этого процесса лежат технологии Docker.
-
-  > Постановка задачи
-
-    • Что требуется сделать
-
-      ▪ Имеется компьютер разработчика под управлением ОС Windows 8.1
-      ▪ Разработчик создаёт приложение на основе php-фреймворка Laravel.
-      ▪ С помощью технологий Docker надо создать локальную среду разработки.
-      ▪ Разрабатываемые приложения должно быть легко разворачивать в облаке.
-
-    • Технологии Docker для создания среды окружения
-
-      ▪ Oracle VM VirtualBox
-      ▪ Docker Machine
-      ▪ Docker Engine
-      ▪ Docker Compose
-      ▪ Docker Hub
-
-    • Стек технологий для помещения в среду окружения
-
-      ▪ Ubuntu 14.04
-      ▪ PHP 7.0
-      ▪ Nginx
-      ▪ MySQL
-      ▪ GIT
-      ▪ Composer
-      ▪ Node
-      ▪ Redis
-
-  > Ключевые сущности рабочего процесса
-
-    • Images
-
-      ▪ Что такое
-        - Это docker-образы. Т
-        - Docker-образ, это что-то типа "плана" по сборке docker-контейнера.
-        - С помощью docker-compose из образов собираются environments.
-        - Image представляет из себя отдельный каталог с файлами.
-
-      ▪ Где в моём случае хранятся images
-        - В каталоге: /c/webdev/docker/images
-
-    • Environments
-
-      ▪ Что такое environment
-        - Что-то типа "плана" по сборке среды для выполнения приложений.
-        - И ключевыми элементами в этом плане являются образы.
-        - Environment представляет из себя отдельный каталог с файлами.
-
-      ▪ Где в моём случае хранятся environments
-        - В каталоге: /c/webdev/docker/environments
-
-    • Projects
-
-      ▪ Что такое projects
-        - Это приложения, которые разрабатывает разработчик.
-        - Приложение может быть любое, на php, node, python, и т.д.
-        - Project представляет из себя каталог с файлами.
-
-      ▪ Где в моём случае хранятся projects
-        - В каталоге: /c/webdev/projects
-
-  > Концепция решения
-
-    • Создать набор docker-образов
-
-      ▪ Подготовить каталог для всех образов
-        - Подготовить для них отдельный каталог.
-        - Каталог для всех образов: "/c/webdev/docker/images".
-
-      ▪ Создать локальные репозитории
-        - У каждого образа должен быть свой каталог.
-        - Каталог каждого образа д.б. в каталоге для всех образов.
-        - Шаблон для имени: <название>
-        - В каждом каталоге образа должны быть следующие файлы:
-
-          ▪ DockerFile
-          ▪ README.md
-          ▪ (не обязательно) Доп.файлы, специфичные для этого образа
-
-        - Каждый каталог образа должен быть локальным репозиторием.
-        - Для этого надо сделать git init в каталогах всех образов.
-
-      ▪ Создать удалённые репозитории на github
-        - Для каждого лок.репо. образа создать репо. на github.
-        - Формат имени репозитория: docker-image-<название>
-        - Примеры:
-
-          ▪ docker-image-ubuntu-nginx-phpfpm
-          ▪ docker-image-ubuntu-mysql
-          ▪ docker-image-ubuntu-redis
-
-        - Связать локальные и удалённые репозитории между собой.
-
-      ▪ Наладить auto-push
-        - Добавить необходимые записи в GitAutoPushScript.ps1.
-        - Сделать push из всех локальных репозиториев на удалённые.
-
-    • Какие docker-образы требуется создать
-
-      ▪ docker-image-ubuntu-nginx-phpfpm
-      ▪ docker-image-ubuntu-mysql
-      ▪ docker-image-ubuntu-redis
-      ▪ docker-image-ubuntu-composer
-      ▪ docker-image-ubuntu-artisan
-      ▪ docker-image-ubuntu-node
-
-    • Создать проект
-
-      ▪ Подготовить каталог для проектов
-        - Хороший вариант для него: "/c/webdev/projects"
-
-      ▪ Подготовить локальный репозиторий для проекта
-        - Это каталог с именем проекта в каталоге: "/c/webdev/projects".
-        - Имя проекта может быть любым уникальным в каталоге projects.
-        - Лучше всего, чтобы это имя было говорящим о сути проекта.
-        - В нашем случае это будет проект: "/c/webdev/projects/devapp"
-        - Содержимое каталога проекта должно быть таким:
-
-          ▪ configs             | различные конфиги
-          ▪ data                | данные всяких баз данных
-            ▪ mysql             | данные mysql
-            ▪ redis             | данные redis
-          ▪ sites               | каталог с файлами проекта
-          ▪ www                 | каталог с файлами проекта
-          ▪ README.md           | readme проекта для github
-          ▪ DockerFile          | docker-файл проекта
-          ▪ docker-compose.yml  | compose-файл проекта
-          ▪ .gitignore          | gitignore
-
-        - Внутри www может быть проект любого типа:
-
-          ▪ Laravel
-          ▪ Node.js
-          ▪ Любой другой
-
-        - Сделать из этого каталога локальный репо. с помощью git init.
-
-      ▪ Подготовить удалённый репозиторий проекта на github
-        - Формат имени репозитория: project-<имя проекта>
-        - В нашем случае: project-devapp
-
-      ▪ Наладить auto-push проекта
-        - Добавить необходимую запись в GitAutoPushScript.ps1.
-        - Сделать push из всех локальных репозиториев на удалённые.
-
-      ▪ Наладить автоматическую сборку образа
-        - См. инструкцию здесь: https://docs.docker.com/engine/userguide/containers/dockerrepos/
-        - Далее 2 варианта доставить проект на DO-сервер:
-
-          1) Сделать git pull в нужный каталог.
-            - При изменениях придётся вручную делать git pull.
-          2) Добавить в compose-файл сервис с образом проекта.
-            - При изменениях один этот образ можно перезапустить.
-            - Можно перезапуск даже автоматизировать, если надо.
-
-  > Пошаговая инструкция
-
-    1. Сделать /c/webdev/ общим каталогом в VirtualBox
-      - Общий каталог по умолчанию это "/c/users".
-      - И так для всех docker-машин.
-      - А у нас код лежит в "/c/webdev".
-      - Поэтому надо сначала остановить соотв.docker-машину.
-      - Затем: VirtualBox -> <машина> -> Настроить -> Общие папки
-      - И добавить туда новую общую папку со следующими св-ми:
-
-        • Путь к папке:         C:\WebDev
-        • Имя:                  webdev
-        • Только для чтения:    Нет
-        • Авто-подключение:     Да
-
-    2. Создать набор docker-образов
-
-      2.1. Создать каталог: /c/webdev/docker/images
-
-      2.2. Создать в нём следующие каталоги
-        - Следующие каталоги:
-
-          ▪ ubuntu-nginx-phpfpm
-          ▪ ubuntu-mysql
-          ▪ ubuntu-redis
-          ▪ ubuntu-composer
-          ▪ ubuntu-artisan
-          ▪ ubuntu-node
-
-        - Сделать в них git init.
-
-      2.3. Наполнить каталоги docker-образов
-
-        • Добавить в каждый каталог файлы
-
-          ▪ DockerFile
-          ▪ README.md
-
-        • Добавить другие файлы, если требуется
-        • Наполнить README.md
-          - Здесь должно быть описание образа.
-          - И инструкция по его использованию.
-          - А также release notes.
-        • Наполнить DockerFile
-
-          ▪ Можно использовать уже готовый DockerFile.
-          ▪ А можно написать свой DockerFile.
-            - Для этого надо создать контейнер одним базовым образом.
-            - Далее выполнять там различного рода действия.
-            - И записывать их в DockerFile.
-            - Пока в конце концов мы не получим нужный итог.
-
-      2.4. Создать под эти образы репозитории на github
-
-        ▪ docker-image-ubuntu-nginx-phpfpm
-        ▪ docker-image-mysql-latest
-        ▪ docker-image-redis-latest
-        ▪ docker-image-node-bower-gulp-latest
-
-        ▪ docker-image-ubuntu-composer
-        ▪ docker-image-ubuntu-artisan
-
-      2.5. Связать локальные и удалённые репозитории
-        - Для этого переходить в каталоги локальных репозиториев.
-        - И в для каждого из них выполнить (соответствующую) команду:
-
-          • git remote add docker-image-ubuntu-nginx-phpfpm git@github.com:4gekkman/docker-image-ubuntu-nginx-phpfpm.git
-          • git remote add docker-image-mysql-latest git@github.com:4gekkman/docker-image-mysql-latest.git
-          • git remote add docker-image-redis-latest git@github.com:4gekkman/docker-image-redis-latest.git
-          • git remote add docker-image-node-bower-gulp-latest git@github.com:4gekkman/docker-image-node-bower-gulp-latest.git
-
-        - Внимание! Регистр  (например, 'm1' или 'M1') имеет значение!
-
-      2.6. Добавить необходимые записи в GitAutoPushScript.ps1
-        - Чтобы производился авто пуш из локальных в удалённые репо.
-        - Выполнить push.
-
-      2.7. Добавить все docker-образы на docker hub
-
-        • Cоздать репозитории на docker hub
-          - Зайти на сайт: http://hub.docker.com/.
-          - И там создать репозитории:
-
-            ▪ docker-image-ubuntu-nginx-phpfpm
-            ▪ docker-image-mysql-latest
-            ▪ docker-image-redis-latest
-            ▪ docker-image-node-bower-gulp-latest
-
-        • Собрать образы в локальных репозиториях
-          - Заходить по очереди в каталоги образов.
-          - И выполнять следующие команды (каждую в соотв.каталоге):
-
-            ▪ docker build -t docker-image-ubuntu-nginx-phpfpm:latest .
-            ▪ docker build -t docker-image-mysql-latest:latest .
-            ▪ docker build -t docker-image-redis-latest:latest .
-            ▪ docker build -t docker-image-node-bower-gulp-latest:latest .
-
-        • Пометить правильными тегами локальные репозитории
-          - Заходить по очереди в каталоги образов.
-          - И выполнять следующие команды (каждую в соотв.каталоге):
-
-            ▪ docker tag docker-image-ubuntu-nginx-phpfpm:latest 4gekkman/docker-image-ubuntu-nginx-phpfpm:latest
-            ▪ docker tag docker-image-mysql-latest:latest 4gekkman/docker-image-mysql-latest:latest
-            ▪ docker tag docker-image-redis-latest:latest 4gekkman/docker-image-redis-latest:latest
-            ▪ docker tag docker-image-node-bower-gulp-latest:latest 4gekkman/docker-image-node-bower-gulp-latest:latest
-
-        • Аутентифицироваться на docker hub
-           - Для этого применить команду login.
-           - И ввести все необходимые данные.
-
-        • Залить все образы на docker hub
-          - Заходить по очереди в каталоги образов.
-          - И выполнять следующие команды (каждую в соотв.каталоге):
-
-            ▪ docker push 4gekkman/docker-image-ubuntu-nginx-phpfpm:latest
-            ▪ docker push 4gekkman/docker-image-mysql-latest:latest
-            ▪ docker push 4gekkman/docker-image-redis-latest:latest
-            ▪ docker push 4gekkman/docker-image-node-bower-gulp-latest:latest
-
-          - И только минут через 10 они там появятся. Зависит от размера.
-
-      2.8. Наладить автоматическую сборку образов
-        - См. инструкцию здесь: https://docs.docker.com/engine/userguide/containers/dockerrepos/
-
-
-    3. Создать проект своего приложения
-
-      3.1. Создать каталог: "/c/webdev/projects/devapp"
-
-      3.2. Создать локальный репозиторий проекта devapp
-
-        • По адресу
-          - "/c/webdev/projects/devapp"
-
-        • Добавить в него следующие файлы и каталоги
-
-          ▪ configs             | различные конфиги
-          ▪ data                | данные всяких баз данных
-            ▪ mysql             | данные mysql
-            ▪ redis             | данные redis
-          ▪ sites               | каталог с файлами проекта
-          ▪ www                 | каталог с файлами проекта
-          ▪ README.md           | readme проекта для github
-          ▪ DockerFile          | docker-файл проекта
-          ▪ docker-compose.yml  | compose-файл проекта
-          ▪ .gitignore          | gitignore
-
-      3.3. Установить в www свежий проект laravel
-        - Для этого скачать его в виде zip.
-        - Отсюда: https://github.com/laravel/laravel.
-        - И распаковать содержимое архива в www.
-        - Затем в терминале в этом каталоге выполнить:
-
-            composer install
-
-      3.4. Создать удалённый репозиторий проекта devapp на github
-
-        • project-devapp
-
-      3.5. Связать локальный и удалённый репозитории
-        - Перейти в каталог локального репозитория.
-        - Выполнить:
-
-          • git remote add project-devapp git@github.com:4gekkman/project-devapp.git
-
-      3.6. Добавить необходимые записи в GitAutoPushScript.ps1
-        - Чтобы производился авто пуш из локальных в удалённые репо.
-        - Выполнить push.
-
-      3.7. Наладить автоматическую сборку образа
-        - См. инструкцию здесь: https://docs.docker.com/engine/userguide/containers/dockerrepos/
-        - Далее 2 варианта доставить проект на DO-сервер:
-
-          1) Сделать git pull в нужный каталог.
-            - При изменениях придётся вручную делать git pull.
-          2) Добавить в compose-файл сервис с образом проекта.
-            - При изменениях один этот образ можно перезапустить.
-            - Можно перезапуск даже автоматизировать, если надо.
 
 
 
