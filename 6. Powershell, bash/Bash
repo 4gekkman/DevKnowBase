@@ -641,7 +641,10 @@
 
   > Ссылки
 
-    # Оф.справочник GNU по встроенным командам
+    # Оф.справочник GNU по Bourne Shell build-in commands
+        https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html#Bourne-Shell-Builtins
+
+    # Оф.справочник GNU по Bash build-in commands
         http://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html
 
   > Введение
