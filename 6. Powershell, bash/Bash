@@ -609,32 +609,32 @@
         - exit      | Завершить текущий шелл или скрипт
         - export    | Экспортирует переменную/функцию NAME в среду окружения
         - getopts   | Команда для парсинга аргументов командной строки
-        - hash      |
-        - pwd       |
-        - readonly  |
-        - return    |
-        - set       |
-        - shift     |
-        - test      |
-        - [         |
-        - times     |
-        - trap      |
-        - umask     |
-        - unset     |
+        - hash      | Запоминает полные pathname команд с именами [name]
+        - pwd       | Вывести абсолютный путь к текущему каталогу
+        - readonly  | Пометить каждую name как readonly
+        - return    | Остановить шелл-функцию и вернуть [n] тому, кто её вызвал
+        - shift     | Сдвинуть все позиционные параметры влево на n пунктов
+        - test, [   | Выполнить условное выражение, вернуть true/false
+        - times     | Выводит затраченное скриптом и его детьми время
+        - trap      | Назначить обработчик события
+        - umask     | Назначить umask для создания файлов в шелле.
+        - unset     | Удалить переменные/функции name
 
       • Bash
 
-        - alias     |
-        - bind      |
-        - builtin   |
-        - command   |
-        - declare   |
-        - echo      |
-        - enable    |
-        - help      |
-        - let       |
-        - local     |
-        - logout    |
+        - alias     | Назначить алиас name со значением value.
+        - bind      | Назначить гоячие клавиши
+        - builtin   | Выполнить встроенную команду шелла
+        - caller    | Возвращает контекст вызова любой активной подпрограммы
+        - command   | Аналог buildin, только не для встроенных команд - запустить команду в обход функции
+        - declare   | Декларирует переменные и присваивает им атрибуты
+        - echo      | Выводит args, разделённые пробелом, заканчивающиеся newline'ом
+        - enable    | Вкл / Выкл встроенные шелл-команды
+        - help      | Вывести help для встроенных команд
+        - let       | Позволяет проводить арифметические операции
+        - local     | Создать локальную переменную name со значением value
+        - logout    | Выйти из аккаунта
+        - mapfile   |
         - printf    |
         - read      |
         - shopt     |
@@ -1036,6 +1036,7 @@
 
         getopts optstring name [args]
 
+
       # Описание
 
         • Похожая команда getopt
@@ -1054,363 +1055,527 @@
           - А также XF86-style long options вроде -myoption.
 
       # Примеры
-
-
+        - См. http://wiki.bash-hackers.org/howto/getopts_tutorial
 
     // hash //
     //------//
-    // -
+    // - Запоминает полные pathname команд с именами [name].
 
       # Формат
 
+        hash [-r] [-p filename] [-dt] [name]
 
+      # Опции
+
+        -p  | не исктать в PATH, использовать name как путь к команде
+        -r  | забыть все запомненные локации
+        -d  | забыть все запомненные локации для каждой name
+        -t  | выводить pathname для каждого name
 
       # Описание
-
-
+        - В результате эти pathname не надо искать припоследующих вызовах.
+        - Команды ищутся в PATH.
+        - Любые ранее запомненные pathname отбрасываются.
 
       # Примеры
 
+        • Показать, какие команды и сколько раз были использованы
 
+            hash
 
     // pwd //
     //-----//
-    // -
+    // - Вывести абсолютный путь к текущему каталогу.
 
       # Формат
 
+          pwd [-LP]
 
+      # Опции
 
-      # Описание
-
-
+        -L    | выведенный путь может содержать символические ссылки
+        -P    | выведенный путь не будет содержать символических ссылок
 
       # Примеры
 
+        • Вывести абсолютный путь к текущему каталогу
 
+            pwd
 
     // readonly //
     //----------//
-    // -
+    // - Пометить каждую name как readonly.
 
       # Формат
 
-
+        readonly [-aAf] [-p] [name[=value]] …
 
       # Описание
+        - Значения этих name не м.б. изменены низлежащим кодом.
+        - По умолчанию, каждая name является переменной.
 
+      # Опции
 
+        -f    | каждое имя является шелл-функцией
+        -a    | каждое имя является переменной с индексированным.массивом
+        -A    | каждое имя является переменной с ассоц.массивом
+        -Aa   | в этом случае A имеет приоритет
+        -p    | если name отсутствуют, или -p указана, просто выводится список всех readonly
 
       # Примеры
 
+        • Вывести список всех readonly
 
+            readonly
+            readonly -p
+
+        • Сделать указанную переменную readonly
+
+            readonly var="123"
 
     // return //
     //--------//
-    // -
+    // - Остановить шелл-функцию и вернуть [n] тому, кто её вызвал.
 
       # Формат
 
-
-
-      # Описание
-
-
-
-      # Примеры
-
-
-
-    // set //
-    //-----//
-    // -
-
-      # Формат
-
-
+        return [n]
 
       # Описание
-
-
-
-      # Примеры
-
-
+        - Если [n] не передано, возвращает статус последней команды.
+        - Также return может остановить скрипт, вызванный через source.
 
     // shift //
     //-------//
-    // -
+    // - Сдвинуть все позиционные параметры влево на n пунктов.
 
       # Формат
 
-
+          shift [n]
 
       # Описание
+        - Было:     n+1 … $#
+        - Стало:    $1 … $#-n
+        - Удалены:  $# to $#-n+1
+        - 0 <= n <= $#
 
-
-
-      # Примеры
-
-
-
-    // test //
-    //------//
-    // -
+    // test, [ //
+    //---------//
+    // - Выполнить условное выражение, вернуть true/false.
 
       # Формат
 
-
-
-      # Описание
-
-
-
-      # Примеры
-
-
-
-    // [ //
-    //---//
-    // -
-
-      # Формат
-
-
+          test expr
 
       # Описание
 
+        • Отдельные аргументы
+          - Каждый оператор и операнд д.б. отдельными аргументами.
 
+        • Нет опций
+          - Не принимает никаких опций.
+          - Не принимает аргумент --, означающий конец опций.
+
+        • При использовании [
+          - Последним аргументом должен быть ]
+
+      # Операторы для комбинирования выражений
+
+        • ! expr            | не
+        • ( expr )          | приоритет
+        • expr1 -a expr2    | и
+        • expr1 -o expr2    | или
 
       # Примеры
-
-
+        - Подробнее см.в главе: "А8. Bash scripting: условные операции"
 
     // times //
     //-------//
-    // -
+    // - Выводит затраченное скриптом и его детьми время.
 
       # Формат
 
-
-
-      # Описание
-
-
-
-      # Примеры
-
+          times
 
 
     // trap //
     //------//
-    // -
+    // - Назначить обработчик события.
 
       # Формат
 
-
+          trap [-lp] [arg] [sigspec …]
 
       # Описание
+        - Код arg выполняется при возбуждении событий sigspec.
 
+      # Форматы sigspec
 
+        • Имя сигнала с префиксом SIG. Например: SIGTERM.
+        • Имя сигнала без префикса SIG. Например: TERM.
+        • Номер сигнала, см.справку: trap -l
+
+      # Комментарии по arg
+
+        • Если отсутствует или "-", назначается обработчик по умолчанию.
+        • Если пустая строка, то никакой обработки не происходит.
+
+      # Опции
+
+        -l    | Вывести все доступные события и их номера
+        -p    | При вызове trap без аргументов, или с -p, выводит список назначенных обработчиков
 
       # Примеры
+        - Подробнее см.здесь: http://wiki.bash-hackers.org/commands/builtin/trap
 
+        • Вывести список назначенных обработчиков
 
+            trap
+
+        • Вывести все доступные события и их номера
+
+            trap -l
+
+        • Игнорировать событие SIGINT (терминал не будет закрываться с помощью ctrl-c)
+
+            trap '' INT
 
     // umask //
     //-------//
-    // -
+    // - Назначить umask для создания файлов в шелле.
 
       # Формат
 
-
+          umask [-p] [-S] [mode]
 
       # Описание
 
+        • Если mode начинается с цифры
+          - То он воспринимается, как 8-ричное значение.
+          - По аналогии с chmod, например: 644, 777.
 
+        • Если mode не начинается с цифры
+          - Он воспринимается как маска в символьном виде.
+          - По аналогии с chmod, например: rwxrwxrwx
+
+      # Опции
+
+        -S    | Тоже, что -p, но в символьном формате
+        -p    | При вызове umask без аргументов, или с -p, выводит текущий umask шелла.
 
       # Примеры
 
+        • Вывести текущий umask шелла в восьмеричном формате
 
+            umask       | 0002
+            umask -p    | umask 0002
+
+        • Вывести текущий umask шелла в символьном формате
+
+            umask -S    | u=rwx,g=rwx,o=rx
 
     // unset //
     //-------//
-    // -
+    // - Удалить переменные/функции name.
 
       # Формат
 
+          unset [-fnv] [name]
 
+      # Опции
+
+        -v    | name это имена переменных среды
+        -f    | name это имена функций (а по умолчанию, переменных)
+        -n    | если name это пер-ая с атр-ом nameref, будет удалена name, а не то, куда она ссылается
 
       # Описание
-
-
-
-      # Примеры
-
-
+        - Если опции -v, -f не применены, name это переменные.
+        - А если пер-ые name не найдены, тогда ищутся функции name.
+        - Переменные и функции readonly нельзя удалить.
 
     // alias //
     //-------//
-    // -
+    // - Назначить алиас name со значением value.
 
       # Формат
 
+          alias [-p] [name[=value] …]
 
+      # Опции
 
-      # Описание
-
-
+        -p    | без аргументов, или с -p, вывести все назначенные алиасы
 
       # Примеры
 
+        • Вывести все назначенные алиасы
 
+            alias
+            alias -p
+
+        • Назначить алиас
+
+            alias ls="ls -a"
+
+        • Удалить алиас
+
+            unalias ls
 
     // bind //
     //------//
-    // -
+    // - Назначить гоячие клавиши.
 
       # Формат
 
+          bind [-m keymap] [-lpsvPSVX]
+          bind [-m keymap] [-q function] [-u function] [-r keyseq]
+          bind [-m keymap] -f filename
+          bind [-m keymap] -x keyseq:shell-command
+          bind [-m keymap] keyseq:function-name
+          bind readline-command
 
+      # Опции
+
+        -m keymap               | назначить горячие клавиши
+        -l                      | вывести имена всех Readline-функций
+        -p                      | вывести список существующих связок горячих клавиш с Readline-функциями
+        -P                      | вывести список всех Readline-функций, и есть ли для них горячие клавиши, и какие
+        -v                      | вывести имена Readline-переменных и значений в таком формате, чтобы м.б. использовать в Readline init файле
+        -V                      | вывести имена Readline-переменных и значений
+        -s                      | Display Readline key sequences bound to macros and the strings they output in such a way that they can be used as input or in a Readline initialization file.
+        -S                      | Display Readline key sequences bound to macros and the strings they output.
+        -f filename             | Read key bindings from filename.
+        -q function             | Query about which keys invoke the named function.
+        -u function             | Unbind all keys bound to the named function.
+        -r keyseq               | Remove any current binding for keyseq.
+        -x keyseq:shell-command | Cause shell-command to be executed whenever keyseq is entered.
+        -X                      | List all key sequences bound to shell commands and the associated commands in a format that can be reused as input.
 
       # Описание
-
-
+        - Позволяет назначить горячие клавиши.
+        - Подробнее см.: http://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html
 
       # Примеры
 
+        • Назначить на F6 команда "exit\n" (выход из терминала)
+          - Здесь [17~ это код клавиши.
+          - Посмотреть код любой клавиши в терминале можно так: alt-<клавиша>
+          - Назначить:
 
+            bind '"\e[17~":"exit\n"'
 
     // builtin //
     //---------//
-    // -
+    // - Выполнить встроенную команду шелла.
 
       # Формат
 
+          builtin [shell-builtin [args]]
 
+      # Описание
+        - Ты определи функцию с именем, как у встроенной команды.
+        - Как теперь вызвать последнюю? С помощью buildin.
+
+    // caller //
+    //--------//
+    // - Возвращает контекст вызова любой активной подпрограммы.
+    // - Например, шелл-функции или запущенного через source скрипта.
+
+      # Формат
+
+          caller [expr]
 
       # Описание
 
+        • Без expr
+          - Выводит номер строки и имя source файла текущей подпрограммы.
 
-
-      # Примеры
-
-
+        • Expr - это положительный int
+           - Выводит номер строки.
+           - Выводит имя подпрограммы.
+           - Выводит имя source файла текущей подпрограммы.
+           - Соответствующие указанной позиции в текущем call stack.
 
     // command //
     //---------//
-    // -
+    // - Аналог buildin, только не для встроенных команд - запустить команду в обход функции.
 
       # Формат
 
-
+          command [-pVv] command [arguments …]
 
       # Описание
+        - Ты определи функцию с именем, как у команды.
+        - Как теперь вызвать последнюю? С помощью command.
+        - Ищет как обычные, так и встроенные команды.
 
+      # Опции
 
+        -p    | использовать значение PATH по умолчанию (а не реальное текущее)
+        -v    | вывести инфу о найденной команде
+        -V    | вывести более подробную инфу о найденной команде
 
-      # Примеры
-
+      # Зачем нужна -p
+        - В текущей среде PATH могла быть модифицирована.
+        - Что может привести к тому, что command не найдёт стандартные утилиты.
+        - Опция -p использует не тронутую PATH по умолчанию.
 
 
     // declare //
     //---------//
-    // -
+    // - Декларирует переменные и присваивает им атрибуты.
 
       # Формат
 
+          declare [-aAfFgilnrtux] [-p] [name[=value] …]
 
+      # Опции
+
+        -p
+
+          • Если name заданы
+            - Выведет атрибуты и значения для каждого name.
+            - Все опции кроме -f,-F игнорируются.
+
+          • Если name не заданы
+            - Выведет все атрибуты и значения.
+            - Имеющие атрибуты, заданные доп.опциями.
+
+        -F    | не отображать определения функций, только имена и атрибуты
+        -g    | при декларировании в скрипте (в иных случаях игнорируется), создавать переменные в глобальном пр.имён
+
+        -a    | Each name is an indexed array variable (see Arrays).
+        -A    | Each name is an associative array variable (see Arrays).
+        -f    | Use function names only.
+        -i    | The variable is to be treated as an integer; arithmetic evaluation (see Shell Arithmetic) is performed when the variable is assigned a value.
+        -l    | When the variable is assigned a value, all upper-case characters are converted to lower-case. The upper-case attribute is disabled.
+        -n    | Give each name the nameref attribute, making it a name reference to another variable. That other variable is defined by the value of name.
+                All references and assignments to name, except for changing the -n attribute itself, are performed on the variable referenced by name’s value. The -n attribute cannot be applied to array variables.
+        -r    | Make names readonly. These names cannot then be assigned values by subsequent assignment statements or unset.
+        -t    | Give each name the trace attribute. Traced functions inherit the DEBUG and RETURN traps from the calling shell. The trace attribute has no special meaning for variables.
+        -u    | When the variable is assigned a value, all lower-case characters are converted to upper-case. The lower-case attribute is disabled.
+        -x    | Mark each name for export to subsequent commands via the environment.
 
       # Описание
 
+        • Использование + вместо - выключает атрибут
+          - Кроме случая с +a, не позволяющего разрушить массив.
+          - И кроме +r, не позволяющего удалить readonly-атрибут.
 
+        • В функции declare делает каждое name локальным
+          - Как и команда local.
+          - Но только если не использовать опцию -g.
 
-      # Примеры
-
-
+        • Если передано value, то name присваивается это value.
 
     // echo //
     //------//
-    // -
+    // - Выводит args, разделённые пробелом, заканчивающиеся newline'ом.
 
       # Формат
 
+          echo [-neE] [arg …]
 
+      # Опции
 
-      # Описание
+        -n    | trailing newline is suppressed
+        -e    | включить интерпретацию символов после \
+        -E    | отключить интерпретацию символов после \
 
+      # Какие \ конструкции может интерпретировать echo
 
-
-      # Примеры
-
+        \a          | alert (bell)
+        \b          | backspace
+        \c          | подавить последующие вывод
+        \e, \E      | escape
+        \f          | form feed
+        \n          | new line
+        \r          | carriage return
+        \t          | horizontal tab
+        \v          | vertical tab
+        \\          | backslash
+        \0nnn       | the eight-bit character whose value is the octal value nnn (zero to three octal digits)
+        \xHH        | the eight-bit character whose value is the hexadecimal value HH (one or two hex digits)
+        \uHHHH      | the Unicode (ISO/IEC 10646) character whose value is the hexadecimal value HHHH (one to four hex digits)
+        \UHHHHHHHH  | the Unicode (ISO/IEC 10646) character whose value is the hexadecimal value HHHHHHHH (one to eight hex digits)
 
 
     // enable //
     //--------//
-    // -
+    // - Вкл / Выкл встроенные шелл-команды.
 
       # Формат
 
-
-
-      # Описание
-
-
-
-      # Примеры
-
-
+          enable [-a] [-dnps] [-f filename] [name …]
 
     // help //
     //------//
-    // -
+    // - Вывести help для встроенных команд.
 
       # Формат
 
+          help [-dms] [pattern]
 
+      # Опции
+
+        -d    | отобразить короткое описание каждого pattern
+        -m    | отобразить описание для каждого pattern в man-стиле
+        -s    | отобразить только короткий usage synopsis для каждого pattern
 
       # Описание
 
-
+        • Если pattern указан
+          - Выводит хелп по указанной встроенной команде.
 
       # Примеры
-
-
 
     // let //
     //-----//
-    // -
+    // - Позволяет проводить арифметические операции.
 
       # Формат
 
-
+          let expression [expression …]
 
       # Описание
+        - Подробнее см.здесь: http://www.gnu.org/software/bash/manual/html_node/Shell-Arithmetic.html#Shell-Arithmetic
 
+      # Обратите внимание на пробел
+        - Пробел разделяет выражения, как видно по формату.
+        - Внутри одного выражения пробелы не допускаются.
 
+      # Пример
 
-      # Примеры
-
-
+        let x=2+2 y=2+3
+        echo $x $y        // 4 5
 
     // local //
     //-------//
-    // -
+    // - Создать локальную переменную name со значением value.
 
       # Формат
 
+          local [option] name[=value] …
 
+      # Опции
+        - Такие же, как у declare.
 
       # Описание
-
-
-
-      # Примеры
-
-
+        - local можно использовать только внутри функции.
+        - Создаваемая переменная будет видна только в функции, и её детях.
 
     // logout //
     //--------//
+    // - Выйти из аккаунта.
+
+      # Формат
+
+          logout [n]
+
+      # Описание
+        - Возвращает статус n родителю шелла.
+
+    // mapfile //
+    //---------//
     // -
 
       # Формат
@@ -1422,8 +1587,6 @@
 
 
       # Примеры
-
-
 
     // printf //
     //--------//
