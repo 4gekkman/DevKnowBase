@@ -2075,6 +2075,10 @@
 
   > Введение
     - Эта глава про использование регулярных выражений в bash.
+    - Там применяются регулярные выражения в POSIX-стиле.
+    - Почти такие, же как в PHP, только в последнем в PCRE-стиле.
+    - Отличия здесь: http://php.net/manual/ru/reference.pcre.pattern.posix.php
+    - Регулярки можно применять прямо в командной строке.
 
   > Общая информация о RegExp в bash
 
@@ -2108,6 +2112,7 @@
       - Применяет к файлу или входящему потоку указанное RegExp.
       - Ищет строки, содержащие соотв-щую RegExp строку.
       - Выводит эти найденные строки в stdout (по умолчанию).
+      - Подробности см. в: man grep.
 
     # Примеры
 
@@ -2124,25 +2129,164 @@
 
           grep -v bash /etc/passwd | grep -v nologin    // инвертировать RegExp
 
+      • Вывести кол-во строк (цифру), содержащих root
 
+          grep -c root /etc/passwd
+
+      • Провести регистро-независимый поиск
+
+          grep -i root /etc/passwd
 
 
 А7. Bash scripting: потоковый редактор GNU sed
-
 
   --------------------------------------
   Подоглавление:
 
     # Ссылки
     # Введение
+    # Вместо предисловия
+
+      - Что такое sed?
+
+        ▪ Определение sed
+        ▪ Сохранение результатов
+        ▪ Редактор не изменяет оригинальный файл
+        ▪ Работает на основе RegExp
+        ▪ Указать действие можно командой редактирования
+
+      - Часто используемые команды редактирования sed
+
+        ▪ a\          | Append text below current line.
+        ▪ c\          | Change text in the current line with new text.
+        ▪ d           | Delete text.
+        ▪ i\          | Insert text above current line.
+        ▪ p           | Print text.
+        ▪ r           | Read a file.
+        ▪ s           | Search and replace text.
+        ▪ w           | Write to a file.
+
+      - Часто используемые опциии sed
+
+        ▪ -e SCRIPT   | Add the commands in SCRIPT to the set of commands to be run while processing the input.
+        ▪ -f          | Add the commands contained in the file SCRIPT-FILE to the set of commands to be run while processing the input.
+        ▪ -n          | Silent mode.
+        ▪ -V          | Print version information and exit.
+
+    # Примеры применения
+
+      - Вывести строки, содержащие паттерн
+      - Удалить строки, содержащие паттерн
+      - Обработка диапазонов сотрок
+      - Найти и заменить
 
   --------------------------------------
 
   > Ссылки
 
+    # Ссылка на главу оф.документации по сабжу
+        http://tldp.org/LDP/Bash-Beginners-Guide/html/chap_04.html
 
   > Введение
+    - В этой главе рассмотрен потоковый редактор GNU sed.
 
+  > Вместо предисловия
+
+    # Что такое sed?
+
+      • Определение sed
+
+          GNU sed - потоковый редактор (Stream EDitor), позволяющий
+          производить базовые трансформации текста, считываемого
+          из файла или из входного потока через пайп.
+
+      • Сохранение результатов
+        - Изменённые результаты отправляются прямиком в stdout.
+        - Сохранить результаты в файл, можно переадресовав вывод в файл.
+        - Например:
+
+            sed 's/erors/errors/g' file > file
+
+      • Редактор не изменяет оригинальный файл
+        - Сабж.
+
+      • Работает на основе RegExp
+        - Редактор может искать подстроки, используя RegExp.
+        - И как-либо их изменять, удалять.
+
+      • Указать действие можно командой редактирования
+        - Команды редактирования подобны тем, что применяются в vi.
+        - Список этих команд смотри ниже.
+
+    # Часто используемые команды редактирования sed
+
+      • a\    | Append text below current line.
+      • c\    | Change text in the current line with new text.
+      • d     | Delete text.
+      • i\    | Insert text above current line.
+      • p     | Print text.
+      • r     | Read a file.
+      • s     | Search and replace text.
+      • w     | Write to a file.
+
+    # Часто используемые опциии sed
+
+      • -e SCRIPT   | Add the commands in SCRIPT to the set of commands to be run while processing the input.
+      • -f          | Add the commands contained in the file SCRIPT-FILE to the set of commands to be run while processing the input.
+      • -n          | Silent mode.
+      • -V          | Print version information and exit.
+
+  > Примеры применения
+
+    # Вывести строки, содержащие паттерн
+
+      • Вывести все строки из файла file, содержащие "erors"
+
+          sed -n '/erors/p' file
+
+      • Вывести все строки из файла file, которые матчатся с паттерном
+
+          sed -n '/^This.*errors.$/p' file
+
+    # Удалить строки, содержащие паттерн
+
+      • Вывести все строки из файла file, не содержащие "erors"
+
+          sed '/erors/d' file
+
+    # Обработка диапазонов сотрок
+
+      • Вывести все строки из файла file, кроме строк со 2-й по 4-ю
+
+          sed '2,4d' file
+
+      • Вывести все строки из файла file, начиная с 3-й строки
+
+          sed '3,$d' file
+
+      • Вывести все строки, начиная от строки, которая включет
+        паттерн №1, и до строки, которая включает паттерн №2
+
+          sed -n '/a text/,/This/p' file
+
+    # Найти и заменить
+
+      • Вывести все строки, заменив в них "erors" на "errors"
+        - Опция g говорит о том, что замену надо делать не 1, а везде.
+
+          sed 's/erors/errors/g' file
+
+      • Вставить подстроку "> " в начало каждой строки в файле
+
+          sed 's/^/> /' file
+
+      • Вставить подстроку "EOL" в конец каждой строки в файле
+
+          sed 's/$/EOL/' file
+
+      • Применить сразу несколько find-and-replace
+
+          sed -e 's/erors/errors/g' -e 's/last/final/g' file
 
 А8. Bash scripting: условные операции
 
@@ -2151,14 +2295,428 @@
 
     # Ссылки
     # Введение
+    # Основы использования if
+
+      - Самый короткий формат: if .. then .. fi
+      - Выражения для подстановки в if
+
+        ▪ [ -a FILE ]	                | True if FILE exists.
+        ▪ [ -b FILE ]	                | True if FILE exists and is a block-special file.
+        ▪ [ -c FILE ]	                | True if FILE exists and is a character-special file.
+        ▪ [ -d FILE ]	                | True if FILE exists and is a directory.
+        ▪ [ -e FILE ]	                | True if FILE exists.
+        ▪ [ -f FILE ]	                | True if FILE exists and is a regular file.
+        ▪ [ -g FILE ]	                | True if FILE exists and its SGID bit is set.
+        ▪ [ -h FILE ]	                | True if FILE exists and is a symbolic link.
+        ▪ [ -k FILE ]	                | True if FILE exists and its sticky bit is set.
+        ▪ [ -p FILE ]	                | True if FILE exists and is a named pipe (FIFO).
+        ▪ [ -r FILE ]	                | True if FILE exists and is readable.
+        ▪ [ -s FILE ]	                | True if FILE exists and has a size greater than zero.
+        ▪ [ -t FD ]	                  | True if file descriptor FD is open and refers to a terminal.
+        ▪ [ -u FILE ]	                | True if FILE exists and its SUID (set user ID) bit is set.
+        ▪ [ -w FILE ]	                | True if FILE exists and is writable.
+        ▪ [ -x FILE ]	                | True if FILE exists and is executable.
+        ▪ [ -O FILE ]	                | True if FILE exists and is owned by the effective user ID.
+        ▪ [ -G FILE ]	                | True if FILE exists and is owned by the effective group ID.
+        ▪ [ -L FILE ]	                | True if FILE exists and is a symbolic link.
+        ▪ [ -N FILE ]	                | True if FILE exists and has been modified since it was last read.
+        ▪ [ -S FILE ]	                | True if FILE exists and is a socket.
+        ▪ [ FILE1 -nt FILE2 ]	        | True if FILE1 has been changed more recently than FILE2, or if FILE1 exists and FILE2 does not.
+        ▪ [ FILE1 -ot FILE2 ]	        | True if FILE1 is older than FILE2, or is FILE2 exists and FILE1 does not.
+        ▪ [ FILE1 -ef FILE2 ]	        | True if FILE1 and FILE2 refer to the same device and inode numbers.
+        ▪ [ -o OPTIONNAME ]	          | True if shell option "OPTIONNAME" is enabled.
+        ▪ [ -z STRING ]	              | True of the length if "STRING" is zero.
+        ▪ [ -n STRING ] or [ STRING ]	| True if the length of "STRING" is non-zero.
+        ▪ [ STRING1 == STRING2 ]	    | True if the strings are equal. "=" may be used instead of "==" for strict POSIX compliance.
+        ▪ [ STRING1 != STRING2 ]	    | True if the strings are not equal.
+        ▪ [ STRING1 < STRING2 ]	      | True if "STRING1" sorts before "STRING2" lexicographically in the current locale.
+        ▪ [ STRING1 > STRING2 ]	      | True if "STRING1" sorts after "STRING2" lexicographically in the current locale.
+        ▪ [ ARG1 OP ARG2 ]	          | "OP" is one of -eq, -ne, -lt, -le, -gt or -ge. These arithmetic binary operators return true if "ARG1" is equal to,
+
+      - Комбинирование выражений внутри []
+
+        ▪ [ ! EXPR ]          | True if EXPR is false.
+        ▪ [ ( EXPR ) ]        | Returns the value of EXPR. This may be used to override the normal precedence of operators.
+        ▪ [ EXPR1 -a EXPR2 ]  | True if both EXPR1 and EXPR2 are true.
+        ▪ [ EXPR1 -o EXPR2 ]  | True if either EXPR1 or EXPR2 is true.
+
+      - Команды после then
+
+        ▪ Команда / программа / скрипт / шелл стейтмент
+        ▪ then и fi должны быть отдельными выражениями
+
+      - Простые примеры применения if .. then .. fi
+
+        ▪ Проверить существование файла
+        ▪ Проверить наличие опции у шелла
+        ▪ Проверить exit-статус предыдущей выполненной команды
+        ▪ Проверить наличие $USER в /etc/passwd
+        ▪ Провести сравнение чисел
+        ▪ Провести сравнение строк
+
+    # Отличия [ от [[
+    # Формат: if .. then .. else .. fi
+
+      • Формат: if .. then .. else .. fi
+      • Сравнение значения с glob-паттерном
+      • Проверить наличие $USER в /etc/passwd
+      • Проверка позиционных аргументов
+      • Проверка, содержащая переменные
+      • Проверка кол-ва позиционных аргументов
+      • Проверка существования файла
+
+    # Формат: if .. then .. elif .. else  ..fi
+
+      • Формат: if .. then .. elif .. else  ..fi
+      • Проверка места на диске
+
+    # Вложенные if
+
+      • Внутри if-выражений м.б. другие if-выражения, и т.д.
+      • Пример вложенных if (проверка на високосный год)
+
+    # Boolean-операторы && и ||
+    # Использование exit в if-операциях
+    # Использование case
+
+      • Формат case-выражений
+      • Пример case-выражений
 
   --------------------------------------
 
   > Ссылки
 
+    # Ссылка на главу оф.документации по сабжу
+        http://tldp.org/LDP/Bash-Beginners-Guide/html/chap_07.html
 
   > Введение
+    - Эта глава описывает условные операции в bash.
 
+  > Основы использования if
+
+    # Самый короткий формат: if .. then .. fi
+
+        if TEST-COMMANDS; then CONSEQUENT-COMMANDS; fi
+
+    # Выражения для подстановки в if
+      - Это так называемые "Primary expressions".
+      - Это шаблоны для подстановки в качестве if-условия.
+      - См.их список в оглавлении.
+
+    # Комбинирование выражений внутри []
+      - Выраженяи в if можно комбинировать несколькими способами.
+      - Эти способы перечислены в оглавлении.
+      - Подробную информацию об этом можно получить в man:
+
+          man [
+          man test    // test это синоним [
+
+    # Команды после then
+
+      • Команда / программа / скрипт / шелл-выражение
+        - После then может быть любое из перечисленных.
+        - Валидная UNIX-команда, исполняемая программа.
+        - Может быть шелл-скрипт или шелл-выражение (кроме fi).
+
+      • then и fi должны быть отдельными выражениями
+        - В скрипте они должны быть на разных строках (fi под then).
+        - В терминале они должны быть отделены точкой с запятой ;
+
+    # Простые примеры применения if .. then .. fi
+
+      • Проверить существование файла
+
+          #!/bin/bash
+
+          echo "This scripts checks the existence of the messages file."
+          echo "Checking..."
+          if [ -f /var/log/messages ]
+            then
+              echo "/var/log/messages exists."
+          fi
+          echo
+          echo "...done."
+
+      • Проверить наличие опции у шелла
+
+        ▪ В скрипте
+
+            #!/bin/bash
+            if [ -o noclobber ]
+              then
+              echo "Your files are protected against accidental overwriting using redirection."
+            fi
+
+        ▪ Тоже самое в терминале
+
+            if [ -o noclobber ] ; then echo ; echo "your files are protected against overwriting." ; echo ; fi
+
+      • Проверить exit-статус предыдущей выполненной команды
+
+          if [ $? -eq 0 ]
+            then
+            echo echo 'That was a good job!'
+          fi
+
+      • Проверить наличие $USER в /etc/passwd
+
+        ▪ Вариант №1
+
+            if ! grep $USER /etc/passwd
+              then
+              echo "your user account is not managed locally"
+            fi
+
+        ▪ Вариант №2
+
+          grep $USER /etc/passwd
+          if [ $? -ne 0 ]
+            then
+            echo "your user account is not managed locally"
+          fi
+
+      • Провести сравнение чисел
+
+          num=10
+          if [ "$num" -gt "150" ]
+            then
+            then echo ; echo "you've worked hard enough for today."
+          fi
+
+      • Провести сравнение строк
+
+          if [ "$(whoami)" != 'root' ]; then
+            echo "You have no permission to run $0 as non-root user."
+            exit 1;
+          fi
+
+  > Отличия [ от [[
+
+    • [[ предотвращает зазбитие значений переменных на слова
+      - К примеру, есть такая переменная: VAR="var with spaces"
+      - Использовать такую переменную в [ надо так: "$VAR".
+      - А вот в [[ можно без кавычек: $VAR
+
+    • [[ предотвращает расширение литеральных строк до pathname
+      - Литералы с wildcatds не пытаются превратиться в filenames.
+
+    • == и != работают в [[ следующим образом
+      - Сравнивают значение слева с glob-паттерном справа.
+      - Например: [[ "value" == val* ]]
+
+  > Формат: if .. then .. else .. fi
+
+    # Формат: if .. then .. else .. fi
+
+        if TEST-COMMANDS; then CONSEQUENT-COMMANDS; else CONSEQUENT-COMMANDS; fi
+
+    # Сравнение значения с glob-паттерном
+
+        gender="male"
+        if [[ "$gender" == "f*" ]]
+          then echo "Pleasure to meet you, Madame."
+          else echo "How come the lady hasn't got a drink yet?"
+        fi
+
+    # Проверить наличие $USER в /etc/passwd
+
+        if ! grep ^$USER /etc/passwd 1> /dev/null
+          then echo "your user account is not managed locally"
+          else echo "your account is managed from the local /etc/passwd file"
+        fi
+
+    # Проверка позиционных аргументов
+
+        if [ "$1" == fish ]; then
+          echo "Hmmmm fish...."
+        else
+          echo "Tux don't like that"
+        fi
+
+    # Проверка, содержащая переменные
+
+        weight="$1"
+        height="$2"
+        idealweight=$[$height - 110]
+
+        if [ $weight -le $idealweight ] ; then
+          echo "You should eat a bit more fat."
+        else
+          echo "You should eat a bit more fruit."
+        fi
+
+    # Проверка кол-ва позиционных аргументов
+
+        if [ ! $# == 2 ]; then
+          echo "Usage: $0 weight_in_kilos length_in_centimeters"
+          exit
+        fi
+
+    # Проверка существования файла
+
+        FILENAME="$1"
+
+        echo "Properties for $FILENAME:"
+
+        if [ -f $FILENAME ]; then
+          echo "Size is $(ls -lh $FILENAME | awk '{ print $5 }')"
+          echo "Type is $(file $FILENAME | cut -d":" -f2 -)"
+          echo "Inode number is $(ls -i $FILENAME | cut -d" " -f1 -)"
+          echo "$(df -h $FILENAME | grep -v Mounted | awk '{ print "On",$1", \
+        which is mounted as the",$6,"partition."}')"
+        else
+          echo "File does not exist."
+        fi
+
+  > Формат: if .. then .. elif .. else  ..fi
+
+    # Формат: if .. then .. elif .. else  ..fi
+
+        if TEST-COMMANDS; then CONSEQUENT-COMMANDS; elif TEST-COMMANDS; than CONSEQUENT-COMMANDS; else CONSEQUENT-COMMANDS; fi
+
+    # Проверка места на диске
+
+        space=`df -h | awk '{print $5}' | grep % | grep -v Use | sort -n | tail -1 | cut -d "%" -f1 -`
+        alertvalue="80"
+
+        if [ "$space" -ge "$alertvalue" ]; then
+          echo "At least one of my disks is nearly full!" | mail -s "daily diskcheck" root
+        else
+          echo "Disk space normal" | mail -s "daily diskcheck" root
+        fi
+
+  > Вложенные if
+
+    # Внутри if-выражений м.б. другие if-выражения, и т.д.
+      - Кол-во уровней вложенности не ограничено.
+
+    # Пример вложенных if (проверка на високосный год)
+
+        year=`date +%Y`
+
+        if [ $[$year % 400] -eq "0" ]; then
+          echo "This is a leap year.  February has 29 days."
+        elif [ $[$year % 4] -eq 0 ]; then
+                if [ $[$year % 100] -ne 0 ]; then
+                  echo "This is a leap year, February has 29 days."
+                else
+                  echo "This is not a leap year.  February has 28 days."
+                fi
+        else
+          echo "This is not a leap year.  February has 28 days."
+        fi
+
+  > Boolean-операторы && и ||
+    - В if-выражениях можно использовать булевы операторы.
+
+  > Использование exit в if-операциях
+
+    # Про команду exit, и статус-код в $?
+      - Эта команда завершает выполнение всего скрипта.
+      - Её можно передать аргумент, статус завершения.
+      - Этот аргумент передаётся родителю в переменную $?.
+      - Статус 0 означает успех, любое другое - неудачу.
+      - Если аргумент не передать, возвращаетку значение $?.
+
+    # Пример совместного использования exit и if
+
+      penguin.sh
+      ---------------------------------
+        if [ "$menu" == "fish" ]; then
+          if [ "$animal" == "penguin" ]; then
+            echo "Hmmmmmm fish... Tux happy!"
+          elif [ "$animal" == "dolphin" ]; then
+            echo "Pweetpeettreetppeterdepweet!"
+          else
+            echo "*prrrrrrrt*"
+          fi
+        else
+          if [ "$animal" == "penguin" ]; then
+            echo "Tux don't like that.  Tux wants fish!"
+            exit 1
+          elif [ "$animal" == "dolphin" ]; then
+            echo "Pweepwishpeeterdepweet!"
+            exit 2
+          else
+            echo "Will you read this sign?!"
+            exit 3
+          fi
+        fi
+
+      feed.sh
+      ---------------------------------
+        export menu="$1"
+        export animal="$2"
+
+        feed="/nethome/anny/testdir/penguin.sh"
+
+        $feed $menu $animal
+
+        case $? in
+
+        1)
+          echo "Guard: You'd better give'm a fish, less they get violent..."
+          ;;
+        2)
+          echo "Guard: It's because of people like you that they are leaving earth all the time..."
+          ;;
+        3)
+          echo "Guard: Buy the food that the Zoo provides for the animals, you ***, how
+        do you think we survive?"
+          ;;
+        *)
+          echo "Guard: Don't forget the guide!"
+          ;;
+        esac
+
+  > Использование case
+
+    # Формат case-выражений
+
+        case EXP in
+
+          case1)
+            CMDs
+            ;;
+
+          case2)
+            CMDs
+            ;;
+
+          ...
+
+        esac
+
+    # Пример case-выражений
+
+        case "$1" in
+                start)
+                    start
+                    ;;
+
+                stop)
+                    stop
+                    ;;
+
+                status)
+                    status anacron
+                    ;;
+                restart)
+                    stop
+                    start
+                    ;;
+                condrestart)
+                    if test "x`pidof anacron`" != x; then
+                        stop
+                        start
+                    fi
+                    ;;
+
+                *)
+                    echo $"Usage: $0 {start|stop|restart|condrestart|status}"
+                    exit 1
+
+        esac
 
 А9. Bash scripting: интерактивные скрипты
 
