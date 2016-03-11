@@ -49,7 +49,7 @@
     А3. Опции исполнения
 
     А4. Bash scripting: основы скриптинга и отладки
-    А5. Bash scripting: среда
+    А5. Bash scripting: среда [написать по запросу]
     А6. Bash scripting: регулярные выражения
     А7. Bash scripting: потоковый редактор GNU sed
     А8. Bash scripting: условные операции
@@ -634,14 +634,15 @@
         - let       | Позволяет проводить арифметические операции
         - local     | Создать локальную переменную name со значением value
         - logout    | Выйти из аккаунта
-        - mapfile   |
-        - printf    |
-        - read      |
-        - shopt     |
-        - type      |
-        - typeset   |
-        - ulimit    |
-        - unalias   |
+        - mapfile   | Читает строки из стандартного ввода в индексированный массив
+        - printf    | Получить строку в заданном формате
+        - read      | Считать 1 строку из stdin или файла, и записать слова из неё в name1,name2,...
+        - readarray | Считать строки из stdin в индексированный массив array
+        - source    | Синоним для встроенной команды . Bourne Shell
+        - type      | Показать какой код реально скрывается за именем команды
+        - typeset   | Это синоним declare, оставлен для совместимости с Korn shell
+        - ulimit    | Обеспечить контроль за ресурсами доступными процессам, запущенным шеллом
+        - unalias   | Удалить алиас name
 
   --------------------------------------
 
@@ -652,6 +653,9 @@
 
     # Оф.справочник GNU по Bash build-in commands
         http://www.gnu.org/software/bash/manual/html_node/Bash-Builtins.html
+
+    # Справочник с примерами из man pages
+        http://ss64.com/bash/
 
   > Введение
     - Эта глава является справочником по встроенным командам.
@@ -1576,89 +1580,139 @@
 
     // mapfile //
     //---------//
-    // -
+    // - Читает строки из стандартного ввода в индексированный массив.
 
       # Формат
 
-
+        mapfile [-n count] [-O origin] [-s count] [-t] [-u fd]
+            [-C callback] [-c quantum] [array]
 
       # Описание
+        - Читает строки из стандартного ввода в индексированный массив.
+        - Либо из файлового дескриптора, если опция -u применена.
 
+      # Опции
 
+        -n count    | Copy at most count lines. If count is 0, all lines are copied.
+        -O origin   | Begin assigning to array at index origin. The default index is 0.
+        -s count    | Discard the first count lines read.
+        -t          | Remove a trailing newline from each line read.
+        -u          | Read lines from file descriptor fd instead of the standard input.
+        -C callback | Evaluate callback each time quantumP lines are read. The -c option specifies quantum.
+        -c quantum  | Specify the number of lines read between each call to callback.
 
-      # Примеры
+      # Примечания
+
+        • Если C указано без c
+          - То quantum == 5000.
+
+        • mapfile очистить array перед его наполнением
+          - Если явно не указан origin.
 
     // printf //
     //--------//
-    // -
+    // - Получить строку в заданном формате.
 
       # Формат
 
+          printf [-v var] format [arguments]
 
+      # Опции
+
+        -v var    | записать вывод в переменную var, а не в stdout
 
       # Описание
-
-
-
-      # Примеры
-
-
+        - Посмотреть спецификации можно так: man printf
 
     // read //
     //------//
-    // -
+    // - Считать 1 строку из stdin или файла, и записать слова из неё в name1,name2,...
 
       # Формат
 
+          read [-ers] [-a aname] [-d delim] [-i text] [-n nchars]
+              [-N nchars] [-p prompt] [-t timeout] [-u fd] [name …]
 
+      # Опции
 
-      # Описание
+        -a aname    | The words are assigned to sequential indices of the array variable aname, starting at 0. All elements are removed from aname before the assignment. Other name arguments are ignored.
+        -d delim    | The first character of delim is used to terminate the input line, rather than newline.
+        -e          | Readline (see Command Line Editing) is used to obtain the line. Readline uses the current (or default, if line editing was not previously active) editing settings.
+        -i text     | If Readline is being used to read the line, text is placed into the editing buffer before editing begins.
+        -n nchars   | read returns after reading nchars characters rather than waiting for a complete line of input, but honor a delimiter if fewer than nchars characters are read before the delimiter.
+        -p prompt   | read returns after reading exactly nchars characters rather than waiting for a complete line of input, unless EOF is encountered or read times out. Delimiter characters encountered in the input are not treated specially and do not cause read to return until nchars characters are read.
+        -r          | Display prompt, without a trailing newline, before attempting to read any input. The prompt is displayed only if input is coming from a terminal.
+        -s          | If this option is given, backslash does not act as an escape character. The backslash is considered to be part of the line. In particular, a backslash-newline pair may not be used as a line continuation.
+        -t timeout  | Silent mode. If input is coming from a terminal, characters are not echoed.
+        -u fd       | Cause read to time out and return failure if a complete line of input (or a specified number of characters) is not read within timeout seconds
 
-
-
-      # Примеры
-
-
-
-    // shopt //
-    //-------//
-    // -
+    // readarray //
+    //-----------//
+    // - Считать строки из stdin в индексированный массив array.
+    // - Изи из файлового дескриптора fd, заданного опцией -u.
 
       # Формат
 
+          readarray [-n count] [-O origin] [-s count] [-t] [-u fd]
+              [-C callback] [-c quantum] [array]
 
+    // source //
+    //--------//
+    // - Синоним для встроенной команды . Bourne Shell.
 
-      # Описание
+      # Формат
 
-
-
-      # Примеры
-
+          source filename
 
 
     // type //
     //------//
-    // -
+    // - Показать какой код реально скрывается за именем команды.
 
       # Формат
 
+          type [-afptP] [name …]
 
+      # Опции
 
-      # Описание
-
-
+        -t    | вывести тип: alias/function/builtin/file/keyword
+        -p    | для типов 'file' вернуть имя файла на диске
+        -P    | аналог -p, но работает не только для 'file'
+        -a    | вернуть все места, где доступен исполняемый file (если -p не указана, алиасы и функции не учитываются)
+        -f    | type не ищет шелл-функции
 
       # Примеры
 
+        • Проверить, что скрывается за алиасом
 
+          type ls     // ls --color=auto
+
+        • Узнать тип скрывающейся за именем сущности
+          - Выводом будет лишь 1 слово.
+          - Одно из: alias/function/builtin/file/keyword
+          - Узнать:
+
+            type -t ls    // alias
+            type -t type  // builtin
+            type type     // type is a shell builtin
+
+        • Показать все места, где определена команда grep
+          - Вводим:
+
+              type -a grep
+
+          - Получаем:
+
+              grep is aliased to `grep --color=auto'
+              grep is /bin/grep
 
     // typeset //
     //---------//
-    // -
+    // - Это синоним declare, оставлен для совместимости с Korn shell.
 
       # Формат
 
-
+          typeset [-afFgrxilnrtux] [-p] [name[=value] …]
 
       # Описание
 
@@ -1670,11 +1724,29 @@
 
     // ulimit //
     //--------//
-    // -
+    // - Обеспечить контроль за ресурсами доступными процессам, запущенным шеллом.
 
       # Формат
 
+          ulimit [-abcdefilmnpqrstuvxHST] [limit]
 
+      # Опции
+
+         -S   Change and report the soft limit associated with a resource.
+         -H   Change and report the hard limit associated with a resource.
+
+         -a   All current limits are reported.
+         -c   The maximum size of core files created.
+         -d   The maximum size of a process's data segment.
+         -f   The maximum size of files created by the shell(default option)
+         -l   The maximum size that can be locked into memory.
+         -m   The maximum resident set size.
+         -n   The maximum number of open file descriptors.
+         -p   The pipe buffer size.
+         -s   The maximum stack size.
+         -t   The maximum amount of cpu time in seconds.
+         -u   The maximum number of processes available to a single user.
+         -v   The maximum amount of virtual memory available to the process.
 
       # Описание
 
@@ -1686,18 +1758,11 @@
 
     // unalias //
     //---------//
-    // -
+    // - Удалить алиас name.
 
       # Формат
 
-
-
-      # Описание
-
-
-
-      # Примеры
-
+          unalias [-a] [name … ]
 
 
 
@@ -1708,164 +1773,470 @@
 
     # Ссылки
     # Введение
-    # Справочник по встроенным командам Bash
+    # Формат
+    # Предисловие
+    # Справочник по опциям исполнения
 
-      -c                    |
-      -i                    |
-      -l                    |
-      -r                    |
-      -s                    |
-      -D                    |
-      -O                    |
-      +O                    |
-      --                    |
+      -c                    | Read and execute commands from the first non-option argument after processing the options, then exit. Any remaining arguments are assigned to the positional parameters, starting with $0.
+      -i                    | Force the shell to run interactively. Interactive shells are described in Interactive Shells.
+      -l                    | Make this shell act as if it had been directly invoked by login
+      -r                    | Make the shell a restricted shell (see The Restricted Shell).
+      -s                    | If this option is present, or if no arguments remain after option processing, then commands are read from the standard input.
+                              This option allows the positional parameters to be set when invoking an interactive shell.
+      -D                    | A list of all double-quoted strings preceded by ‘$’ is printed on the standard output.
+      -O, +O                | shopt_option is one of the shell options accepted by the shopt builtin (see The Shopt Builtin)
+      --                    | A -- signals the end of options and disables further option processing. Any arguments after the -- are treated as filenames and arguments
 
-      --debugger            |
-      --dump-po-strings     |
-      --dump-strings        |
-      --help                |
-      --init-file filename  |
-      --rcfile filename     |
-      --login               |
-      --noediting           |
-      --noprofile           |
-      --norc                |
-      --posix               |
-      --restricted          |
-      --verbose             |
-      --version             |
+      --debugger            | Arrange for the debugger profile to be executed before the shell starts. Turns on extended debugging mode (see The Shopt Builtin for a description of the extdebug option to the shopt builtin).
+      --dump-po-strings     | A list of all double-quoted strings preceded by ‘$’ is printed on the standard output in the GNU gettext PO (portable object) file format. Equivalent to -D except for the output format.
+      --dump-strings        | Equivalent to -D.
+      --help                | Display a usage message on standard output and exit successfully.
+      --init-file filename  | Execute commands from filename (instead of ~/.bashrc) in an interactive shell.
+      --rcfile filename     | Equivalent to --init-file.
+      --login               | Equivalent to -l.
+      --noediting           | Do not use the GNU Readline library (see Command Line Editing) to read command lines when the shell is interactive.
+      --noprofile           | Don’t load the system-wide startup file /etc/profile or any of the personal initialization files ~/.bash_profile, ~/.bash_login, or ~/.profile when Bash is invoked as a login shell.
+      --norc                | Don’t read the ~/.bashrc initialization file in an interactive shell. This is on by default if the shell is invoked as sh.
+      --posix               | Change the behavior of Bash where the default operation differs from the POSIX standard to match the standard. This is intended to make Bash behave as a strict superset of that standard. See Bash POSIX Mode, for a description of the Bash POSIX mode.
+      --restricted          | Make the shell a restricted shell (see The Restricted Shell).
+      --verbose             | Equivalent to -v. Print shell input lines as they’re read.
+      --version             | Show version information for this instance of Bash on the standard output and exit successfully.
 
   --------------------------------------
 
   > Ссылки
 
-    # Оф.справочник GNU по встроенным командам
+    # Оф.справочник GNU по опциям исполнения
         https://www.gnu.org/software/bash/manual/html_node/Invoking-Bash.html
 
   > Введение
     - Эта глава является справочником по опциям исполнения Bash.
 
+  > Формат
+
+      bash [long-opt] [-ir] [-abefhkmnptuvxdBCDHP] [-o option] [-O shopt_option] [argument …]
+      bash [long-opt] [-abefhkmnptuvxdBCDHP] [-o option] [-O shopt_option] -c string [argument …]
+      bash [long-opt] -s [-abefhkmnptuvxdBCDHP] [-o option] [-O shopt_option] [argument …]
+
+  > Предисловие
+    - Назначить опцию для текущего шелла можно командой set.
+
   > Справочник по встроенным командам Bash
-
-    // -c //
-    //----//
-    // -
+    - См.: man bash.
 
 
-    // -i //
-    //----//
-    // -
+А4. Bash scripting: основы скриптинга и отладки
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+    # Где писать скрипты, как выбирать имя
+
+      - Писать bash-скрипты можно в nano
+      - Включить подсветку синтаксиса в nano
+      - При выборе имени проверять свободно ли
+      - Добавь каталог со скриптами в PATH
+
+    # Как запускать скрипты
+
+      - Если каталог и . не в PATH
+      - Если каталог или . в PATH
+      - Запуск скрипта в текущем процессе
+      - Запуск скрипта в подпроцессе
+      - Запуск скрипта указанным шеллом
+
+    # Выбор шелла и комменты
+
+      - Любой скрипт начинается с выбора шелла
+      - Как писать комменты в скрипте
+
+    # Дебаггинг скриптов
+
+      - Запуск целого скрипта в debug-режиме опцией -x
+      - Отладка лишь части внутри скрипта с помощью set -x, set +x
+      - Старая добрая отладка с помощью echo
+
+  --------------------------------------
+
+  > Ссылки
+
+    # Ссылка на главу оф.документации по сабжу
+        http://tldp.org/LDP/Bash-Beginners-Guide/html/chap_02.html
+
+  > Введение
+    - В этой главе рассмотрим основы создания и запуска bash-скрипта.
+
+  > Где писать скрипты, как выбирать имя
+
+    # Писать bash-скрипты можно в nano
+      - Вообще их писать можно в любом текстовом редакторе.
+      - В общей папке можно, например, использовать notepad в Windows.
+      - Но удобнее, всё же, писать прямо в терминале в nano.
+
+    # Включить подсветку синтаксиса в nano
+      - Редактор nano поддерживает подсветку синтаксисов для ряда языков.
+      - В том числе и для bash-скриптов.
+      - Посмотреть весь список поддерживаемых языков можно так:
+
+          ls /usr/share/nano/
+
+      - Включить любую из этих подсветок можно в конфиге nano: ~/.nanorc
+      - Включим подсветку для bash:
+
+          touch ~/.nanorc
+          sudo nano ~/.nanorc
+
+            include "/usr/share/nano/sh.nanorc"
+
+    # При выборе имени проверять свободно ли
+
+      • Добавляй .sh в конец своих скриптов
+        - В принципе, это не обязательно.
+        - Но это уменьшает вероятность конфликтов с существующими командами.
+
+      • Проверяй, не существует ли уже такая команда
+        - С помощью which / whereis / locate .
+        - Например:
+
+            which test    // ищет путь к команде
+            whereis test  // ищет бинарник, исходник и справку для команды
+            locate test   // ищет файлы по имени
+
+    # Добавь каталог со скриптами в PATH
+      - В Linux это делается очень просто.
+      - Допустим, каталог со скриптами: "/c/WebDev/projects/bash_sandbox"
+      - Добавим его в конец PATH на постоянной основе:
+
+        export PATH="$PATH:/c/WebDev/projects/bash_sandbox"
+
+      - Теперь скрипты из этого каталога будут доступны где угодно.
+
+  > Как запускать скрипты
+
+    # Если каталог и . не в PATH
+      - Если каталог со скриптом и каталог . не добавлены в PATH.
+      - Тогда запустить скрипт в этом каталоге можно так:
+
+          ./script.sh
+
+    # Если каталог или . в PATH
+      - Если каталог со скриптом или каталог . добавлены в PATH.
+      - Хотя добавлять в PATH . строго не рекомендуется.
+      - Тогда запускать скрипт в этом каталоге можно так:
+
+          script.sh
+
+    # Запуск скрипта в текущем процессе
+      - Иногда требуется запустить скрипт в текущем процессе.
+      - Например, чтобы в этом скрипте назначить алиасы.
+      - Или поназначать переменные именно для этой среды.
+      - Это можно сделать со помощью встроенной команды source.
+      - Команда . (точка) является синонимом команды source.
+      - Примеры:
+
+          source script.sh
+          . script.sh
+
+    # Запуск скрипта в подпроцессе
+      - Обычно скрипт запускается в подпроцессе.
+      - Запускается механизм Fork-and-Exec.
+      - Создаётся подпроцесс с точной копией окружения родителя.
+      - В этом подпроцессе-шелле выполняется указанный скрипт.
+      - Потом, этот подпроцесс вместе со всей средой удаляется.
+      - Минус: скрипт никак не может повлиять на среду родителя.
+      - Например, установить для неё алиасы.
+      - Вот, как можно запустить скрипт в подпроцессе:
+
+          ./script    // если каталог со скриптом и . не в path
+          script      // если каталог со скриптом или . в path
+
+    # Запуск скрипта указанным шеллом
+      - Редко может понадобиться указать, каким шеллом выполнять скрипт.
+      - Примеры:
+
+          rbash script.sh
+          sh script.sh
+          bash script.sh
+
+  > Выбор шелла и комменты
+
+    # Любой скрипт начинается с выбора шелла
+      - Выбрать шелл можно в первой не пустой строке скрипта.
+      - Она должна содержать конструкцию вида: #!<путь к шеллу>.
+      - Примеры:
+
+          #!/bin/bash
+          #!/bin/sh
+
+      - В Ubuntu по умолчанию используется /bin/sh
+      - Поэтому если явно не указать #!/bin/bash, будут проблемы.
+
+    # Как писать комменты в скрипте
+      - Используя #
+      - Коммент может быть как всей строкой, так и в конце строки.
+      - Примеры:
+
+          # строка-коммент
+          echo "123"    # коммент в конце строки
+
+  > Дебаггинг скриптов
+
+    # Запуск целого скрипта в debug-режиме опцией -x
+      - Можно запустить в debug-режиме целый скрипт.
+      - Он будет запущен в подпроцессе.
+      - Тогда в stdout будут поступать отладочные данные.
+      - Сделать это можно опцией -x
+      - Пример:
+
+          bash -x script.sh
+
+    # Отладка лишь части внутри скрипта с помощью set -x, set +x
+      - Можно запустить в debug-режиме лишь часть скрипта.
+      - Которая между командами set -x и set +x.
+      - Применять это внутри скрипта можно сколько угодно раз.
+      - Пример (код скрипта):
+
+          .. код не для отладки ..
+
+          set -x
+          .. код для отладки ..
+          set +x
+
+          .. код не для отладки ..
+
+      - Ещё можно применять set -o и set +o.
+      - Это будет выводить ввод из stdin так, как он считывается.
+
+    # Старая добрая отладка с помощью echo
+      - Выводим содержимое переменных с помощью echo.
+      - Разбрасываем: echo "1", echo "2" по коду.
+      - Ищем место, где код прервал своё выполнение.
+      - И так далее.
 
 
-    // -l //
-    //----//
-    // -
+А5. Bash scripting: среда [написать по запросу]
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
 
 
-    // -r //
-    //----//
-    // -
+  > Введение
 
 
-    // -s //
-    //----//
-    // -
+А6. Bash scripting: регулярные выражения
 
+  --------------------------------------
+  Подоглавление:
 
-    // -D //
-    //----//
-    // -
+    # Ссылки
+    # Введение
+    # Общая информация о RegExp в bash
 
+      - Что такое RegExp
+      - Конкатенация RegExp
+      - Объединение RegExp с помощью оператора | (infix)
+      - Про приоритетность
+      - Экранирование метасимволов
 
-    // -O //
-    //----//
-    // -
+    # Матасимволы RegExp
 
+      .	        | Matches any single character.
+      ?	        | The preceding item is optional and will be matched, at most, once.
+      *	        | The preceding item will be matched zero or more times.
+      +	        | The preceding item will be matched one or more times.
+      {N}	      | The preceding item is matched exactly N times.
+      {N,}	    | The preceding item is matched N or more times.
+      {N,M}	    | The preceding item is matched at least N times, but not more than M times.
+      -	        | represents the range if it's not first or last in a list or the ending point of a range in a list.
+      ^	        | Matches the empty string at the beginning of a line; also represents the characters not in the range of a list.
+      $	        | Matches the empty string at the end of a line.
+      \b	      | Matches the empty string at the edge of a word.
+      \B	      | Matches the empty string provided it's not at the edge of a word.
+      \<	      | Match the empty string at the beginning of word.
+      \>	      | Match the empty string at the end of word.
 
-    // +O //
-    //----//
-    // -
+    # Использование RegExp с командой grep
 
+  --------------------------------------
 
-    // -- //
-    //----//
-    // -
+  > Ссылки
 
+    # Ссылка на главу оф.документации по сабжу
+        http://tldp.org/LDP/Bash-Beginners-Guide/html/chap_04.html
 
-    // --debugger  //
-    //-------------//
-    // -
+  > Введение
+    - Эта глава про использование регулярных выражений в bash.
 
+  > Общая информация о RegExp в bash
 
-    // --dump-po-strings //
-    //-------------------//
-    // -
+    # Что такое RegExp
+      - Паттерн для описания набора строк.
+      - Конструируются по аналогии с арифметическими выражениями.
+      - Используются различные операторы для комбинации меньших выражений.
 
+    # Конкатенация RegExp
+      - Два регулярных выражения могут быть конкатенированы.
+      - Тогда матчинг будет происходить уже с этим результатом.
 
-    // --dump-strings //
-    //----------------//
-    // -
+    # Объединение RegExp с помощью оператора | (infix)
+      - Два регулярных выражения м.б. объединены оператором |
+      - Результирующее RegExp матчит любую строку, которую
+        матчит любая из объединённых частей.
 
+    # Про приоритетность
+      - Repetition takes precedence over concatenation, which in turn takes precedence over alternation.
+      - A whole subexpression may be enclosed in parentheses to override these precedence rules.
 
-    // --help //
-    //--------//
-    // -
+    # Экранирование метасимволов
+      - Метасимволы можно экранировать бэкслэшем \
 
+  > Матасимволы RegExp
+    - См.оглавление.
 
-    // --init-file filename //
-    //----------------------//
-    // -
+  > Использование RegExp с командой grep
 
+    # Что делает команда grep
+      - Применяет к файлу или входящему потоку указанное RegExp.
+      - Ищет строки, содержащие соотв-щую RegExp строку.
+      - Выводит эти найденные строки в stdout (по умолчанию).
 
-    // --rcfile filename //
-    //-------------------//
-    // -
+    # Примеры
 
+      • Вывести все работающие процессы, содержащие node в имени
 
-    // --login //
-    //---------//
-    // -
+          ps aux | grep node
 
+      • Вывести все строки из /etc/passwd, содержащие root
 
-    // --noediting //
-    //-------------//
-    // -
+          grep root /etc/passwd
+          grep -n root /etc/passwd                      // указывать ещё в начале номер строки
 
+      • Вывести все строки из /etc/passwd, НЕ содержащие root
 
-    // --noprofile //
-    //-------------//
-    // -
-
-
-    // --norc //
-    //--------//
-    // -
-
-
-    // --posix //
-    //---------//
-    // -
-
-
-    // --restricted //
-    //--------------//
-    // -
-
-
-    // --verbose //
-    //-----------//
-    // -
-
-
-    // --version //
-    //-----------//
-    // -
+          grep -v bash /etc/passwd | grep -v nologin    // инвертировать RegExp
 
 
 
 
+А7. Bash scripting: потоковый редактор GNU sed
 
 
+  --------------------------------------
+  Подоглавление:
 
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+
+  > Введение
+
+
+А8. Bash scripting: условные операции
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+
+  > Введение
+
+
+А9. Bash scripting: интерактивные скрипты
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+
+  > Введение
+
+
+А10. Bash scripting: циклы
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+
+  > Введение
+
+
+А11. Bash scripting: переменные, массивы, операции с ними
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+
+  > Введение
+
+
+А12. Bash scripting: функции
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+
+  > Введение
+
+
+А13. Bash scripting: сигналы
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+
+  > Введение
 
 
