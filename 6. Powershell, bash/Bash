@@ -2725,14 +2725,208 @@
 
     # Ссылки
     # Введение
+    # Вместо предисловия
+
+      • Преимущества не интерактивных скриптов
+      • Преимущества интерактивных скриптов
+      • Интерактивные скрипты и CLI-приложения
+      • Комментирование в интерактивных скриптах (echo, printf)
+      • При запросах инфы, лучше сообщить больше
+
+    # Обработка пользовательского ввода
+
+      • Использование встроенной команды read
+
+        ▪ Формат команды read
+        ▪ Как работает команда read
+
+          ▪ Команда read, как двойник echo
+          ▪ Команда read считывает 1-ну строку
+          ▪ name1 = 1-е слово, name2 = 2-е слово, ..., nameN = n-е слово
+          ▪ Если слов передано меньше, чем определено аргументов
+          ▪ С помощью бэкслэша \ можно экранировать спец.символы
+          ▪ Если не задать аргументов name, строка считается в REPLY
+
+        ▪ Опции команды read
+
+          ▪ -a name     | The words are assigned to sequential indexes of the array variable ANAME, starting at 0. All elements are removed from ANAME before the assignment. Other NAME arguments are ignored.
+          ▪ -d delim    | The first character of DELIM is used to terminate the input line, rather than newline.
+          ▪ -e          | readline is used to obtain the line.
+          ▪ -n nchars   | read returns after reading NCHARS characters rather than waiting for a complete line of input.
+          ▪ -p prompt   | Display PROMPT, without a trailing newline, before attempting to read any input. The prompt is displayed only if input is coming from a terminal.
+          ▪ -r          | If this option is given, backslash does not act as an escape character. The backslash is considered to be part of the line. In particular, a backslash-newline pair may not be used as a line continuation.
+          ▪ -s          | Silent mode. If input is coming from a terminal, characters are not echoed.
+          ▪ -t timeout  | Cause read to time out and return failure if a complete line of input is not read within TIMEOUT seconds. This option has no effect if read is not reading input from the terminal or from a pipe.
+          ▪ -u FD       | Read input from file descriptor FD.
+
+        ▪ Несколько простых примеров
+
+          ▪ Запросить год и сообщить, високосный ли он
+          ▪ Имитация скрипта регистрации
+          ▪ Применение heredoc
+
+        ▪
+
+      •
+      •
+      •
+      •
 
   --------------------------------------
 
   > Ссылки
 
+    # Ссылка на главу оф.документации по интерактивным скриптам
+        http://tldp.org/LDP/Bash-Beginners-Guide/html/chap_08.html
 
   > Введение
+    - Эта глава раскрывает тему интерактивных скриптов.
+    - Оные являются ключём к написанию CLI-приложений на bash.
 
+  > Вместо предисловия
+
+    # Преимущества не интерактивных скриптов
+
+      • Скрипт каждый раз отрабатывает одинаково предсказуемо.
+      • Скрипт выполняется в фоновом режиме.
+
+    # Преимущества интерактивных скриптов
+
+      • Интерактивные скрипты более гибкие.
+      • Пользователь может кастомизировать поведение скрипта.
+      • Скрипт может докладывать пользователю в процессе выполнения.
+
+    # Интерактивные скрипты и CLI-приложения
+      - Интерактивные скрипты являются ключём к созданию CLI-приложений.
+      - CLI-приложение представляет единую точку входя для широкого функционала.
+      - Этот функционал может включать в себя набор различных инструментов.
+      - Зная одну лишь команду-точку-входа, пользователь может это использовать.
+
+    # Комментирование в интерактивных скриптах (echo, printf)
+      - Пусть скрипт комментирует то, что он делает.
+      - То есть выводит информацию об этом через echo, printf.
+      - Лучше больше комментариев, чем меньше.
+
+    # При запросах инфы, лучше сообщить больше
+      - Интерактивные скрипты могут запрашивать у пользователя ввод.
+      - Лучше при этом сообщить больше инфы о том, что требуется, чем меньше.
+      - Иначе пользователь может не понять, чего от него хотят.
+
+  > Обработка пользовательского ввода
+
+    # Использование встроенной команды read
+
+      • Формат команды read
+
+          read [options] NAME1 NAME2 ... NAMEN
+
+      • Как работает команда read
+
+        ▪ Команда read, как двойник echo
+          - Команда echo выводит в stdout переданные name1, name2, ...
+          - Команда read читает в stdin переданные name1, name2, ...
+
+        ▪ Команда read считывает 1-ну строку
+          - Считывается 1-на строка из stdin.
+          - Либо из файлового дескриптора из опции -u.
+
+        ▪ name1 = 1-е слово, name2 = 2-е слово, ..., nameN = n-е слово
+          - Считанная строка разбивается на слова.
+          - Описанным выше образом заполняются аргументы.
+
+        ▪ Если слов передано меньше, чем определено аргументов
+          - Лишние аргументы получают пустые значения.
+
+        ▪ С помощью бэкслэша \ можно экранировать спец.символы
+          - Сабж.
+
+        ▪ Если не задать аргументов name, строка считается в REPLY
+          - В переменную REPLY.
+
+      • Опции команды read
+        - См.оглавление.
+        - Или man: man read
+
+      • Несколько простых примеров
+
+        ▪ Запросить год и сообщить, високосный ли он
+
+            #!/bin/bash
+            # This script will test if you have given a leap year or not.
+
+            echo "Type the year that you want to check (4 digits), followed by [ENTER]:"
+
+            read year
+
+            if (( ("$year" % 400) == "0" )) || (( ("$year" % 4 == "0") && ("$year" % 100 !=
+            "0") )); then
+              echo "$year is a leap year."
+            else
+              echo "This is not a leap year."
+            fi
+
+        ▪ Имитация скрипта регистрации
+
+            #!/bin/bash
+
+            # This is a program that keeps your address book up to date.
+
+            friends="/var/tmp/michel/friends"
+
+            echo "Hello, "$USER".  This script will register you in Michel's friends database."
+
+            echo -n "Enter your name and press [ENTER]: "
+            read name
+            echo -n "Enter your gender and press [ENTER]: "
+            read -n 1 gender
+            echo
+
+            grep -i "$name" "$friends"
+
+            if  [ $? == 0 ]; then
+              echo "You are already registered, quitting."
+              exit 1
+            elif [ "$gender" == "m" ]; then
+              echo "You are added to Michel's friends list."
+              exit 1
+            else
+              echo -n "How old are you? "
+              read age
+              if [ $age -lt 25 ]; then
+                echo -n "Which colour of hair do you have? "
+                read colour
+                echo "$name $age $colour" >> "$friends"
+                echo "You are added to Michel's friends list.  Thank you so much!"
+              else
+                echo "You are added to Michel's friends list."
+                exit 1
+              fi
+            fi
+
+        ▪ Применение heredoc
+
+            #!/bin/bash
+
+            # This script provides an easy way for users to choose between browsers.
+
+            echo "These are the web browsers on this system:"
+
+            # Start here document
+            cat << BROWSERS
+            mozilla
+            links
+            lynx
+            konqueror
+            opera
+            netscape
+            BROWSERS
+            # End here document
+
+            echo -n "Which is your favorite? "
+            read browser
+
+            echo "Starting $browser, please wait..."
+            $browser &
 
 А10. Bash scripting: циклы
 
@@ -2742,13 +2936,560 @@
     # Ссылки
     # Введение
 
+    # Цикл for
+
+      • Синтаксис цикла for
+      • Описание цикла for
+      • Примеры использования for
+
+        ▪ Конвертировать все *.html в текущем каталоге в *.php
+
+    # Цикл while
+
+      • Синтаксис цикла while
+      • Примеры использования while
+
+        ▪ Открыть 4 терминала
+        ▪ Вложенные циклы while
+        ▪ Генерировать файл каждые 5 минут
+        ▪ Получение ввода от пользователя, предоставление выбора из списка
+        ▪ Вычисление среднего
+
+    # Цикл until
+
+      • Синтаксис цикла until
+      • Примеры использования until
+
+        ▪ Скрипт, проверяющий наличие свободного места на диске
+
+    # Переадресация и циклы
+
+      • Переадресация ввода из файла в цикл с test-командой read
+      • Переадресация вывода команды на ввод цикла с test-командой read
+
+    # Break / Continue
+
+      • Break
+      • Continue
+      • Примеры break / continue
+
+    # Встроенная команда select: лёгкая генерация меню
+
+      • Синтаксис select
+      • Описание select
+      • Примеры select
+
+        ▪ Выбрать из списка файл, который надо сделать приватным
+        ▪ Тоже самое, но с пунктом для выхода из цикла
+
+    # Встроенная команда shift
+
+      • Сдвигает все позиционные аргументы влево на n
+      • Примеры работы с shift
+
+        ▪ Обработать каждый файл из вывода команды find
+        ▪ Установить пакеты, переданные в позиционных аргументах
+
   --------------------------------------
 
   > Ссылки
 
+    # Оф.документация по циклам в bash
+        http://tldp.org/LDP/Bash-Beginners-Guide/html/chap_09.html
 
   > Введение
+    - В этой главе рассматриваются циклы в bash.
 
+  > Цикл for
+
+    # Синтаксис цикла for
+
+      • В одну строку
+
+          for NAME [in LIST ]; do COMMANDS; done
+
+      • В несколько строк
+
+          for NAME [in LIST ]; do
+            COMMANDS
+          done
+
+    # Описание цикла for
+
+      • NAME
+        - NAME может быть любой переменной. Часто используют i.
+
+      • LIST
+        - LIST может быть любым списком слов, строк, чисел.
+        - Которые м.б. литералами, или генерироваться командой.
+
+      • COMMANDS
+        - Может быть любыми командами, скриптами, программам, шелл-выражениями.
+
+      • Как меняется значение NAME
+        - При первом цикле NAME получает 1-е значение из LIST.
+        - При втором цикле NAME получает 2-е значение из LIST.
+        - И так далее.
+        - Цикл заканчивается, когда значения в LIST заканчиваются.
+
+    # Примеры использования for
+
+      • Конвертировать все *.html в текущем каталоге в *.php
+
+          #!/bin/bash
+          # specific conversion script for my html files to php
+          LIST="$(ls *.html)"
+          for i in "$LIST"; do
+               NEWNAME=$(ls "$i" | sed -e 's/html/php/')
+               cat beginfile > "$NEWNAME"
+               cat "$i" | sed -e '1,25d' | tac | sed -e '1,21d'| tac >> "$NEWNAME"
+               cat endfile >> "$NEWNAME"
+          done
+
+
+  > Цикл while
+
+    # Синтаксис цикла while
+
+      • В одну строку
+
+          while CONTROL-COMMAND; do CONSEQUENT-COMMANDS; done
+
+      • В несколько строк
+
+          while CONTROL-COMMAND; do
+            CONSEQUENT-COMMANDS
+          done
+
+    # Примеры использования while
+
+      • Открыть 4 терминала
+
+          i="0"
+          while [ $i -lt 4 ]
+          do
+          xterm &
+          i=$[$i+1]
+          done
+
+      • Вложенные циклы while
+
+          #!/bin/bash
+
+          # This script copies files from my homedirectory into the webserver directory.
+          # (use scp and SSH keys for a remote directory)
+          # A new directory is created every hour.
+
+          PICSDIR=/home/carol/pics
+          WEBDIR=/var/www/carol/webcam
+
+          while true; do
+            DATE=`date +%Y%m%d`
+            HOUR=`date +%H`
+            mkdir $WEBDIR/"$DATE"
+
+            while [ $HOUR -ne "00" ]; do
+              DESTDIR=$WEBDIR/"$DATE"/"$HOUR"
+              mkdir "$DESTDIR"
+              mv $PICDIR/*.jpg "$DESTDIR"/
+              sleep 3600
+              HOUR=`date +%H`
+            done
+          done
+
+      • Генерировать файл каждые 5 минут
+
+          #!/bin/bash
+          while true; do
+          touch pic-`date +%s`.jpg
+          sleep 300
+          done
+
+      • Получение ввода от пользователя, предоставление выбора из списка
+
+          #!/bin/bash
+
+          # This script provides wisdom
+
+          FORTUNE=/usr/games/fortune
+
+          while true; do
+          echo "On which topic do you want advice?"
+          cat << topics
+          politics
+          startrek
+          kernelnewbies
+          sports
+          bofh-excuses
+          magic
+          love
+          literature
+          drugs
+          education
+          topics
+
+          echo
+          echo -n "Make your choice: "
+          read topic
+          echo
+          echo "Free advice on the topic of $topic: "
+          echo
+          $FORTUNE $topic
+          echo
+
+          done
+
+      • Вычисление среднего
+
+          #!/bin/bash
+
+          # Calculate the average of a series of numbers.
+
+          SCORE="0"
+          AVERAGE="0"
+          SUM="0"
+          NUM="0"
+
+          while true; do
+
+            echo -n "Enter your score [0-100%] ('q' for quit): "; read SCORE;
+
+            if (("$SCORE" < "0"))  || (("$SCORE" > "100")); then
+              echo "Be serious.  Common, try again: "
+            elif [ "$SCORE" == "q" ]; then
+              echo "Average rating: $AVERAGE%."
+              break
+            else
+              SUM=$[$SUM + $SCORE]
+              NUM=$[$NUM + 1]
+              AVERAGE=$[$SUM / $NUM]
+            fi
+
+          done
+
+          echo "Exiting."
+
+  > Цикл until
+
+    # Синтаксис цикла until
+
+      • В одну строку
+
+          until TEST-COMMAND; do CONSEQUENT-COMMANDS; done
+
+      • В несколько строк
+
+          until TEST-COMMAND; do
+            CONSEQUENT-COMMANDS;
+          done
+
+    # Описание цикла until
+      - Цикл until напоминает цикл while.
+      - Но он работает, пока TEST-COMMAND выполняется успешно.
+      - Как только команда проваливается, цикл завершается.
+
+    # Примеры использования until
+
+      • Скрипт, проверяющий наличие свободного места на диске
+
+          #!/bin/bash
+
+          # This script copies files from my homedirectory into the webserver directory.
+          # A new directory is created every hour.
+          # If the pics are taking up too much space, the oldest are removed.
+
+          while true; do
+            DISKFUL=$(df -h $WEBDIR | grep -v File | awk '{print $5 }' | cut -d "%" -f1 -)
+
+            until [ $DISKFUL -ge "90" ]; do
+
+                    DATE=`date +%Y%m%d`
+                    HOUR=`date +%H`
+                    mkdir $WEBDIR/"$DATE"
+
+                    while [ $HOUR -ne "00" ]; do
+                            DESTDIR=$WEBDIR/"$DATE"/"$HOUR"
+                            mkdir "$DESTDIR"
+                            mv $PICDIR/*.jpg "$DESTDIR"/
+                            sleep 3600
+                            HOUR=`date +%H`
+                    done
+
+            DISKFULL=$(df -h $WEBDIR | grep -v File | awk '{ print $5 }' | cut -d "%" -f1 -)
+            done
+
+            TOREMOVE=$(find $WEBDIR -type d -a -mtime +30)
+            for i in $TOREMOVE; do
+              rm -rf "$i";
+            done
+
+          done
+
+  > Переадресация и циклы
+
+    # Переадресация ввода из файла в цикл с test-командой read
+      - Допустим, есть какой-нибудь файл с N строками.
+      - Можно скормить этот файл циклу while.
+      - У которого в качестве test-команды будет команда read.
+      - Цикл будет обрабатывать файл строка за строкой.
+      - Пока строки в файле не закончатся.
+      - Пример:
+
+          while read; do CONSEQUENT-COMMANDS; done < file
+
+    # Переадресация вывода команды на ввод цикла с test-командой read
+      - А можно считывать данные не из файла, а из stdout какой-нибудь команды.
+      - Вот живой пример:
+
+          #!/bin/bash
+
+          # This script creates a subdirectory in the current directory, to which old
+          # files are moved.
+          # Might be something for cron (if slightly adapted) to execute weekly or
+          # monthly.
+
+          ARCHIVENR=`date +%Y%m%d`
+          DESTDIR="$PWD/archive-$ARCHIVENR"
+
+          mkdir "$DESTDIR"
+
+          # using quotes to catch file names containing spaces, using read -d for more
+          # fool-proof usage:
+          find "$PWD" -type f -a -mtime +5 | while read -d $'\000' file
+
+          do
+          gzip "$file"; mv "$file".gz "$DESTDIR"
+          echo "$file archived"
+          done
+
+  > Break / Continue
+
+    • Break
+      - Эта встроенная команда позволяет прервать любой цикл.
+      - Также можно прервать n вложенных циклов.
+      - Для этого надо передать команде break число n.
+      - n == 1 по умолачнию, и должно быть >= 1.
+      - Break также работает для case.
+
+    • Continue
+      - Эта встроенная команда позволяет немедленно перейти к след.итерации цикла.
+      - Также можно сделать это для n вложенных циклов.
+      - Для этого надо передать команде continue число n.
+      - n == 1 по умолачнию, и должно быть >= 1.
+
+    • Примеры break / continue
+
+      ▪ Пример с case
+
+          #!/bin/bash
+
+          # This script provides wisdom
+          # You can now exit in a decent way.
+
+          FORTUNE=/usr/games/fortune
+
+          while true; do
+          echo "On which topic do you want advice?"
+          echo "1.  politics"
+          echo "2.  startrek"
+          echo "3.  kernelnewbies"
+          echo "4.  sports"
+          echo "5.  bofh-excuses"
+          echo "6.  magic"
+          echo "7.  love"
+          echo "8.  literature"
+          echo "9.  drugs"
+          echo "10. education"
+          echo
+
+          echo -n "Enter your choice, or 0 for exit: "
+          read choice
+          echo
+
+          case $choice in
+               1)
+               $FORTUNE politics
+               ;;
+               2)
+               $FORTUNE startrek
+               ;;
+               3)
+               $FORTUNE kernelnewbies
+               ;;
+               4)
+               echo "Sports are a waste of time, energy and money."
+               echo "Go back to your keyboard."
+               echo -e "\t\t\t\t -- \"Unhealthy is my middle name\" Soggie."
+               ;;
+               5)
+               $FORTUNE bofh-excuses
+               ;;
+               6)
+               $FORTUNE magic
+               ;;
+               7)
+               $FORTUNE love
+               ;;
+               8)
+               $FORTUNE literature
+               ;;
+               9)
+               $FORTUNE drugs
+               ;;
+               10)
+               $FORTUNE education
+               ;;
+               0)
+               echo "OK, see you!"
+               break
+               ;;
+               *)
+               echo "That is not a valid choice, try a number from 0 to 10."
+               ;;
+          esac
+          done
+
+      ▪ Конвертирует имена вайлов в нижний регистр
+
+          #!/bin/bash
+
+          # This script converts all file names containing upper case characters into file# names containing only lower cases.
+
+          LIST="$(ls)"
+
+          for name in "$LIST"; do
+
+          if [[ "$name" != *[[:upper:]]* ]]; then
+          continue
+          fi
+
+          ORIG="$name"
+          NEW=`echo $name | tr 'A-Z' 'a-z'`
+
+          mv "$ORIG" "$NEW"
+          echo "new name for $ORIG is $NEW"
+          done
+
+  > Встроенная команда select: лёгкая генерация меню
+
+    # Синтаксис select
+
+      • В одну строку
+
+          select WORD [in LIST]; do RESPECTIVE-COMMANDS; done
+
+      • В несколько строк
+
+          select WORD [in LIST]; do
+            RESPECTIVE-COMMANDS;
+          done
+
+    # Описание select
+
+      • Что происходит с List
+        - Он превращяется в список элементов.
+        - Этот результат отправляется в stderr.
+        - Каждому элементу присваивается номре.
+
+      • Если [in LIST] не передано
+        - То используются позиционные параметры.
+        - Как если бы было написано: in $@
+
+      • Что вообще происходит
+        - Выводится список всех элементов, каждый из которых имеет номер.
+        - Выводится сообщение из переменной PS3 (типа, выбери пункт).
+        - Считывается 1-на строка с помощью read.
+        - Если эта строка содержит номер эл-та, значение WORD присваивается
+          имени элемента.
+        - Если эта строка пуста, опять выводятся все эл-ты и запрашивается ввод.
+        - Если эта строка содержит EOF, цикл завершает работу.
+
+    # Примеры select
+
+      • Выбрать из списка файл, который надо сделать приватным.
+
+          #!/bin/bash
+
+          echo "This script can make any of the files in this directory private."
+          echo "Enter the number of the file you want to protect:"
+
+          select FILENAME in *;
+          do
+               echo "You picked $FILENAME ($REPLY), it is now only accessible to you."
+               chmod go-rwx "$FILENAME"
+          done
+
+      • Тоже самое, но с пунктом для выхода из цикла
+
+          #!/bin/bash
+
+          echo "This script can make any of the files in this directory private."
+          echo "Enter the number of the file you want to protect:"
+
+          PS3="Your choice: "
+          QUIT="QUIT THIS PROGRAM - I feel safe now."
+          touch "$QUIT"
+
+          select FILENAME in *;
+          do
+            case $FILENAME in
+                  "$QUIT")
+                    echo "Exiting."
+                    break
+                    ;;
+                  *)
+                    echo "You picked $FILENAME ($REPLY)"
+                    chmod go-rwx "$FILENAME"
+                    ;;
+            esac
+          done
+          rm "$QUIT"
+
+  > Встроенная команда shift
+
+    # Сдвигает все позиционные аргументы влево на n
+      - Сабж.
+
+    # Примеры работы с shift
+
+      • Обработать каждый файл из вывода команды find
+
+          #!/bin/bash
+
+          # This script can clean up files that were last accessed over 365 days ago.
+
+          USAGE="Usage: $0 dir1 dir2 dir3 ... dirN"
+
+          if [ "$#" == "0" ]; then
+            echo "$USAGE"
+            exit 1
+          fi
+
+          while (( "$#" )); do
+
+          if [[ $(ls "$1") == "" ]]; then
+            echo "Empty directory, nothing to be done."
+            else
+            find "$1" -type f -a -atime +365 -exec rm -i {} \;
+          fi
+
+          shift
+
+          done
+
+      • Установить пакеты, переданные в позиционных аргументах
+
+          #!/bin/bash
+          if [ $# -lt 1 ]; then
+                  echo "Usage: $0 package(s)"
+                  exit 1
+          fi
+          while (($#)); do
+            yum install "$1" << CONFIRM
+          y
+          CONFIRM
+          shift
+          done
 
 А11. Bash scripting: переменные, массивы, операции с ними
 
@@ -2757,13 +3498,219 @@
 
     # Ссылки
     # Введение
+    # Переменные
+
+      - Обычные переменные
+      - Применение declare
+      - Константы
+
+    # Массивы
+
+      - Создание массивов
+
+        ▪ Общее описание массивов
+        ▪ Неявное определение массива
+        ▪ Явное определение массива
+        ▪ Определение массива с массовым добавлением значений
+        ▪ Добавление значений в массив
+
+      - Обращение к элементам массива
+
+        ▪ Обязательные фигурные скобки
+        ▪ Обращение к массиву без {} ссылается на 0-й элемент
+        ▪ Примеры обращения к элементам массива
+
+      - Удаление элементов из массива
+      - Примеры работы с массивами
+
+    # Операции с переменными и массивами
 
   --------------------------------------
 
   > Ссылки
 
+    # Глава из оф.документации про переменные и массивы
+        http://tldp.org/LDP/Bash-Beginners-Guide/html/chap_10.html
 
   > Введение
+    - В этой главе раскрывается тема переменных и массивов.
+    - Массивы редко используются, поскольку они ломают совместимость,
+      т.к. не все шеллы их используют.
+
+  > Переменные
+
+    # Обычные переменные
+
+        VAR=12
+        echo $VAR   // 12
+
+        VAR=string
+        echo $VAR   // string
+
+    # Применение declare
+      - С помощью declare можно ограничить доступные переменной значения.
+      - А так, вообще то, переменные bash могут содержать любые типы значений.
+      - Синтаксис declare:
+
+          declare OPTION(s) VARIABLE=value
+
+      - Опции declare:
+
+          -a	Variable is an array.
+          -f	Use function names only.
+          -i	The variable is to be treated as an integer; arithmetic evaluation is performed when the variable is assigned a value (see Section 3.4.6).
+          -p	Display the attributes and values of each variable. When -p is used, additional options are ignored.
+          -r	Make variables read-only. These variables cannot then be assigned values by subsequent assignment statements, nor can they be unset.
+          -t	Give each variable the trace attribute.
+          -x	Mark each variable for export to subsequent commands via the environment.
+
+      - Примеры:
+
+          declare -i VARIABLE=12
+          VARIABLE=string
+          echo $VARIABLE          // 0
+          declare -p VARIABLE     // declare -i VARIABLE="0"
+
+          OTHERVAR=blah
+          declare -p OTHERVAR     // declare -- OTHERVAR="blah"
+
+    # Константы
+      - Их можно задавать встроенной командой readonly.
+      - Константы после их задания больше нельзя изменять.
+      - Подробнее про readonly см.: man readonly
+      - Примеры:
+
+          readonly TUX=penguinpower
+          TUX=Mickeysoft              // bash: TUX: readonly variable
+
+  > Массивы
+
+    # Создание массивов
+
+      • Общее описание массивов
+        - Массив это переменная, содержащая много значений.
+        - Любое из этих значений может также быть массивом.
+        - Нет ограничений на размер или глубину вложенности массивов.
+        - Индексирование массивов начинается с 0.
+
+      • Неявное определение массива
+        - Определим массив ARR со значением value под индексом 0:
+
+            ARR[0]=value
+
+      • Явное определение массива
+
+          declare -a ARR
+
+      • Определение массива с массовым добавлением значений
+
+          ARR=(value1 value2 value3)
+
+      • Добавление значений в массив
+
+          ARR[n]=value
+
+    # Обращение к элементам массива
+
+      • Обязательные фигурные скобки
+        - При обращении к эл-м массива нужно использовать {}
+
+      • Обращение к массиву без {} ссылается на 0-й элемент
+        - Сабж.
+
+      • Примеры обращения к элементам массива
+
+        ARRAY=(one two three)
+        echo ${ARRAY[*]}          // one two three
+        echo $ARRAY[*]            // one[*]
+        echo ${ARRAY[2]}          // three
+        ARRAY[3]=four
+        echo ${ARRAY[*]}          // one two three four
+
+    # Удаление элементов из массива
+
+        unset ARRAY[1]
+        echo ${ARRAY[*]}      // one three four
+        unset ARRAY
+        echo ${ARRAY[*]}      // (нет вывода)
+
+    # Примеры работы с массивами
+
+      • Распространение конфигов apach по хостам
+
+          #!/bin/bash
+
+          if [ $(whoami) != 'root' ]; then
+                  echo "Must be root to run $0"
+                  exit 1;
+          fi
+          if [ -z $1 ]; then
+                  echo "Usage: $0 </path/to/httpd.conf>"
+                  exit 1
+          fi
+
+          httpd_conf_new=$1
+          httpd_conf_path="/usr/local/apache/conf"
+          login=htuser
+
+          farm_hosts=(web03 web04 web05 web06 web07)
+
+          for i in ${farm_hosts[@]}; do
+                  su $login -c "scp $httpd_conf_new ${i}:${httpd_conf_path}"
+                  su $login -c "ssh $i sudo /usr/local/apache/bin/apachectl graceful"
+
+          done
+          exit 0
+
+      • Выбрать одного из списка в соответствии с заданными условиями
+
+          #!/bin/bash
+          # This is get-tester-address.sh
+          #
+          # First, we test whether bash supports arrays.
+          # (Support for arrays was only added recently.)
+          #
+          whotest[0]='test' || (echo 'Failure: arrays not supported in this version of
+          bash.' && exit 2)
+
+          #
+          # Our list of candidates. (Feel free to add or
+          # remove candidates.)
+          #
+          wholist=(
+               'Bob Smith <bob@example.com>'
+               'Jane L. Williams <jane@example.com>'
+               'Eric S. Raymond <esr@example.com>'
+               'Larry Wall <wall@example.com>'
+               'Linus Torvalds <linus@example.com>'
+             )
+          #
+          # Count the number of possible testers.
+          # (Loop until we find an empty string.)
+          #
+          count=0
+          while [ "x${wholist[count]}" != "x" ]
+          do
+             count=$(( $count + 1 ))
+          done
+
+          #
+          # Now we calculate whose turn it is.
+          #
+          week=`date '+%W'`    	# The week of the year (0..53).
+          week=${week#0}       	# Remove possible leading zero.
+
+          let "index = $week % $count"   # week modulo count = the lucky person
+
+          email=${wholist[index]}     # Get the lucky person's e-mail address.
+
+          echo $email     	# Output the person's e-mail address.
+
+  > Операции с переменными и массивами
+
+    # Размер переменной
+    # 
+
 
 
 А12. Bash scripting: функции
