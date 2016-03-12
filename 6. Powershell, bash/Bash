@@ -4159,6 +4159,53 @@
             esac
           done         
 
+    # Считать значение переданного аргумента
+          
+        OPTIND=1
+        while getopts ":ab:c" opt; do
+          case $opt in
+            a) echo "Found option $opt"
+               echo $OPTARG
+               ;;
+            b) echo "Found option $opt"
+               echo $OPTARG
+               ;;
+            c) echo "Found option $opt"
+               echo $OPTARG
+               ;;
+            *) echo "No reasonable options found!";;
+          esac
+        done
+
+    # Решение на случае, если забыли передать аргумент для опции
+      - Допустим, мы ожидаем увидеть 2 опции, a и b.
+      - И каждый из них должен иметь аргумент.
+      - Но что, если для a забыли передать аргумент?
+      - Тогда bash решит, что b - это аргумент для a.
+      - Пример решения:
+
+          checkargs () {
+            if [[ $OPTARG =~ ^-[a/b]$ ]]; then
+              echo "Unknow argument $OPTARG for option $opt!"
+              exit 1
+            fi
+          }     
+
+          OPTIND=1
+          while getopts ":ab:c" opt; do
+            case $opt in     
+              a) checkargs
+                echo "Found option $opt"
+                echo "Found  argument for ption $opt - $OPTARG"
+              ;;
+              b) checkargs
+                echo "Found option $opt"
+                echo "Found  argument for ption $opt - $OPTARG"
+              ;;
+              *) echo "No reasonable options found!";;
+            esac
+          done
+
 
 
 
