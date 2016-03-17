@@ -39,6 +39,15 @@
     А1. Вводная информация
     А2. Установка и компиляция SASS
     А3. Справочник по SASS CLI
+    А4. Экспресс-обзор функционала SASS
+
+    А5. CSS-дополнения
+    А6. Комментарии
+    А7. SassScript
+    А8. @-правила и директивы
+    А9. Условные операции и циклы
+    А10. Миксины
+    А11. Функции
 
   # Б.  Рецепты и наработки
 
@@ -220,16 +229,47 @@
 
       • Общие опции
 
-        -I
-        -r
-        --compass
-        -t
-        -h
-        -v
+        -I                | Specify a Sass import path
+        -r                | Require a Ruby library before running Sass
+        --compass         | Make Compass imports available and load project co figuration
+        -t                | Output style. Can be nested (default), compact, co pressed, or expanded
+        -h                | Show help message
+        -v                | Print the Sass version
 
       • Watching and Updating
 
-        --watch
+        --watch           | Watch files or directories for changes.
+                            The location of the generated CSS can be set using a colon:
+                              sass --watch input.sass:output.css
+                              sass --watch input-dir:output-dir                  
+        --poll            | Check for file changes manually, rather than relying on the OS
+        --update          | Compile files or directories to CSS.
+                            Locations are set like --watch.
+        --force           | Recompile every Sass file, even if the CSS file is newer
+        --stop-on-erorr   | If a file fails to compile, exit immediately.
+                            Only meaningful for --watch and --update.
+
+      • Ввод и вывод
+
+        --scss            | Use the CSS-superset SCSS syntax
+        --sourcemap=TYPE  | How to link generated output to the source files.
+                            auto (default): relative paths where possible, file URIs elsewhere
+        -s                | Read input from standard input instead of an input file.
+                            This is the default if no input file is specified
+        -E                | Specify the default encoding for input files.
+                            Use Unix-style newlines in written files
+        -g                | Emit output that can be used by the FireSass Fireb g plugin
+        -l                | Emit comments in the generated CSS indicating the corresponding source line
+
+      • Прочее
+
+        -i                            | Run an interactive SassScript shell
+        -c                            | Just check syntax, don't evaluate
+        --precision NUMBER_OF_DIGITS  | How many digits of precision to use when output in decimal numbers
+        --cache-location PATH         | The path to save parsed Sass files. Defaults to .sass-cache
+        -C                            | Don't cache parsed Sass files
+        --trace                       | Show a full Ruby stack trace on error
+        -q                            |  Silence warnings and status messages during compilation
 
 
   --------------------------------------  
@@ -248,11 +288,492 @@
     - Поэтому справочник представляет из себя оный по опциям команды sass.
 
   > Опции команды sass
+    - См.оглавление.
 
 
+А4. Экспресс-обзор функционала SASS
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+    # Препроцессинг
+
+      - Зачем нужны препроцессоры
+      - Препроцессинг SASS-файлов в терминале
+
+    # Переменные в SASS
+
+      - О переменных в SASS
+      - Пример переменных в SASS
+
+    # Иерархия и вложенность в SASS
+
+      - Про иерархию и вложенность в SASS
+      - Избегай чрезмерно глобокой иерархии
+      - Пример применения иерархии в SASS
+
+    # Фрагменты и импорт в SASS
+
+      - Фрагменты в SASS
+
+        ▪ Общая информация про фрагменты в SASS
+        ▪ Префиксинг имён файлов-фрагментом символом _
+
+      - Импорт в SASS
+
+        ▪ Общая информация про импорт в SASS
+        ▪ При импортировании в имени фрагмента не надо указывать префикс _
+      
+      - Пример фрагментов и импорта в SASS
+
+    # Миксины (функции) в SASS
+
+      - Про миксины (функции) в SASS
+      - Пример миксин в SASS
+
+        ▪ Определение миксины с помощью @mixin          
+        ▪ Использование миксины с помощью @include          
+
+    # Наследование в SASS
+
+      - Про наследование в SASS
+      - Пример наследования в SASS
+
+    # Операторы в SASS
+
+      - Про операторы в SASS
+      - Пример использования операторов в SASS
 
 
+  --------------------------------------
+
+  > Ссылки
+
+    # Оф.экспресс обзор функционала SASS
+        http://sass-lang.com/guide
+
+  > Введение
+    - В этой главе поверхностный обзор функционала SASS.
+    - Всего понемножку.
+
+  > Препроцессинг
+
+    # Зачем нужны препроцессоры
+      - В CSS пока нет многих облегчающих жизнь вещей, которые есть в SASS.
+      - Без этих вещей с большим кол-вом CSS намного труднее работать.
+      - Его трудно поддерживать, изменять, улучшать, повторно использовать.
+      - Вот почему профессионалам приходится использовать препроцессоры CSS.
 
 
+    # Препроцессинг SASS-файлов в терминале
+      - Можно запустить демон из SASS CLI.
+      - Он будет следить за .scss-файлами в указанной папке.
+      - При изменении, компилировать и класть их в указанную папку.
+      - Например:
+
+          sass --watch app/sass:public/stylesheets
+
+  > Переменные в SASS
+
+    # О переменных в SASS
+      - В переменных SASS можно хранить информацию.
+      - Можно хранить CSS-значения, цвета, шрифты.
+      - Для переменных в SASS используется $, как в PHP.
+      - Ниже есть пример в стиле "до" и "после".
+
+    # Пример переменных в SASS
+
+      • Файл "styles.scss"
+
+        $font-stack:    Helvetica, sans-serif;
+        $primary-color: #333;
+
+        body {
+          font: 100% $font-stack;
+          color: $primary-color;
+        }
+
+      • Файл "styles.css"
+
+        body {
+          font: 100% Helvetica, sans-serif;
+          color: #333;
+        }        
+
+  > Иерархия и вложенность в SASS
+
+    # Про иерархию и вложенность в SASS
+      - Например, в HTML есть иерархия и вложенность.
+      - А в стандартном CSS она отсутствует.
+      - SASS же обеспечивает иерархию и вложенностью.
+
+    # Избегай чрезмерно глобокой иерархии
+      - При компиляции в CSS иерархия отражается в именах классов.
+      - При чрезмерно глубокой иерархии эти имена будут оч.длинные.
+      - Ими просто будет трудно и неудобно пользоваться.
+
+    # Пример применения иерархии в SASS
+
+      • Файл "styles.scss"
+
+          nav {
+            ul {
+              margin: 0;
+              padding: 0;
+              list-style: none;
+            }
+
+            li { display: inline-block; }
+
+            a {
+              display: block;
+              padding: 6px 12px;
+              text-decoration: none;
+            }
+          }
+
+      • Файл "styles.css"
+
+          nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+          }
+
+          nav li {
+            display: inline-block;
+          }
+
+          nav a {
+            display: block;
+            padding: 6px 12px;
+            text-decoration: none;
+          }
+
+  > Фрагменты и импорт в SASS
+
+    # Фрагменты в SASS
+      
+      • Общая информация про фрагменты в SASS
+        - Ты можешь создавать файлы-фрагменты-scss.
+        - В них можно класть небольшие фрагменты scss-кода.
+        - Чтобы в дальнейшем повторно использовать их.
+        - Импортируя файлы-фрагменты в другие scss-файлы.
+
+      • Префиксинг имён файлов-фрагментом символом _
+        - Имя файла фрагмента строится по шаблону:
+
+            _[имя].scss
+
+        - Это даёт понять компилятору SASS, что перед ним файл-фрагмент.
+        - И он не компилирует его, как отдельный SASS-файл.
+
+    # Импорт в SASS
+      
+      • Общая информация про импорт в SASS
+        - SASS позволяет импортировать одни .scss-файлы в другие.
+        - В CSS тоже есть подобный функционал, но с одним недостатком.
+        - Для каждого импортированного файла создаётся отдельный HTTP-запрос.
+        - Реализация в SASS же лишена этого недостатка.
+        - Ведь при импортирование всё это объединяется в 1 css-файл.
+        - Для импортирования используется директива @import.
+
+      • При импортировании в имени фрагмента не надо указывать префикс _
+        - Это наглядно продемонстрировано в примере ниже.
+
+    # Пример фрагментов и импорта в SASS
+
+      • Файл "_partial.scss"
+
+          html,
+          body,
+          ul,
+          ol {
+            margin: 0;
+            padding: 0;
+          }
+
+      • Файл "styles.scss"
+
+          @import 'partial';
+
+          body {
+            font: 100% Helvetica, sans-serif;
+            background-color: #efefef;
+          }
+
+      • Файл "styles.css"
+
+          html, body, ul, ol {
+            margin: 0;
+            padding: 0;
+          }
+
+          body {
+            font: 100% Helvetica, sans-serif;
+            background-color: #efefef;
+          }         
+
+  > Миксины (функции) в SASS
+
+    # Про миксины (функции) в SASS
+      - Миксины позволяют сгруппировать набор CSS-инструкций.
+      - Миксину можно вызвать по имени после определения.
+      - Строка вызова будет заменена в css на содержимое миксины.
+      - По большому счёту, миксины сильно смахивают на функции.
+      - В примере ниже определяется миксина border-radius.
+      - Она содержит 4-ре инструкции с разными вендорными префиксами.
+      - Типа, еслиб небыло автопрефиксеров, можно былоб делать так.
+      - Но, всем понятно, это здесь чисто для примера.
+
+    # Пример миксин в SASS
+
+      • Файл "styles.scss"
+
+        ▪ Определение миксины с помощью @mixin
+
+          @mixin border-radius($radius) {
+            -webkit-border-radius: $radius;
+               -moz-border-radius: $radius;
+                -ms-border-radius: $radius;
+                    border-radius: $radius;
+          }
+
+        ▪ Использование миксины с помощью @include
+
+          .box { @include border-radius(10px); }
+
+      • Файл "styles.css"            
+
+          .box {
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            -ms-border-radius: 10px;
+            border-radius: 10px;
+          }
+
+  > Наследование в SASS
+
+    # Про наследование в SASS
+      - Это одна из самых полезных функций в SASS.
+      - Один селектор может наследовать св-ва у другого.
+      - Это можно осуществлять с помощью директивы @extend
+      - Наследующий селектор применяет @extend внутри себя.
+      - В качестве аргумента указывается наследуемый селектор.
+      - Ниже приведёт наглядный пример.
+
+    # Пример наследования в SASS
+
+      • Файл "styles.scss"
+
+          .message {
+            border: 1px solid #ccc;
+            padding: 10px;
+            color: #333;
+          }
+
+          .success {
+            @extend .message;
+            border-color: green;
+          }
+
+          .error {
+            @extend .message;
+            border-color: red;
+          }
+
+          .warning {
+            @extend .message;
+            border-color: yellow;
+          }        
+
+      • Файл "styles.css" 
+
+          .message, .success, .error, .warning {
+            border: 1px solid #cccccc;
+            padding: 10px;
+            color: #333;
+          }
+
+          .success {
+            border-color: green;
+          }
+
+          .error {
+            border-color: red;
+          }
+
+          .warning {
+            border-color: yellow;
+          }
+
+  > Операторы в SASS
+
+    # Про операторы в SASS
+      - SASS позволяет использовать операторы + - * / %
+      - Ниже наглядный пример.
+
+    # Пример использования операторов в SASS
+
+      • Файл "styles.scss"
+
+          .container { width: 100%; }
+
+          article[role="main"] {
+            float: left;
+            width: 600px / 960px * 100%;
+          }
+
+          aside[role="complimentary"] {
+            float: right;
+            width: 300px / 960px * 100%;
+          }
+
+      • Файл "styles.css" 
+
+          .container {
+            width: 100%;
+          }
+
+          article[role="main"] {
+            float: left;
+            width: 62.5%;
+          }
+
+          aside[role="complimentary"] {
+            float: right;
+            width: 31.25%;
+          }
+
+
+А5. CSS-дополнения
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+    # Соответствующий раздел оф.документации
+        http://sass-lang.com/documentation/file.SASS_REFERENCE.html#css_extensions
+
+  > Введение
+    - 
+
+
+А6. Комментарии
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+    # Соответствующий раздел оф.документации
+        http://sass-lang.com/documentation/file.SASS_REFERENCE.html#comments
+
+  > Введение
+    - 
+
+А7. SassScript
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+    # Соответствующий раздел оф.документации
+        http://sass-lang.com/documentation/file.SASS_REFERENCE.html#sassscript
+
+  > Введение
+    - 
+
+А8. @-правила и директивы
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+    # Соответствующий раздел оф.документации
+        http://sass-lang.com/documentation/file.SASS_REFERENCE.html#directives 
+
+  > Введение
+    - 
+
+А9. Условные операции и циклы
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+    # Соответствующий раздел оф.документации
+        http://sass-lang.com/documentation/file.SASS_REFERENCE.html#control_directives__expressions
+
+  > Введение
+    - 
+
+А10. Миксины
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+    # Соответствующий раздел оф.документации
+        http://sass-lang.com/documentation/file.SASS_REFERENCE.html#mixins
+
+  > Введение
+    - 
+
+А11. Функции
+
+  --------------------------------------
+  Подоглавление:
+
+    # Ссылки
+    # Введение
+
+  --------------------------------------
+
+  > Ссылки
+
+    # Соответствующий раздел оф.документации
+        http://sass-lang.com/documentation/file.SASS_REFERENCE.html#function_directives
+
+  > Введение
+    - 
 
 
