@@ -41,7 +41,7 @@
     А3. Справочник по SASS CLI
     А4. Экспресс-обзор функционала SASS
 
-    А5. CSS-дополнения
+    А5. Расширения для CSS
     А6. Комментарии
     А7. SassScript
     А8. @-правила и директивы
@@ -649,13 +649,36 @@
           }
 
 
-А5. CSS-дополнения
+А5. Расширения для CSS
 
   --------------------------------------
   Подоглавление:
 
     # Ссылки
     # Введение
+
+    # Вложенные CSS-правила
+
+      - Про иерархию и вложенность в SASS
+      - Избегай чрезмерно глобокой иерархии
+      - Пример применения иерархии в SASS      
+
+    # Ссылка на правило-родителя с помощью &
+
+      - Про &
+      - Пример использования &
+      - Пример использования & с суффиксом
+
+    # Вложенные CSS-свойства
+
+      - Про вложенные CSS-свойства
+      - Примеры использования вложенных CSS-свойств
+
+    # Селекторы-плейсхолдеры %
+
+      - SASS поддерживает спец.типы селекторов - "селекторы-плейсхолдеры"
+      - Зачем нужны селекторы-плейсхолдеры
+      - Пример использования селектора-плейсхолдера
 
   --------------------------------------
 
@@ -665,7 +688,173 @@
         http://sass-lang.com/documentation/file.SASS_REFERENCE.html#css_extensions
 
   > Введение
-    - 
+    - В этой главе рассмотрим несколько SASS-расширений для CSS.
+
+  > Вложенные CSS-правила
+
+    # Про иерархию и вложенность в SASS
+      - Например, в HTML есть иерархия и вложенность.
+      - А в стандартном CSS она отсутствует.
+      - SASS же обеспечивает иерархию и вложенностью.
+
+    # Избегай чрезмерно глобокой иерархии
+      - При компиляции в CSS иерархия отражается в именах классов.
+      - При чрезмерно глубокой иерархии эти имена будут оч.длинные.
+      - Ими просто будет трудно и неудобно пользоваться.
+
+    # Пример применения иерархии в SASS
+
+      • Файл "styles.scss"
+
+          nav {
+            ul {
+              margin: 0;
+              padding: 0;
+              list-style: none;
+            }
+
+            li { display: inline-block; }
+
+            a {
+              display: block;
+              padding: 6px 12px;
+              text-decoration: none;
+            }
+          }
+
+      • Файл "styles.css"
+
+          nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+          }
+
+          nav li {
+            display: inline-block;
+          }
+
+          nav a {
+            display: block;
+            padding: 6px 12px;
+            text-decoration: none;
+          }
+
+  > Ссылка на правило-родителя с помощью &
+
+    # Про &
+      - Это ссылка на родительский селектор.
+      - & может быть лишь 1-ым символом селектора.
+      - К & можно добавлять суффикс.
+
+    # Пример использования &
+
+      • Файл "styles.scss"
+
+          a {
+            font-weight: bold;
+            text-decoration: none;
+            &:hover { text-decoration: underline; }
+            body.firefox & { font-weight: normal; }
+          }
+
+      • Файл "styles.css"
+
+          a {
+            font-weight: bold;
+            text-decoration: none; }
+            a:hover {
+              text-decoration: underline; }
+            body.firefox a {
+              font-weight: normal; }
+
+    # Пример использования & с суффиксом
+
+      • Файл "styles.scss"
+
+          #main {
+            color: black;
+            &-sidebar { border: 1px solid; }
+          }
+
+      • Файл "styles.css"
+
+          #main {
+            color: black; }
+            #main-sidebar {
+              border: 1px solid; }
+
+  > Вложенные CSS-свойства
+
+    # Про вложенные CSS-свойства
+      - В CSS есть малое число св-в в "пространствах имён".
+      - Например - font-family, font-size, font-weight - в пр.имён "font".
+      - SASS позволяет работать с ними по вложенному сценарию (см.пример).
+
+    # Примеры использования вложенных CSS-свойств
+
+      • Файл "styles.scss"
+
+          .funky {
+            font: {
+              family: fantasy;
+              size: 30em;
+              weight: bold;
+            }
+          }
+
+          .funky {
+            font: 20px/24px fantasy {
+              weight: bold;
+            }
+          }          
+
+      • Файл "styles.css"      
+
+          .funky {
+            font-family: fantasy;
+            font-size: 30em;
+            font-weight: bold; }
+
+          .funky {
+            font: 20px/24px fantasy;
+              font-weight: bold;
+          }            
+
+  > Селекторы-плейсхолдеры %   
+
+    # SASS поддерживает спец.типы селекторов - "селекторы-плейсхолдеры"
+      - Они типа . и # селекторов, только используется символ %
+      - Они предназначены для использования с директивой @extend.
+      - Без связки с @extend эти селекторы никак ни на что не влияют.
+
+    # Зачем нужны селекторы-плейсхолдеры
+      - Они пригодятся, если:
+
+        • Мы хотим создать новый класс.
+        • Но не хотим, чтобы он попал в итоговый CSS.
+        • Но хотим наследовать от него в других классах
+
+    # Пример использования селектора-плейсхолдера
+
+      • Файл "styles.scss"
+
+        #context a%extreme {
+          color: blue;
+          font-weight: bold;
+          font-size: 2em;
+        }    
+
+        .notice {
+          @extend %extreme;
+        }
+
+      • Файл "styles.css"     
+
+        #context a.notice {
+          color: blue;
+          font-weight: bold;
+          font-size: 2em; }
 
 
 А6. Комментарии
@@ -676,6 +865,9 @@
     # Ссылки
     # Введение
 
+    # Однострочные комментарии //
+    # Многострочные комментарии /* */
+
   --------------------------------------
 
   > Ссылки
@@ -684,7 +876,61 @@
         http://sass-lang.com/documentation/file.SASS_REFERENCE.html#comments
 
   > Введение
-    - 
+    - В этой короткой главе рассмотрим комментарии в SASS.
+
+  > Однострочные комментарии //
+    - Они не присутствуют в итоговом CSS.
+    - Пример:
+
+      • Файл "styles.scss"
+
+          // These comments are only one line long each.
+          // They won't appear in the CSS output,
+          // since they use the single-line comment syntax.
+          a { color: green; }
+
+      • Файл "styles.css"  
+
+          a { color: green; }      
+
+  > Многострочные комментарии /* */
+    
+    # Они присутствуют в итоговом CSS
+      - Сабж.
+
+    # Если 1-ая буква коммента ! , коммент остаётся даже в сжатом варианте
+      - Имеется в виду, даже в сжатом варианте итогового CSS.
+
+    # Пример использования многострочных комментарием  
+
+      • Файл "styles.scss"
+
+          /* This comment is
+           * several lines long.
+           * since it uses the CSS comment syntax,
+           * it will appear in the CSS output. */
+          body { color: black; }    
+
+      • Файл "styles.css"  
+
+          /* This comment is
+           * several lines long.
+           * since it uses the CSS comment syntax,
+           * it will appear in the CSS output. */
+          body {
+            color: black; }
+
+    # Переменные в многострочных комментариях также работают
+
+      • Файл "styles.scss"
+
+          $version: "1.2.3";
+          /* This CSS is generated by My Snazzy Framework version #{$version}. */
+
+      • Файл "styles.css"           
+
+          /* This CSS is generated by My Snazzy Framework version 1.2.3. */
+
 
 А7. SassScript
 
