@@ -22,17 +22,7 @@
     <favorites_list name="DevKnowBase" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="sass" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/21. SASS/sass">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2367" column="0" selection-start="75721" selection-end="75721" vertical-scroll-proportion="0.7216867" vertical-offset="49108" max-vertical-offset="50505">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -51,10 +41,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="960" />
-    <option name="y" value="48" />
-    <option name="width" value="960" />
-    <option name="height" value="1032" />
+    <option name="x" value="-9" />
+    <option name="y" value="39" />
+    <option name="width" value="1938" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -159,8 +149,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="960" y="48" width="960" height="1032" extended-state="0" />
-    <editor active="true" />
+    <frame x="-9" y="39" width="1938" height="1050" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -311,7 +301,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/21. SASS/sass">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2367" column="0" selection-start="75721" selection-end="75721" vertical-scroll-proportion="0.7216867" vertical-offset="49108" max-vertical-offset="50505">
+        <state line="13" column="0" selection-start="477" selection-end="477" vertical-scroll-proportion="0.32193395" vertical-offset="0" max-vertical-offset="59640">
           <folding />
         </state>
       </provider>

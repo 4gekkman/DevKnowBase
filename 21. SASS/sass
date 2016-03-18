@@ -327,9 +327,9 @@
       
       - Пример фрагментов и импорта в SASS
 
-    # Миксины (функции) в SASS
+    # Миксины в SASS
 
-      - Про миксины (функции) в SASS
+      - Про миксины в SASS
       - Пример миксин в SASS
 
         ▪ Определение миксины с помощью @mixin          
@@ -514,9 +514,9 @@
             background-color: #efefef;
           }         
 
-  > Миксины (функции) в SASS
+  > Миксины в SASS
 
-    # Про миксины (функции) в SASS
+    # Про миксины в SASS
       - Миксины позволяют сгруппировать набор CSS-инструкций.
       - Миксину можно вызвать по имени после определения.
       - Строка вызова будет заменена в css на содержимое миксины.
@@ -1774,20 +1774,42 @@
       • Условные операции и циклы
 
         - if()
-        - @if
+        - @if .. @else if .. @else
         - @for
         - @each
         - @while
 
       • Миксины
 
-        - @mixin
-        - @include
+        - @mixin / @include / @content
+
+          ▪ Про миксины в SASS
+          ▪ Примеры миксин в SASS
+
+            ▪ Определение миксины с помощью @mixin
+            ▪ Использование миксины с помощью @include
+            ▪ Миксина также может быть заинклюжена вне CSS-правил
+            ▪ Определение миксины также может содержать включения миксин
+
+          ▪ Аргументы миксин
+
+            ▪ Работа с аргументами миксины
+            ▪ Значения по умолчанию для аргументов миксин
+            ▪ Явное указание аргументов при вызове миксины
+            ▪ Переменное кол-во аргументов у миксины
+            ▪ Вызов миксины с передачей ей массива аргументов
+            ▪ Оборачивание миксины и дополнение списка аргументов
+
+          ▪ Передача миксинам блоков с контентом
+
+            ▪ Общая информация и пример
+            ▪ По поводу области видимости
 
       • Функции
 
-        - @function
-        - @return
+        - @function / @return
+
+
 
   --------------------------------------
 
@@ -2365,35 +2387,448 @@
       - Однако, на данный момент нет способа отлавливать ошибки.
 
     # if()
+      - Это встроенная в SASS функция.
+      - ($condition, $if-true, $if-false)
+      - Возвращает 1-е или 2-е значение, в зависимости от того, true или false указанное условие.
+      - Примеры:
 
+          if(true, 1px, 2px)    | 1px
+          if(false, 1px, 2px)   | 2px
 
-    # @if
+    # @if .. @else if .. @else
+      - Условная директивы if, работает как обычно работает if.
+      - Пример scss:
 
+          $type: monster;
+          p {
+            @if $type == ocean {
+              color: blue;
+            } @else if $type == matador {
+              color: red;
+            } @else if $type == monster {
+              color: green;
+            } @else {
+              color: black;
+            }
+          }
+
+      - На выходе получим такой css:
+
+          p {
+            color: green; }
 
     # @for
 
+      • Про директиву @for
+        - Работает в целом, как цикл for.
+        - $var может быть любой переменной, вроде $i.
+        - <start> и <end> это выражения SassScript, должны возвращать integer.
+        - Если <start> > <end>, счётчик декрементируется, а не инкрементируется.
+        - На каждой итерации цикл обновляет $var новым значением.
+        - На каждой итерации цикла вложенные стили публикуются, используя этот $var.
+
+      • Форма №1: @for $var from <start> through <end>
+        - В этой форме диапазон ВКЛЮЧАЕТ <start> и <end>.
+        - Например, scss:
+
+            @for $i from 1 through 3 {
+              .item-#{$i} { width: 2em * $i; }
+            }
+
+        - И результируюий css:
+
+            .item-1 {
+              width: 2em; }
+            .item-2 {
+              width: 4em; }
+            .item-3 {
+              width: 6em; }
+
+      • Форма №2: @for $var from <start> to <end>
+        - В этой форме диапазон ВКЛЮЧАЕТ <start>, НО НЕ ВКЛЮЧАЕТ <end>.
 
     # @each
+      - Формат директивы: @each $var in <list or map>
+      - $var может быть любой переменной, вроде $length.
+      - <list or map> это SassScript-выражение, которое возвращает массив или объект.
+      - На каждой итерации $var получает значение из этого массива/объекта.
+      - Например, scss:
 
+          @each $animal in puma, sea-slug, egret, salamander {
+            .#{$animal}-icon {
+              background-image: url('/images/#{$animal}.png');
+            }
+          }
+
+      - И результирующий css:
+
+          .puma-icon {
+            background-image: url('/images/puma.png'); }
+          .sea-slug-icon {
+            background-image: url('/images/sea-slug.png'); }
+          .egret-icon {
+            background-image: url('/images/egret.png'); }
+          .salamander-icon {
+            background-image: url('/images/salamander.png'); }
+
+      - Можно также использовать несколько $var.
+      - Получится формат:  @each $var1, $var2, ... in <list>
+      - Если <list> это массив массивов, то каждый из массивов
+        связывается с соответсвующей var.
+      - Например, scss:
+
+          @each $animal, $color, $cursor in (puma, black, default),
+                                            (sea-slug, blue, pointer),
+                                            (egret, white, move) {
+            .#{$animal}-icon {
+              background-image: url('/images/#{$animal}.png');
+              border: 2px solid $color;
+              cursor: $cursor;
+            }
+          }
+
+      - И результирующий css:
+
+          .puma-icon {
+            background-image: url('/images/puma.png');
+            border: 2px solid black;
+            cursor: default; }
+          .sea-slug-icon {
+            background-image: url('/images/sea-slug.png');
+            border: 2px solid blue;
+            cursor: pointer; }
+          .egret-icon {
+            background-image: url('/images/egret.png');
+            border: 2px solid white;
+            cursor: move; }
 
     # @while
+      - Директива @while работает в целом, как цикл while в любом ЯП.
+      - Он принимает SassScript-выражение.
+      - И продолжает итерации, пока это выражение не вернёт false.
+      - Например, sass:
 
+          $i: 6;
+          @while $i > 0 {
+            .item-#{$i} { width: 2em * $i; }
+            $i: $i - 2;
+          }
 
+      - Компилируется в css:
 
-    # @mixin
+          .item-6 {
+            width: 12em; }
 
+          .item-4 {
+            width: 8em; }
 
-    # @include
+          .item-2 {
+            width: 4em; }
 
+    # @mixin / @include / @content
 
+      • Про миксины в SASS
+        - Миксины позволяют сгруппировать набор CSS-инструкций.
+        - Миксину можно вызвать по имени после определения.
+        - Строка вызова будет заменена в css на содержимое миксины.
+        - По большому счёту, миксины сильно смахивают на функции.
+        - В примере ниже определяется миксина border-radius.
+        - Она содержит 4-ре инструкции с разными вендорными префиксами.
+        - Типа, еслиб небыло автопрефиксеров, можно былоб делать так.
+        - Но, всем понятно, это здесь чисто для примера.
 
-    # @function
+      • Примеры миксин в SASS
 
+        ▪ Файл "styles.scss"
 
-    # @return
+          ▪ Определение миксины с помощью @mixin
 
+            @mixin border-radius($radius) {
+              -webkit-border-radius: $radius;
+                 -moz-border-radius: $radius;
+                  -ms-border-radius: $radius;
+                      border-radius: $radius;
+            }
 
+          ▪ Использование миксины с помощью @include
 
+            .box { @include border-radius(10px); }
 
+        ▪ Файл "styles.css"
+
+            .box {
+              -webkit-border-radius: 10px;
+              -moz-border-radius: 10px;
+              -ms-border-radius: 10px;
+              border-radius: 10px;
+            }
+
+        ▪ Миксина также может быть заинклюжена вне CSS-правил
+
+          ▪ Файл "styles.scss"
+
+              @mixin silly-links {
+                a {
+                  color: blue;
+                  background-color: red;
+                }
+              }
+
+              @include silly-links;
+
+          ▪ Файл "styles.css"
+
+              a {
+                color: blue;
+                background-color: red; }
+
+        ▪ Определение миксины также может содержать включения миксин
+
+            @mixin compound {
+              @include highlighted-background;
+              @include header-text;
+            }
+
+            @mixin highlighted-background { background-color: #fc0; }
+            @mixin header-text { font-size: 20px; }
+
+      • Аргументы миксин
+
+        ▪ Работа с аргументами миксины
+          - Миксины могут принимать значения SassScript в кач-ве аргументов.
+          - Они подставляются при включении миксины.
+          - И становятся доступны внутри миксины, как переменные.
+          - Пример scss:
+
+              @mixin sexy-border($color, $width) {
+                border: {
+                  color: $color;
+                  width: $width;
+                  style: dashed;
+                }
+              }
+
+              p { @include sexy-border(blue, 1in); }
+
+          - Компилируется в css:
+
+              p {
+                border-color: blue;
+                border-width: 1in;
+                border-style: dashed; }
+
+        ▪ Значения по умолчанию для аргументов миксин
+          - При определении миксины можно указывать дефолтные значения для аргументов.
+          - Пример scss:
+
+              @mixin sexy-border($color, $width: 1in) {
+                border: {
+                  color: $color;
+                  width: $width;
+                  style: dashed;
+                }
+              }
+              p { @include sexy-border(blue); }
+              h1 { @include sexy-border(blue, 2in); }
+
+          - Компилируется в css:
+
+              p {
+                border-color: blue;
+                border-width: 1in;
+                border-style: dashed; }
+
+              h1 {
+                border-color: blue;
+                border-width: 2in;
+                border-style: dashed; }
+
+        ▪ Явное указание аргументов при вызове миксины
+          - При использовании миксины она принимает аргументы.
+          - Можно явно указывать, для какого аргумента какое значение.
+          - Благодаря этому, можно передавать аргументы в любом порядке.
+          - Пример:
+
+              p { @include sexy-border($color: blue); }
+              h1 { @include sexy-border($color: blue, $width: 2in); }
+
+        ▪ Переменное кол-во аргументов у миксины
+          - Иногда требуется сделать переменное кол-во аргументов у миксины.
+          - Чтобы миксина могла принимать неограниченное кол-во аргументов.
+          - К примеру, это может понадобиться для миксины по создания box-shadow.
+          - Для таких случаев SASS поддерживает функционал переменных аргументов.
+          - Эти аргументы содержат суффикс ...
+          - Пример scss:
+
+              @mixin box-shadow($shadows...) {
+                -moz-box-shadow: $shadows;
+                -webkit-box-shadow: $shadows;
+                box-shadow: $shadows;
+              }
+
+              .shadows {
+                @include box-shadow(0px 4px 5px #666, 2px 6px 10px #999);
+              }
+
+          - Компилируется в css:
+
+              .shadows {
+                -moz-box-shadow: 0px 4px 5px #666, 2px 6px 10px #999;
+                -webkit-box-shadow: 0px 4px 5px #666, 2px 6px 10px #999;
+                box-shadow: 0px 4px 5px #666, 2px 6px 10px #999;
+              }
+
+          - Также есть возможность получить ключи переданных миксине аргументов.
+          - Это можно сделать с помощью функции keywords($args).
+          - Она возвращает их в виде объекта строк (без приставок $).
+
+        ▪ Вызов миксины с передачей ей массива аргументов
+          - Переменные аргумента также можно использовать при вызове миксин.
+          - Это позволяет передать массив аргументов.
+          - Пример scss:
+
+              @mixin colors($text, $background, $border) {
+                color: $text;
+                background-color: $background;
+                border-color: $border;
+              }
+
+              $values: #ff0000, #00ff00, #0000ff;
+              .primary {
+                @include colors($values...);
+              }
+
+              $value-map: (text: #00ff00, background: #0000ff, border: #ff0000);
+              .secondary {
+                @include colors($value-map...);
+              }
+
+          - Компилируется в css:
+
+              .primary {
+                color: #ff0000;
+                background-color: #00ff00;
+                border-color: #0000ff;
+              }
+
+              .secondary {
+                color: #00ff00;
+                background-color: #0000ff;
+                border-color: #ff0000;
+              }
+
+        ▪ Оборачивание миксины и дополнение списка аргументов
+          - Можно обернуть чужую миксину в свою миксину.
+          - И с помощью $args... дополнить её набор аргументов своими.
+          - Пример:
+
+              @mixin wrapped-stylish-mixin($args...) {
+                font-weight: bold;
+                @include stylish-mixin($args...);
+              }
+
+              .stylish {
+                // The $width argument will get passed on to "stylish-mixin" as a keyword
+                @include wrapped-stylish-mixin(#00ff00, $width: 100px);
+              }
+
+      • Передача миксинам блоков с контентом
+
+        ▪ Общая информация и пример
+          - Это похоже на механизм blade в laravel.
+          - Там есть такая директива, как @yield.
+          - А здесь вместо неё есть директива @content.
+          - При определении миксины применяется этот @content:
+
+              @mixin apply-to-ie6-only {
+                * html {
+                  @content;
+                }
+              }
+
+          - Миксине же можно передать целый селектор с блоком св-в.
+          - И он будет подставлен вместо этого @content.
+          - Например, подставляем:
+
+              @include apply-to-ie6-only {
+                #logo {
+                  background-image: url(/logo.gif);
+                }
+              }
+
+          - И получаем:
+
+              * html #logo {
+                background-image: url(/logo.gif);
+              }
+
+        ▪ По поводу области видимости
+          - Переданный блок с контентом находится не в области видимости миксины.
+          - А в той области видимости, где этот блок определён.
+          - Поэтому локальные переменные миксины НЕ МОГУТ в нём использоваться.
+          - Вместо этого будут искаться глобальные переменные.
+          - Иллюстрация, scss:
+
+              $color: white;
+              @mixin colors($color: blue) {
+                background-color: $color;
+                @content;
+                border-color: $color;
+              }
+              .colors {
+                @include colors { color: $color; }
+              }
+
+          - Получаем на выходе css:
+
+              .colors {
+                background-color: blue;
+                color: white;
+                border-color: blue;
+              }
+
+          - Короче, переданный блок может использовать переменные из
+            родительского для себя блока, где он был определён.
+          - Например:
+
+              #sidebar {
+                $sidebar-width: 300px;
+                width: $sidebar-width;
+                @include smartphone {
+                  width: $sidebar-width / 3;
+                }
+              }
+
+    # @function / @return
+      - SASS позволяет определять собственные функции.
+      - И использовать их в любом значении и в любом контексте.
+      - Например, sass:
+
+          $grid-width: 40px;
+          $gutter-width: 10px;
+
+          @function grid-width($n) {
+            @return $n * $grid-width + ($n - 1) * $gutter-width;
+          }
+
+          #sidebar { width: grid-width(5); }
+
+      - Превращается в css:
+
+          #sidebar {
+            width: 240px; }
+
+      - Функции имеют доступ к любым глобальным переменным.
+      - Также функции могут принимать аргументы, также, как миксины.
+      - Функции могут иметь несколько инструкций внутри себя.
+      - И с помощью @return можно возвращать значение из функции.
+      - Как и для миксины, можно при вызове явно указывать аргументы:
+
+          #sidebar { width: grid-width($n: 5); }
+
+      - Авторы рекомендуют префиксить как-нибудь имена функций.
+      - Чтобы избежать конфликтов, и чтобы было понятно, что это кастомные функции.
+      - Например: my-custom-func-<имя функции>
+      - Кастомные функции также поддерживают переменные аргументы, как и миксины.
 
 
