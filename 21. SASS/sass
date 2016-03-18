@@ -318,7 +318,7 @@
       - Фрагменты в SASS
 
         ▪ Общая информация про фрагменты в SASS
-        ▪ Префиксинг имён файлов-фрагментом символом _
+        ▪ Префиксинг имён файлов-фрагментов символом _
 
       - Импорт в SASS
 
@@ -344,7 +344,6 @@
 
       - Про операторы в SASS
       - Пример использования операторов в SASS
-
 
   --------------------------------------
 
@@ -461,7 +460,7 @@
         - Чтобы в дальнейшем повторно использовать их.
         - Импортируя файлы-фрагменты в другие scss-файлы.
 
-      • Префиксинг имён файлов-фрагментом символом _
+      • Префиксинг имён файлов-фрагментов символом _
         - Имя файла фрагмента строится по шаблону:
 
             _[имя].scss
@@ -1737,21 +1736,37 @@
           ▪ Общая информация об @import
             ▪ Может импортировать .scss- и .sass-файлы
             ▪ Любые переменные и миксины из @imported-файла м.б. использованы в основном файле
-            ▪
+            ▪ SASS ищет .scss- и .sass-файлы в текущем каталоге
+            ▪ Ситуации, когда @import скомпилируется в css-директиву
+            ▪ Примеры использования @import для импортирования файлов
 
           ▪ Фрагменты и @import
-            ▪
-            ▪
-            ▪
+            ▪ Общая информация про фрагменты в SASS
+            ▪ Префиксинг имён файлов-фрагментов символом _
+            ▪ Как импортировать файлы-фрагменты
 
           ▪ Вложенный @import
-            ▪
-            ▪
-            ▪
+            ▪ @import можно использовать в css- и @media-правилах
+            ▪ В импортируемых не в глобальный scope файлах нельзя применять директивы, разрешённые лишь глобально
+            ▪ Пример использования вложенного @import
 
         - @media
+
+          ▪ Доп.особенность @media в SASS: м.б. вложенными, всплывают
+          ▪ Примеры использования @media
+
         - @extend
+
+          ▪ Про наследование в SASS
+          ▪ Примеры наследования в SASS
+
         - @at-root
+
+          ▪ <selector>
+          ▪ { <selector1> <selector2> ... }
+          ▪ (without: ...) и (with: ...)
+          ▪ Спец.значения: rule / all
+
         - @debug
         - @warn
         - @error
@@ -1818,42 +1833,536 @@
 
         • Примеры использования @import для импортирования файлов
 
-          @import "foo.scss";             | @import "foo";
-          @import "foo.css";
-          @import "foo" screen;
-          @import "http://foo.com/bar";
-          @import url(foo);
+          ▪ В следующем случае SASS обрабатывает @import
+            @import "foo.scss";             | @import "foo";
+
+          ▪ В следующих случаях @import попадает в css "как есть"
+            @import "foo.css";              | @import "foo.css";
+            @import "foo" screen;           | @import "foo" screen;
+            @import "http://foo.com/bar";   | @import "http://foo.com/bar";
+            @import url(foo);               | @import url(foo);
+
+          ▪ Импортирование сразу нескольких файлов
+            @import "rounded-corners", "text-shadow";
+
+          ▪ Применение интерполяции #{} при импортировании
+            $family: unquote("Droid+Sans");
+            @import url("http://fonts.googleapis.com/css?family=#{$family}");   | @import url("http://fonts.googleapis.com/css?family=Droid+Sans");
 
       - Фрагменты и @import
 
-        •
-        •
-        •
+        • Общая информация про фрагменты в SASS
+          - Ты можешь создавать файлы-фрагменты-scss.
+          - В них можно класть небольшие фрагменты scss-кода.
+          - Чтобы в дальнейшем повторно использовать их.
+          - Импортируя файлы-фрагменты в другие scss-файлы.
+
+        • Префиксинг имён файлов-фрагментов символом _
+          - Имя файла фрагмента строится по шаблону:
+
+              _[имя].scss
+
+          - Это даёт понять компилятору SASS, что перед ним файл-фрагмент.
+          - И он не компилирует его, как отдельный SASS-файл.
+
+        • Как импортировать файлы-фрагменты
+          - Обращаясь к ним по имени, но не указывая префикс _
+          - Например:
+
+              @import "[имя]";
 
       - Вложенный @import
 
-        •
-        •
+        • @import можно использовать в css- и @media-правилах
+          - Чаще всего @import используется в глобальной области видимости.
+          - Но можно его использовать и в css-, и @media-правилах.
+          - Тогда всё импортируется в соответствующую область видимости.
+          - Импортированные правила становятся вложенными в соотв.селектор.
+
+        • В импортируемых не в глобальный scope файлах нельзя применять директивы, разрешённые лишь глобально
+          - Например, @mixin или @charset разрешено использовать лишь в глобальной области видимости.
+          - Поэтому файл с этими директивами нельзя вложенно импортировать.
+
+        • Пример использования вложенного @import
+
+          ▪ _partial.scss
+
+            .example {
+              color: red;
+            }
+
+          ▪ styles.scss
+
+            #main {
+              @import "example";
+            }
+
+          ▪ styles.css
+
+            #main .example {
+              color: red;
+            }
+
         •
 
     # @media
 
+      • Доп.особенность @media в SASS: м.б. вложенными, всплывают
+        - @media в SASS ведут себя также, как в обычном CSS.
+        - Но с одной дополнительной особенностью.
+        - Они могут быть вложены в CSS-правила.
+        - Вложенные в CSS-правила @media "всплывают" на глобальный уровень.
+        - Добавляя все селекторы на своём пути в правило.
+
+      • Примеры использования @media
+
+        ▪ Пример №1
+
+          ▪ style.scss
+
+            .sidebar {
+              width: 300px;
+              @media screen and (orientation: landscape) {
+                width: 500px;
+              }
+            }
+
+          ▪ style.css
+
+            .sidebar {
+              width: 300px; }
+              @media screen and (orientation: landscape) {
+                .sidebar {
+                  width: 500px; } }
+
+        ▪ Пример №2 (вложенные друг в друга @media)
+
+          ▪ style.scss
+
+              @media screen {
+                .sidebar {
+                  @media (orientation: landscape) {
+                    width: 500px;
+                  }
+                }
+              }
+
+          ▪ style.css
+
+              @media screen and (orientation: landscape) {
+                .sidebar {
+                  width: 500px; } }
+
+        ▪ Пример №3 (применение SassScript в @media)
+
+          ▪ style.scss
+
+              $media: screen;
+              $feature: -webkit-min-device-pixel-ratio;
+              $value: 1.5;
+
+              @media #{$media} and ($feature: $value) {
+                .sidebar {
+                  width: 500px;
+                }
+              }
+
+          ▪ style.css
+
+              @media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+                .sidebar {
+                  width: 500px; } }
 
     # @extend
 
+      • Про наследование в SASS
+        - Это одна из самых полезных функций в SASS.
+        - Один селектор может наследовать св-ва у другого.
+        - Это можно осуществлять с помощью директивы @extend
+        - Наследующий селектор применяет @extend внутри себя.
+        - В качестве аргумента указывается наследуемый селектор.
+        - Ниже приведёт наглядный пример.
+
+      • Обычное наследование
+        - Как это работает?
+        - SASS ищет все селекторы, которые матчатся с аргументом @extend.
+        - И затем просто добавляют им через , селектор плавила в котором @extend.
+        - При этом SASS достаточно умён, чтобы избегать дублирования селекторов.
+        - Например, scss:
+
+            .error {
+              border: 1px #f00;
+              background-color: #fdd;
+            }
+            .error.intrusion {
+              background-image: url("/image/hacked.png");
+            }
+            .seriousError {
+              @extend .error;
+              border-width: 3px;
+            }
+
+        - И css:
+
+            .error, .seriousError {
+              border: 1px #f00;
+              background-color: #fdd; }
+
+            .error.intrusion, .seriousError.intrusion {
+              background-image: url("/image/hacked.png"); }
+
+            .seriousError {
+              border-width: 3px; }
+
+      • Наследование для сложных селекторов
+        - Наследование работает не только с селекторами классов.
+        - А можно применять его для целых HTML-тегов.
+        - Например, в следующем случае:
+
+            .hoverlink {
+              @extend a:hover;
+            }
+            a:hover {
+              text-decoration: underline;
+            }
+            .comment a.user:hover {
+              font-weight: bold;
+            }
+
+        - Стили из обоих селекторов под ним применятся к .hoverlink
+        - Даже второй, хоть он и не "a:hover", а "a.user:hover".
+        - И в итоговом css будет:
+
+            a:hover, .hoverlink, .comment a.user:hover, .comment .user.hoverlink {
+              font-weight: bold; }
+
+      • Множественное наследование
+        - Один селектор может наследовать от N селекторов.
+        - При это он наследует все стили всех N селекторов.
+        - Например, scss:
+
+            .error {
+              border: 1px #f00;
+              background-color: #fdd;
+            }
+            .attention {
+              font-size: 3em;
+              background-color: #ff0;
+            }
+            .seriousError {
+              @extend .error;
+              @extend .attention;
+              border-width: 3px;
+            }
+
+        - И мы имеем следующий css на выходе:
+
+            .error, .seriousError {
+              border: 1px #f00;
+              background-color: #fdd; }
+
+            .attention, .seriousError {
+              font-size: 3em;
+              background-color: #ff0; }
+
+            .seriousError {
+              border-width: 3px; }
+
+        - Вместо набора выражений типа:
+
+            @extend .error;
+            @extend .attention;
+
+        - Можно просто скормить @extend массив с запятыми-разделителями:
+
+            @extend .error, .attention
+
+      • Цепочки наследования
+        - 1-ин селектор может наследовать от 2-го, 2-й от 3-го, и т.д.
+        - Например, scss:
+
+            .error {
+              border: 1px #f00;
+              background-color: #fdd;
+            }
+            .seriousError {
+              @extend .error;
+              border-width: 3px;
+            }
+            .criticalError {
+              @extend .seriousError;
+              position: fixed;
+              top: 10%;
+              bottom: 10%;
+              left: 10%;
+              right: 10%;
+            }
+
+        - И в итоге имеем css:
+
+            .error, .seriousError, .criticalError {
+              border: 1px #f00;
+              background-color: #fdd; }
+
+            .seriousError, .criticalError {
+              border-width: 3px; }
+
+            .criticalError {
+              position: fixed;
+              top: 10%;
+              bottom: 10%;
+              left: 10%;
+              right: 10%; }
+
+      • Наследование для цепочек селекторов
+        - Цепочки селекторов в настоящий момент не могут быть унаследованными.
+        - То есть нельзя указать что-то вроде: @extend .foo .bar
+        - Где ".foo .bar" это цепочка селекторов.
+        - Зато вложенные селекторы могут сами наследовать.
+        - Например, scss:
+
+            #fake-links .link {
+              @extend a;
+            }
+
+            a {
+              color: blue;
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+
+        - И итоговый css:
+
+            a, #fake-links .link {
+              color: blue; }
+              a:hover, #fake-links .link:hover {
+                text-decoration: underline; }
+
+      • Наследование от селектора в цепочке селекторов
+        - Цепочка селекторов может наследовать от другого селектора.
+        - А этот другой селектор может быть в другой цепочке селекторов.
+        - Например:
+
+            #admin .tabbar a {
+              font-weight: bold;
+            }
+            #demo .overview .fakelink {
+              @extend a;
+            }
+
+      • Селекторы-плейсхолдеры %
+
+        ▪ SASS поддерживает спец.типы селекторов - "селекторы-плейсхолдеры"
+          - Они типа . и # селекторов, только используется символ %
+          - Они предназначены для использования с директивой @extend.
+          - Без связки с @extend эти селекторы никак ни на что не влияют.
+
+        ▪ Зачем нужны селекторы-плейсхолдеры
+          - Они пригодятся, если:
+
+            ▪ Мы хотим создать новый класс.
+            ▪ Но не хотим, чтобы он попал в итоговый CSS.
+            ▪ Но хотим наследовать от него в других классах
+
+        ▪ Пример использования селектора-плейсхолдера
+
+          ▪ Файл "styles.scss"
+
+            #context a%extreme {
+              color: blue;
+              font-weight: bold;
+              font-size: 2em;
+            }
+
+            .notice {
+              @extend %extreme;
+            }
+
+          ▪ Файл "styles.css"
+
+            #context a.notice {
+              color: blue;
+              font-weight: bold;
+              font-size: 2em; }
+
+      • Флаг !optional для избежания ошибок
+        - Этот флаг можно применять вместе с @extend.
+        - Если селектора в аргументе @extend не существует, будет ошибка.
+        - Но с флагом !optional эта ошибка при компиляции не возникнет.
+        - Просто соответствующий @extend будет проигнорирован.
+        - Пример:
+
+            a.important {
+              @extend .notice !optional;
+            }
+
+      • @extend в директивах
+        - Есть кое-какие ограничения на использование @extend внутри других директив.
+        - SASS не может заставить CSS-правила вне блоков директив
+          примениться к селекторам внутри этих блоков, без создания
+          огромного количества доп.стилей, копируя стили отовсюду.
+        - Короче, применять @extend внутри блоков других директив надо
+          лишь к тем селекторам, которые находятся в этих же блоках.
+        - Например, это работает нормально:
+
+            @media print {
+              .error {
+                border: 1px #f00;
+                background-color: #fdd;
+              }
+              .seriousError {
+                @extend .error;
+                border-width: 3px;
+              }
+            }
+
+        - Но вот это вызовет ошибку:
+
+            .error {
+              border: 1px #f00;
+              background-color: #fdd;
+            }
+
+            @media print {
+              .seriousError {
+                // INVALID EXTEND: .error is used outside of the "@media print" directive
+                @extend .error;
+                border-width: 3px;
+              }
+            }
 
     # @at-root
 
+      • Общая информация об @at-root
+        - Позволяет поместить css-правило в глоб-ую область видимости.
+        - Актуально для вложенных css-правил.
+
+      • <selector>
+         - Формат: @at-root <selector>
+         - Например, scss:
+
+            .parent {
+              ...
+              @at-root .child { ... }
+            }
+
+         - И css на выходе:
+
+            .parent { ... }
+            .child { ... }
+
+      • { <selector1> <selector2> ... }
+         - Или можно использоваь с блоком, содержащим много селекторов.
+         - Например, scss:
+
+            .parent {
+              ...
+              @at-root {
+                .child1 { ... }
+                .child2 { ... }
+              }
+              .step-child { ... }
+            }
+
+         - И css на выходе:
+
+            .parent { ... }
+            .child1 { ... }
+            .child2 { ... }
+            .parent .step-child { ... }
+
+      • (without: ...) и (with: ...)
+        - По умолчанию @at-root применяется к селекторам.
+        - Но можно его применять и для вынесения из директив.
+        - Например, scss:
+
+            @media print {
+              .page {
+                width: 8in;
+                @at-root (without: media) {
+                  color: red;
+                }
+              }
+            }
+
+        - Даёт такой css:
+
+            @media print {
+              .page {
+                width: 8in;
+              }
+            }
+            .page {
+              color: red;
+            }
+
+        - Таким образов, without позволяет выносить из директив.
+        - Можно также указывать сразу несколько директив:
+
+            (without: media supports)
+
+        - С помощью with можно укзать, откуда выносить не надо.
+
+      • Спец.значения: rule / all
+        - rule указывает на то, что надо вынести из всех CSS-правил.
+        - all указывает, что надо вынести и из правил, и из директив
 
     # @debug
+      - Выводит значение SassScript выражение в выходной поток ошибок.
+      - Применяется для отладки sass-файлов со сложными скриптами.
+      - Например:
 
+          @debug 12em + 10em;
+
+      - Даёт такой вывод:
+
+          Line 1 DEBUG: 22em
 
     # @warn
+      - Выводит значение SassScript выражение в выходной поток ошибок.
+      - Полезно для библиотек, позволяет предупредить пользователей.
+      - Например, об истечении сроков годности.
+      - Или сообщить возможные заметки по свежим релизам.
+      - Есть 2 важных отличие @warn и @debug:
 
+        1) Warnings можно отключить CLI-опцией --quiet
+          - Или SASS-опцией :quiet.
+
+        2) Warnings выводят stylesheet trace
+
+      - Пример использования:
+
+        @mixin adjust-location($x, $y) {
+          @if unitless($x) {
+            @warn "Assuming #{$x} to be in pixels";
+            $x: 1px * $x;
+          }
+          @if unitless($y) {
+            @warn "Assuming #{$y} to be in pixels";
+            $y: 1px * $y;
+          }
+          position: relative; left: $x; top: $y;
+        }
 
     # @error
+      - Выводит значение SassScript выражение в выходной поток ошибок.
+      - Это считается фатальной ошибкой.
+      - Также выводит stack trace.
+      - Так можно валидировать аргументы для миксин и функций.
+      - Например:
 
+          @mixin adjust-location($x, $y) {
+            @if unitless($x) {
+              @error "$x may not be unitless, was #{$x}.";
+            }
+            @if unitless($y) {
+              @error "$y may not be unitless, was #{$y}.";
+            }
+            position: relative; left: $x; top: $y;
+          }
 
+      - Однако, на данный момент нет способа отлавливать ошибки.
 
     # if()
 
