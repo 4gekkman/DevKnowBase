@@ -65,6 +65,7 @@
     В7. Работа с Carbon
     B8. Использование веток пакетов composer
     B9. Концепция frontend-части моего фреймворка
+    В10. Настройка отправки почты из Laravel через gmail-аккаунт
 
 
 ////==========================================================////
@@ -15274,12 +15275,45 @@ SASS
       - Можно дополнительно обработать, скажем, c.min.css.
 
 
+В10. Настройка отправки почты из Laravel через gmail-аккаунт
 
+--------------------------------------
+Подоглавление:
 
+  # Ссылки
+  # Введение
+  # Инструкция по настройке 
 
+--------------------------------------
 
+> Ссылки
 
+  # Статья на http://learninglaravel.net/ (en)
+      http://learninglaravel.net/learn-to-send-emails-using-gmail-and-sendgrid-in-laravel-5
 
+> Введение
+  - Здесь описана настройка отправки email в Laravel.
+  - Почта будет отправляться через smtp, используя gmail-аккаунт.
+
+> Инструкция по настройке    
+
+  1. Заведи gmail-аккаунт с 2-факторной авторизацией
+
+  2. Настрой .env
+    - Например:
+
+      MAIL_DRIVER=smtp
+      MAIL_HOST=smtp.gmail.com
+      MAIL_PORT=587
+      MAIL_USERNAME=4gekkman.mailacc.devapp@gmail.com
+      MAIL_PASSWORD=yczyntpjhhfprklb
+      MAIL_ENCRYPTION=tls  
+
+  3. Предоставь доступ к аккаунту google приложениям
+    - https://accounts.google.com/UnlockCaptcha
+
+  4. Создай спец. пароль для laravel в google
+    - https://support.google.com/accounts/answer/185833?hl=ru&ctx=ch_DisplayUnlockCaptcha
 
 
 
