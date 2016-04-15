@@ -9543,8 +9543,8 @@
 
     • Решение
 
-        export TERM=xterm
         docker exec -it <id контейнера> bash
+        export TERM=xterm
         nano                                   // ok
 
   # Невозможно изменить права и владельца volume-каталогов
