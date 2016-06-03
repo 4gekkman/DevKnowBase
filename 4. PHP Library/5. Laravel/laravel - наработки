@@ -15677,7 +15677,73 @@ SASS
     ▪ Аутентификация и авторизация
     ▪ Поддерживает много провайдеров
 
-  # 
+  # Настройка HybridAuth
+
+    ▪ Предварительная регистрация на сайтах провайдеров
+    ▪ Как узнать, нужна ли предварительная регистрация у конкретного провайдера?
+    ▪ HybridAuth принимает массив в качестве конфига
+    ▪ Параметры конфига HybridAuth
+
+  # HybridAuth API 
+
+    • Класс HybridAuth
+
+      ▪ Конструктор класса HybridAuth   | Конструктор, принимает массив параметров
+      ▪ authenticate                    | Аутентифицировать пользователя с указанным провайдером
+      ▪ getAdapter                      | Return the adapter instance of an authenticated provider adapter Hybrid_Provider_Adapter
+      ▪ isConnectedWith                 | Return a true or false if the current user is connected to a given provider  
+      ▪ getConnectedProviders           | Return list of Authenticated providers        
+      ▪ getSessionData                  | Get the session stored data 
+      ▪ restoreSessionData              | Restore HybridAuth session from a given [serialized] array     
+      ▪ logoutAllProviders              | A generic function to logout all connected providers at once     
+      ▪ redirect                        | Utility function, redirect to a given url with php header function
+      ▪ getCurrentUrl                   | Utility function, return the current url of the request web page
+
+    • Класс Hybrid_Provider_Adapter
+
+      Методы
+      ▪ isUserConnected | Return true if the user is authenticate with the provider or false if not
+      ▪ getUserProfile  | Return an instance of Hybrid_User_Profile an object which represents the current logged in user profile
+      ▪ setUserStatus   | Update the user status or post to his wall across social networks
+      ▪ getUserContacts | Provide the connected user contact list's in a rich, simple and standardized structure across social networks
+      ▪ getUserActivity | Provide the connected user and his friends activity stream in simple and standardized structure across social networks
+      ▪ logout          | Let hybridauth forget all about the current user ONLY for this provider
+      ▪ getAccessToken  | Return the current oauth access.token for the provider if the provider is using OAuth protocol
+      ▪ api             | Return an instance of the provider api if any
+
+      Свойства
+      ▪ id      | Provider ID (or name)
+      ▪ config  | Provider config
+      ▪ params  | Provider paramameters
+
+    • Класс Hybrid_User_Profile 
+
+      Свойства (сами себя описывают)
+      ▪ identifier           
+      ▪ profileURL           
+      ▪ webSiteURL           
+      ▪ photoURL           
+      ▪ displayName           
+      ▪ description           
+      ▪ firstName           
+      ▪ lastName           
+      ▪ gender           
+      ▪ language           
+      ▪ age            
+      ▪ birthDay           
+      ▪ birthMonth           
+      ▪ birthYear           
+      ▪ email           
+      ▪ emailVerified            
+      ▪ phone           
+      ▪ address           
+      ▪ country           
+      ▪ region           
+      ▪ city           
+      ▪ zip           
+
+  # Интеграция HybridAuth в Laravel 5.2 и в M5 (система управления пользователями и правами)
+
 
 --------------------------------------
 
@@ -15725,6 +15791,186 @@ SASS
     - На данный момент (2016-06-02) HybridAuth поддерживает под сотню провайдеров.
     - Вот некоторые из них: OpenID, Google, Facebook, twitter, Yandex.
     - Весь список доп.провайдеров смотри здесь: https://github.com/hybridauth/hybridauth/tree/master/additional-providers
+
+> Настройка HybridAuth
+
+  • Предварительная регистрация на сайтах провайдеров
+    - У многих провайдеров надо предварительно зарегистрировать своё приложение.
+    - Это позволяет им убеждаться, что пользователь входит на верный сайт.
+    - А также знать, куда переадресовывать пользователя после входа.
+
+  • Как узнать, нужна ли предварительная регистрация у конкретного провайдера?
+    - Есть оф.документация: http://hybridauth.sourceforge.net/userguide.html
+    - Там есть разделы "Popular Providers" и "Additional Providers".
+    - В каждом разделе список провайдеров, по каждому из них можно кликнуть.
+    - Перейдя, в описании, есть раздел "Registering application".
+    - Правда, в документации есть не все имеющиеся провайдеры.
+    - Так что, самый надёжный способ, это читать документацию на сайте провайдера.
+
+  • HybridAuth принимает массив в качестве конфига
+    - Работа с HybridAuth всегда начинается с созданием её экземпляра.
+    - При создании экземпляра 1-м параметром всегда надо передавать массив параметров.
+    - Например:
+
+        $config = [...];
+        $ha = new HybridAuth($config);
+
+  • Параметры конфига HybridAuth
+
+    [
+      "base_url"              => "",                        // URL, где запускается index.php HybridAuth'a (HybridAuth End Point)
+      "debug_mode"            => false,                     // Вкл/Выкл режим отладки
+      "debug_file"            => "",                        // Куда (в какой файл) писать лог при включённом debug_mode
+      "providers"             => [                          // Массив провайдеров (м.б. сколько угодно)
+        "<имя провайдера №1>" => [                          // Провайдер
+          "enabled"           => true,                      // Вкл/Выкл провайдера
+          "keys"              => ["id"=>"", "secret"=>""],  // После регистрации у провайдера он выдаёт "ключи", у каждого провайдера м.б. разные
+          "scope"             => "email, user_about_me"     // Используется для facebook, можно сразу запросить указанные доступы к аккаунту пользователя
+        ]
+      ]
+    ]
+
+> HybridAuth API 
+
+  // Конструктор класса HybridAuth //
+  //-------------------------------//
+  // - Конструктор, принимает массив параметров.
+
+    $config = [...];
+    $ha = new HybridAuth($config);
+
+  // authenticate //
+  //--------------//
+  // - Аутентифицировать пользователя с указанным провайдером.
+  // - Где:
+  // 
+  //    $provider   | URL to call back after authentication is done
+  //    $params     | The OpenID identity provider identifier
+  // 
+
+    HybridAuth::authenticate($provider, $params);
+
+  // getAdapter //
+  //------------//
+  // - Return the adapter instance of an authenticated provider adapter Hybrid_Provider_Adapter.
+
+    HybridAuth::getAdapter(provider)
+
+  // isConnectedWith //
+  //-----------------//
+  // - Return a true or false if the current user is connected to a given provider.
+  // - Hybrid_Auth::isConnectedWith() use PHP Sessions.
+
+    HybridAuth::isConnectedWith(provider)
+
+  // getConnectedProviders //
+  //-----------------------//
+  // - Return list of Authenticated providers. 
+  // - Hybrid_Auth::getConnectedProviders() use PHP Sessions.
+
+    HybridAuth::getConnectedProviders()
+
+  // getSessionData //
+  //----------------//
+  // - Get the session stored data.
+  // - To be used on case you want to store session on a more persistent backend. Return a serialized array. 
+
+    HybridAuth::getSessionData()
+
+  // restoreSessionData //
+  //--------------------//
+  // - Restore HybridAuth session from a given [serialized] array.
+
+    HybridAuth::restoreSessionData(array)
+
+  // logoutAllProviders //
+  //--------------------//
+  // - A generic function to logout all connected providers at once. 
+
+    HybridAuth::logoutAllProviders()
+
+  // redirect //
+  //----------//
+  // - Utility function, redirect to a given url with php header function. 
+
+    HybridAuth::redirect(url)
+
+  // getCurrentUrl //
+  //---------------//
+  // - Utility function, return the current url of the request web page. 
+
+    HybridAuth::getCurrentUrl()
+
+  // isUserConnected //
+  //-----------------//
+  // - Return true if the user is authenticate with the provider or false if not.
+  // - Hybrid_Provider_Adapter::isUserConnected() use PHP Sessions.
+
+    Hybrid_Provider_Adapter::isUserConnected()
+
+  // getUserProfile //
+  //----------------//
+  // - Return an instance of Hybrid_User_Profile an object which represents the current logged in user profile. 
+
+    Hybrid_Provider_Adapter::getUserProfile()
+
+  // setUserStatus //
+  //---------------//
+  // - Update the user status or post to his wall across social networks. 
+  // - Currently not all providers support this feature. Please refer to Update User Status section to know more.
+  // - $status is the user status to send to the social service.
+
+    Hybrid_Provider_Adapter::setUserStatus( $status )
+
+  // getUserContacts //
+  //-----------------//
+  // - Provide the connected user contact list's in a rich, simple and standardized structure across social networks. 
+  // - Currently not all providers support this feature. Please refer to Access User Contacts section to know more. 
+
+    Hybrid_Provider_Adapter::getUserContacts()
+
+  // getUserActivity //
+  //-----------------//
+  // - Provide the connected user and his friends activity stream in simple and standardized structure across social networks. 
+  // - Currently not all providers support this feature. Please refer to Access User Contacts section to know more.
+
+    Hybrid_Provider_Adapter::getUserContacts( $stream )
+
+  // logout //
+  //--------//
+  // - Let hybridauth forget all about the current user ONLY for this provider. 
+
+    Hybrid_Provider_Adapter::logout()
+
+  // getAccessToken //
+  //----------------//
+  // - Return the current oauth access.token for the provider if the provider is using OAuth protocol. 
+
+    Hybrid_Provider_Adapter::getAccessToken()
+
+  // api //
+  //-----//
+  // - Return an instance of the provider api if any. 
+
+    Hybrid_Provider_Adapter::api()
+
+> Интеграция HybridAuth в Laravel 5.2 и в M5 (система управления пользователями и правами)
+
+  • Установка HybridAuth через composer
+    - Открываем composer.json пакета M5, а также всего проекта.
+    - Записываем в require следующую строку:
+
+        "hybridauth/hybridauth": ">=2.0"
+
+    - Открываем в терминале каталог с проектом.
+    - Выполняем:
+
+        composer update
+
+
+
+
+
 
 
 
