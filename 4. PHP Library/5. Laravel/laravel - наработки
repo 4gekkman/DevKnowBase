@@ -15976,12 +15976,13 @@ SASS
   • Добавление в таблицу пользователей доп.полей и индекса
     - Надо добавить следующие доп.поля:
 
-      ▪ hybridauth_provider_name  // Имя провайдера (напр.: "Google", "Facebook"), VARCHAR(255) NOT NULL
-      ▪ hybridauth_provider_uid   // ID пользователя у провайдера, VARCHAR(255) NOT NULL
+      ▪ ha_provider_name  // Имя провайдера (напр.: "Google", "Facebook"), VARCHAR(255) NOT NULL
+      ▪ ha_provider_uid   // ID пользователя у провайдера, VARCHAR(255) NOT NULL
+      ▪ ha_provider_data  // Здесь будет json-строка с доп.данными от провайдера (всякие аватары и прочее)
 
-    - И надо добавить unique индекс, содержащий эти 2 поля:
+    - И надо добавить unique индекс, содержащий эти поля name и id:
 
-      ▪ hybridauth_idx
+      ▪ ha_idx
 
   • Добавить в конфиг M5 конфигурационный массив для HybridAuth
     - Надо в конфиге M5 создать отдельное поле "hybridauth".
