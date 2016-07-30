@@ -1,6 +1,6 @@
 ////=============================================////
 ////                                             ////
-////                      D3                     ////
+////                    SVG + D3                 ////
 ////                                             ////
 ////=============================================////
 ////                      ////
@@ -9,35 +9,51 @@
 ////======================////
 
 
-  // Официальные ресурсы D3 //
-  //------------------------//  
+  // SVG //
+  //-----//
 
-    # Официальный репозиторий D3 на github
-        https://github.com/mbostock-bower/d3-bower
+    # Туториал по SVG от w3schools
+        http://www.w3schools.com/svg/default.asp
 
-    # Официальный сайт D3
-        https://d3js.org/
+    # Mozilla Developer Network - SVG
+        https://developer.mozilla.org/ru/docs/Web/SVG
 
-    # Официальная документация (wiki) для D3 (D3 v3.*)
-        https://github.com/d3/d3/wiki
+    # SVG tutorial, example and demonstration site
+        http://carto.net
 
-    # Официальная документация (wiki) для D3 (D3 v4.*)
-        https://github.com/d3/d3/blob/master/README.md#api-reference
 
-    # Официальная галерея примеров для D3
-        https://github.com/d3/d3/wiki/Gallery    
+  // D3 //
+  //----//
 
-    # Модули D3
-        https://github.com/d3
+    // Официальные ресурсы D3 //
+    //------------------------//
 
-  // Компоненты и плагины D3 //
-  //-------------------------// 
+      # Официальный репозиторий D3 на github
+          https://github.com/mbostock-bower/d3-bower
 
-    # Компоненты
-        https://github.com/d3/d3/wiki/API-Reference
+      # Официальный сайт D3
+          https://d3js.org/
 
-    # Плагины
-        https://github.com/d3/d3-plugins
+      # Официальная документация (wiki) для D3 (D3 v3.*)
+          https://github.com/d3/d3/wiki
+
+      # Официальная документация (wiki) для D3 (D3 v4.*)
+          https://github.com/d3/d3/blob/master/README.md#api-reference
+
+      # Официальная галерея примеров для D3
+          https://github.com/d3/d3/wiki/Gallery
+
+      # Модули D3
+          https://github.com/d3
+
+    // Компоненты и плагины D3 //
+    //-------------------------//
+
+      # Компоненты
+          https://github.com/d3/d3/wiki/API-Reference
+
+      # Плагины
+          https://github.com/d3/d3-plugins
 
 
 ////==================================================////
@@ -46,13 +62,17 @@
 ////                         ////
 ////=========================////
 
-  # A. Справочник по модулям D3
+  # A. SVG: основы
 
-    A1. Selections
+    А1. Основы SVG
 
-  # В. Теория, практика/наработки
+  # Б. D3: основы + справочник
 
     Б1. Основы D3.js
+    Б2. D3-модуль: selections (svg v4.*)
+
+  # В. D3: наработки
+
 
 
 ////==================================================////
@@ -62,317 +82,38 @@
 ////=========================////
 
 
-А1. Selections
+А1. Основы SVG
 
 --------------------------------------
 Подоглавление:
 
   # Ссылки
   # Введение
-  # Справочник
 
-    • Selecting Elements
+  # Что такое SVG
 
-      ▪ d3.selection        | Получить выборку из 1-го корневого элемента DOM [document.documentElement]
-      ▪ d3.select           | Получить выборку из 1-го эл-та [по DOM-ссылке / 1-й по списку по селектору]
-      ▪ d3.selectAll        | Получить выборку из N эл-тов [по массиву DOM-ссылок / по селектору]
-      ▪ selection.select    | Получить выборку из N эл-тов на основе другой выборки [по селектору / по анонимной функции]
-      ▪ selection.selectAll | Получить выборку из N эл-тов на основе другой выборки [по селектору / по анонимной функции]
-      ▪ selection.filter    | Провести фильтрацию выборки [по селектору / по анонимной функции]
-      ▪ selection.merge     | Объединить выборки [не произвольные, обычно ENTER + UPDATE]
-      ▪ d3.matcher          | Возвращает функцию, которая возвращает true, если эл-т this соответствует указанному селектору [для внутреннего использования D3]
-      ▪ d3.selector         | Возвращает функцию, которая возвращает первый для this элемент-потомок, соотв-ий указанному селектору [для внутреннего использования D3]
-      ▪ d3.selectorAll      | Возвращает функцию, которая возвращает все для this элементы-потомки, соотв-щие указанному селектору [для внутреннего использования D3]
-      ▪ d3.window           | Возвращает окно-владельца для указанного узла
-
-    • Modifying Elements
-
-      ▪ selection.classed   | 
-      ▪ selection.style     | 
-      ▪ selection.property  | 
-      ▪ selection.text      | 
-      ▪ selection.html      | 
-      ▪ selection.append    | 
-      ▪ selection.insert    | 
-      ▪ selection.remove    | 
-      ▪ selection.sort      | 
-      ▪ selection.order     | 
-      ▪ selection.raise     | 
-      ▪ selection.lower     | 
-      ▪ d3.creator          | 
-
-    • Joining Data
-
-      ▪ selection.data      | 
-      ▪ selection.enter     | 
-      ▪ selection.exit      | 
-      ▪ selection.datum     | 
-
-    • Handling Events
-
-      ▪ selection.on        |     
-      ▪ selection.dispatch  |   
-      ▪ d3.event            | 
-      ▪ d3.customEvent      | 
-      ▪ d3.mouse            | 
-      ▪ d3.touch            | 
-      ▪ d3.touches          | 
-
-    • Control Flow
-
-      ▪ selection.each      |            
-      ▪ selection.call      |     
-      ▪ selection.empty     |     
-      ▪ selection.nodes     |     
-      ▪ selection.node      |     
-      ▪ selection.size      |     
-
-    • Local Variables
-
-      ▪ d3.local            |               
-      ▪ local.set           |   
-      ▪ local.get           |   
-      ▪ local.remove        |       
-      ▪ local.toString      |         
-
-    • Namespaces
-
-      ▪ d3.namespace        | 
-      ▪ d3.namespaces       | 
+    ▪
+    ▪
+    ▪
 
 --------------------------------------
 
 > Ссылки
 
-  # Ссылка на соотв.раздел документации D3 v4.*
-      https://github.com/d3/d3/blob/master/README.md#selections-d3-selection
+  # Статьи по основам SVG
+      https://svg-art.ru/
+      https://developer.mozilla.org/ru/docs/Web/SVG
 
-> Ведение
-  - Это справочник по модулю Selections библиотеки D3 v4.*.
+  # Туториал от w3schools.com по SVG
+      http://www.w3schools.com/svg/default.asp
 
-> Справочник
+> Введение
+  - В этой главе рассмотрим, что такое SVG в принципе.
+  - И дадим небольшой туториал по SVG для наглядной демонстрации основ.
 
-//--------------------//
-// Selecting Elements //
-//--------------------//
+> Что такое SVG
 
-  // d3.selection //
-  //--------------//
-  // - d3.selection()
-  // - Получить выборку из 1-го корневого элемента DOM [document.documentElement].
-
-    • Проверка, является ли переменная D3-выборкой
-
-      var selection = d3.selectAll("p");              
-      var is = selection instanceof d3.selection();   // true/false
-
-    • Расширить прототип selection (например, добавить метод checked для проверки состояния чекбоксов)
-
-      ▪ Расширить
-
-          d3.selection.prototype.checked = function(value) {
-            return arguments.length < 1
-                ? this.property("checked")
-                : this.property("checked", !!value);
-          };
-          d3.selectAll("input[type=checkbox]").checked(true);
-
-      ▪ Использовать
-
-          d3.selectAll("input[type=checkbox]").checked(true);        
-
-  // d3.select //
-  //-----------//
-  // - d3.select(selector)
-  // - Получить выборку из 1-го эл-та [по DOM-ссылке / 1-й по списку по селектору].
-  // - Если таковых найдено не будет, вернёт пустую выборку.
-  // - Если такувых будет найдено много, вернёт лишь 1-й из них.
-
-    • Если selector является css-селектором
-      - Получить выборку из 1-го найденный элемента "a"
-
-        var anchor = d3.select("a");
-
-    • Если selector не является строкой
-      - Тогда это должна быть DOM-ссылка (или функция, её возвращающая).
-      - Пример ниже окрасит шрифт всех эл-тов "p" в документе в красный цвет:
-
-          d3.selectAll("p").on("click", function() {
-            d3.select(this).style("color", "red");
-          });      
-
-  // d3.selectAll //
-  //--------------//
-  // - d3.selectAll(selector)
-  // - Получить выборку из N эл-тов [по массиву DOM-ссылок / по селектору].
-  // - Если ничего не найдёт, вернёт пустую выборку.
-
-    • Если selector является css-селектором
-      - Получить все элементы "p" в документе:
-
-          var paragraph = d3.selectAll("p");
-
-    • Если selector не является строкой
-      - Тогда это должен быть массив ссылок на DOM-узлы.
-      - Это полезно, когда таковой имеется.
-      - Это также может быть псевдо-массив, как NodeList или argumetns.
-      - Например, this.childNodes в обработчике событий, или document.links.
-      - Например, покрасить все ссылки в красный цвет:
-
-          d3.selectAll(document.links).style("color", "red");  
-
-  // selection.select  //
-  //-------------------//
-  // - selection.select(selector).
-  // - Получить выборку из N эл-тов на основе другой выборки [по селектору / по анонимной функции].
-  // - Для каждого эл-та из selection, выбрать среди его потомков 1-й
-  //   элемент, который соответствует указанному selector.
-  // - Если selector пуст или null, все эл-ты в новой выборке тоже будут пустые.
-  // - Если эл-т из текущей выборки имеет связанные данные, то новый элемент,
-  //   полученный среди его потомков, тоже будет связан с этими данными.
-  // - Если для эл-та X найдено среди его потомков > 1 элементов, соответствующих
-  //   selector, будет взят лишь 1-й из них.
-
-    • Если selector является css-селектором 
-      - Для каждого эл-та "p" в док-те выбрать среди его потомков 1-й эл-т "b":
-
-          var b = d3.selectAll("p").select("b");
-
-    • Если selector не является css-селектором
-      - А является функцией, она будет выполнена для каждого эл-та выборки.
-      - В функцию будут переданы: d (данные), i (индекс), nodes и this (DOM-ссылка на текущий эл-т).
-      - Функция должна возвращать 1-ин элемент.
-      - Для каждого эл-та "p" в док-те выбрать 1-го предыдущего соседа:
-
-          var previous = d3.selectAll("p").select(function() {
-            return this.previousElementSibling;
-          });      
-
-  // selection.selectAll //
-  //---------------------//
-  // - selection.selectAll(selector).
-  // - Получить выборку из N эл-тов на основе другой выборки [по селектору / по анонимной функции].
-  // - Для каждого эл-та из selection, выбрать среди его потомков ВСЕ
-  //   элементы, которые соответствуют указанному selector. 
-  // - То есть, на 1-им элемент в selection м.б. найдено N элементов-потомков,
-  //   соответствующих selector. Они будут сгруппированы по своим топовым узлам.
-  // - Если соответствующих selector элементов для эл-та из selection не найдено,
-  //   или если selector пуст или null, группа для этого индекса тоже будет пустая.
-  // - Элементы в новой выборке не наследуют данные от элементов в старом.
-  //   Используй selection.data для распространения данных в эл-ты новой выборки.
-
-    • Если selector является css-селектором 
-      - Для каждого эл-та "p" в док-те выбрать среди его потомков ВСЕ эл-ты "b":
-
-          var b = d3.selectAll("p").selectAll("b");
-
-    • Если selector не является css-селектором
-      - А является функцией, она будет выполнена для каждого эл-та выборки.
-      - В функцию будут переданы: d (данные), i (индекс), nodes и this (DOM-ссылка на текущий эл-т).
-      - Функция должна возвращать массив элементов (или псевдо-массив, вроде NodtList или arguments).
-      - Или же пустой массив, если нет соответствующих элементов.
-      - Для каждого эл-та "p" в док-те выбрать 1-ых предыдущего и следующего соседей:
-
-          var sibling = d3.selectAll("p").selectAll(function() {
-            return [
-              this.previousElementSibling,
-              this.nextElementSibling
-            ];
-          });          
-
-  // selection.filter //
-  //------------------//
-  // - selection.filter(filter).
-  // - Провести фильтрацию выборки [по селектору / по анонимной функции].
-  // - Вернёт новую выборку, содержащую лишь элементы, прошедшие фильтрацию.
-  // - При этом индексы не сохраняются.
-
-    • Если filter является css-селектором 
-      - Получить все эл-ты "tr" в документе, отфильтровать все нечётные:
-
-          var even = d3.selectAll("tr").filter(":nth-child(even)");
-  
-      - Это примерно тоже самое, что сделать вот так:
-
-          var even = d3.selectAll("tr:nth-child(even)");
-
-    • Если selector не является css-селектором
-      - А является функцией, она будет выполнена для каждого эл-та выборки.
-      - В функцию будут переданы: d (данные), i (индекс), nodes и this (DOM-ссылка на текущий эл-т).
-      - Получить все эл-ты "tr" в документе, отфильтровать все нечётные:
-
-          var even = d3.selectAll("tr").filter(function(d, i) { return i & 1; });
-
-      - Это примерно тоже самое, что сделать вот так:
-
-          var even = d3.selectAll("tr").select(function(d, i) { return i & 1 ? this : null; });
-
-  // selection.merge //
-  //-----------------//
-  // - selection.merge(other).
-  // - Объединить выборки [не произвольные, обычно ENTER + UPDATE].
-  // - Возвращает новую выборку, объединяя выботки selection с other.
-  // - Результирующая выборка имеет то же число групп и родителей, что и selection.
-  // - Обычно этот метод используется для объединения выборок enter и update после data-join.
-  //   Мосле модификации эл-тов в выборках enter и update, можно их
-  //   объединить, и выполнять операции сразу на всех эл-х выборки enter+update.
-
-    • UPDATE
-
-        var circle = svg.selectAll("circle").data(data) // UPDATE
-            .style("fill", "blue");
-
-    • EXIT
-
-        circle.exit().remove();   // EXIT
-
-    • ENTER, ENTER + UPDATE
-
-        circle.enter().append("circle") // ENTER
-          .style("fill", "green")
-          .merge(circle)                // ENTER + UPDATE
-          .style("stroke", "black");    
-
-  // d3.matcher //
-  //------------//
-  // - d3.matcher(selector).
-  // - Возвращает функцию, которая возвращает true, если эл-т this соответствует указанному селектору [для внутреннего использования D3].
-  // - Автопрефиксинг для браузерных префиксов не поддерживается.
-
-    • Например, эти 2 выражения эквивалентны:
-
-        var div = selection.filter("div");
-        var div = selection.filter(d3.matcher("div"));
-
-  // d3.selector //
-  //-------------//
-  // - d3.selector(selector).
-  // - Возвращает функцию, которая возвращает первый для this элемент-потомок, соотв-ий указанному селектору [для внутреннего использования D3].
-
-    • Например, эти 2 выражения эквивалентны:
-
-        var div = selection.select("div");
-        var div = selection.select(d3.selector("div"));
-
-  // d3.selectorAll //
-  //----------------//
-  // - d3.selectorAll(selector).
-  // - Возвращает функцию, которая возвращает все для this элементы-потомки, соотв-щие указанному селектору [для внутреннего использования D3].
-
-    • Например, эти 2 выражения эквивалентны:
-
-        var div = selection.selectAll("div");
-        var div = selection.selectAll(d3.selectorAll("div"));
-
-  // d3.window //
-  //-----------//
-  // - d3.window(node).
-  // - Возвращает окно-владельца для указанного node.
-
-
-
-
-
+  •
 
 
 Б1. Основы D3.js
@@ -525,5 +266,311 @@
   - Однако, в D3 автопрефиксинга нет, нужно иметь это в виду.
 
 
+Б2. D3-модуль: selections (svg v4.*)
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+  # Справочник
+
+    • Selecting Elements
+
+      ▪ d3.selection        | Получить выборку из 1-го корневого элемента DOM [document.documentElement]
+      ▪ d3.select           | Получить выборку из 1-го эл-та [по DOM-ссылке / 1-й по списку по селектору]
+      ▪ d3.selectAll        | Получить выборку из N эл-тов [по массиву DOM-ссылок / по селектору]
+      ▪ selection.select    | Получить выборку из N эл-тов на основе другой выборки [по селектору / по анонимной функции]
+      ▪ selection.selectAll | Получить выборку из N эл-тов на основе другой выборки [по селектору / по анонимной функции]
+      ▪ selection.filter    | Провести фильтрацию выборки [по селектору / по анонимной функции]
+      ▪ selection.merge     | Объединить выборки [не произвольные, обычно ENTER + UPDATE]
+      ▪ d3.matcher          | Возвращает функцию, которая возвращает true, если эл-т this соответствует указанному селектору [для внутреннего использования D3]
+      ▪ d3.selector         | Возвращает функцию, которая возвращает первый для this элемент-потомок, соотв-ий указанному селектору [для внутреннего использования D3]
+      ▪ d3.selectorAll      | Возвращает функцию, которая возвращает все для this элементы-потомки, соотв-щие указанному селектору [для внутреннего использования D3]
+      ▪ d3.window           | Возвращает окно-владельца для указанного узла
+
+    • Modifying Elements
+
+      ▪ selection.classed   |
+      ▪ selection.style     |
+      ▪ selection.property  |
+      ▪ selection.text      |
+      ▪ selection.html      |
+      ▪ selection.append    |
+      ▪ selection.insert    |
+      ▪ selection.remove    |
+      ▪ selection.sort      |
+      ▪ selection.order     |
+      ▪ selection.raise     |
+      ▪ selection.lower     |
+      ▪ d3.creator          |
+
+    • Joining Data
+
+      ▪ selection.data      |
+      ▪ selection.enter     |
+      ▪ selection.exit      |
+      ▪ selection.datum     |
+
+    • Handling Events
+
+      ▪ selection.on        |
+      ▪ selection.dispatch  |
+      ▪ d3.event            |
+      ▪ d3.customEvent      |
+      ▪ d3.mouse            |
+      ▪ d3.touch            |
+      ▪ d3.touches          |
+
+    • Control Flow
+
+      ▪ selection.each      |
+      ▪ selection.call      |
+      ▪ selection.empty     |
+      ▪ selection.nodes     |
+      ▪ selection.node      |
+      ▪ selection.size      |
+
+    • Local Variables
+
+      ▪ d3.local            |
+      ▪ local.set           |
+      ▪ local.get           |
+      ▪ local.remove        |
+      ▪ local.toString      |
+
+    • Namespaces
+
+      ▪ d3.namespace        |
+      ▪ d3.namespaces       |
+
+--------------------------------------
+
+> Ссылки
+
+  # Ссылка на соотв.раздел документации D3 v4.*
+      https://github.com/d3/d3/blob/master/README.md#selections-d3-selection
+
+> Ведение
+  - Это справочник по модулю Selections библиотеки D3 v4.*.
+
+> Справочник
+
+//--------------------//
+// Selecting Elements //
+//--------------------//
+
+  // d3.selection //
+  //--------------//
+  // - d3.selection()
+  // - Получить выборку из 1-го корневого элемента DOM [document.documentElement].
+
+    • Проверка, является ли переменная D3-выборкой
+
+      var selection = d3.selectAll("p");
+      var is = selection instanceof d3.selection();   // true/false
+
+    • Расширить прототип selection (например, добавить метод checked для проверки состояния чекбоксов)
+
+      ▪ Расширить
+
+          d3.selection.prototype.checked = function(value) {
+            return arguments.length < 1
+                ? this.property("checked")
+                : this.property("checked", !!value);
+          };
+          d3.selectAll("input[type=checkbox]").checked(true);
+
+      ▪ Использовать
+
+          d3.selectAll("input[type=checkbox]").checked(true);
+
+  // d3.select //
+  //-----------//
+  // - d3.select(selector)
+  // - Получить выборку из 1-го эл-та [по DOM-ссылке / 1-й по списку по селектору].
+  // - Если таковых найдено не будет, вернёт пустую выборку.
+  // - Если такувых будет найдено много, вернёт лишь 1-й из них.
+
+    • Если selector является css-селектором
+      - Получить выборку из 1-го найденный элемента "a"
+
+        var anchor = d3.select("a");
+
+    • Если selector не является строкой
+      - Тогда это должна быть DOM-ссылка (или функция, её возвращающая).
+      - Пример ниже окрасит шрифт всех эл-тов "p" в документе в красный цвет:
+
+          d3.selectAll("p").on("click", function() {
+            d3.select(this).style("color", "red");
+          });
+
+  // d3.selectAll //
+  //--------------//
+  // - d3.selectAll(selector)
+  // - Получить выборку из N эл-тов [по массиву DOM-ссылок / по селектору].
+  // - Если ничего не найдёт, вернёт пустую выборку.
+
+    • Если selector является css-селектором
+      - Получить все элементы "p" в документе:
+
+          var paragraph = d3.selectAll("p");
+
+    • Если selector не является строкой
+      - Тогда это должен быть массив ссылок на DOM-узлы.
+      - Это полезно, когда таковой имеется.
+      - Это также может быть псевдо-массив, как NodeList или argumetns.
+      - Например, this.childNodes в обработчике событий, или document.links.
+      - Например, покрасить все ссылки в красный цвет:
+
+          d3.selectAll(document.links).style("color", "red");
+
+  // selection.select  //
+  //-------------------//
+  // - selection.select(selector).
+  // - Получить выборку из N эл-тов на основе другой выборки [по селектору / по анонимной функции].
+  // - Для каждого эл-та из selection, выбрать среди его потомков 1-й
+  //   элемент, который соответствует указанному selector.
+  // - Если selector пуст или null, все эл-ты в новой выборке тоже будут пустые.
+  // - Если эл-т из текущей выборки имеет связанные данные, то новый элемент,
+  //   полученный среди его потомков, тоже будет связан с этими данными.
+  // - Если для эл-та X найдено среди его потомков > 1 элементов, соответствующих
+  //   selector, будет взят лишь 1-й из них.
+
+    • Если selector является css-селектором
+      - Для каждого эл-та "p" в док-те выбрать среди его потомков 1-й эл-т "b":
+
+          var b = d3.selectAll("p").select("b");
+
+    • Если selector не является css-селектором
+      - А является функцией, она будет выполнена для каждого эл-та выборки.
+      - В функцию будут переданы: d (данные), i (индекс), nodes и this (DOM-ссылка на текущий эл-т).
+      - Функция должна возвращать 1-ин элемент.
+      - Для каждого эл-та "p" в док-те выбрать 1-го предыдущего соседа:
+
+          var previous = d3.selectAll("p").select(function() {
+            return this.previousElementSibling;
+          });
+
+  // selection.selectAll //
+  //---------------------//
+  // - selection.selectAll(selector).
+  // - Получить выборку из N эл-тов на основе другой выборки [по селектору / по анонимной функции].
+  // - Для каждого эл-та из selection, выбрать среди его потомков ВСЕ
+  //   элементы, которые соответствуют указанному selector.
+  // - То есть, на 1-им элемент в selection м.б. найдено N элементов-потомков,
+  //   соответствующих selector. Они будут сгруппированы по своим топовым узлам.
+  // - Если соответствующих selector элементов для эл-та из selection не найдено,
+  //   или если selector пуст или null, группа для этого индекса тоже будет пустая.
+  // - Элементы в новой выборке не наследуют данные от элементов в старом.
+  //   Используй selection.data для распространения данных в эл-ты новой выборки.
+
+    • Если selector является css-селектором
+      - Для каждого эл-та "p" в док-те выбрать среди его потомков ВСЕ эл-ты "b":
+
+          var b = d3.selectAll("p").selectAll("b");
+
+    • Если selector не является css-селектором
+      - А является функцией, она будет выполнена для каждого эл-та выборки.
+      - В функцию будут переданы: d (данные), i (индекс), nodes и this (DOM-ссылка на текущий эл-т).
+      - Функция должна возвращать массив элементов (или псевдо-массив, вроде NodtList или arguments).
+      - Или же пустой массив, если нет соответствующих элементов.
+      - Для каждого эл-та "p" в док-те выбрать 1-ых предыдущего и следующего соседей:
+
+          var sibling = d3.selectAll("p").selectAll(function() {
+            return [
+              this.previousElementSibling,
+              this.nextElementSibling
+            ];
+          });
+
+  // selection.filter //
+  //------------------//
+  // - selection.filter(filter).
+  // - Провести фильтрацию выборки [по селектору / по анонимной функции].
+  // - Вернёт новую выборку, содержащую лишь элементы, прошедшие фильтрацию.
+  // - При этом индексы не сохраняются.
+
+    • Если filter является css-селектором
+      - Получить все эл-ты "tr" в документе, отфильтровать все нечётные:
+
+          var even = d3.selectAll("tr").filter(":nth-child(even)");
+
+      - Это примерно тоже самое, что сделать вот так:
+
+          var even = d3.selectAll("tr:nth-child(even)");
+
+    • Если selector не является css-селектором
+      - А является функцией, она будет выполнена для каждого эл-та выборки.
+      - В функцию будут переданы: d (данные), i (индекс), nodes и this (DOM-ссылка на текущий эл-т).
+      - Получить все эл-ты "tr" в документе, отфильтровать все нечётные:
+
+          var even = d3.selectAll("tr").filter(function(d, i) { return i & 1; });
+
+      - Это примерно тоже самое, что сделать вот так:
+
+          var even = d3.selectAll("tr").select(function(d, i) { return i & 1 ? this : null; });
+
+  // selection.merge //
+  //-----------------//
+  // - selection.merge(other).
+  // - Объединить выборки [не произвольные, обычно ENTER + UPDATE].
+  // - Возвращает новую выборку, объединяя выботки selection с other.
+  // - Результирующая выборка имеет то же число групп и родителей, что и selection.
+  // - Обычно этот метод используется для объединения выборок enter и update после data-join.
+  //   Мосле модификации эл-тов в выборках enter и update, можно их
+  //   объединить, и выполнять операции сразу на всех эл-х выборки enter+update.
+
+    • UPDATE
+
+        var circle = svg.selectAll("circle").data(data) // UPDATE
+            .style("fill", "blue");
+
+    • EXIT
+
+        circle.exit().remove();   // EXIT
+
+    • ENTER, ENTER + UPDATE
+
+        circle.enter().append("circle") // ENTER
+          .style("fill", "green")
+          .merge(circle)                // ENTER + UPDATE
+          .style("stroke", "black");
+
+  // d3.matcher //
+  //------------//
+  // - d3.matcher(selector).
+  // - Возвращает функцию, которая возвращает true, если эл-т this соответствует указанному селектору [для внутреннего использования D3].
+  // - Автопрефиксинг для браузерных префиксов не поддерживается.
+
+    • Например, эти 2 выражения эквивалентны:
+
+        var div = selection.filter("div");
+        var div = selection.filter(d3.matcher("div"));
+
+  // d3.selector //
+  //-------------//
+  // - d3.selector(selector).
+  // - Возвращает функцию, которая возвращает первый для this элемент-потомок, соотв-ий указанному селектору [для внутреннего использования D3].
+
+    • Например, эти 2 выражения эквивалентны:
+
+        var div = selection.select("div");
+        var div = selection.select(d3.selector("div"));
+
+  // d3.selectorAll //
+  //----------------//
+  // - d3.selectorAll(selector).
+  // - Возвращает функцию, которая возвращает все для this элементы-потомки, соотв-щие указанному селектору [для внутреннего использования D3].
+
+    • Например, эти 2 выражения эквивалентны:
+
+        var div = selection.selectAll("div");
+        var div = selection.selectAll(d3.selectorAll("div"));
+
+  // d3.window //
+  //-----------//
+  // - d3.window(node).
+  // - Возвращает окно-владельца для указанного node.
 
 
