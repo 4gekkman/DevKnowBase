@@ -1407,3 +1407,7 @@
       - Вот так:
 
           config.vm.network "private_network", type: "dhcp"
+
+  4. Обновлять плагин можно так:
+
+      vagrant plugin update vagrant-winnfsd
