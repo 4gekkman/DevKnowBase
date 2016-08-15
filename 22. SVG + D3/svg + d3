@@ -77,6 +77,7 @@
     А2. Paths
     А3. Шаблон SVG-файла
     А4. Как добавить SVG в HTML5-страницу
+    А5. Градиенты в SVG
 
     Аn. Библиотека примеров и наработок на SVG
 
@@ -995,6 +996,192 @@
   - Не знаю, есть ли ещё другие способы, но думаю, этих должно быть достаточно.
 
 >
+
+
+А5. Градиенты в SVG
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+
+    ▪ О чём эта глава
+    ▪ В SVG есть линейный и угловой градиенты
+    ▪ Каждый градиент обязан иметь атрибут с уникальным ID
+    ▪ Градиенты определяются между тегами <defs></defs>
+    ▪ Применить градиент можно в теге style или в атрибуте fill
+
+  # Линейный градиент
+
+    ▪ Теги <stop> внутри блока тегов <linearGradient>, и его атрибуты
+    ▪ Атрибуты линейного градиента
+    ▪ Пример линейного градиента
+
+  # Имитация углового градиента
+
+
+--------------------------------------
+
+> Ссылки
+
+  # Статься про градиенты на developer.mozilla.org
+      https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Gradients
+
+  # Имитация углового градиента на SVG путём разбивки на линейные
+      http://stackoverflow.com/questions/18206361/svg-multiple-color-on-circle-stroke
+      http://jsfiddle.net/Weytu/
+
+> Введение
+  
+  • О чём эта глава
+    - В этой главе рассмотрим, как делать градиент в SVG.
+    - Также рассмотрим решение для организации уголового градиента.
+
+  • В SVG есть линейный и угловой градиенты
+    - То есть, всего 2 типа градиентов.
+    - И никакого углового градиента нативно не поддерживается.
+
+  • Каждый градиент обязан иметь атрибут с уникальным ID
+    - Иначе другие элементы не будут иметь к нему доступ.
+
+  • Градиенты определяются между тегами <defs></defs>
+    - Потом к определённым градиентам можно обращаться по ID.
+    - И, таким образом, применять их к другим SVG-элементам.
+
+  • Применить градиент можно в теге style или в атрибуте fill
+    - Можно применить градиент в теге style, применив ID  
+      SVG-элемента, к которому надо применить градиент (см.пример ниже).
+    - А можно применить градиент в атрибуте fill SVG-элемента.
+
+> Линейный градиент
+
+  • Теги <stop> внутри блока тегов <linearGradient>, и его атрибуты
+    - Внутри блока тегов <linearGradient> применяются теги <stop>
+    - Каждый тег <stop> имеет атрибуты:
+
+        ▪ offset        | Значение от 0% до 100%, обозначающее позицию между началом и концом градиента
+          - Символ % в offset можно опускать.
+          - В первом <stop> offset всегда д.б. 0.
+          - В каждом последующем <stop> offset всегда д.б. больше, чем в предыдущем.
+          - В последнем <stop> offset всегда д.б. 100.
+          - Offset д.б. целым неотрицательным числом от 0 до 100.
+          - При появлении <stop> с тем же offset, будет использоваться лишь самый поздний.
+        ▪ stop-color    | Какой цвет д.б. к этой позиции
+        ▪ stop-opacity  | Полупрозрачность к этой позиции (от 0 до 1)
+
+    - Эти св-ва можно указать для эл-та stop и через CSS.
+    - Количество тегов <stop> в блоке <linearGradient> не ограничено.
+    - Пример использования см.ниже.
+
+  • Атрибуты линейного градиента
+    - Тег linearGradient принимает несколько атрибутов.
+    - Среди них есть 1-ин обязательный (ID), все остальные - нет.
+    - Вот они:
+
+        ▪ id    | [Обязательный атрибут] ID градиента 
+        ▪ x1    | X-координата точки 1 управления ориентацией градиента
+        ▪ x2    | X-координата точки 2 управления ориентацией градиента
+        ▪ y1    | Y-координата точки 1 управления ориентацией градиента
+        ▪ y2    | Y-координата точки 2 управления ориентацией градиента
+
+    - Значениями x1,x2,y1,y2 могут быть проценты, то есть,
+      от 0% до 100%, или от 0 (0%) до 1 (100%) (без знака %).
+
+  • Пример линейного градиента
+    - В этом примере мы рисуем на SVG 2 квадрата.
+    - И определяем в теге defs 2 градиента.
+    - Gradient1 мы применяем к 1-му квадрату с помощью style.
+    - А Gradient2 мы применяем ко 2-му квадрату с помощью атрибута fill="url(#Gradient2).
+
+      <svg width="120" height="240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+
+            <linearGradient id="Gradient1">
+              <stop class="stop1" offset="0%"/>
+              <stop class="stop2" offset="50%"/>
+              <stop class="stop3" offset="100%"/>
+            </linearGradient>
+
+            <linearGradient id="Gradient2" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="red"/>
+              <stop offset="50%" stop-color="black" stop-opacity="0"/>
+              <stop offset="100%" stop-color="blue"/>
+            </linearGradient>
+
+            <style type="text/css"><![CDATA[
+              #rect1 { fill: url(#Gradient1); }
+              .stop1 { stop-color: red; }
+              .stop2 { stop-color: black; stop-opacity: 0; }
+              .stop3 { stop-color: blue; }
+            ]]></style>
+
+        </defs>
+       
+        <rect id="rect1" x="10" y="10" rx="15" ry="15" width="100" height="100"/>
+        <rect x="10" y="120" rx="15" ry="15" width="100" height="100" fill="url(#Gradient2)"/>
+        
+      </svg>  
+
+> Имитация углового градиента
+
+  • Пример имитации углового градиента на кольце 6-ю линейными
+    
+    ▪ 6 дуг, образующих кольцо
+      - Имеются 6 сегментов кольца, по 60 градусов каждый.
+      - Эти 6 сегментов образуют полное кольцо, 360 градусов в сумме.
+
+    ▪ Для каждой дуги свой линейный градиент
+      - Для каждой из 6-ти дуг создаётся свой линейный градиент.
+      
+    ▪ Цвет начала, цвет конца каждого л.градиента
+      - Градиент каждой следующий дуги начинается с того же самого
+        цвета, которым заканчивается градиент предыдущей дуги.
+
+    ▪ 
+      - 
+
+
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" viewBox="-10 -10 220 220">
+        <defs>
+          <linearGradient id="redyel" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ff0000"/>   
+              <stop offset="100%" stop-color="#ffff00"/>   
+          </linearGradient>
+          <linearGradient id="yelgre" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffff00"/>   
+              <stop offset="100%" stop-color="#00ff00"/>   
+          </linearGradient>
+          <linearGradient id="grecya" gradientUnits="objectBoundingBox" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#00ff00"/>   
+              <stop offset="100%" stop-color="#00ffff"/>   
+          </linearGradient>
+          <linearGradient id="cyablu" gradientUnits="objectBoundingBox" x1="1" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#00ffff"/>   
+              <stop offset="100%" stop-color="#0000ff"/>   
+          </linearGradient>
+          <linearGradient id="blumag" gradientUnits="objectBoundingBox" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#0000ff"/>   
+              <stop offset="100%" stop-color="#ff00ff"/>   
+          </linearGradient>
+          <linearGradient id="magred" gradientUnits="objectBoundingBox" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#ff00ff"/>   
+              <stop offset="100%" stop-color="#ff0000"/>   
+          </linearGradient>
+        </defs>
+
+        <g fill="none" stroke-width="15" transform="translate(100,100)">
+          <path d="M 0,-100 A 100,100 0 0,1 86.6,-50" stroke="url(#redyel)"/>
+          <path d="M 86.6,-50 A 100,100 0 0,1 86.6,50" stroke="url(#yelgre)"/>
+          <path d="M 86.6,50 A 100,100 0 0,1 0,100" stroke="url(#grecya)"/>
+          <path d="M 0,100 A 100,100 0 0,1 -86.6,50" stroke="url(#cyablu)"/>
+          <path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50" stroke="url(#blumag)"/>
+          <path d="M -86.6,-50 A 100,100 0 0,1 0,-100" stroke="url(#magred)"/>
+        </g>
+      </svg>
+
+
+
 
 
 
