@@ -1020,6 +1020,12 @@
 
   # Имитация углового градиента
 
+    ▪ 6 дуг, образующих кольцо
+    ▪ Для каждой дуги свой линейный градиент
+    ▪ Цвет начала, цвет конца каждого л.градиента
+    ▪ Градиент назначается сегменту кольца с помощью stoke
+    ▪ Градиент каждого сегмента имеет своё направление
+    ▪ Пример имитации углового градиента, образующий радужное кольцо
 
 --------------------------------------
 
@@ -1031,6 +1037,9 @@
   # Имитация углового градиента на SVG путём разбивки на линейные
       http://stackoverflow.com/questions/18206361/svg-multiple-color-on-circle-stroke
       http://jsfiddle.net/Weytu/
+ 
+  # Здесь можно поиграться с линейным градиентом
+      http://www.w3schools.com/svg/tryit.asp?filename=trysvg_linear
 
 > Введение
   
@@ -1125,65 +1134,74 @@
 
 > Имитация углового градиента
 
-  • Пример имитации углового градиента на кольце 6-ю линейными
+  ▪ 6 дуг, образующих кольцо
+    - Имеются 6 сегментов кольца, по 60 градусов каждый.
+    - Эти 6 сегментов образуют полное кольцо, 360 градусов в сумме.
+
+  ▪ Для каждой дуги свой линейный градиент
+    - Для каждой из 6-ти дуг создаётся свой линейный градиент.
     
-    ▪ 6 дуг, образующих кольцо
-      - Имеются 6 сегментов кольца, по 60 градусов каждый.
-      - Эти 6 сегментов образуют полное кольцо, 360 градусов в сумме.
+  ▪ Цвет начала, цвет конца каждого л.градиента
+    - Градиент каждой следующий дуги начинается с того же самого
+      цвета, которым заканчивается градиент предыдущей дуги.
 
-    ▪ Для каждой дуги свой линейный градиент
-      - Для каждой из 6-ти дуг создаётся свой линейный градиент.
-      
-    ▪ Цвет начала, цвет конца каждого л.градиента
-      - Градиент каждой следующий дуги начинается с того же самого
-        цвета, которым заканчивается градиент предыдущей дуги.
+  ▪ Градиент назначается сегменту кольца с помощью stoke
+    - Дуги, образующие кольцо, выполнены с помощью <path>.
+    - Градиент им назначается с помощью атрибута stroke.
 
-    ▪ 
-      - 
+  ▪ Градиент каждого сегмента имеет своё направление
+    - Управление направлением производится с помощью атрибутов 
+      x1,y1, x2,y2 элементов linearGradient.
+    - Логика такая, начало координат в левом верхнем углу,
+      а направление градиента от точки (x1,y1) к точке (x2,y2).
+    - Обозначение направлений (x1,y1)(x2,y2):
 
+        (0,0)(1,1)    | Слева-сверху вправо-вниз
+        (0,0)(0,1)    | Сверху-вниз
+        (1,0)(0,1)    | Справа-сверху влево-вниз
+        (1,1)(0,0)    | Справа-снизу влево-вверх
+        (0,1)(0,0)    | Внизу-вверх
+        (0,1)(1,0)    | Слева-снизу вправо-вверх
 
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" viewBox="-10 -10 220 220">
-        <defs>
-          <linearGradient id="redyel" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#ff0000"/>   
-              <stop offset="100%" stop-color="#ffff00"/>   
-          </linearGradient>
-          <linearGradient id="yelgre" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ffff00"/>   
-              <stop offset="100%" stop-color="#00ff00"/>   
-          </linearGradient>
-          <linearGradient id="grecya" gradientUnits="objectBoundingBox" x1="1" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#00ff00"/>   
-              <stop offset="100%" stop-color="#00ffff"/>   
-          </linearGradient>
-          <linearGradient id="cyablu" gradientUnits="objectBoundingBox" x1="1" y1="1" x2="0" y2="0">
-              <stop offset="0%" stop-color="#00ffff"/>   
-              <stop offset="100%" stop-color="#0000ff"/>   
-          </linearGradient>
-          <linearGradient id="blumag" gradientUnits="objectBoundingBox" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stop-color="#0000ff"/>   
-              <stop offset="100%" stop-color="#ff00ff"/>   
-          </linearGradient>
-          <linearGradient id="magred" gradientUnits="objectBoundingBox" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0%" stop-color="#ff00ff"/>   
-              <stop offset="100%" stop-color="#ff0000"/>   
-          </linearGradient>
-        </defs>
+  ▪ Пример имитации углового градиента, образующий радужное кольцо  
 
-        <g fill="none" stroke-width="15" transform="translate(100,100)">
-          <path d="M 0,-100 A 100,100 0 0,1 86.6,-50" stroke="url(#redyel)"/>
-          <path d="M 86.6,-50 A 100,100 0 0,1 86.6,50" stroke="url(#yelgre)"/>
-          <path d="M 86.6,50 A 100,100 0 0,1 0,100" stroke="url(#grecya)"/>
-          <path d="M 0,100 A 100,100 0 0,1 -86.6,50" stroke="url(#cyablu)"/>
-          <path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50" stroke="url(#blumag)"/>
-          <path d="M -86.6,-50 A 100,100 0 0,1 0,-100" stroke="url(#magred)"/>
-        </g>
-      </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" viewBox="-10 -10 220 220">
+      <defs>
+        <linearGradient id="redyel" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ff0000"/>   
+            <stop offset="100%" stop-color="#ffff00"/>   
+        </linearGradient>
+        <linearGradient id="yelgre" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffff00"/>   
+            <stop offset="100%" stop-color="#00ff00"/>   
+        </linearGradient>
+        <linearGradient id="grecya" gradientUnits="objectBoundingBox" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#00ff00"/>   
+            <stop offset="100%" stop-color="#00ffff"/>   
+        </linearGradient>
+        <linearGradient id="cyablu" gradientUnits="objectBoundingBox" x1="1" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#00ffff"/>   
+            <stop offset="100%" stop-color="#0000ff"/>   
+        </linearGradient>
+        <linearGradient id="blumag" gradientUnits="objectBoundingBox" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#0000ff"/>   
+            <stop offset="100%" stop-color="#ff00ff"/>   
+        </linearGradient>
+        <linearGradient id="magred" gradientUnits="objectBoundingBox" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#ff00ff"/>   
+            <stop offset="100%" stop-color="#ff0000"/>   
+        </linearGradient>
+      </defs>
 
-
-
-
-
+      <g fill="none" stroke-width="15" transform="translate(100,100)">
+        <path d="M 0,-100 A 100,100 0 0,1 86.6,-50" stroke="url(#redyel)"/>
+        <path d="M 86.6,-50 A 100,100 0 0,1 86.6,50" stroke="url(#yelgre)"/>
+        <path d="M 86.6,50 A 100,100 0 0,1 0,100" stroke="url(#grecya)"/>
+        <path d="M 0,100 A 100,100 0 0,1 -86.6,50" stroke="url(#cyablu)"/>
+        <path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50" stroke="url(#blumag)"/>
+        <path d="M -86.6,-50 A 100,100 0 0,1 0,-100" stroke="url(#magred)"/>
+      </g>
+    </svg>
 
 
 
