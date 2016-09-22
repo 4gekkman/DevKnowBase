@@ -624,7 +624,6 @@
             }
 
 
-
     # Свойство module.exports и ссылки exports / this на него
       - module.exports == exports == this
       - Как упоминалось выше, в каждом модуле всегда есть св-во exports.
