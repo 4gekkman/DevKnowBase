@@ -22,7 +22,17 @@
     <favorites_list name="DevKnowBase" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="React" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/25. React/React">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="85" column="12" selection-start="1971" selection-end="1971" vertical-scroll-proportion="0.34045225" vertical-offset="1514" max-vertical-offset="6573">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -36,15 +46,16 @@
         <option value="$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs" />
         <option value="$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки" />
         <option value="$PROJECT_DIR$/21. SASS/sass" />
+        <option value="$PROJECT_DIR$/25. React/React" />
       </list>
     </option>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-9" />
-    <option name="y" value="39" />
-    <option name="width" value="1938" />
-    <option name="height" value="1050" />
+    <option name="x" value="960" />
+    <option name="y" value="48" />
+    <option name="width" value="960" />
+    <option name="height" value="1032" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -72,6 +83,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -100,13 +112,26 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="21. SASS" />
+              <option name="myItemId" value="25. React" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DevKnowBase" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DevKnowBase" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="19. Docker" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -115,7 +140,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../projects/zaste.ru" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="FullScreen" value="false" />
     <property name="SearchEverywhereHistory" value="" />
   </component>
@@ -149,8 +174,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="39" width="1938" height="1050" extended-state="6" />
-    <editor active="false" />
+    <frame x="960" y="48" width="960" height="1032" extended-state="1" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -191,9 +216,7 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10386" column="0" selection-start="404096" selection-end="404096" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="321090">
-          <folding />
-        </state>
+        <state line="10386" column="0" selection-start="404096" selection-end="404096" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="321090" />
       </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
@@ -201,9 +224,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8172" column="53" selection-start="296330" selection-end="296330" vertical-scroll-proportion="0.0" vertical-offset="171612" max-vertical-offset="313089">
-          <folding />
-        </state>
+        <state line="8172" column="53" selection-start="296330" selection-end="296330" vertical-scroll-proportion="0.0" vertical-offset="171612" max-vertical-offset="313089" />
       </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
@@ -211,9 +232,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8172" column="53" selection-start="296523" selection-end="296523" vertical-scroll-proportion="0.0" vertical-offset="171232" max-vertical-offset="302652">
-          <folding />
-        </state>
+        <state line="8172" column="53" selection-start="296523" selection-end="296523" vertical-scroll-proportion="0.0" vertical-offset="171232" max-vertical-offset="302652" />
       </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
@@ -221,9 +240,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11563" column="8" selection-start="450230" selection-end="450230" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="269430">
-          <folding />
-        </state>
+        <state line="11563" column="8" selection-start="450230" selection-end="450230" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="269430" />
       </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
@@ -231,9 +248,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11227" column="0" selection-start="441580" selection-end="441580" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="265020">
-          <folding />
-        </state>
+        <state line="11227" column="0" selection-start="441580" selection-end="441580" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="265020" />
       </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
@@ -281,9 +296,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8172" column="53" selection-start="296330" selection-end="296330" vertical-scroll-proportion="0.0" vertical-offset="171612" max-vertical-offset="313089">
-          <folding />
-        </state>
+        <state line="8172" column="53" selection-start="296330" selection-end="296330" vertical-scroll-proportion="0.0" vertical-offset="171612" max-vertical-offset="313089" />
       </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
@@ -291,9 +304,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10386" column="0" selection-start="404096" selection-end="404096" vertical-scroll-proportion="0.0" vertical-offset="218106" max-vertical-offset="321090">
-          <folding />
-        </state>
+        <state line="10386" column="0" selection-start="404096" selection-end="404096" vertical-scroll-proportion="0.0" vertical-offset="218106" max-vertical-offset="321090" />
       </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
@@ -301,7 +312,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/21. SASS/sass">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="477" selection-end="477" vertical-scroll-proportion="0.32193395" vertical-offset="0" max-vertical-offset="59640">
+        <state line="13" column="0" selection-start="477" selection-end="477" vertical-scroll-proportion="0.32193395" vertical-offset="0" max-vertical-offset="59640" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/19. Docker/Docker">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="149" column="6" selection-start="4220" selection-end="4220" vertical-scroll-proportion="1.461085" vertical-offset="1890" max-vertical-offset="201978">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/25. React/React">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="12" selection-start="1971" selection-end="1971" vertical-scroll-proportion="0.34045225" vertical-offset="1514" max-vertical-offset="6573">
           <folding />
         </state>
       </provider>
