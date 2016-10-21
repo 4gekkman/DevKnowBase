@@ -26,7 +26,7 @@
       <file leaf-file-name="React" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/25. React/React">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="57" column="0" selection-start="1573" selection-end="1573" vertical-scroll-proportion="0.25376883" vertical-offset="995" max-vertical-offset="10731">
+            <state line="574" column="0" selection-start="19201" selection-end="19201" vertical-scroll-proportion="-0.8994975" vertical-offset="12770" max-vertical-offset="13671">
               <folding />
             </state>
           </provider>
@@ -54,7 +54,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="960" />
     <option name="y" value="48" />
-    <option name="width" value="960" />
+    <option name="width" value="959" />
     <option name="height" value="1032" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -71,7 +71,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -82,57 +82,7 @@
       <autoscrollFromSource />
       <sortByType />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevKnowBase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevKnowBase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevKnowBase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevKnowBase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevKnowBase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="25. React" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevKnowBase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevKnowBase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="19. Docker" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -174,7 +124,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="960" y="48" width="960" height="1032" extended-state="0" />
+    <frame x="960" y="48" width="959" height="1032" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -214,6 +164,13 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/25. React/React">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="0" selection-start="1582" selection-end="1582" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10731">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/25. React/React">
       <provider selected="true" editor-type-id="text-editor">
         <state line="187" column="6" selection-start="5359" selection-end="5359" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8211">
@@ -329,7 +286,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/25. React/React">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="0" selection-start="1573" selection-end="1573" vertical-scroll-proportion="0.25376883" vertical-offset="995" max-vertical-offset="10731">
+        <state line="574" column="0" selection-start="19201" selection-end="19201" vertical-scroll-proportion="-0.8994975" vertical-offset="12770" max-vertical-offset="13671">
           <folding />
         </state>
       </provider>
