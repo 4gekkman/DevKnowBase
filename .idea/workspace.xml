@@ -26,7 +26,7 @@
       <file leaf-file-name="React" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/25. React/React">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="129" column="26" selection-start="3124" selection-end="3124" vertical-scroll-proportion="0.7889447" vertical-offset="2081" max-vertical-offset="6972">
+            <state line="57" column="0" selection-start="1573" selection-end="1573" vertical-scroll-proportion="0.25376883" vertical-offset="995" max-vertical-offset="10731">
               <folding />
             </state>
           </provider>
@@ -190,11 +190,11 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -214,100 +214,107 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/25. React/React">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="187" column="6" selection-start="5359" selection-end="5359" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8211">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="10386" column="0" selection-start="404096" selection-end="404096" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="321090" />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8172" column="53" selection-start="296330" selection-end="296330" vertical-scroll-proportion="0.0" vertical-offset="171612" max-vertical-offset="313089" />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8172" column="53" selection-start="296523" selection-end="296523" vertical-scroll-proportion="0.0" vertical-offset="171232" max-vertical-offset="302652" />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11563" column="8" selection-start="450230" selection-end="450230" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="269430" />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11227" column="0" selection-start="441580" selection-end="441580" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="265020" />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/10. Ubuntu/Ubuntu">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/10. Ubuntu/Ubuntu">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4596" column="18" selection-start="190686" selection-end="190686" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="153846" />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/10. Ubuntu/Ubuntu">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/10. Ubuntu/Ubuntu">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4301" column="0" selection-start="179629" selection-end="179629" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="148071" />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/10. Ubuntu/Ubuntu">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/10. Ubuntu/Ubuntu">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4301" column="0" selection-start="179629" selection-end="179629" vertical-scroll-proportion="0.0" vertical-offset="90065" max-vertical-offset="148071" />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="33" selection-start="745" selection-end="745" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="58821" />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/10. Ubuntu/Ubuntu">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/10. Ubuntu/Ubuntu">
       <provider selected="true" editor-type-id="text-editor">
         <state line="50" column="43" selection-start="1632" selection-end="1632" vertical-scroll-proportion="0.43161857" vertical-offset="706" max-vertical-offset="153846" />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8172" column="53" selection-start="296330" selection-end="296330" vertical-scroll-proportion="0.0" vertical-offset="171612" max-vertical-offset="313089" />
       </provider>
-      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10386" column="0" selection-start="404096" selection-end="404096" vertical-scroll-proportion="0.0" vertical-offset="218106" max-vertical-offset="321090" />
-      </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10386" column="0" selection-start="404096" selection-end="404096" vertical-scroll-proportion="0.0" vertical-offset="218106" max-vertical-offset="321090" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/21. SASS/sass">
@@ -317,14 +324,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/19. Docker/Docker">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="149" column="6" selection-start="4220" selection-end="4220" vertical-scroll-proportion="1.461085" vertical-offset="1890" max-vertical-offset="201978">
-          <folding />
-        </state>
+        <state line="149" column="6" selection-start="4220" selection-end="4220" vertical-scroll-proportion="1.461085" vertical-offset="1890" max-vertical-offset="201978" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/25. React/React">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="129" column="26" selection-start="3124" selection-end="3124" vertical-scroll-proportion="0.7889447" vertical-offset="2081" max-vertical-offset="6972">
+        <state line="57" column="0" selection-start="1573" selection-end="1573" vertical-scroll-proportion="0.25376883" vertical-offset="995" max-vertical-offset="10731">
           <folding />
         </state>
       </provider>
