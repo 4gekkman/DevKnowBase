@@ -28,7 +28,7 @@
     А1.  Установка Laravel
     А2.  Настройка Laravel
     А3.  Laravel Homestead и Vagrant
-		А4.  Routing
+    А4.  Routing
     А5.  Middleware
     А6.  Контроллеры
     А7.  HTTP-запросы, cookie, files, инфа о запросе

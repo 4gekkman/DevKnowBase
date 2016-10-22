@@ -26,7 +26,19 @@
       <file leaf-file-name="React" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/25. React/React">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="794" column="20" selection-start="28630" selection-end="28630" vertical-scroll-proportion="0.36746988" vertical-offset="16369" max-vertical-offset="17913">
+            <state line="902" column="6" selection-start="33379" selection-end="33379" vertical-scroll-proportion="0.7625628" vertical-offset="18335" max-vertical-offset="19509">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="laravel5 - docs" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
+          <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="31" column="10" selection-start="924" selection-end="924" vertical-scroll-proportion="14.636364" vertical-offset="1134" max-vertical-offset="313089">
               <folding />
             </state>
           </provider>
@@ -43,9 +55,9 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/10. Ubuntu/Ubuntu" />
-        <option value="$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs" />
         <option value="$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки" />
         <option value="$PROJECT_DIR$/21. SASS/sass" />
+        <option value="$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs" />
         <option value="$PROJECT_DIR$/25. React/React" />
       </list>
     </option>
@@ -136,7 +148,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="960" y="48" width="960" height="1032" extended-state="1" />
+    <frame x="960" y="48" width="960" height="1032" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -284,14 +296,6 @@
         <state line="50" column="43" selection-start="1632" selection-end="1632" vertical-scroll-proportion="0.43161857" vertical-offset="706" max-vertical-offset="153846" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
-      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8172" column="53" selection-start="296330" selection-end="296330" vertical-scroll-proportion="0.0" vertical-offset="171612" max-vertical-offset="313089" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel - наработки">
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
@@ -310,9 +314,19 @@
         <state line="149" column="6" selection-start="4220" selection-end="4220" vertical-scroll-proportion="1.461085" vertical-offset="1890" max-vertical-offset="201978" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="10" selection-start="924" selection-end="924" vertical-scroll-proportion="14.636364" vertical-offset="1134" max-vertical-offset="313089">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/25. React/React">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="794" column="20" selection-start="28630" selection-end="28630" vertical-scroll-proportion="0.36746988" vertical-offset="16369" max-vertical-offset="17913">
+        <state line="902" column="6" selection-start="33379" selection-end="33379" vertical-scroll-proportion="0.7625628" vertical-offset="18335" max-vertical-offset="19509">
           <folding />
         </state>
       </provider>
