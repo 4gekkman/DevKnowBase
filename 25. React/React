@@ -587,10 +587,16 @@
 
     # Этап №6: определи, какой компонент должен ВЛАДЕТЬ каким св-вом из state
 
+      ▪ Инструкция: какой компонент должен владеть каким св-вом из state
+      ▪ Определим, какие компоненты будут владеть state-свойствами нашего примера
+      ▪ Обновим код приложения в нашем примере
 
+    # Этап №7: добавь обратную связь
 
-    #
-    #
+      ▪ В React автоматическая обратная связь отсутствует
+      ▪ Добавь возможность компонентам-наследникам менять state компонентов-предков
+
+    # Финальный код примера
 
   --------------------------------------
 
@@ -724,111 +730,112 @@
 
     • Код статической версии React-приложения нашего примера
 
-        // 1] Компоненты
+      // 1] Компоненты
 
-          // 1.1] FilterableProductTable
-          var FilterableProductTable = React.createClass({
-            render: function() {
-              return (
-                <div>
-                  <SearchBar />
-                  <ProductTable products={this.props.products} />
-                </div>
-              );
-            }
-          });
+        // 1.1] FilterableProductTable
+        class FilterableProductTable extends React.Component {
+          render() {
+            return (
+              <div>
+                <SearchBar />
+                <ProductTable products={this.props.products} />
+              </div>
+            );
+          }
+        }
 
-          // 1.2] SearchBar
-          var SearchBar = React.createClass({
-            render: function() {
-              return (
-                <form>
-                  <input type="text" placeholder="Search..." />
-                  <p>
-                    <input type="checkbox" />
-                    {' '}
-                    Only show products in stock
-                  </p>
-                </form>
-              );
-            }
-          });
+        // 1.2] SearchBar
+        class SearchBar extends React.Component {
+          render() {
+            return (
+              <form>
+                <input type="text" placeholder="Search..." />
+                <p>
+                  <input type="checkbox" />
+                  {' '}
+                  Only show products in stock
+                </p>
+              </form>
+            );
+          }
+        }
 
-          // 1.3] ProductTable
-          var ProductTable = React.createClass({
-            render: function() {
-              var rows = [];
-              var lastCategory = null;
-              this.props.products.forEach(function(product) {
-                if (product.category !== lastCategory) {
-                  rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
-                }
-                rows.push(<ProductRow product={product} key={product.name} />);
-                lastCategory = product.category;
-              });
-              return (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>{rows}</tbody>
-                </table>
-              );
-            }
-          });
+        // 1.3] ProductTable
+        class ProductTable extends React.Component {
+          render() {
+            var rows = [];
+            var lastCategory = null;
+            this.props.products.forEach(function(product) {
+              if (product.category !== lastCategory) {
+                rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
+              }
+              rows.push(<ProductRow product={product} key={product.name} />);
+              lastCategory = product.category;
+            });
+            return (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+              </table>
+            );
+          }
+        }
 
-          // 1.4] ProductCategoryRow
-          var ProductCategoryRow = React.createClass({
-            render: function() {
-              return (<tr><th colSpan="2">{this.props.category}</th></tr>);
-            }
-          });
+        // 1.4] ProductCategoryRow
+        class ProductRow extends React.Component {
+          render() {
+            var name = this.props.product.stocked ?
+              this.props.product.name :
+              <span style={{color: 'red'}}>
+                {this.props.product.name}
+              </span>;
+            return (
+              <tr>
+                <td>{name}</td>
+                <td>{this.props.product.price}</td>
+              </tr>
+            );
+          }
+        }
 
-          // 1.5] ProductRow
-          var ProductRow = React.createClass({
-            render: function() {
-              var name = this.props.product.stocked ?
-                this.props.product.name :
-                <span style={{color: 'red'}}>
-                  {this.props.product.name}
-                </span>;
-              return (
-                <tr>
-                  <td>{name}</td>
-                  <td>{this.props.product.price}</td>
-                </tr>
-              );
-            }
-          });
+        // 1.5] ProductRow
+        class ProductCategoryRow extends React.Component {
+          render() {
+            return <tr><th colSpan="2">{this.props.category}</th></tr>;
+          }
+        }
 
-        // 2] Стартовые данные для отрисовки приложения
-        // - Обычно, они передаются с сервера в формате JSON.
-        // - Но в нашем примере, для наглядности, мы их захардкодим здесь.
-        var PRODUCTS = [
-          {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
-          {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
-          {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
-          {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
-          {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
-          {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
-        ];
+      // 2] Стартовые данные для отрисовки приложения
+      // - Обычно, они передаются с сервера в формате JSON.
+      // - Но в нашем примере, для наглядности, мы их захардкодим здесь.
+      var PRODUCTS = [
+        {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
+        {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
+        {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
+        {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
+        {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
+        {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+      ];
 
-        // 3] Отрисовка статического React-приложения
-        // - До этой отрисовки в DOM документа React ещё ничего не отрисовывал.
-        // - На этом шаге мы приказываем React'у сделать следующее:
-        //
-        //   1) Найти в документе элемент с ID == container
-        //   2) В конце этого элемента отрисовать приложение
-        //   3) Приложение построить на основе корневого компонента FilterableProductTable.
-        //   4) Корневому компоненту через props передать данные PRODUCTS.
-        //
-        ReactDOM.render(
-          <FilterableProductTable products={PRODUCTS} />,
-          document.getElementById('container')
-        );
+      // 3] Отрисовка статического React-приложения
+      // - До этой отрисовки в DOM документа React ещё ничего не отрисовывал.
+      // - На этом шаге мы приказываем React'у сделать следующее:
+      //
+      //   1) Найти в документе элемент с ID == container
+      //   2) В конце этого элемента отрисовать приложение
+      //   3) Приложение построить на основе корневого компонента FilterableProductTable.
+      //   4) Корневому компоненту через props передать данные PRODUCTS.
+      //
+      ReactDOM.render(
+        <FilterableProductTable products={PRODUCTS} />,
+        document.getElementById('container')
+      );
+
 
   > Этап №5: определи минимальную (но законченную) картину state приложения
 
@@ -900,20 +907,246 @@
 
   > Этап №6: определи, какой компонент должен ВЛАДЕТЬ каким св-вом из state
 
-    ▪ 
+    • Инструкция: какой компонент должен владеть каким св-вом из state
+      - Эту инструкцию можно применить к каждому из св-в в state.
+      - К делу:
 
+        1) Определи компоненты, которые отрисовывают что-то по этому св-ву
+          - Это может быть 1 и более компонентов.
 
+        2) Для всех из набора 1 найди общего предка
+          - Этот предок не обязан состоять в наборе 1.
+          - Это вполне может быть, например, компонент-обёртка всего приложения.
 
+        3) Выбери компонент, который будет владеть св-вом из state
+          - Это должен быть либо компонент, найденный в 2.
+          - Либо любой компонент, находящийся выше найденного в 2 по иерархии.
 
+        4) Если не получается найти компонент, которому есть смысл владить св-вом
+          - Можно специально для этого создать отдельный компонент.
+          - И разместить его в любом месте, но выше по иерархии, чем компонент из 2.
 
+    • Определим, какие компоненты будут владеть state-свойствами нашего примера
 
+      ▪ Значение из текстового input (поиск)
 
+        1) SearchBar и ProductTable
+          - Значение текстового input отображается в нём в SearchBar.
+          - И оно также влияет на список выводимых продуктов в ProductTable.
 
+        2) FilterableProductTable
+          - Общим предком для SearchBar и ProductTable является FilterableProductTable.
 
+        3) FilterableProductTable
+          - Будем записывать это св-во в state компонента FilterableProductTable.
 
+      ▪ Значение checkbox (показывать только продукты в продаже)
 
+        1) SearchBar и ProductTable
+          - Значение checkbox влияет на отображение в SearchBar.
+          - И оно также влияет на список выводимых продуктов в ProductTable.
 
+        2) FilterableProductTable
+          - Общим предком для SearchBar и ProductTable является FilterableProductTable.
 
+        3) FilterableProductTable
+          - Будем записывать это св-во в state компонента FilterableProductTable.
+
+    • Обновим код приложения в нашем примере
+      - Наполним state в FilterableProductTable.
+      - Передадим значение input из state в SearchBar и ProductTable, как props.
+      - Передадим значение checkbox из state в SearchBar и ProductTable, как props.
+
+  > Этап №7: добавь обратную связь
+
+    • В React автоматическая обратная связь отсутствует
+
+      ▪ Как дела обстоят в Knockout: двунаправленная связь
+        - Там ты определяешь в модели наблюдаемое свойство.
+        - Затем связываешь его с помощью data-bind с каким-нибудь DOM-элементом.
+        - И у тебя образуется двунаправленная связь.
+        - При изменении св-ва, меняется и элемент. И наоборот.
+        - Это и называеют двунаправленной связью.
+
+      ▪ Как дела обстоят в React: однонаправленная связь
+        - В React ты добавляешь в state общего компонента-предка свойство.
+        - Затем передаешь это свойство через props всем компонентам-потребителям.
+        - И они, используя это свойство, что-то там у себя отрисовывают.
+        - Например, они могут отрисовывать значение текстового input.
+        - Однако, меняя значение этого input в браузере, св-во в state
+          компонента-предка не меняется.
+        - Это и называеют однонаправленной связью.
+
+    • В React обновлять state компонента может только сам этот компонент
+      - То есть, один компонент никак не может обновить state другого компонента.
+
+    • Инициировать обновление state другого компонента можно через переданные колбэки
+      - В нашем примере, FilterableProductTable в render, когда создаёт
+        экземпляр SearchBar, передаёт ему колбэк onUserInput.
+      - В SearchBar этот колбэк назначается с помощью onInput в качестве
+        обработчика события input на текстовый input.
+      - Когда он срабатывает, в качестве аргумента он получает от
+        SearchBar актуальное значение текстового input, и с помощью
+        setState обновляет state компонента FilterableProductTable.
+
+  > Финальный код примера
+
+    // 1] Компоненты
+
+      // 1.1] Компонент FilterableProductTable
+      class FilterableProductTable extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            filterText: '',
+            inStockOnly: false
+          };
+
+          this.handleUserInput = this.handleUserInput.bind(this);
+        }
+
+        handleUserInput(filterText, inStockOnly) {
+          this.setState({
+            filterText: filterText,
+            inStockOnly: inStockOnly
+          });
+        }
+
+        render() {
+          return (
+            <div>
+              <SearchBar
+                filterText={this.state.filterText}
+                inStockOnly={this.state.inStockOnly}
+                onUserInput={this.handleUserInput}
+              />
+              <ProductTable
+                products={this.props.products}
+                filterText={this.state.filterText}
+                inStockOnly={this.state.inStockOnly}
+              />
+            </div>
+          );
+        }
+      }
+
+      // 1.2] Компонент SearchBar
+      class SearchBar extends React.Component {
+        constructor(props) {
+          super(props);
+          this.handleChange = this.handleChange.bind(this);
+        }
+
+        handleChange() {
+          this.props.onUserInput(
+            this.refs.filterTextInput.value,
+            this.refs.inStockOnlyInput.checked
+          );
+        }
+
+        render() {
+          return (
+            <form>
+              <input
+                type="text"
+                placeholder="Search..."
+                value={this.props.filterText}
+                ref="filterTextInput"
+                onChange={this.handleChange}
+              />
+              <p>
+                <input
+                  type="checkbox"
+                  checked={this.props.inStockOnly}
+                  ref="inStockOnlyInput"
+                  onChange={this.handleChange}
+                />
+                {' '}
+                Only show products in stock
+              </p>
+            </form>
+          );
+        }
+      }
+
+      // 1.3] Компонент ProductTable
+      class ProductTable extends React.Component {
+        render() {
+          var rows = [];
+          var lastCategory = null;
+          this.props.products.forEach((product) => {
+            if (product.name.indexOf(this.props.filterText) === -1 || (!product.stocked && this.props.inStockOnly)) {
+              return;
+            }
+            if (product.category !== lastCategory) {
+              rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
+            }
+            rows.push(<ProductRow product={product} key={product.name} />);
+            lastCategory = product.category;
+          });
+          return (
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>{rows}</tbody>
+            </table>
+          );
+        }
+      }
+
+      // 1.4] Компонент ProductRow
+      class ProductRow extends React.Component {
+        render() {
+          var name = this.props.product.stocked ?
+            this.props.product.name :
+            <span style={{color: 'red'}}>
+              {this.props.product.name}
+            </span>;
+          return (
+            <tr>
+              <td>{name}</td>
+              <td>{this.props.product.price}</td>
+            </tr>
+          );
+        }
+      }
+
+      // 1.5] Компонент ProductCategoryRow
+      class ProductCategoryRow extends React.Component {
+        render() {
+          return (<tr><th colSpan="2">{this.props.category}</th></tr>);
+        }
+      }
+
+    // 2] Стартовые данные для отрисовки приложения
+    // - Обычно, они передаются с сервера в формате JSON.
+    // - Но в нашем примере, для наглядности, мы их захардкодим здесь.
+    var PRODUCTS = [
+      {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
+      {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
+      {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
+      {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
+      {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
+      {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+    ];
+
+    // 3] Отрисовка статического React-приложения
+    // - До этой отрисовки в DOM документа React ещё ничего не отрисовывал.
+    // - На этом шаге мы приказываем React'у сделать следующее:
+    //
+    //   1) Найти в документе элемент с ID == container
+    //   2) В конце этого элемента отрисовать приложение
+    //   3) Приложение построить на основе корневого компонента FilterableProductTable.
+    //   4) Корневому компоненту через props передать данные PRODUCTS.
+    //
+    ReactDOM.render(
+      <FilterableProductTable products={PRODUCTS} />,
+      document.getElementById('container')
+    );
 
 
 

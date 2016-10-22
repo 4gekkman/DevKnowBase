@@ -26,19 +26,7 @@
       <file leaf-file-name="React" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/25. React/React">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="902" column="6" selection-start="33379" selection-end="33379" vertical-scroll-proportion="0.7625628" vertical-offset="18335" max-vertical-offset="19509">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="laravel5 - docs" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
-          <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="10" selection-start="924" selection-end="924" vertical-scroll-proportion="14.636364" vertical-offset="1134" max-vertical-offset="313089">
+            <state line="1134" column="6" selection-start="41888" selection-end="41888" vertical-scroll-proportion="0.26130652" vertical-offset="23606" max-vertical-offset="24402">
               <folding />
             </state>
           </provider>
@@ -83,7 +71,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -94,19 +82,7 @@
       <autoscrollFromSource />
       <sortByType />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevKnowBase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -114,7 +90,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../projects/devapp" />
     <property name="FullScreen" value="false" />
     <property name="SearchEverywhereHistory" value="" />
   </component>
@@ -164,11 +140,11 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -188,6 +164,23 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/25. React/React">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="902" column="6" selection-start="33379" selection-end="33379" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="19509">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/4. PHP Library/5. Laravel/laravel5 - docs">
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="10" selection-start="924" selection-end="924" vertical-scroll-proportion="0.0" vertical-offset="1134" max-vertical-offset="313089">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/25. React/React">
       <provider selected="true" editor-type-id="text-editor">
         <state line="794" column="20" selection-start="28630" selection-end="28630" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="17913">
@@ -319,14 +312,14 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="10" selection-start="924" selection-end="924" vertical-scroll-proportion="14.636364" vertical-offset="1134" max-vertical-offset="313089">
+        <state line="31" column="10" selection-start="924" selection-end="924" vertical-scroll-proportion="0.0" vertical-offset="1134" max-vertical-offset="313089">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/25. React/React">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="902" column="6" selection-start="33379" selection-end="33379" vertical-scroll-proportion="0.7625628" vertical-offset="18335" max-vertical-offset="19509">
+        <state line="1134" column="6" selection-start="41888" selection-end="41888" vertical-scroll-proportion="0.26130652" vertical-offset="23606" max-vertical-offset="24402">
           <folding />
         </state>
       </provider>
