@@ -16267,6 +16267,8 @@ SASS
   rsync -alPvz <path to folder to copy> gekkman@188.244.34.28:<path to where copy the folder>
 
 
+rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
+
 
 В16. Как через eloquent с помощью with извлекать через связи лишь указанные столбцы
 
