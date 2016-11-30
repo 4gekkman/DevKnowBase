@@ -16440,10 +16440,16 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
   - Надо перейти в корень топового репозитория.
   - И выполнить эту команду:
 
+    • Обновить всё, кроме подмодулей
       git stash
-      git pull                        
+      git pull   
+
+    • Установить все подмодули
       git submodule update --init --recursive
 
+    • Обновить все подмодули
+      git submodule foreach 'git stash'
+      git submodule update --recursive --remote
 
 
 
