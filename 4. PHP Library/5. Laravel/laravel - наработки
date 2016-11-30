@@ -16392,7 +16392,11 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
 
         [submodule "M1"]
           path = project/vendor/4gekkman/M1
-          url = git://github.com/4gekkman/M1.git    
+          url = git@github.com:4gekkman/M1.git 
+
+  • Обрати внимание на формат URL в секции выше
+    - Он должен быть именно такой, чтобы подмодуль можно было качать с помощью SSH-ключа.
+    - В противном случае, ты получишь ошибку: "Repository not found".
 
   • Папочки на github останутся серые, но появятся синие ссылки
     - На github теперь ты сможешь кликнуть по имени подмодуля.
@@ -16436,6 +16440,11 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
   - Надо перейти в корень топового репозитория.
   - И выполнить эту команду:
 
+      git stash
+      git pull                        
       git submodule update --init --recursive
+
+
+
 
 
