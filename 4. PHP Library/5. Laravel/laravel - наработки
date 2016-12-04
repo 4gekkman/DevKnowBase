@@ -16721,7 +16721,9 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
       git submodule foreach 'git stash'
       git submodule update --recursive --remote        
 
+  4. Изменить рекурсивно права всех файлов проекта на 777
 
+      chmod -R 777 .
 
 
 
