@@ -16739,7 +16739,8 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
     ▪ Решение №1: Proxy  
     ▪ Решение №2: TOR
 
-  #     
+  # Шаг №1: Установка TOR на Ubuntu
+  # 
 
 --------------------------------------
 
@@ -16753,6 +16754,17 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
 
   # Тема "TOR вместо proxy" на форуме PHP-программистов
       http://phpforum.su/index.php?showtopic=83831
+
+  # Вопросы по теме на stackoverflow
+
+    • Send cURL requests through tor?
+        http://stackoverflow.com/questions/27767190/send-curl-requests-through-tor
+    
+    • How can I connect to a Tor hidden service using cURL in PHP?
+        http://stackoverflow.com/questions/15445285/how-can-i-connect-to-a-tor-hidden-service-using-curl-in-php
+
+    • About port 9150 (PHP cURL over TOR what am I doing wrong?)
+        http://stackoverflow.com/questions/38285107/php-curl-over-tor-what-am-i-doing-wrong
 
 > Введение
   
@@ -16776,6 +16788,32 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
       tor можно использовать, если скорость не критично.
     - Использование TOR абсолютно бесплатно.
     - С TOR работать удобнее, чем с proxy.
+
+> Шаг №1: Установка TOR на Ubuntu
+
+  • Официальная инструкция
+      https://www.torproject.org/docs/debian.html.en#ubuntu
+
+  • Команды для установки
+      apt-get update
+      apt-get install tor deb.torproject.org-keyring      
+
+  • Как проверить, что TOR запущен на порту 9050
+    - Ввести: ss -aln | grep 9050
+    - Если в ответ пусто, значит не работает.
+    - 
+
+
+
+
+
+
+  
+
+
+
+
+
 
 
 
