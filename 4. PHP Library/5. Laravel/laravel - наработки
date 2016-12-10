@@ -16740,6 +16740,12 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
     ▪ Решение №2: TOR
 
   # Шаг №1: Установка TOR на Ubuntu
+  
+    ▪ Официальная инструкция (URL)
+    ▪ Команды для установки
+    ▪ Как убедиться, что демонт TOR запущен
+    ▪ Как проверить, что TOR запущен на порту 9050
+
   # 
 
 --------------------------------------
@@ -16791,17 +16797,25 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
 
 > Шаг №1: Установка TOR на Ubuntu
 
-  • Официальная инструкция
+  • Официальная инструкция (URL)
       https://www.torproject.org/docs/debian.html.en#ubuntu
 
   • Команды для установки
       apt-get update
       apt-get install tor deb.torproject.org-keyring      
 
+  • Как убедиться, что демонт TOR запущен
+    - Ввести: ps aux | grep tor
+    - Если там есть что-то вроде этого, значит tor работает:
+
+        debian-+  3516  0.6  0.3  74120 25680 ?        S    20:42   0:03 /usr/bin/tor --defaults-torrc /usr/share/tor/tor-service-defaults-torrc --hush    
+
   • Как проверить, что TOR запущен на порту 9050
     - Ввести: ss -aln | grep 9050
     - Если в ответ пусто, значит не работает.
-    - 
+    - Если в ответ что-то вроде этого, то работает:
+
+        tcp    LISTEN     0      128    127.0.0.1:9050                  *:*
 
 
 
