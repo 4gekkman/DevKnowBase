@@ -16739,14 +16739,20 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
     ▪ Решение №1: Proxy  
     ▪ Решение №2: TOR
 
-  # Шаг №1: Установка TOR на Ubuntu
+  # Подготовка TOR к работе
   
     ▪ Официальная инструкция (URL)
     ▪ Команды для установки
     ▪ Как убедиться, что демонт TOR запущен
     ▪ Как проверить, что TOR запущен на порту 9050
+    ▪ Добавление команд по установке в DockerFile
+    ▪ Добавление TOR в supervisord образа
+    ▪ Добавление конфига TOR в образ
+    ▪ Установка пакета dunglas/php-torcontrol
+   
+  # Смена IP-адреса для TOR
+  # Запрос через TOR с помощью curl
 
-  # 
 
 --------------------------------------
 
@@ -16795,7 +16801,7 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
     - Использование TOR абсолютно бесплатно.
     - С TOR работать удобнее, чем с proxy.
 
-> Шаг №1: Установка TOR на Ubuntu
+> Подготовка TOR к работе
 
   • Официальная инструкция (URL)
       https://www.torproject.org/docs/debian.html.en#ubuntu
@@ -16817,7 +16823,92 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
 
         tcp    LISTEN     0      128    127.0.0.1:9050                  *:*
 
+  • Добавление команд по установке в DockerFile
+    - Добавить следующей код в DockerFile:
 
+      # 1] Установить
+      RUN echo "deb http://deb.torproject.org/torproject.org xenial main" >> /etc/apt/sources.list
+      RUN echo "deb-src http://deb.torproject.org/torproject.org xenial main" >> /etc/apt/sources.list
+      RUN gpg --keyserver keys.gnupg.net --recv A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89
+      RUN gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add -
+      RUN apt-get update && apt-get install -y tor deb.torproject.org-keyring; exit 0
+    
+      # 2] Выключить автозапуск TOR при старте (чтобы управлять этим через supervisord)
+      RUN systemctl disable tor.service
+
+  • Добавление TOR в supervisord образа
+    - Добавь следующий код в конфиг супервизора образа:
+
+      ; Запустить tor
+      command = tor                                               ; command to start the program
+      user = root                                                 ; user from which name to start program
+      autostart = true                                            ; whether run program at supervisord start
+      autorestart = unexpected                                    ; restart program when crash
+      numprocs=1                                                  ; start only 1 instance of the program
+      redirect_stderr=true                                        ; send errors to stdout            
+      stdout_logfile=<path_to_the_project>/other/logs/tor.log     ; write stdout and stderr of the programm to this file
+      stdout_logfile_maxbytes=50MB                                ; max size of logfile before it is rotated
+      stdout_logfile_backups=0                                    ; number of backed up logfiles    
+
+  • Добавление конфига TOR в образ
+    
+    ▪ Добавление конфига
+      - Надо создать папку tor в environment.
+      - И положить туда файл torrc (из /etc/tor/torrc).
+      - Затем в docker-compose прописать к нему путь.
+
+    ▪ Настройка
+      - Раскомментировать следующие строки.
+
+        ControlPort 9051
+        HashedControlPassword 16:<и так далее>
+        CookieAuthentication 0    
+
+      - Выставить для CookieAuthentication значение 0,
+        отличающееся от дефолнтного.
+      - Генерируем в консоли новый пароль, и вставляем его
+        в качестве значения для HashedControlPassword.
+
+          tor --hash-password <новый пароль>
+
+  • Установка пакета dunglas/php-torcontrol
+    - Этот пакет надо прописать в composer.
+    - Именно он позволяет менять IP для TOR по команде.
+    - Вот он: https://packagist.org/packages/dunglas/php-torcontrol
+
+> Смена IP-адреса для TOR
+  - Менять IP можно раз в несколько секунд.
+  - Вот этот код сменит IP для TOR:
+
+    $tc = new \TorControl\TorControl([
+      'hostname' => 'localhost',
+      'port'     => '9051',
+      'password' => '<пароль от TOR>',
+    ]);    
+
+    $tc->connect();
+    $tc->authenticate();
+
+    // именно эта строка отсылает тору команду на смену ip
+    $tc->executeCommand('SIGNAL NEWNYM');
+
+    $tc->quit();
+
+> Запрос через TOR с помощью curl
+  - Вот функция для осуществления запросов через TOR.
+  - Код:
+
+      function get($url,$proxy) { 
+        $ch = curl_init();   
+        curl_setopt($ch, CURLOPT_URL,$url); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); 
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.9.0.1) Gecko/2008070208'); 
+        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+        curl_setopt($ch, CURLOPT_PROXY, "$proxy"); 
+        $ss = curl_exec($ch); 
+        curl_close($ch); 
+        return $ss; 
+      }   
 
 
 
