@@ -284,7 +284,6 @@
       /app                          | Корневой каталог проекта
         /.git                       | - git-файлы проекта
         /stateless                  | - stateless-часть проекта, компоненты добавляются в прокет, как поддеревья
-          /instance                 | -- шаблон экземпляра stateful-части приложения
           /nodejs                   | -- docker-образ, stateless-код
           /mysql                    | -- docker-образ, stateless-код
           /redis                    | -- docker-образ, stateless-код
