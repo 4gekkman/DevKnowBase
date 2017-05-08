@@ -295,7 +295,7 @@
             readme.md               | --- readme
             .dockerignore           | --- какие файлы не должны попасть на docker-hub
         /stateful                   | - stateful-часть проекта (экземпляры)
-          /local                    | -- локальный экземпляр
+          /dev                      | -- экземпляр для локальный разработки
           /instance1                | -- экземпляр №1
           /instance2                | -- экземпляр №2
           /instance3                | -- экземпляр №3
