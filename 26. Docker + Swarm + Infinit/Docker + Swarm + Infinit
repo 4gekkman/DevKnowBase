@@ -328,6 +328,9 @@
         с помощью docker-compose, и настраивает фаервол.
       - Используются stateful-данные из локальной папки local,
         а не пробрасываются из Infinit-volume.
+      - Папки со stateless-кодом в контейнерах подменяются
+        с помощью volume оными из соотв.папок в stateless.
+        Так, что можно разрабатывать код в режиме realtime.
 
     • Работа на менеджере
       - Для провижн на менеджере используется sh-скрипт,
@@ -586,7 +589,7 @@
         https://github.com/4gekkman/parent/tree/master/my-subproject
         https://github.com/4gekkman/my-subproject
 
-    5. Внесённы локально изменения push'им в my-subproject
+    5. Внесённые локально изменения push'им в my-subproject
       - В п.4 мы в т.ч. внесли локальные изменения в поддерево my-subproject.
       - Теперь мы хотим сделать push этих изменений в my-subproject на github.
       - Для этого:
