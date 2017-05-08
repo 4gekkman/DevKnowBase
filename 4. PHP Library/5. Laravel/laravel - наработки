@@ -81,8 +81,14 @@
     В23. Использование tor, как proxy для GET-запросов через guzzle
     В24. Пакет для получения курсов валют (florianv/laravel-swap)
     В25. Обновление таблиц при обновлении версии MySQL через docker-контейнер
-    В26. Защита от атак на внешние порты сервера
- 
+    В26. Настройка фаервола, защита от атак на внешние порты сервера
+    В27. Настройка logrotate для контроля размеров логов проекта
+    В28. Авторизационный лог для MySQL: Audit Plugin и Docker
+    В29. Как защитить сервер от взлома?
+    В30. Работа с git-репозиториями и подмодулями
+    В31. Работа с random.org
+    В32. Найти все файлы, у которых права доступа не 777
+
 
 ////==========================================================////
 
@@ -14555,7 +14561,7 @@ Domain Driven Design ------------------------------------------------------|--- 
 
     2]  Локализация вывода
 
-      - ::setLocale()               | Назначить локаль классу Carbone, примеры: 'en', 'ru'
+      - ::setLocale()               | Назначить локаль классу Carbon, примеры: 'en', 'ru'
 
     3]  Геттеры
 
@@ -16354,7 +16360,12 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
   # Настройка .submodules
   # Клонировать репозиторий вместе с подмодулями
   # Установить и/или обновить все подмодули репозитория
-
+  # Получить список подмодулей репозитория
+  # Удалить подмодуль
+  # Добавить репозиторий, как подмодуль
+  # Создать репозиторий m1:new, и передобавить, как подмодуль
+  # Как найти в индексе GIT нужные файлы
+ 
 --------------------------------------
 
 > Ссылки
@@ -16433,7 +16444,7 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
 
         https://help.github.com/articles/changing-a-remote-s-url/
 
-# Клонировать репозиторий вместе с подмодулями
+> Клонировать репозиторий вместе с подмодулями
   - Клонируем репозиторий /4gekkman/projects-devapp
     c github в папку github (относ.текущей), вместе
     со всеми подмодулями, указав логин и пароль:
@@ -16444,7 +16455,7 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
     ▪ Через GIT и ssh ключ (НАДО ПРИМЕНЯТЬ)
         git clone --recursive git@github.com:4gekkman/projects-devapp.git devapp
 
-# Установить и/или обновить все подмодули репозитория
+> Установить и/или обновить все подмодули репозитория
   - Надо перейти в корень топового репозитория.
   - И выполнить эту команду:
 
@@ -16458,6 +16469,67 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
     • Обновить все подмодули
       git submodule foreach 'git stash'
       git submodule update --recursive --remote
+
+> Получить список подмодулей репозитория
+  
+    git submodule foreach
+
+> Удалить подмодуль
+  
+  • Как это сделать, описано здесь:
+      http://stackoverflow.com/questions/1260748/how-do-i-remove-a-submodule
+      https://davidwalsh.name/git-remove-submodule
+
+  • Вот инструкция
+
+    1. Delete the relevant section from the .gitmodules file.
+    2. Stage the .gitmodules changes git add .gitmodules
+    3. Delete the relevant section from .git/config.
+    4. Run git rm -r --cached path_to_submodule (no trailing slash).
+    5. Run rm -rf .git/modules/path_to_submodule
+    6. Commit git commit -m "Removed submodule <name>"
+    7. Delete the now untracked submodule files
+       rm -rf path_to_submodule  
+
+> Добавить репозиторий, как подмодуль
+
+  • Для начала надо удалить его из индекса
+    git rm -r --cached path_to_submodule
+
+  • Затем, вернуть в индекс в виде подмодуля
+    git submodule add https://<oauth token с правом repo>@github.com/<имя аккаунта на github>/<имя репозитория>.git <путь к репозиторию>
+    git submodule add --name R1 https://1234567890@github.com/ivan/R1.git project/vendor/ivan/R1
+
+> Создать репозиторий m1:new, и передобавить, как подмодуль
+
+  • Создаём с помощью m1:new
+  • Удаляем с помощью команды:
+
+      git rm -r project/vendor/<user>/<repo>
+
+  • Добавляем, как подмодуль, командой:
+
+      git submodule add --name <repo> https://<token>@github.com/<user>/<repo>.git project/vendor/4gekkman/<repo>
+
+> Как найти в индексе GIT нужные файлы
+
+    git ls-files | grep <искомая строка>
+
+
+artisan m1:new
+Сделать репозиторий приватным на github
+Сделать форк-репозиторий колаборатором
+Принять приглашение стать колаборатором
+composer dump-autoload
+artisan m1:run_light
+cd /../<project root folder>
+.\auto*
+artisan m1:run_light
+.\auto*
+
+
+git submodule add --name <repo> https://<token>@github.com/<user>/<repo>.git project/vendor/4gekkman/<repo>
+git submodule add --name D10013 https://f73f99ac1472e0b5a950ebfec8ebe851627c560b@github.com/4gekkman/D10013.git project/vendor/4gekkman/D10013
 
 
 В19. Деплой проекта на VDS-сервер
@@ -16969,48 +17041,526 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
     - Введи: mysql_upgrade -u<login> -p<password>
 
 
-В26. Защита от атак на внешние порты сервера
+В26. Настройка фаервола, защита от атак на внешние порты сервера
 
 --------------------------------------
 Подоглавление:
 
   # Ссылки
   # Введение
+  # Настройка фаервола iptables для Docker: работающее решение
+
+--------------------------------------
+
+> Ссылки
+
+  # Работающее решение (но без учёта ограничения для MySQL)
+      https://gist.github.com/SeerUK/b583cc6f048270e0ddc0105e4b36e480
+
+> Введение
+  - Фаервол помогает защищать сервер от хакеров.
+  - При работе с Docker настраивать фаервол надо по-особенному.
+  - Как именно, и описано в этой главе. Речь идё об iptables.
+
+
+> Настройка фаервола iptables для Docker: работающее решение
+
+    #!/bin/bash
+    #####################
+    ##        up       ##
+    ########################################################
+    ## Настроить iptables на хосте при запуске приложения ##
+    ########################################################
+    : '
+      
+      1. Общая настройка фаервола
+      2. Настройка ограничений
+      
+        2.1. Ограничить доступ через порт 3306 (MySQL) указанными IP адресами
+
+
+    '
+    ########################################################
+
+    # 1. Общая настройка фаервола
+
+      # 1.1. Удалить все правила и цепочки
+      sudo iptables -F
+      sudo iptables -X
+      
+      # 1.2. Задать политику по умолчанию для цепочек INPUT, OUTPUT, FORWARD
+      sudo ip6tables -P INPUT DROP
+      sudo iptables -P INPUT DROP
+      sudo iptables -P FORWARD DROP
+      sudo iptables -P OUTPUT ACCEPT
+
+      # 1.3. Разрешить установленные подключения
+      sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+      # 1.4. Loopback
+      sudo iptables -A INPUT -i lo -j ACCEPT
+      sudo iptables -A FORWARD -i lo -j ACCEPT
+      sudo iptables -A OUTPUT -o lo -j ACCEPT
+
+      # 1.5. Ping
+      sudo iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+      sudo iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+
+      # 1.6. SSH
+      sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+      # 1.7. DNS
+      sudo iptables -A INPUT -p tcp --dport 53 -j ACCEPT
+      sudo iptables -A INPUT -p tcp --sport 53 -j ACCEPT
+
+      # 1.8. Docker
+      sudo iptables -A FORWARD -i docker0 -o eth0 -j ACCEPT
+      sudo iptables -A FORWARD -i eth0 -o docker0 -j ACCEPT
+      sudo iptables -N DOCKER
+      sudo iptables -A FORWARD -o docker0 -j DOCKER
+      sudo iptables -A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+      sudo iptables -A FORWARD -i docker0 ! -o docker0 -j ACCEPT
+      sudo iptables -A FORWARD -i docker0 -o docker0 -j ACCEPT
+
+      # 1.9. Docker Interception (note we use -I to insert the PRE_DOCKER chain above the DOCKER chain)
+      sudo iptables -N PRE_DOCKER
+      sudo iptables -I FORWARD -o docker0 -j PRE_DOCKER
+
+    # 2. Настройка ограничений
+
+      # 2.1. Ограничить доступ через порт 3306 (MySQL) указанными IP адресами
+      sudo iptables -A PRE_DOCKER -s 1.2.3.4 -p tcp --dport 3306 -j ACCEPT
+      sudo iptables -A PRE_DOCKER -i docker0 -p tcp --dport 3306 -j ACCEPT
+      sudo iptables -A PRE_DOCKER -p tcp --dport 3306 -j DROP 
+
+      # 2.2. Ограничить доступ извне через порт 6379 (Redis) 
+      sudo iptables -A PRE_DOCKER -i docker0 -p tcp --dport 6379 -j ACCEPT
+      sudo iptables -A PRE_DOCKER -p tcp --dport 6379 -j DROP  
+
+
+В27. Настройка logrotate для контроля размеров логов проекта
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+  # Документацию logrotate ищи в man
+
+--------------------------------------
+
+> Ссылки
+
+  # MAN для logrotate на русском
+      https://www.opennet.ru/man.shtml?topic=logrotate&category=8&russian=0
+
+  # Laravel Application Logs and Logrotate
+      https://www.thereluctantdeveloper.com/2014/03/laravel-application-logs-logrotate/
+
+  # Logrotate for Forge
+      https://serversforhackers.com/logrotate-for-forge
+  
+  # How To Manage Log Files With Logrotate On Ubuntu 12.10
+      https://www.digitalocean.com/community/tutorials/how-to-manage-log-files-with-logrotate-on-ubuntu-12-10
+
+> Введение
+  - Если за логами не следить, они могут со временем занять весь диск.
+  - А когда место на диске кончается, сервер падает.
+  - А когда сервер падает, компания несёт потери.
+  - Поэтому, необходимо жёстко ограничивать MAX размеры всех логов проекта.
+  - Как это сделать в моих проектах, и описывается здесь.
+
+> Документацию logrotate ищи в man
+  - Введи эту команду в Linux, и увидишь подробную документацию:
+
+      man logrotate
+
+> Пошаговая инструкция
+
+  1. Установить logrotate
+
+    sudo apt-get update
+    sudo apt-get install logrotate
+
+  2. Проверить, работает ли он
+
+    logrotate
+
+  3. Создать файл-конфиг для logrotate
+    - Он будет перезаписывать опции по умолчанию из 
+      глобального конфига /etc/logrotate.conf
+
+    /etc/logrotate.d/<имя конфига>
+
+  4. Настроить, чтобы logrotate в cron срабатывал каждую минуту
+
+    * * * * * * root /usr/sbin/logrotate -f /etc/logrotate.d/<имя конфига>
+
+  5. Настроить файл-конфиг
+    - Это пример файла-конфига для лога laravel.log
+    - Каждую минуту лог будет проверяться (по cron'у).
+    - Если он превысил размер 100 мб, то будет 
+      удалён, и заменён на новый, с таким же названием.
+
+      /<путь к проекту>/storage/logs/*.log { 
+        su root root
+        rotate 0
+        size 100M
+        missingok
+        notifempty
+        nocompress
+        create 755 root root
+        shred
+      }
+
+    - Реальный пример: 
+
+      /c/WebDev/projects/csgohap/project/storage/logs/*.log {
+        su root root
+        rotate 0
+        size 1k
+        missingok
+        notifempty
+        nocompress
+        create 755 root root
+        shred
+      }    
+
+    - Что значат параметры в конфиге:
+
+      su root root          // Logrotate работает от имени админа
+      rotate 0              // Старые версии логов удаляются
+      size 100M             // Logrotate срабатывает, если размер лога превысил 100 мегабайт
+      missingok             // Если файл лога не найден, не вызывать ошибку
+      notifempty            // Если файл пуст, ничего не делать
+      nocompress            // Не сжимать старые версии логов
+      create 755 root root  // Новый файл создавать с правами 755, владельцем/группой root
+      shred                 // Необходимо использовать при работе через NFS, иначе место не будет освобожтаться
+
+  6. Протестировать работоспособность
+    - Сделать, чтобы размер файла лога был больше size.
+    - Выполнить команду:
+
+        sudo logrotate --force <имя конфига>
+
+    - Посмотреть, что получилось.
+
+
+В28. Авторизационный лог для MySQL: Audit Plugin и Docker
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+  # Пошаговая инструкция
+
+--------------------------------------
+
+> Ссылки
+
+  # Где скачать MariaDB, в которой есть Audit Plugin
+      https://downloads.mariadb.org/mariadb/10.1.22/#os_group=linux_generic
+
+  # Официальная документация MariaDB Audit Plugin
+      https://mariadb.com/kb/en/mariadb/about-the-mariadb-audit-plugin/#versions
+
+  # Все настройки Audit Plugin для my.cnf
+      https://mariadb.com/kb/en/mariadb/server_audit-system-variables/
+
+> Введение
+  - Часто хакеры выбирают для атаки базу данных.
+  - В случае взлома хотелось бы иметь какие-то следы.
+  - Такие следы хакеры могут оставить в логах:
+
+    1) Авторизационный лог (подключения/отключения).
+    2) Лог запросов к базе данных
+
+  - В MySQL такой лог можно вести с помощью плагина.
+  - Плагин называется MariaDB Audit Plugin.
+  - Ниже пошаговая инструкция, как его использовать с Docker.
+
+> Пошаговая инструкция
+
+  1. Скачать MariaDB для generic linux, в которой есть audit plugin
+    - https://downloads.mariadb.org/mariadb/10.1.22/#os_group=linux_generic
+
+  2. Вытащить оттуда server_audit.so
+    - Он лежит по адресу: lib/plugin/server_audit.so
+    - Положи его в папку other/mysql_plugins в корне проекта.
+
+  3. Пробросить audit_login.so в контейнер в docker-compose.yml
+    - Открой docker-compose.yml
+    - Для сервиса MySQL в volumes пропиши этот проброс:
+
+        <path_to_the_project>/other/mysql_plugins/audit_login.so:/usr/lib/mysql/plugin/audit_login.so
+
+  4. Настрой плагин в my.cnf
+    - Этот конфиг ведёт лог только подключений/отключений.
+      Он не ведёт лог запросов. Чтобы вёл, надо заменить
+      значение "connect" на "connect,query".
+    - Настроена ротация по размеру 100 мб, с хранением 5 копий.
+    - Конфигурация:
+
+      plugin_load                     = audit_login.so
+      server_audit_output_type        = file
+      server_audit_logging            = ON
+      server_audit_events             = connect
+      server_audit_file_path          = <path_to_the_project>/other/logs/security/mysql_connections.log
+      server_audit_file_rotate_size   = 100M
+      server_audit_file_rotations     = 5
+
+
+В29. Как защитить сервер от взлома?
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+
   # 
 
 --------------------------------------
 
 > Ссылки
 
-  # Описание проблемы про взлом Redis
-      http://stackoverflow.com/questions/34115213/redis-raise-error-noauth-authentication-required-but-there-is-no-password-setti
-
 > Введение
-  - По сети рыщут хакеры, сканируют открытые порты.
-  - Ищут незащищённые узлы, и берут их под контроль.
-  - Например, меняют пароль на Redis, сайт падает, инфу сливают.
-  - Необходимо эффективно от этого защищаться.
+  - Часто злоумышленники пытаются взламывать наши сервера.
+  - В этой главе описаны различные профилактические меры,
+    способы защиты.
 
 > 
 
+> Подключение к серверу только через SSH (через пароль отключить)
+
+> Подключение к серверу только с определённых IP
+
+> Лог кодключений к linux-серверу через SSH
+  grep 'sshd' /var/log/auth.log
+
+> Лог подключений/отключений от MySQL
+
+> Лог подключений/отключений от Redis
+
+> Сложные длинные пароли для MySQL/Redis
+
+> Фаервол
+  - Полный запрет на подключения к Redis извне.
+  - Подключения к MySQL только с определённых IP.
+
+> Проверка базы на левые триггеры, хранимые процедуры/функции
+
+  • Триггеры
+      select trigger_schema, trigger_name, action_statement from information_schema.triggers;
+
+  • Хранимые процедуры и функции
+      SELECT name, db, type FROM mysql.proc order by type, name, db;
+
+> Проверка открытых портов
+    
+    nmap --open csgohap.ru
+
+> Анализ security-логов
+  
+  • MySQL
+    - Regex-выражение для notepad++
+      ^((?!root,172\.18\.0\.5).)*$
+
+  • Redis
+    - Regex-выражение для notepad++
+      ^((?!(Accepted 172\.18\.0\.5|Accepted 172\.18\.0\.4|Client closed|DB 0|clients connected|changes in|DB saved|Background saving|Reading from client)).)*$
 
 
 
+В30. Работа с git-репозиториями и подмодулями
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+
+  # Добавить клон пакета
+  # Удалить клон пакета
+
+--------------------------------------
+
+• Добавить клон пакета
+  - Применять при разработке.
+  - Если в пакет надо вносить изменения.
+
+    cd project
+    artisan m1:clone
+
+• Удалить клон пакета
+  - Если надо удалить пакет из проекта совсем.
+
+    cd project
+    artisan m1:del    
 
 
+В31. Работа с random.org
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+
+  # Бета-ключ
+  # Запрос и верификация случайного числа в диапазоне от 1 до N
+
+--------------------------------------
+
+> Ссылки
+
+  # Официальный сайт Random.org
+      random.org
+
+  # Справочник по API Random.org
+      api.random.org
+
+  # Бета API-ключ на Random.org
+      api.random.org/api-keys/beta
+
+> Введение
+  - Random.org, это сервис для генерации рандумных чисел.
+  - Он позволяет валидировать сгенерированные им числа.
+  - В главе описано, как работать с Random.org через API.
+
+> Бета-ключ
+
+  • Где получить
+      api.random.org/api-keys/beta
+
+  • Ограничения
+    - 1000 запросов в сутки.
+    - 250000 бит в сутки.
+
+  • Состояние ключа
+    - Можно узнать с помощью метода getUsage.
+    - Возможные состояния (говорят за себя): running, stopped.
+    - Когда ключ выходит за пределы ограничений, он становится stopped.
+
+  • Как увеличить квоты
+    - Все ключи будут в бете до 30 июня 2017.
+    - Можно написать в администрацию сервиса, и попросить
+      увеличить квоты: contact@random.org
+
+  • Как быстро расходуется квота
+    - 7 бит за 1 запрос.
+    - Значит, есть 250000/7 = ~35000 запросов по квоте по битам.
+    - Квота по запросам будет израсходована намного раньше.
+
+> Запрос и верификация случайного числа в диапазоне от 1 до N
+
+  1. Отправить запрос
+    - Адрес: https://api.random.org/json-rpc/1/invoke
+    - Метод: POST
+    - Диапазон: от 1 до 100
+    - Результат: 1-но int число в указанном диапазоне
+    - Параметры:
+
+      {
+          "jsonrpc": "2.0",
+          "method": "generateSignedIntegers",
+          "params": {
+              "apiKey": "00000000-0000-0000-0000-000000000000",
+              "n": 1,
+              "min": 1,
+              "max": 100,
+              "replacement": true,
+              "base": 10
+          },
+          "id": <int, номер раунда>
+      }
+
+  2. Обработать ответ
+
+    • В случае ошибки
+      - Ответ будет такой, как показано ниже.
+      - Поля result не будет, вместо него будет поле error.
+
+        {
+          "jsonrpc": "2.0",
+          "error": {...},
+          "id": "..."
+        }
+
+    • В случае успеха
+      - Ответ будет такой, как показано ниже.
+      - Поля error не будет, вместо него будет поле result.
+
+        {
+          "jsonrpc": "2.0",
+          "result": {...},
+          "id": "..."
+        }
+
+      - Содержимое поля result (пример и пояснения):
+
+        "random": {
+            
+            // Это просто те же параметры, которые были указаны при отправке запроса
+            "method": "generateSignedIntegers",
+            "hashedApiKey": "oT3AdLMVZKajz0pgW/8Z+t5sGZkqQSOnAi1aB8Li0tXgWf8LolrgdQ1wn9sKx1ehxhUZmhwUIpAtM8QeRbn51Q==",
+            "n": 1,
+            "min": 1,
+            "max": 100,
+            "replacement": false,
+            "base": 10,
+
+            // Это случайное число, которое сгенерировал сервис в указанном диапазоне
+            "data": [
+                16,
+            ],
+            "completionTime": "2013-09-30 15:01:53Z",     // Время завершения запроса
+            "serialNumber": 69261                         // Серийный номер запроса
+        },
+
+        // Цифровая подпись для верификации
+        "signature": "dzGPWztvKjFkH+E37L6asaWH+lISuEfdkNpEKYU3LeF32r4kgjdZmRscI0cxssAnTCNlsyr7HwpDkdE41zGa9jM4ycQoJalupuXFyvWd1/E8tH6mTI9CSLpJT8Gjrc303Z9W3rSxynx1iqniIqbfY1eglJGr819cMIhsm2fde76aiew/lxEFGoE/qjPHH7mwdPpLjAyv3S3NBQD8yPJkh+RpWJlSKsKpfPKTfFXUBkED25LQkfuVRyveg1GysNYCki2VEGlhnobOzwwX7KZskVvz7S9ze/FcfHH6anpFycO32RZb2xqnRKG2/Ob11bW7IMeBEXGdYRcgMcC98jNFVGALUoDHmi7PeGW0beuR4XSU1SGM9xLq8qaRyrkptkNX+1pruYsyJ/sVoX73UKbz7BXDMpwZZlmNzxcIpljG6NJ4ZplkHW9gOC3wV1G2wDHu0kgsveGQlWletUt0y6x7pXEcxZ+jAAxP4CEuGEuvRHeXqc1i1ozhWd2K3I9r4f95aCEGa3gAqUY6/tfoMDKBo7h2BTbdRDIv250INddkB8FWHzy6nbuKeJFtK0C5xjU+4NEuMXqMSgIXWV7uuoanVHhVFhpmslwpk0sVxATyeJDLhpU376MjDNl8dYBfwoTqv77lxK3jbMN18GHmFOUrz58vpE4dyvUstY3L/bgl6+U=",
+        
+
+        "bitsUsed": 296,          // Израсходовано бит
+        "bitsLeft": 932104,       // Осталось бит
+        "requestsLeft": 199990,   // Осталось запросов
+        "advisoryDelay": 1000     // Рекомендуемое кол-во мс до совершения следующего запроса    
+
+  3. Верифицировать запрос
+    
+    • Кому доказывать
+      - Мы хотим доказать кому-то, что указанное число было сгенерировано сервисом Random.org.
+      - Для этого мы переадресуем того, кому мы хотим доказать.
+      - И у него в браузере открывается сайт Random.org с подтверждением.
+
+    • Куда переадресовывать
+      - Адрес: https://api.random.org/verify
+      - Метод: POST
+      - Параметры (пример):
+
+          format: json
+          random: {
+            "method":"generateSignedIntegers",
+            "hashedApiKey":"4px50LXHuIRMoqpxO+sIp6pzPL9juD+XHNkWkA576rJ5Nyuu42Xj9YUZXUouDmSahI+F898lfEe0nyPYPBSA9Q==",
+            "n":1,
+            "min":1,
+            "max":100,
+            "replacement":true,
+            "base":10,
+            "data":[16],
+            "completionTime":"2013-09-30 15:01:53Z",
+            "serialNumber":69261
+            }
+          signature: dzGPWztvKjFkH+E37L6asaWH+lISuEfdkNpEKYU3LeF32r4kgjdZmRscI0cxssAnTCNlsyr7HwpDkdE41zGa9jM4ycQoJalupuXFyvWd1/E8tH6mTI9CSLpJT8Gjrc303Z9W3rSxynx1iqniIqbfY1eglJGr819cMIhsm2fde76aiew/lxEFGoE/qjPHH7mwdPpLjAyv3S3NBQD8yPJkh+RpWJlSKsKpfPKTfFXUBkED25LQkfuVRyveg1GysNYCki2VEGlhnobOzwwX7KZskVvz7S9ze/FcfHH6anpFycO32RZb2xqnRKG2/Ob11bW7IMeBEXGdYRcgMcC98jNFVGALUoDHmi7PeGW0beuR4XSU1SGM9xLq8qaRyrkptkNX+1pruYsyJ/sVoX73UKbz7BXDMpwZZlmNzxcIpljG6NJ4ZplkHW9gOC3wV1G2wDHu0kgsveGQlWletUt0y6x7pXEcxZ+jAAxP4CEuGEuvRHeXqc1i1ozhWd2K3I9r4f95aCEGa3gAqUY6/tfoMDKBo7h2BTbdRDIv250INddkB8FWHzy6nbuKeJFtK0C5xjU+4NEuMXqMSgIXWV7uuoanVHhVFhpmslwpk0sVxATyeJDLhpU376MjDNl8dYBfwoTqv77lxK3jbMN18GHmFOUrz58vpE4dyvUstY3L/bgl6+U=
 
 
+В32. Найти все файлы, у которых права доступа не 777
+  - В текущей папке.
 
-
-
-
-
-
-
-
-
-
-
+    find \! -perm 777
+    find \! -perm 777 -type f -o \! -perm 777 -type d
 
 
 
