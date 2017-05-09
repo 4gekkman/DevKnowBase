@@ -368,11 +368,11 @@
       ▪ Stateful-данные dev с помощью volume
 
         ▪ Во все сервисы
-          - <path_to_the_project>/stateful/dev/configs:/csgocluster/data/configs
-          - <path_to_the_project>/stateful/dev/logs:/csgocluster/data/logs
-          - <path_to_the_project>/stateful/dev/mysql:/csgocluster/data/mysql
-          - <path_to_the_project>/stateful/dev/redis:/csgocluster/data/redis
-          - <path_to_the_project>/stateful/dev/other:/csgocluster/data/other
+          - <path_to_the_project>/stateful/<instance_name>/configs:/theproject/data/configs
+          - <path_to_the_project>/stateful/<instance_name>/mysql:/theproject/data/mysql
+          - <path_to_the_project>/stateful/<instance_name>/redis:/theproject/data/redis
+          - <path_to_the_project>/stateful/<instance_name>/logs:/theproject/data/logs
+          - <path_to_the_project>/stateful/<instance_name>/other:/theproject/data/other
 
         ▪ Только в сервис app
           - <path_to_the_project>/stateless/dev/storage:/csgocluster/service/storage
