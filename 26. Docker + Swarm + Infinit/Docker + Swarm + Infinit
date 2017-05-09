@@ -497,7 +497,7 @@
 
       ▪ Примеры
 
-        git push git@github.com:whatever/gitweb.git gitweb-latest:master
+        git subtree push git@github.com:whatever/gitweb.git gitweb-latest:master
 
     •••••••••••••••••••••••
     •• git subtree split ••
@@ -554,7 +554,8 @@
         в папку my-subproject/ (в неё будет скопировано содержимое,
         не забудь / в конце; ниже ссылка для анонимного скачивания без ключа):
 
-          git subtree add --prefix=my-subproject/ git://github.com/4gekkman/my-subproject.git master
+          git subtree add --prefix=my-subproject/ git://github.com/4gekkman/my-subproject.git master    // Для публичного репозитория
+          git subtree add --prefix=my-subproject/ git@github.com:4gekkman/my-subproject.git master      // Для приватного репозитория с доступом через ключ
 
       - Коммит уже автоматически сделался в parent.
       - Так что, теперь просто делаем push:

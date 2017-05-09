@@ -16515,6 +16515,16 @@ rsync -alPvz . gekkman@194.67.215.100:/c/WebDev/devapp
 
     git ls-files | grep <искомая строка>
 
+> Переиндексировать все файлы в репозитории
+
+  git rm -rf --cached .
+  git add .  
+  git commit -m "fix"
+
+> Если большой файл был удалён, но push всё равно не работает 
+
+  git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch <file/dir>' HEAD
+
 
 artisan m1:new
 Сделать репозиторий приватным на github
