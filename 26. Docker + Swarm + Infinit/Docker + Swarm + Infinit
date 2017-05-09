@@ -222,6 +222,8 @@
       ▪ Локальная разработка
       ▪ Запуск копий проекта на воркерах
 
+    # Проброс stateless/stateful данных в контейнеры, при разработке / на продакшн
+
   --------------------------------------
 
   > Требования к структуре проекта
@@ -358,6 +360,39 @@
         Но к воркеру будет с помощью infinit подключён volume
         со stateful-данными приложения, которые будут проброшены
         часть в один контейнер, часть в другой.
+
+  > Проброс stateless/stateful данных в контейнеры, при разработке / на продакшн
+
+    • Для локальной версии, конфиги "dev"
+
+      ▪ Stateful-данные dev с помощью volume
+
+        ▪ Во все сервисы
+          - <path_to_the_project>/stateful/dev/configs:/csgocluster/data/configs
+          - <path_to_the_project>/stateful/dev/logs:/csgocluster/data/logs
+          - <path_to_the_project>/stateful/dev/mysql:/csgocluster/data/mysql
+          - <path_to_the_project>/stateful/dev/redis:/csgocluster/data/redis
+          - <path_to_the_project>/stateful/dev/other:/csgocluster/data/other
+
+        ▪ Только в сервис app
+          - <path_to_the_project>/stateless/dev/storage:/csgocluster/service/storage
+
+      ▪ Stateless-данные с помощью COPY в DockerFile
+
+        ▪ Во все сервисы
+          - COPY ["data", "/csgocluster/service/"]
+
+      ▪ Stateless-данные специально для локальной dev-версиии в цельях разработки
+
+        ▪ Во все сервисы
+          - <path_to_the_project>/stateless/projects-csgocluster-app/data:/csgocluster/service
+          - <path_to_the_project>/stateless/projects-csgocluster-websockets/data:/csgocluster/service
+          - <path_to_the_project>/stateless/projects-csgocluster-mysql/data:/csgocluster/service
+          - <path_to_the_project>/stateless/projects-csgocluster-redis/data:/csgocluster/service
+
+
+
+
 
 
 А3. Работа с git subtree
