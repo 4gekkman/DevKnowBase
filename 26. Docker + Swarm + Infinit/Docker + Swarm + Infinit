@@ -1146,24 +1146,21 @@
 
     # Справочник по командам docker swarm
 
-      ▪ init          |
-      ▪ join          |
-      ▪ join-token    |
-      ▪ leave         |
-      ▪ unlock        |
-      ▪ unlock-key    |
-      ▪ update        |
+      ▪ init          | Инициировать создание роя
+      ▪ join          | Подключить узел к рою, как воркер/менеджер
+      ▪ join-token    | Посмотреть токен для подключения к рою
+      ▪ leave         | Отключить узел от роя
+      ▪ unlock        | Разблокировать рой
+      ▪ unlock-key    | Посмотреть ключ для разблокировки роя
+      ▪ update        | Обновить рой
 
     # Справочник по командам docker stack
 
-      ▪
-      ▪
-      ▪
-      ▪
-      ▪
-      ▪
-      ▪
-      ▪
+      ▪ deploy        | Деплой нового стека, или обновление существующего
+      ▪ ls            | Посмотреть список работающих стеков
+      ▪ ps            | Посмотреть работающие задачи указанного стека
+      ▪ rm            | Удалить указанный стэк
+      ▪ services      | Посмотреть работающие сервисы указанного стека
 
   --------------------------------------
 
@@ -1182,9 +1179,264 @@
 
   > Справочник по командам docker swarm
 
+    • docker swarm init [OPTIONS]
 
+      ▪ Описание
+        - Инициировать создание роя.
+
+      ▪ Опции
+
+        --advertise-addr          | IP-адрес менеджера
+        --autolock                | [false] Повесить на менеджер замок (нужен ключ для остановки/запуска)
+        --cert-expiry             | [2160h0m0s] Период валидности для сертификатов узлов
+        --dispatcher-heartbeat    | [5s] Время сердцебиения диспетчера
+        --external-ca             | Ссылки на 1 или более внешних центров подписи сертификатов
+        --force-new-cluster       | [false] Заставить создать новый кластер из текущего состояния
+        --listen-addr             | [0.0.0.0:2377] Какой адрес слушать
+        --max-snapshots           | [0] Кол-во доп.снэпшотов для сохранения (0 по умолчанию)
+        --snapshot-interval       | [10000] Кол-во записей в лог перед тем, как будет снят снэпшот
+        --task-history-limit      | [5] Кол-во задач и истории
+
+      ▪ Пример
+
+        docker swarm init --advertise-addr 192.168.99.121
+
+    • docker swarm join [OPTIONS] HOST:PORT
+
+      ▪ Описание
+        - Подключить узел к рою, как воркер/менеджер.
+
+      ▪ Опции
+
+        --token                   | Токен для подключения к рою
+        --advertise-addr          | IP-адрес менеджера
+        --listen-addr             | [0.0.0.0:2377] Какой адрес слушать
+
+      ▪ Где брать токен
+
+        1. Он выводится при создании роя командой docker swarm init.
+        2. Можно зайти на узел роя и ввести:
+
+          docker swarm join-token worker
+
+      ▪ Пример
+
+          docker swarm join --token SWMTKN-1-3pu6hszjas19xyp7ghgosyx9k8atbfcr8p2is99znpy26u2lkl-7p73s1dx5in4tatdymyhg9hu2 192.168.99.121:2377
+
+    • docker swarm join-token [OPTIONS] (worker|manager)
+
+      ▪ Описание
+        - Посмотреть токен для подключения к рою.
+        - Выполнять её надо на узле-менеджере.
+        - Указывать "worker", если нужен токен для подключения воркера.
+        - Указывать "manager", если нужен токен для подключения менеджера.
+
+      ▪ Опции
+
+        --quiet, -q               | [false] Показать только токен, без лишней инфы
+        --rotate                  | [false] Обновить токен
+
+    • docker swarm leave [OPTIONS]
+
+      ▪ Описание
+        - Отключить узел от роя.
+
+      ▪ Опции
+
+        --force, -f               | [false] Принудить узел покинуть рой, игнорировать предупреждения
+
+      ▪ Пример
+
+          docker swarm leave    | Отключить
+          docker node ls        | Проверить
+
+    • docker swarm unlock
+
+      ▪ Описание
+        - Разблокировать рой.
+
+      ▪ Опции
+        - Нет.
+
+    • docker swarm unlock-key [OPTIONS]
+
+      ▪ Описание
+        - Посмотреть ключ для разблокировки роя.
+        - Выполнять её надо на узле-менеджере.
+
+      ▪ Опции
+
+        --quiet, -q               | [false] Показать только токен, без лишней инфы
+        --rotate                  | [false] Обновить токен
+
+    • docker swarm update [OPTIONS]
+
+      ▪ Описание
+        - Обновить рой.
+
+      ▪ Опции
+
+        --autolock                | [false] Повесить на менеджер замок (нужен ключ для остановки/запуска)
+        --cert-expiry             | [2160h0m0s] Период валидности для сертификатов узлов
+        --dispatcher-heartbeat    | [5s] Время сердцебиения диспетчера
+        --external-ca             | Ссылки на 1 или более внешних центров подписи сертификатов
+        --max-snapshots           | [0] Кол-во доп.снэпшотов для сохранения (0 по умолчанию)
+        --snapshot-interval       | [10000] Кол-во записей в лог перед тем, как будет снят снэпшот
+        --task-history-limit      | [5] Кол-во задач и истории
+
+      ▪ Пример
+
+          docker swarm update --cert-expiry 720h
 
   > Справочник по командам docker stack
+
+    • docker stack deploy [OPTIONS] STACK
+
+      ▪ Описание
+
+        ▪ Краткое описание
+          - Деплой нового стека, или обновление существующего.
+
+        ▪ Запускать команду нужно на узле-менеджере
+          - Вот так вот.
+
+        ▪ Команда deploy поддерживает compose-файлы от v3 и выше
+          - Так вот так.
+
+      ▪ Опции
+
+        --bundle-file             | Путь к бандл-файлу (dab) приложения
+        --compose-file, -c        | Путь к compose-файлу
+        --with-registry-auth      | Отправить аутентиф.детали реестра агентам роя
+
+      ▪ Пример
+
+        ▪ Деплоим
+          - Задеплоим сервис под названием vossibility в рой.
+          - При этом, docker-compose.yml лежит в текущем каталоге.
+          - Для этого выполним:
+
+              docker stack deploy --compose-file docker-compose.yml vossibility
+
+          - В качестве вывода увидим что-то вроде:
+
+              Creating network vossibility_vossibility
+              Creating network vossibility_default
+              Creating service vossibility_nsqd
+              Creating service vossibility_logstash
+              Creating service vossibility_elasticsearch
+              Creating service vossibility_kibana
+              Creating service vossibility_ghollector
+              Creating service vossibility_lookupd
+
+        ▪ Удостоверяемся, что всё ок
+          - Удостовериться, что сервис успешно запущен, можно так:
+
+              docker service ls
+
+          - Вывод будет примерно такой:
+
+              ID            NAME                               MODE        REPLICAS  IMAGE
+              29bv0vnlm903  vossibility_lookupd                replicated  1/1       nsqio/nsq@sha256:eeba05599f31eba418e96e71e0984c3dc96963ceb66924dd37a47bf7ce18a662
+              4awt47624qwh  vossibility_nsqd                   replicated  1/1       nsqio/nsq@sha256:eeba05599f31eba418e96e71e0984c3dc96963ceb66924dd37a47bf7ce18a662
+              4tjx9biia6fs  vossibility_elasticsearch          replicated  1/1       elasticsearch@sha256:12ac7c6af55d001f71800b83ba91a04f716e58d82e748fa6e5a7359eed2301aa
+              7563uuzr9eys  vossibility_kibana                 replicated  1/1       kibana@sha256:6995a2d25709a62694a937b8a529ff36da92ebee74bafd7bf00e6caf6db2eb03
+              9gc5m4met4he  vossibility_logstash               replicated  1/1       logstash@sha256:2dc8bddd1bb4a5a34e8ebaf73749f6413c101b2edef6617f2f7713926d2141fe
+              axqh55ipl40h  vossibility_vossibility-collector  replicated  1/1       icecrime/vossibility-collector@sha256:f03f2977203ba6253988c18d04061c5ec7aab46bca9dfd89a9a1fa4500989fba
+
+          - Можно заметить, что имя стэка появляется в виде префикса в именах сервисов.
+          - Поэтому, легко можно разделять сервисы разных стеков.
+
+    • docker stack ls
+
+      ▪ Описание
+        - Посмотреть список работающих стеков.
+
+      ▪ Опции
+        - Нет.
+
+      ▪ Пример
+        - Вводим: docker stack ls
+        - Получаем что-то вроде:
+
+            ID                 SERVICES
+            vossibility-stack  6
+            myapp              2
+
+        - Как видно, справа показано кол-во работающих в стеке сервисов.
+        - Так что, если что-то отвалится, можно спалить по этому числу =)
+
+    • docker stack ps [OPTIONS] STACK
+
+      ▪ Описание
+        - Посмотреть работающие задачи (контейнеры) указанного стека.
+
+      ▪ Опции
+
+        --filter, -f      | Фильтровать вывод указанными условиями
+        --no-resolve      | [false] Не map'ить ID с именами.
+        --no-trunc        | [false] Не обрезать вывод
+
+      ▪ Про флильтрация (вырезка из оригинальной документации)
+
+          The filtering flag (-f or --filter) format is a key=value
+          pair. If there is more than one filter, then pass
+          multiple flags (e.g. --filter "foo=bar" --filter "bif=baz").
+          Multiple filter flags are combined as an OR filter.
+          For example, -f name=redis.1 -f name=redis.7 returns both
+          redis.1 and redis.7 tasks.
+
+          The currently supported filters are:
+
+           ▪ id
+           ▪ name
+           ▪ desired-stat
+
+    • docker stack rm STACK
+
+      ▪ Описание
+        - Удалить указанный стэк.
+
+      ▪ Опции
+        - Нет.
+
+    • docker stack services [OPTIONS] STACK
+
+      ▪ Описание
+        - Посмотреть работающие сервисы указанного стека.
+
+      ▪ Опции
+
+        --filter, -f      | Фильтровать вывод указанными условиями
+        --no-resolve      | [false] Не map'ить ID с именами.
+        --no-trunc        | [false] Не обрезать вывод
+
+      ▪ Про флильтрация (вырезка из оригинальной документации)
+
+          The filtering flag (-f or --filter) format is a key=value
+          pair. If there is more than one filter, then pass
+          multiple flags (e.g. --filter "foo=bar" --filter "bif=baz").
+          Multiple filter flags are combined as an OR filter.
+          For example, -f name=redis.1 -f name=redis.7 returns both
+          redis.1 and redis.7 tasks.
+
+          The currently supported filters are:
+
+           ▪ id
+           ▪ name
+           ▪ desired-stat
+
+      ▪ Пример
+
+        ▪ Посмотреть сервисы стека myapp
+
+          docker stack services myapp
+
+        ▪ Вывод примерно такой
+
+          ID            NAME            REPLICAS  IMAGE                                                                          COMMAND
+          7be5ei6sqeye  myapp_web       1/1       nginx@sha256:23f809e7fd5952e7d5be065b4d3643fbbceccd349d537b62a123ef2201bc886f
+          dn7m7nhhfb9y  myapp_db        1/1       mysql@sha256:a9a5b559f8821fe73d58c3606c812d1c044868d42c63817fa5125fd9d8b7b539
 
 
 Б5. Деплой docker-compose (v3) в Swarm
@@ -1195,21 +1447,98 @@
     # Ссылки
     # Введение
 
+      ▪ О чём эта глава
+      ▪ Начиная с DE версии 1.13
+
+    # Опция deploy в Compose-файле
+
+      ▪ Что за опция
+      ▪ Подопции
+
+    # Справочник по опции deploy и её подопциям
+
+      ▪ mode                  | 
+      ▪ replicas              |
+      ▪ placement             |
+
+        ▪ constraints         |
+
+      ▪ update_config         |
+
+        ▪ parallelism         |
+        ▪ delay               |
+        ▪ failure_action      |
+        ▪ monitor             |
+        ▪ max_failure_ratio   |
+
+      ▪ resources             |
+
+        ▪ limits              |
+          ▪ cpus              |
+          ▪ memory            |
+
+        ▪ reservations        |
+          ▪ cpus              |
+          ▪ memory            |
+
+      ▪ restart policy        |
+
+        ▪ condition           |
+        ▪ delay               |
+        ▪ max_attempts        |
+        ▪ window              |
+
+      ▪ labels                |
 
   --------------------------------------
 
   > Ссылки
 
-      https://docs.docker.com/compose/swarm/#multiple-dependencies
-      http://blog.terranillius.com/post/composev3_swarm/
-      http://blog.arungupta.me/deploy-docker-compose-services-swarm/
+    # Сторонний, но хороший туториал по теме главы
+        https://technologyconversations.com/2017/01/23/using-docker-stack-and-compose-yaml-files-to-deploy-swarm-services/
 
-
-      ---> [Самый подробный туториал] https://technologyconversations.com/2017/01/23/using-docker-stack-and-compose-yaml-files-to-deploy-swarm-services/
+    # Всякие прочие статьи/туториалы, которые я нашёл
+        https://docs.docker.com/compose/swarm/#multiple-dependencies
+        http://blog.terranillius.com/post/composev3_swarm/
+        http://blog.arungupta.me/deploy-docker-compose-services-swarm/
 
   > Введение
 
-      docker stack
+    • О чём эта глава
+      - В этой главе туториал
+      - По деплою docker-compose v3 приложения в рой.
+
+    • Начиная с DE версии 1.13
+      - Появилась поддержка Compose YAML-файлов v3.
+      - И соответствующая команда в Docker CLI, docker stack.
+      - Команда работает только с 3-й версией compose-файлов.
+
+  > Опция deploy в Compose-файле
+
+    • Что за опция
+      - Для конфигурации сервиса для команды docker stack deploy.
+      - То есть, при запуске compose-приложения оной командой.
+      - Она игнорируется при использовании с docker-compose up.
+
+    • Подопции
+      - У опций внутри deploy также есть и подопции.
+      - Подробнее обо всех опциях и подопциях deploy см.ниже.
+      - Например:
+
+        deploy:
+          replicas: 6
+          update_config:
+            parallelism: 2
+            delay: 10s
+          restart_policy:
+            condition: on-failure
+
+  > Справочник по опции deploy и её подопциям
+
+
+
+
+
 
 
 
