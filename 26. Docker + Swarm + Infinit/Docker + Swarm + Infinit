@@ -1172,6 +1172,9 @@
     # docker stack
         https://docs.docker.com/engine/reference/commandline/stack/
 
+    # Официальный справочник по Composer-file v3
+        https://docs.docker.com/compose/compose-file/
+
   > Введение
     - В этом CLI-справочнике будут рассмотрены docker swarm/stack.
     - Swarm понятно почему, а stack позволяет деплоить в рой
@@ -1457,38 +1460,40 @@
 
     # Справочник по опции deploy и её подопциям
 
-      ▪ mode                  | 
-      ▪ replicas              |
-      ▪ placement             |
+      ▪ mode                  | Режим работы сервиса, global / replicated
+      ▪ replicas              | Для режима replicated, задаёт кол-во контейнеров сервиса, которые должные одновременно работать.
+      ▪ placement             | Определяет ограничения на размещение сервиса
+        ▪ constraints         | Конкретные ограничения
 
-        ▪ constraints         |
+      ▪ update_config         | Настройки обновления сервиса, как в docker service create
+        ▪ parallelism         | Какое кол-во контейнеров обновлять за 1 итерацию
+        ▪ delay               | Задержка между итерациями обновления контейнеров
+        ▪ failure_action      | Что делать в случае ошибки, pause(default)/continue
+        ▪ monitor             | Сколько ждать после обновления, что вылезет ошибка (0s по умолчанию)
+        ▪ max_failure_ratio   | Сколько ошибок стерпеть при обновлении
 
-      ▪ update_config         |
+      ▪ resources             | Настройка ограничений на системные ресурсы для сервиса
+        ▪ limits              | Ограничения на ресурсы
+          ▪ cpus              | Ограничения на CPU
+          ▪ memory            | Ограничения на память
+        ▪ reservations        | Резервация ресурсов
+          ▪ cpus              | Резервация ресурсов CPU
+          ▪ memory            | Резервация ресурсов памяти
 
-        ▪ parallelism         |
-        ▪ delay               |
-        ▪ failure_action      |
-        ▪ monitor             |
-        ▪ max_failure_ratio   |
+      ▪ restart_policy        | Настройка, нужно ли и как перезапускать контейнеры, если они завершают работу
+        ▪ condition           | [default] none / on-failure / any
+        ▪ delay               | [0] Как долго ждать между попытками рестарта
+        ▪ max_attempts        | [never give up] MAX число попыток рестарта
+        ▪ window              | [decide immediately] Как долго ждать, прежде чем решить, что рестарт удался
 
-      ▪ resources             |
+      ▪ labels                | Назначить ярлыки для сервиса
 
-        ▪ limits              |
-          ▪ cpus              |
-          ▪ memory            |
+    # Туториал по деплою compose-сервиса в swarm
 
-        ▪ reservations        |
-          ▪ cpus              |
-          ▪ memory            |
-
-      ▪ restart policy        |
-
-        ▪ condition           |
-        ▪ delay               |
-        ▪ max_attempts        |
-        ▪ window              |
-
-      ▪ labels                |
+      1. Подготовим compose-файл
+      2. Задеплоим его на менеджера
+      3. Проверим, создался ли стэк, и число задач в нём
+      4. Проверим состояние контейнеров стека
 
   --------------------------------------
 
@@ -1525,50 +1530,235 @@
       - Подробнее обо всех опциях и подопциях deploy см.ниже.
       - Например:
 
-        deploy:
-          replicas: 6
-          update_config:
-            parallelism: 2
-            delay: 10s
-          restart_policy:
-            condition: on-failure
+        version: '3'
+        services:
+          worker:
+            image: dockersamples/examplevotingapp_worker
+            deploy:
+              replicas: 6
+              update_config:
+                parallelism: 2
+                delay: 10s
+              restart_policy:
+                condition: on-failure
 
   > Справочник по опции deploy и её подопциям
 
+    • mode
 
+      ▪ Описание
+        - Режим работы сервиса.
+        - Возможные значения: global / replicated.
 
+      ▪ Режимы работы сервиса
 
+        ▪ global:     | ровно по 1-му контейнеру на каждому узле.
+        ▪ replicated  | [по умолчанию] указанное количество контейнеров
 
+      ▪ Пример
 
+          deploy:
+            mode: global
 
+    • replicas
 
+      ▪ Описание
+        - Для режима replicated, задаёт кол-во контейнеров сервиса, которые должные одновременно работать.
 
+      ▪ Только для mode == replcated
+        - Вот так вот.
 
+      ▪ Пример
 
+          deploy:
+            mode: replicated
+            replicas: 6
 
+    • placement
 
+      ▪ Описание
+        - Определяет ограничения на размещение сервиса.
+        - Например, можно приказать размещать на определённом узле.
 
+      ▪ Подопции
 
+        ▪ constraints     | Конкретные ограничения
 
+      ▪ Справочник по видам ограничений
 
+        ▪ node.id           | node.id == 2ivku8v2gvtg4
+          - ID узла.
 
+        ▪ node.hostname     | node.hostname != node-2
+          - Имя хоста узла.
 
+        ▪ node.role         | node.role == manager
+          - Роль узла.
 
+        ▪ node.labels       | node.labels.security == high
+          - Определённые пользователем ярлыки узла.
 
+        ▪ engine.labels     | engine.labels.operatingsystem == ubuntu 14.04
+          - Определённые DE ярлыки узла.
 
+      ▪ Пример
 
+          deploy:
+            placement:
+              constraints:
+                - node.role == manager
+                - engine.labels.operatingsystem == ubuntu 14.04
 
+    • update_config
 
+      ▪ Описание
+        - Настройки обновления сервиса.
+        - Это те же самые опции обновления из docker service create.
 
+      ▪ Подопции
 
+        ▪ parallelism         | Какое кол-во контейнеров обновлять за 1 итерацию
+        ▪ delay               | Задержка между итерациями обновления контейнеров
+        ▪ failure_action      | Что делать в случае ошибки, pause(default)/continue
+        ▪ monitor             | Сколько ждать после обновления, что вылезет ошибка (0s по умолчанию)
+        ▪ max_failure_ratio   | Сколько ошибок стерпеть при обновлении
 
+    • resources
 
+      ▪ Описание
+        - Настройка ограничений на системные ресурсы для сервиса.
+        - Заменяет соотв.опции из старых версий compose-файла:
+          cpu_shares, cpu_quota, cpuset, mem_limit, memswap_limit, mem_swappiness.
 
+      ▪ Подопции
 
+        ▪ limits              | Ограничения на ресурсы
+          ▪ cpus              | Ограничения на CPU
+          ▪ memory            | Ограничения на память
+        ▪ reservations:       | Резервация ресурсов
+          ▪ cpus: '0.0001'    | Резервация ресурсов CPU
+          ▪ memory: 20M       | Резервация ресурсов памяти
 
+      ▪ Пример
 
+          deploy:
+            resources:
+              limits:
+                cpus: '0.001'
+                memory: 50M
+              reservations:
+                cpus: '0.0001'
+                memory: 20M
 
+    • restart_policy
 
+      ▪ Описание
+        - Настройка, нужно ли и как перезапускать контейнеры, если они завершают работу.
+        - Заменяет опцию restart при работе через docker stack.
+
+      ▪ Подопции
+
+        ▪ condition           | [default] none / on-failure / any
+        ▪ delay               | [0] Как долго ждать между попытками рестарта
+        ▪ max_attempts        | [never give up] MAX число попыток рестарта
+        ▪ window              | [decide immediately] Как долго ждать, прежде чем решить, что рестарт удался
+
+      ▪ Пример
+
+          deploy:
+            restart_policy:
+              condition: on-failure
+              delay: 5s
+              max_attempts: 3
+              window: 120s
+
+    • labels
+
+      ▪ Описание
+        - Назначить ярлыки для сервиса.
+        - Потом по ярлыкам можно назначать ограничения на размещение
+          в placement.
+
+      ▪ ВНИМАНИЕ!
+        - Ярлыки приклеиваются К СЕРВИСА, а НЕ К КОНТЕЙНЕРАМ.
+        - Чтобы их приклеить к контейнерам, используй label вне ключа deploy.
+
+      ▪ Примеры
+
+        ▪ Приклеить ярлык к сервису
+
+          version: "3"
+          services:
+            web:
+              image: web
+              deploy:
+                labels:
+                  com.example.description: "This label will appear on the web service"
+
+        ▪ Приклеить ярлык к контейнеру
+
+          version: "3"
+          services:
+            web:
+              image: web
+              labels:
+                com.example.description: "This label will appear on all containers for the web service"
+
+  > Туториал по деплою compose-сервиса в swarm
+
+    1. Подготовим compose-файл
+      - Укажем ограничение, деплой только на узел-менеджер.
+      - Файл:
+
+        version: "3"
+        services:
+
+          proxy:
+            image: vfarcic/docker-flow-proxy
+            ports:
+              - 80:80
+              - 443:443
+            networks:
+              - proxy
+            environment:
+              - LISTENER_ADDRESS=swarm-listener
+              - MODE=swarm
+            deploy:
+              replicas: 2
+
+          swarm-listener:
+            image: vfarcic/docker-flow-swarm-listener
+            networks:
+              - proxy
+            volumes:
+              - /var/run/docker.sock:/var/run/docker.sock
+            environment:
+              - DF_NOTIFY_CREATE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/reconfigure
+              - DF_NOTIFY_REMOVE_SERVICE_URL=http://proxy:8080/v1/docker-flow-proxy/remove
+            deploy:
+              placement:
+                constraints: [node.role == manager]
+
+        networks:
+          proxy:
+            external: true
+
+    2. Задеплоим его на менеджера
+      - Создадим новый стэк, назовём его proxy.
+      - Compose-файл "docker-compose-stack.yml" у нас в текущем каталоге.
+      - Задеплоим:
+
+          docker stack deploy -c docker-compose-stack.yml proxy
+
+    3. Проверим, создался ли стэк, и число задач в нём
+      - Для этого выполним:
+
+          docker stack ls
+
+    4. Проверим состояние контейнеров стека
+      - Для этого выполним:
+
+          docker stack ps proxy
 
 
 
