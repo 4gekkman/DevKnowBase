@@ -858,15 +858,144 @@
     # Ссылки
     # Введение
 
-    #
+    # Создаём рой
+
+      1. Подключаемся к менеджеру через SSH
+      2. Инициируем создание роя
+      3. Проверяем текущее состояние роя
+      4. Получаем список узлов в кластере
+
+    # Добавляем узлы в рой
+
+      1. Подключаемся к воркеру через SSH
+      2. Подключаем воркера к рою
+      3. Проверяем список узлов в кластере
+
+    # Деплоим сервис (контейнер) в рой
+
+      1.
+      2.
+      3.
 
   --------------------------------------
 
   > Ссылки
 
-    https://docs.docker.com/engine/swarm/swarm-tutorial/
+    # Официальный туториал по DSM
+        https://docs.docker.com/engine/swarm/swarm-tutorial/
 
   > Введение
+
+    • Что за туториал
+      - Небольшой туториал, покрывающий базовые действия с кластером.
+      - Инициализация кластера, добавление узлов, деплой и управление.
+      - Все дейтвия будут проводиться в консоли с помощью DE CLI.
+
+    • Что понадобится
+      - Два компа/виртуалки с Linux и установленным Docker Engine.
+      - Один из них с реальным IP, и у них должен быть интернет.
+      - Между ними должны быть открыты следующие порты:
+
+        ▪ TCP 2377              | для управления кластером
+        ▪ TCP и UDP 7946        | для общения между узлами
+        ▪ UDP 4789              | для трафика через overlay-сеть между узлами
+        ▪ ip protocol 50 (ESP)  | (--opt encrypted) для шифрованного трафика через overlay-сеть
+
+  > Создаём рой
+
+    1. Подключаемся к менеджеру через SSH
+    2. Инициируем создание роя
+
+      • Инициируем
+
+        docker swarm init --advertise-addr <реальный IP менеджера>
+
+      • В ответ получаем что-то типа этого:
+
+        Swarm initialized: current node (dxn1zf6l61qsb1josjja83ngz) is now a manager.
+        To add a worker to this swarm, run the following command:
+
+            docker swarm join \
+            --token SWMTKN-1-49nj1cmql0jkz5s954yi3oex3nedyz0fb0xx14ie39trti4wxv-8vxv8rssmk743ojnwacrr2e7c \
+            192.168.99.100:2377
+
+        To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+      • Пояснения
+        - В ответе есть токен, он нужен будет для подключения к рою узлов.
+        - Там даже есть команда, с помощью которой можно подключать новые узлы к рою.
+
+    3. Проверяем текущее состояние роя
+
+      • Проверяем
+
+        docker info
+
+      • В ответ получаем что-то типа этого:
+
+        Containers: 2
+        Running: 0
+        Paused: 0
+        Stopped: 2
+          ...snip...
+        Swarm: active
+          NodeID: dxn1zf6l61qsb1josjja83ngz
+          Is Manager: true
+          Managers: 1
+          Nodes: 1
+          ...snip...
+
+    4. Получаем список узлов в кластере
+
+      • Получаем
+
+        docker node ls
+
+      • В ответ получаем что-то типа этого:
+
+        ID                           HOSTNAME  STATUS  AVAILABILITY  MANAGER STATUS
+        dxn1zf6l61qsb1josjja83ngz *  manager1  Ready   Active        Leader
+
+      • Что означает звёздочка
+        - Она показывает узел, к которому тыподключен через SSH.
+
+  > Добавляем узлы в рой
+
+    1. Подключаемся к воркеру через SSH
+    2. Подключаем воркера к рою
+
+      • Как посмотреть команду для подключения воркера к рою
+        - Надо подключиться к менеджеру через SSH.
+        - И ввести команду (даст тот же вывод, что при инициализации роя):
+
+          docker swarm join-token worker
+
+      • Подключаем воркера
+
+          docker swarm join --token <токен> <ip менеджера>:2377
+
+    3. Проверяем список узлов в кластере
+
+      • Проверяем
+        - Подключаемся к менеджеру через SSH.
+        - Вводим:
+
+          docker node ls
+
+      • В ответ получаем что-то типа этого:
+
+          ID                           HOSTNAME  STATUS  AVAILABILITY  MANAGER STATUS
+          9j68exjopxe7wfl6yuxml7a7j    worker1   Ready   Active
+          dxn1zf6l61qsb1josjja83ngz *  manager1  Ready   Active        Leader
+
+  > Деплоим сервис (контейнер) в рой
+
+    1. 
+
+
+
+
+
 
 
 Б4. DSM CLI
