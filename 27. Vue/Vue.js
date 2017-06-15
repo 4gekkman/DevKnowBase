@@ -4431,8 +4431,21 @@
         ▪ Префикс по умолчанию в отсутствие name: v-
         ▪ Кастомизация классов по умолчанию: атрибут name для transition
 
-    • CSS-переходы
-    
+      ▪ Переопределение имён классов переходов через атрибуты transition
+        ▪ enter-class
+        ▪ enter-active-class
+        ▪ enter-to-class
+        ▪ leave-class
+        ▪ leave-active-class
+        ▪ leave-to-class
+
+    • CSS transition: пример
+    • CSS animation: пример
+    • Совместное использование transiton и animation
+    • Настройка длительности transition: опция duration
+    • JS-хуки
+
+
 
   # 
  
@@ -4590,6 +4603,171 @@
         - Например, вместо класса v-enter будет применяться my-transition-enter:
 
             <transition name="my-transition">
+
+    ▪ Переопределение имён классов переходов через атрибуты transition
+      - Названия классов переходов можно переопределить для конкретного transition.
+      - Для этого можно использовать перечисленные ниже атрибуты:
+
+        ▪ enter-class
+        ▪ enter-active-class
+        ▪ enter-to-class
+        ▪ leave-class
+        ▪ leave-active-class
+        ▪ leave-to-class
+
+      - Это м.б. полезно для комбинирования системы анимированных
+        переходов Vue с возможностями сторонних библиотек
+        css-анимаций, таких как Animate.css
+      - Пример:
+
+        ▪ Шаблон
+
+          <link href="https://unpkg.com/animate.css@3.5.1/animate.min.css" rel="stylesheet" type="text/css">
+          <div id="example-3">
+            <button @click="show = !show">
+              Переключить рендеринг
+            </button>
+            <transition
+              name="custom-classes-transition"
+              enter-active-class="animated tada"
+              leave-active-class="animated bounceOutRight"
+            >
+              <p v-if="show">hello</p>
+            </transition>
+          </div>
+
+        ▪ Модель
+
+          new Vue({
+            el: '#example-3',
+            data: {
+              show: true
+            }
+          })
+
+  • CSS transition: пример
+
+    ▪ Шаблон
+
+      <div id="example-1">
+        <button @click="show = !show">
+          Переключить рендеринг
+        </button>
+        <transition name="slide-fade">
+          <p v-if="show">hello</p>
+        </transition>
+      </div>    
+
+    ▪ Модель
+
+      new Vue({
+        el: '#example-1',
+        data: {
+          show: true
+        }
+      })
+
+    ▪ Стили
+
+      // Анимации появления и исчезновения могут иметь
+      // различные продолжительности и динамику.      
+      .slide-fade-enter-active {
+        transition: all .3s ease;
+      }
+      .slide-fade-leave-active {
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+      }
+      .slide-fade-enter, .slide-fade-leave-to
+
+  • CSS animation: пример
+
+    ▪ Шаблон
+
+      <div id="example-2">
+        <button @click="show = !show">Переключить отображение</button>
+        <transition name="bounce">
+          <p v-if="show">Посмотри на меня!</p>
+        </transition>
+      </div>
+
+    ▪ Модель
+
+      new Vue({
+        el: '#example-2',
+        data: {
+          show: true
+        }
+      })
+
+    ▪ Стили
+
+      .bounce-enter-active {
+        animation: bounce-in .5s;
+      }
+      .bounce-leave-active {
+        animation: bounce-in .5s reverse;
+      }
+      @keyframes bounce-in {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+  • Совместное использование transiton и animation
+    - Vue надо знать, когда переход/анимация завершается.
+    - Для этого ему надо назначить обработчики событий.
+    - Либо на событие transitionend, либо на animationend.
+    - При использовании перехода ИЛИ анимации, Vue сам определяет.
+    - Но при одновременном использовании обоих, м.б. затруднения.
+    - Например:
+
+      На одном и том же элементе реализуется CSS-анимация
+      инструментами Vue, а также CSS-transition при hover.
+
+      В этом случае, нужно явно в атрибует type псевдоэлемента
+      transition указать Vue, за чем он должен следить,
+      анимацией или переходом:
+
+        <transition type="animation"></transition>
+        <transition type="transition"></transition>
+
+  • Настройка длительности transition: опция duration
+    - По умолчанию, Vue автоматич.определяет завершение перехода.
+    - Он отслеживает события transitionend / animationend на корневом элементе.
+    - Но, если надо, можно и явно указать продолжительность перехода в мс.
+    - Для эого используется опция duration компонента <transition>:
+
+        <transition :duration="1000">...</transition>
+
+    - Можно также указывать отдельные значения длительности
+      начала и окончания перехода:
+
+        <transition :duration="{ enter: 500, leave: 800 }">...</transition>
+
+  • JS-хуки
+
+    ▪ Список JS-хуков переходов
+
+      ▪ before-enter      | <transition v-on:before-enter="beforeEnter"></transition>
+      ▪ enter             | <transition v-on:enter="enter"></transition>
+      ▪ after-enter       | <transition v-on:after-enter="afterEnter"></transition>
+      ▪ enter-cancelled   | <transition v-on:enter-cancelled="enterCancelled"></transition>
+      ▪ before-leave      | <transition v-on:before-leave="beforeLeave"></transition>
+      ▪ leave             | <transition v-on:on:leave="leave"></transition>
+      ▪ after-leave       | <transition v-on:after-leave="afterLeave"></transition>
+      ▪ leave-cancelled   | <transition v-on:leave-cancelled="leaveCancelled"></transition>
+
+
+
+
+
+
 
 
 
