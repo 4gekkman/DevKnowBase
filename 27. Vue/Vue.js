@@ -5834,6 +5834,10 @@
 
     ▪ Render-функции - низкоуровневая альтернатива шаблонам
     ▪ За сценой Vue компилирует шаблон в render-функцию
+    ▪ В render-функции можно использовать JSX
+      ▪ Описание проблемы
+      ▪ Плагин Babel
+      ▪ Внимание! Используй алиас h для createElement, это обязательно
 
   # Простой пример, где использование render-функции целесообразно
 
@@ -5852,7 +5856,19 @@
         
   # Реализация возможностей шаблона с помощью JS        
         
+    ▪ v-if / v-for
+    ▪ v-model
+    ▪ События и модификаторы клавиш
+    ▪ Слоты
         
+  # Функциональные компоненты
+
+    ▪ Без состояния (data) и экземпляра (this)
+    ▪ Аргумент context функции render
+    ▪ Функциональные компоненты легче рендерить
+    ▪ Функциональных компонентов нет в VueJS Chrome dev tools
+    ▪ Функциональный компонент, как обёртка
+    ▪ slots() vs children        
         
 --------------------------------------
 
@@ -5894,6 +5910,50 @@
         _m(0): function anonymous() {
           with(this){return _c('header',[_c('h1',[_v("I'm a template!")])])}
         }    
+
+  • В render-функции можно использовать JSX
+
+    ▪ Описание проблемы
+      - Не красиво и нудно писать рендер-функции без JSX.
+      - Например:
+
+          createElement(
+            'anchored-heading', {
+              props: {
+                level: 1
+              }
+            }, [
+              createElement('span', 'Hello'),
+              ' world!'
+            ]
+          )      
+
+      - Всё это лишь для того, чтобы заменить простой шаблон:
+
+          <anchored-heading :level="1">
+            <span>Hello</span> world!
+          </anchored-heading>      
+
+    ▪ Плагин Babel
+      - Чтобы использовать JSX, надо установить плагин Babel.
+      - Тогда примеры выше можно будет писать так:
+
+          import AnchoredHeading from './AnchoredHeading.vue'
+          new Vue({
+            el: '#demo',
+            render (h) {
+              return (
+                <AnchoredHeading level={1}>
+                  <span>Hello</span> world!
+                </AnchoredHeading>
+              )
+            }
+          })
+
+    ▪ Внимание! Используй алиас h для createElement, это обязательно
+      - Просто так принято в экосистеме Vue.
+      - Иначе всё просто сломается.
+      - См.пример выше. 
 
 > Простой пример, где использование render-функции целесообразно
 
@@ -6122,19 +6182,259 @@
             )
           }      
 
+> Реализация возможностей шаблона с помощью JS        
+      
+  • v-if / v-for
 
+    ▪ Шаблон
 
+        <ul v-if="items.length">
+          <li v-for="item in items">{{ item.name }}</li>
+        </ul>
+        <p v-else>Ничего не найдено.</p>
 
+    ▪ Реализующая шаблон render-функция
 
+        render: function (createElement) {
+          if (this.items.length) {
+            return createElement('ul', this.items.map(function (item) {
+              return createElement('li', item.name)
+            }))
+          } else {
+            return createElement('p', 'Ничего не найдено.')
+          }
+        }
 
- 
+  • v-model
 
+      render: function (createElement) {
+        var self = this
+        return createElement('input', {
+          domProps: {
+            value: self.value
+          },
+          on: {
+            input: function (event) {
+              self.value = event.target.value
+              self.$emit('input', event.target.value)
+            }
+          }
+        })
+      }
 
+  • События и модификаторы клавиш
 
+    ▪ Префиксы для модификаторов событий .capture и .once
+      
+      ▪ Модификаторы:
 
+        !     | .capture
+        ~     | .once
+        ~!    | .capture.once
 
+      ▪ Например
 
+        on: {
+          '!click': this.doThisInCapturingMode,
+          '~keyup': this.doThisOnce,
+          `~!mouseover`: this.doThisOnceInCapturingMode
+        }      
 
+    ▪ Остальные модификаторы реализуй сам в обработчике
+      - В шаблонах реализованы многие модификаторы событий.
+      - Их список можно посмотреть в главе про события.
+      - Но если решил использовать render-функцию, то
+        тебе доступны только .capture и .once через префиксы.
+      - Остальные модификаторы реализуй сам в обработчике:
+
+        ▪ .stop
+
+            event.stopPropagation()
+
+        ▪ .prevent
+
+            event.preventDefault()
+
+        ▪ .self
+
+            if (event.target !== event.currentTarget) return
+
+        ▪ Клавиши .enter, .13
+
+            if (event.keyCode !== 13) return (измените 13 на любой другой код клавиши для модификаторов других клавиш)
+
+        ▪ Модификаторы .ctrl, .alt, .shift, .meta  
+
+            if (!event.ctrlKey) return (измените ctrlKey на altKey, shiftKey, или metaKey, соответственно)
+
+      - Шаблон их использования всех вместе:
+
+          on: {
+            keyup: function (event) {
+              // Ничего не делаем, если элемент на котором произошло
+              // событие не является элементом который мы отслеживаем
+              if (event.target !== event.currentTarget) return
+              
+              // Ничего не делаем, если клавиша не Enter (13)
+              // и клавиша SHIFT не была нажата в тоже время
+              if (!event.shiftKey || event.keyCode !== 13) return
+              
+              // Останавливаем всплытие события
+              event.stopPropagation()
+              
+              // Останавливаем стандартный обработчик keyup для этого элемента
+              event.preventDefault()
+              
+              // ...
+            }
+          }      
+
+  • Слоты
+
+    ▪ Статический контент слотов в виде массивов VNode'ов
+      - Содержится в this.$slots
+      - Пример использования:
+
+          render: function (createElement) {
+            // <div><slot></slot></div>
+            return createElement('div', this.$slots.default)
+          }
+
+    • Доступ к scoped slots
+      - Как к функциям, которые возвращают VNode'ы из this.$scopedSlots
+      - Пример использования:
+
+          render: function (createElement) {
+            // <div><slot :text="msg"></slot></div>
+            return createElement('div', [
+              this.$scopedSlots.default({
+                text: this.msg
+              })
+            ])
+          }
+
+    • Передать scoped slots дочернему компоненту в render-функции
+      - Используй поле scopedSlots в объекте данных createElement:
+
+          render (createElement) {
+            return createElement('div', [
+              createElement('child', {
+                // pass scopedSlots in the data object
+                // in the form of { name: props => VNode | Array<VNode> }
+                scopedSlots: {
+                  default: function (props) {
+                    return createElement('span', props.text)
+                  }
+                }
+              })
+            ])
+          }
+
+> Функциональные компоненты
+
+  • Без состояния (data) и экземпляра (this)
+    - Обычный компонент имеет состояние (data).
+    - А следовательно, и контекст экземпляра (this).
+    - Однако, есть простые компоненты, которым это не нужно.
+    - В конструкторе есть специальное св-во functional.
+    - Если ему передать true, компонент будет обозначен, как функциональный.
+    - Например:
+
+        Vue.component('my-component', {
+          functional: true,
+
+          // To compensate for the lack of an instance,
+          // we are now provided a 2nd context argument.
+          render: function (createElement, context) {
+            // ...
+          },
+
+          // Props are optional
+          props: {
+            // ...
+          }
+
+        })
+
+  • Аргумент context функции render
+    - Обратим внимание на аргумент context функции render.
+    - Туда должен передаваться объект.
+    - Всё нужное компоненту должно быть передано через него.
+    - Включая:
+
+      ▪ props       | объект с props
+      ▪ children    | массив дочерних VNode'ов
+      ▪ slots       | функция, возвращающая объекто слотов
+      ▪ data        | объект data
+      ▪ parent      | ссылка на родительский компонент
+      ▪ listeners   | [алиас для data.on] объект с обработчиками из родителя
+      ▪ injections  | при использовании опции inject, содержит resolved injections
+
+  • Функциональные компоненты легче рендерить
+    - Ведь это просто функции.
+    - По сути, это позволяет экономить ресурсы системы.
+    - Короче говоря, это способ повысить производительность.
+    - Для фанатов =)
+
+  • Функциональных компонентов нет в VueJS Chrome dev tools
+    - Что делает их отладку менее удобной.
+
+  • Функциональный компонент, как обёртка
+    - ФК очень полезны, как обёртки.
+    - Примеры ситуаций, когда это можно использовать:
+
+      ▪ Программно выбрать 1 из N компонентов для чего-то.
+      ▪ Предобработка children, props, data и т.д. перед передачей в дочерний компонент.
+
+    - Вот пример компонента-обёртки smart-list.
+    - В зависимости от props он применяет разные компоненты.
+    - Код:
+
+        var EmptyList = { /* ... */ }
+        var TableList = { /* ... */ }
+        var OrderedList = { /* ... */ }
+        var UnorderedList = { /* ... */ }
+        Vue.component('smart-list', {
+          functional: true,
+          render: function (createElement, context) {
+            function appropriateListComponent () {
+              var items = context.props.items
+              if (items.length === 0)           return EmptyList
+              if (typeof items[0] === 'object') return TableList
+              if (context.props.isOrdered)      return OrderedList
+              return UnorderedList
+            }
+            return createElement(
+              appropriateListComponent(),
+              context.data,
+              context.children
+            )
+          },
+          props: {
+            items: {
+              type: Array,
+              required: true
+            },
+            isOrdered: Boolean
+          }
+        })    
+  
+  • slots() vs children
+    - Вы можете удивлятсья, зачем нужны slots() и children одновременно?
+    - Разве slots().default не будет равно children?
+    - В некоторых случаях да, но что, если у вас есть функциональный
+      компонент следующего вида:
+
+        <my-functional-component>
+          <p slot="foo">
+            first
+          </p>
+          <p>second</p>
+        </my-functional-component>
+
+    - Children вернёт оба элемента p.
+    - slots().default вернёт только второй p.
+    - slots().foo вернёт только первый p.
 
 
 
