@@ -65,6 +65,7 @@
     Б1. Подробно о реактивности
     Б2. Анимирование эффектов переходов
     Б3. Анимирование данных
+    Б4. Render-функции
 
 
 ////==================================================////
@@ -1266,8 +1267,8 @@
   # Отличие Vue-вычисляемых от Knockout-вычисляемых
 
     ▪ Что было в Knockout с вычисляемой?
-    ▪ Две опции: метод или вычисляемая
-    ▪ Вычисляемая кэшируется, метод нет
+    ▪ Метод в Vue соответствует вычисляемой в Knockout
+    ▪ Vue-вычисляемая, как метод, только значение её кэшируется
 
   # Пример вычисляемого свойства
   # Пример использования метода вместо вычисляемой
@@ -1315,7 +1316,7 @@
     - В knockout значение вычисляемой не кэшируется.
     - Её можно использовать в шаблоне, она будет реактивна.
     - А вот метод в knockout при подстановке в шаблон реактивен 
-      не был, и срабатывал тольк 1 раз при загрузке.
+      не был, и срабатывал только 1 раз при загрузке.
 
   • Метод в Vue соответствует вычисляемой в Knockout
     - Его значение не кэшируется, как и Knockout-вычисляемой.
@@ -5577,12 +5578,25 @@
 
     ▪ Анимация данных
 
+  # Анимация св-в модели через watch
+
+    ▪ Анимация чисел через watch
+    ▪ Анимация не числа через watch и computed (на примере цвета)
+
+  # Анимация данных, выделенная в компонент
+
+    ▪ Избежать переусложнения компонента/экземпляра
+    ▪ Выделение анимации числа из примера выше в компонент
+
 --------------------------------------
 
 > Ссылки
 
   # [Официальноу руководство] Анимирование переходов между состояниями
       https://ru.vuejs.org/v2/guide/transitioning-state.html
+
+  # Пример анимации "бешеный полигон"
+      https://jsfiddle.net/chrisvfritz/65gLu2b6/
 
 > Введение
 
@@ -5598,6 +5612,529 @@
     - Все эти параметры являются числами по сути.
     - Значит, можно использовать сторонние библиотеки для анимации,
       в сочетании с компонентными и реактивными системами Vue.
+
+> Анимация св-в модели через watch
+
+  • Анимация чисел через watch
+
+    ▪ Шаблон
+
+      <script src="https://unpkg.com/tween.js@16.3.4"></script>
+      <div id="animated-number-demo">
+        <input v-model.number="number" type="number" step="20">
+        <p>{{ animatedNumber }}</p>
+      </div>
+
+    ▪ Модель
+
+      new Vue({
+        el: '#animated-number-demo',
+        data: {
+          number: 0,
+          animatedNumber: 0
+        },
+        watch: {
+          number: function(newValue, oldValue) {
+            var vm = this
+            var animationFrame
+            function animate (time) {
+              TWEEN.update(time)
+              animationFrame = requestAnimationFrame(animate)
+            }
+            new TWEEN.Tween({ tweeningNumber: oldValue })
+              .easing(TWEEN.Easing.Quadratic.Out)
+              .to({ tweeningNumber: newValue }, 500)
+              .onUpdate(function () {
+                vm.animatedNumber = this.tweeningNumber.toFixed(0)
+              })
+              .onComplete(function () {
+                cancelAnimationFrame(animationFrame)
+              })
+              .start()
+            animationFrame = requestAnimationFrame(animate)
+          }
+        }
+      })
+
+  • Анимация не числа через watch и computed (на примере цвета)
+
+    ▪ Шаблон
+
+      <script src="https://unpkg.com/tween.js@16.3.4"></script>
+      <script src="https://unpkg.com/color-js@1.0.3/color.js"></script>
+      <div id="example-7">
+        <input
+          v-model="colorQuery"
+          v-on:keyup.enter="updateColor"
+          placeholder="Enter a color"
+        >
+        <button v-on:click="updateColor">Обновить</button>
+        <p>Предпросмотр:</p>
+        <span
+          v-bind:style="{ backgroundColor: tweenedCSSColor }"
+          class="example-7-color-preview"
+        ></span>
+        <p>{{ tweenedCSSColor }}</p>
+      </div>
+
+    ▪ Модель
+
+      var Color = net.brehaut.Color
+      new Vue({
+        el: '#example-7',
+        data: {
+          colorQuery: '',
+          color: {
+            red: 0,
+            green: 0,
+            blue: 0,
+            alpha: 1
+          },
+          tweenedColor: {}
+        },
+        created: function () {
+          this.tweenedColor = Object.assign({}, this.color)
+        },
+        watch: {
+          color: function () {
+            var animationFrame
+            function animate (time) {
+              TWEEN.update(time)
+              animationFrame = requestAnimationFrame(animate)
+            }
+            new TWEEN.Tween(this.tweenedColor)
+              .to(this.color, 750)
+              .onComplete(function () {
+                cancelAnimationFrame(animationFrame)
+              })
+              .start()
+            animationFrame = requestAnimationFrame(animate)
+          }
+        },
+        computed: {
+          tweenedCSSColor: function () {
+            return new Color({
+              red: this.tweenedColor.red,
+              green: this.tweenedColor.green,
+              blue: this.tweenedColor.blue,
+              alpha: this.tweenedColor.alpha
+            }).toCSS()
+          }
+        },
+        methods: {
+          updateColor: function () {
+            this.color = new Color(this.colorQuery).toRGB()
+            this.colorQuery = ''
+          }
+        }
+      })
+
+    ▪ Стили
+
+      .example-7-color-preview {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+      }    
+
+> Анимация данных, выделенная в компонент
+
+  • Избежать переусложнения компонента/экземпляра
+    - В к./э. может быть очень много всяких анимаций.
+    - В результате "за деревьями леса не видно".
+    - Чтобы не грузить ими компонент, можно их выделять
+      в отдельные компоненты.
+
+  • Выделение анимации числа из примера выше в компонент
+
+    ▪ Шаблон
+
+      <script src="https://unpkg.com/tween.js@16.3.4"></script>
+      <div id="example-8">
+        <input v-model.number="firstNumber" type="number" step="20"> +
+        <input v-model.number="secondNumber" type="number" step="20"> =
+        {{ result }}
+        <p>
+          <animated-integer v-bind:value="firstNumber"></animated-integer> +
+          <animated-integer v-bind:value="secondNumber"></animated-integer> =
+          <animated-integer v-bind:value="result"></animated-integer>
+        </p>
+      </div>    
+
+    ▪ Компонент и экземпляр
+
+      // Эта логика перехода может быть отныне повторно использована
+      // с любыми целыми числами, которые мы бы хотели анимировать в приложении.
+      // Кроме того, компоненты предоставляют удобный интерфейс для конфигурирования
+      // более сложных и динамичных переходов.
+      Vue.component('animated-integer', {
+        template: '<span>{{ tweeningValue }}</span>',
+        props: {
+          value: {
+            type: Number,
+            required: true
+          }
+        },
+        data: function () {
+          return {
+            tweeningValue: 0
+          }
+        },
+        watch: {
+          value: function (newValue, oldValue) {
+            this.tween(oldValue, newValue)
+          }
+        },
+        mounted: function () {
+          this.tween(0, this.value)
+        },
+        methods: {
+          tween: function (startValue, endValue) {
+            var vm = this
+            var animationFrame
+            function animate (time) {
+              TWEEN.update(time)
+              animationFrame = requestAnimationFrame(animate)
+            }
+            new TWEEN.Tween({ tweeningValue: startValue })
+              .to({ tweeningValue: endValue }, 500)
+              .onUpdate(function () {
+                vm.tweeningValue = this.tweeningValue.toFixed(0)
+              })
+              .onComplete(function () {
+                cancelAnimationFrame(animationFrame)
+              })
+              .start()
+            animationFrame = requestAnimationFrame(animate)
+          }
+        }
+      })
+      // В самом экземпляре Vue больше не осталось никакой логики анимаций
+      new Vue({
+        el: '#example-8',
+        data: {
+          firstNumber: 20,
+          secondNumber: 40
+        },
+        computed: {
+          result: function () {
+            return this.firstNumber + this.secondNumber
+          }
+        }
+      })    
+
+
+Б4. Render-функции
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение  
+
+    ▪ Render-функции - низкоуровневая альтернатива шаблонам
+    ▪ За сценой Vue компилирует шаблон в render-функцию
+
+  # Простой пример, где использование render-функции целесообразно
+
+    ▪ Условия задачи
+    ▪ Решение задачи через шаблон
+    ▪ Решение задачи через render-функцию
+    ▪ Сравнение двух решений
+ 
+  # Функция createElement
+
+    ▪ Синтаксис createElement
+    ▪ Подробнее об объекте данных (2-й аргумент в createElement)
+    ▪ Внимание! Все VNode'ы должны быть уникальными!
+      ▪ Пример не валидной рендер-фукнции
+      ▪ Используйте функцию-фабрику, чтобы избежать дублей
+        
+  # Реализация возможностей шаблона с помощью JS        
+        
+        
+        
+--------------------------------------
+
+> Ссылки
+
+  # [Официальноу руководство] Render-функции
+      https://ru.vuejs.org/v2/guide/render-function.html
+
+> Введение
+
+  • Render-функции - низкоуровневая альтернатива шаблонам
+    - Обычно в Vue для отрисовки HTML используют шаблон.
+    - Но если надо больше гибкости, тогда render-функцию.
+
+  • За сценой Vue компилирует шаблон в render-функцию
+
+    ▪ Пример шаблона
+
+        <div>
+          <header>
+            <h1>I'm a template!</h1>
+          </header>
+          <p v-if="message">
+            {{ message }}
+          </p>
+          <p v-else>
+            No message.
+          </p>
+        </div>
+
+    ▪ render
+
+        function anonymous() {
+          with(this){return _c('div',[_m(0),(message)?_c('p',[_v(_s(message))]):_c('p',[_v("No message.")])])}
+        }
+
+    ▪ staticRenderFns
+
+        _m(0): function anonymous() {
+          with(this){return _c('header',[_c('h1',[_v("I'm a template!")])])}
+        }    
+
+> Простой пример, где использование render-функции целесообразно
+
+  • Условия задачи
+    - Требуется генерировать заголовки с якорями, например:
+
+        <h1>
+          <a name="hello-world" href="#hello-world">
+            Hello world!
+          </a>
+        </h1>
+
+    - Для этого требуется написать компонент.
+    - Пример интерфейса компонента:
+
+        <anchored-heading :level="1">Hello world!</anchored-heading>
+
+  • Решение задачи через шаблон
+
+    ▪ Шаблон
+
+      <script type="text/x-template" id="anchored-heading-template">
+        <div>
+          <h1 v-if="level === 1">
+            <slot></slot>
+          </h1>
+          <h2 v-if="level === 2">
+            <slot></slot>
+          </h2>
+          <h3 v-if="level === 3">
+            <slot></slot>
+          </h3>
+          <h4 v-if="level === 4">
+            <slot></slot>
+          </h4>
+          <h5 v-if="level === 5">
+            <slot></slot>
+          </h5>
+          <h6 v-if="level === 6">
+            <slot></slot>
+          </h6>
+        </div>
+      </script>
+
+    ▪ Модель
+
+      Vue.component('anchored-heading', {
+        template: '#anchored-heading-template',
+        props: {
+          level: {
+            type: Number,
+            required: true
+          }
+        }
+      })
+
+  • Решение задачи через render-функцию
+
+      var getChildrenTextContent = function (children) {
+        return children.map(function (node) {
+          return node.children
+            ? getChildrenTextContent(node.children)
+            : node.text
+        }).join('')
+      }
+      Vue.component('anchored-heading', {
+        render: function (createElement) {
+          // создать id в kebabCase
+          var headingId = getChildrenTextContent(this.$slots.default)
+            .toLowerCase()
+            .replace(/\W+/g, '-')
+            .replace(/(^\-|\-$)/g, '')
+          return createElement(
+            'h' + this.level,
+            [
+              createElement('a', {
+                attrs: {
+                  name: headingId,
+                  href: '#' + headingId
+                }
+              }, this.$slots.default)
+            ]
+          )
+        },
+        props: {
+          level: {
+            type: Number,
+            required: true
+          }
+        }
+      })  
+
+  • Сравнение двух решений
+    - Код решения с render-функцией длиннее и запутаннее.
+    - Но могут быть случае, когда он будет короче =)
+    - В любом случае, он даёт больше гибкости, и 
+      в каких-то случаях позволяет разрулить ситуацию.
+
+# Функция createElement
+
+  • Синтаксис createElement
+    
+    ▪ Возвращает VNode
+      - Виртуальный узел.
+
+    ▪ Синтаксис createElement
+
+      createElement(el, [data], [children])
+
+    ▪ Параметр el
+      - {String | Object | Function}
+      - Обязательный параметр.
+      - Название тега HTML, опции компонента, или функция, их возвращающая.
+
+    ▪ Объект данных data
+      - {Object}
+      - Не обязательный параметр.
+      - Объект данных, содержащий атрибуты, который вы бы указали в шаблоне.
+
+    ▪ Дочерние VNode'ы
+      - {String | Array}
+      - Опциональный параметр.
+
+    ▪ Пример
+
+        createElement(
+          'div', {}, [
+            createElement('h1', 'hello world'),
+            createElement(MyComponent, {
+              props: {
+                someProp: 'foo'
+              }
+            }),
+            'bar'
+          ]
+        )  
+
+  • Подробнее об объекте данных (2-й аргумент в createElement)
+
+      {
+        // То же API что и у `v-bind:class`
+        'class': {
+          foo: true,
+          bar: false
+        },
+        // То же API что и у `v-bind:style`
+        style: {
+          color: 'red',
+          fontSize: '14px'
+        },
+        // Обычные атрибуты HTML
+        attrs: {
+          id: 'foo'
+        },
+        // Входные параметры компонентов
+        props: {
+          myProp: 'bar'
+        },
+        // Свойства DOM
+        domProps: {
+          innerHTML: 'baz'
+        },
+        // Обработчики событий располагаются под ключом "on",
+        // однако модификаторы вроде как v-on:keyup.enter не
+        // поддерживаются. Проверять keyCode придётся вручную.
+        on: {
+          click: this.clickHandler
+        },
+        // Только для компонентов. Позволяет слушать нативные события,
+        // а не генерируемые в компоненте через vm.$emit.
+        nativeOn: {
+          click: this.nativeClickHandler
+        },
+        // Пользовательские директивы. Обратите внимание, что oldValue
+        // не может быть указано, так как Vue сам его отслеживает
+        directives: [
+          {
+            name: 'my-custom-directive',
+            value: '2'
+            expression: '1 + 1',
+            arg: 'foo',
+            modifiers: {
+              bar: true
+            }
+          }
+        ],
+        // Слоты с ограниченной областью видимостью в формате
+        // { name: props => VNode | Array<VNode> }
+        scopedSlots: {
+          default: props => createElement('span', props.text)
+        },
+        // Имя слота, если этот компонент
+        // является потомком другого компонента
+        slot: 'name-of-slot'
+        // Прочие специальные свойства верхнего уровня
+        key: 'myKey',
+        ref: 'myRef'
+      }
+
+  • Внимание! Все VNode'ы должны быть уникальными!
+    
+    ▪ Пример не валидной рендер-фукнции
+      - Все VNode'ы в компоненте д.б. уникальными.
+      - Например, рендер-функция ниже не валидна:
+
+          render: function (createElement) {
+            var myParagraphVNode = createElement('p', 'hi')
+            return createElement('div', [
+
+              // Упс — дублирующиеся VNode'ы!
+              myParagraphVNode, 
+              myParagraphVNode
+
+            ])
+          }
+
+    ▪ Используйте функцию-фабрику, чтобы избежать дублей
+      - Например, надо отобразить 20 элементов p
+      - Сделаем это с помощью функции-фабрики:
+
+          render: function (createElement) {
+            return createElement('div',
+              Array.apply(null, { length: 20 }).map(function () {
+                return createElement('p', 'hi')
+              })
+            )
+          }      
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
 
 
 
