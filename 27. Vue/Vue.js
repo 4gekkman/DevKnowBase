@@ -63,7 +63,8 @@
   # Б.  Продвинутые темы Vue.js
 
     Б1. Подробно о реактивности
-    Б2. Анимированные эффекты переходов
+    Б2. Анимирование эффектов переходов
+    Б3. Анимирование данных
 
 
 ////==================================================////
@@ -4394,7 +4395,8 @@
           }
         })
 
-Б2. Анимационные эффекты
+
+Б2. Анимирование эффектов переходов
 
 --------------------------------------
 Подоглавление:
@@ -4403,7 +4405,6 @@
   # Введение  
 
     ▪ Анимация переходов при обновлении/добавлении/удалении эл-в DOM
-    ▪ Анимация данных
 
   # Анимирование одиночного DOM-элемента/компонента
 
@@ -4415,7 +4416,7 @@
         ▪ Корневые элементы компонентов
       ▪ Пример применения transition
       ▪ Что происходит за сценой при применении transition
-  
+
     • Классы переходов
       
       ▪ 6 классов переходов
@@ -4443,11 +4444,94 @@
     • CSS animation: пример
     • Совместное использование transiton и animation
     • Настройка длительности transition: опция duration
-    • JS-хуки
+    • JS-хуки переходов
+      ▪ JS-хуки можно применять на псевдоэлементе transition
+      ▪ Список JS-хуков переходов
+        
+        ▪ before-enter      | v-on:before-enter     ="beforeEnter"
+        ▪ enter             | v-on:enter            ="enter"
+        ▪ after-enter       | v-on:after-enter      ="afterEnter"
+        ▪ enter-cancelled   | v-on:enter-cancelled  ="enterCancelled"
+        ▪ before-leave      | v-on:before-leave     ="beforeLeave"
+        ▪ leave             | v-on:on:leave         ="leave"
+        ▪ after-leave       | v-on:after-leave      ="afterLeave"
+        ▪ leave-cancelled   | v-on:leave-cancelled  ="leaveCancelled"
+      
+      ▪ Схема использования JS-хуков переходов
+      ▪ Для JS-переходов ВСЕГДА используй коллбэки done в хуках enter / leave
+      ▪ Для JS-переходов указывай: v-bind:css="false"
+      ▪ Пример использования JS-хуков перехода с Velocity.js
 
+  # Переходы при первичном рендеринге
 
+    • По умолчанию, на старте анимация не срабатывает
+    • Атрибут appear для transition запустит appear-анимацию на старте
+    • Кастомные CSS-классы для appear-анимации с помощью атрибутов
+      
+      ▪ Пример кастомных CSS-стилей для appear-анимации
+      ▪ appear-class
+      ▪ appear-to-class
+      ▪ appear-active-class
 
-  # 
+    • Кастомные JS-хуки для appear-анимации
+
+      ▪ Пример кастомных JS-хуков для appear-анимации
+      ▪ before-appear       | v-on:before-appear="customBeforeAppearHook"
+      ▪ appear              | v-on:appear="customAppearHook"
+      ▪ after-appear        | v-on:after-appear="customAfterAppearHook"
+      ▪ appear-cancelled    | v-on:appear-cancelled="customAppearCancelledHook"
+    
+  # Переходы между DOM-элементами
+
+    • Переход между DOM-эл-ми с разными тегами с помощью v-if / v-else
+    • Переход между DOM-эл-ми с одинаковым тегами
+
+      ▪ Нужно использовать атрибут key
+      ▪ Техника перехода с помощью v-if / v-else
+      ▪ [Продвинутая] Техника перехода с помощью key
+ 
+    • Режимы работы transition: атрибут mode
+
+      ▪ sync    | [по умолчанию] Одновременно
+      ▪ in-out  | Сначала входит новый, потом выходит старый
+      ▪ out-in  | Сначала выходит старый, потом входит новый
+ 
+  # Переходы между компонентами
+    
+    • Атрибут key не нужен, используем component - динамиеский компонент    
+ 
+  # Переходы в списках
+
+    • Компонент <transition-group> для анимации списков
+
+      ▪ Используется для sync-анимации в v-for списках
+      ▪ <transition-group> рендерится в реальный DOM-элемент
+        ▪ По умолчанию <transition-group> рендерится в <span>
+        ▪ Атрибут tag: указать, в какой тег среднерится <transition-group>
+      ▪ Элементы списка внутри <transition-group> ВСЕГДА ДОЛЖНЫ иметь уникальный key
+
+    • Анимация добавления/удаления из списка
+    • Анимация изменения позиции в списке
+      ▪ Класс v-move на время анимации
+      ▪ Атрибут move-class для назначения кастомного имени для v-move
+      ▪ Не работает с элементами с display: inline
+      ▪ Простой пример анимации изменения позиции в списке
+      ▪ Пример с анимацей всего: добавления/удаления/изменения позиции
+
+    • Анимация фильтрации списка
+      ▪ Что имеется в виду под анимацией фильтрации
+      ▪ Пример анимации фильтрации списка
+
+  # Повторно используемые переходы
+
+    • Пример компонента, реализующего повторно используемый переход
+    • Используй функциональные компоненты для повторных переходов (пример)
+
+  # Динамические переходы: меняем св-ва анимации на основе data
+ 
+    • Что имеется в виду под динамическими переходами?
+    • Меняем css-классы анимаций в зависимости от св-ва модели
+    • Меняем js-хуки velocity-анимаций в зависимости от св-ва модели
  
 --------------------------------------
 
@@ -4456,8 +4540,8 @@
   # [Официальноу руководство] Анимированные эффекты переходов
       https://ru.vuejs.org/v2/guide/transitions.html
 
-  # [Официальноу руководство] Анимирование переходов между состояниями
-      https://ru.vuejs.org/v2/guide/transitioning-state.html
+  # Техника анимации FLIP
+      https://aerotwist.com/blog/flip-your-animations/
 
 > Введение
   
@@ -4469,19 +4553,6 @@
       ▪ Интегрировать сторонние библиотеки CSS-анимаций, такие как Animate.css.
       ▪ Использовать JavaScript для работы с DOM напрямую в transition-хуках.
       ▪ Интегрировать сторонние библиотеки JavaScript-анимаций, такие как Velocity.js.
-
-  • Анимация данных
-    - Инструменты Vue также облегчают анимацию данных.
-    - Например:
-
-      ▪ Чисел и арифметических выражений.
-      ▪ Отображаемых цветов.
-      ▪ Позиции SVG-элементов.
-      ▪ Размеров и прочих свойств элементов.
-
-    - Все эти параметры являются числами по сути.
-    - Значит, можно использовать сторонние библиотеки для анимации,
-      в сочетании с компонентными и реактивными системами Vue.
 
 > Анимирование одиночного DOM-элемента/компонента
 
@@ -4750,21 +4821,783 @@
 
         <transition :duration="{ enter: 500, leave: 800 }">...</transition>
 
-  • JS-хуки
+  • JS-хуки переходов
+
+    ▪ JS-хуки можно применять на псевдоэлементе transition
+      - Например:
+
+        <transition v-on:before-enter="beforeEnter"></transition>
 
     ▪ Список JS-хуков переходов
 
-      ▪ before-enter      | <transition v-on:before-enter="beforeEnter"></transition>
-      ▪ enter             | <transition v-on:enter="enter"></transition>
-      ▪ after-enter       | <transition v-on:after-enter="afterEnter"></transition>
-      ▪ enter-cancelled   | <transition v-on:enter-cancelled="enterCancelled"></transition>
-      ▪ before-leave      | <transition v-on:before-leave="beforeLeave"></transition>
-      ▪ leave             | <transition v-on:on:leave="leave"></transition>
-      ▪ after-leave       | <transition v-on:after-leave="afterLeave"></transition>
-      ▪ leave-cancelled   | <transition v-on:leave-cancelled="leaveCancelled"></transition>
+      ▪ before-enter      | v-on:before-enter     ="beforeEnter"
+      ▪ enter             | v-on:enter            ="enter"
+      ▪ after-enter       | v-on:after-enter      ="afterEnter"
+      ▪ enter-cancelled   | v-on:enter-cancelled  ="enterCancelled"
+      ▪ before-leave      | v-on:before-leave     ="beforeLeave"
+      ▪ leave             | v-on:on:leave         ="leave"
+      ▪ after-leave       | v-on:after-leave      ="afterLeave"
+      ▪ leave-cancelled   | v-on:leave-cancelled  ="leaveCancelled"
+
+    ▪ Схема использования JS-хуков переходов
+
+      ▪ Шаблон
+
+        <transition
+          v-on:before-enter="beforeEnter"
+          v-on:enter="enter"
+          v-on:after-enter="afterEnter"
+          v-on:enter-cancelled="enterCancelled"
+          v-on:before-leave="beforeLeave"
+          v-on:leave="leave"
+          v-on:after-leave="afterLeave"
+          v-on:leave-cancelled="leaveCancelled"
+        >
+          <!-- ... -->
+        </transition>      
+
+      ▪ Модель
+
+        // ...
+        methods: {
+          // --------
+          // ПОЯВЛЕНИЕ
+          // --------
+          beforeEnter: function (el) {
+            // ...
+          },
+          // коллбэк done не обязательно использовать если
+          // анимация или переход также определены в CSS
+          enter: function (el, done) {
+            // ...
+            done()
+          },
+          afterEnter: function (el) {
+            // ...
+          },
+          enterCancelled: function (el) {
+            // ...
+          },
+          // --------
+          // ИСЧЕЗНОВЕНИЕ
+          // --------
+          beforeLeave: function (el) {
+            // ...
+          },
+          // коллбэк done не обязательно использовать если
+          // анимация или переход также определены в CSS
+          leave: function (el, done) {
+            // ...
+            done()
+          },
+          afterLeave: function (el) {
+            // ...
+          },
+          // leaveCancelled доступна только для v-show
+          leaveCancelled: function (el) {
+            // ...
+          }
+        }
+
+    ▪ Для JS-переходов ВСЕГДА используй коллбэки done в хуках enter / leave
+      - Если переход основан только на JS.
+      - Обязательно вызывай коллбэки done в в хуках enter / leave.
+      - Иначе, переход будет мнгновенно завершаться (не сработает).
+
+    ▪ Для JS-переходов указывай: v-bind:css="false"
+      - Чтобы дать понять Vue, что это чисто JS-ONLY переход.
+      - Это сэкономит ресурсы, т.к. Vue не будет пытаться 
+        понять, css ли это переход, или js.
+      - Кроме того, это убережёт нас от случайного взаимовлияния 
+        CSS-правил и JS-перехода.
+
+    ▪ Пример использования JS-хуков перехода с Velocity.js
+
+      ▪ Шаблон
+
+        <!--
+        Velocity работает примерно так же, как и jQuery.animate
+        и весьма удобен для создания JavaScript-анимаций
+        -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+        <div id="example-4">
+          <button @click="show = !show">
+            Переключить
+          </button>
+          <transition
+            v-on:before-enter="beforeEnter"
+            v-on:enter="enter"
+            v-on:leave="leave"
+            v-bind:css="false"
+          >
+            <p v-if="show">
+              Демо
+            </p>
+          </transition>
+        </div>      
+
+      ▪ Модель
+
+        new Vue({
+          el: '#example-4',
+          data: {
+            show: false
+          },
+          methods: {
+            beforeEnter: function (el) {
+              el.style.opacity = 0
+            },
+            enter: function (el, done) {
+              Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+              Velocity(el, { fontSize: '1em' }, { complete: done })
+            },
+            leave: function (el, done) {
+              Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 })
+              Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
+              Velocity(el, {
+                rotateZ: '45deg',
+                translateY: '30px',
+                translateX: '30px',
+                opacity: 0
+              }, { complete: done })
+            }
+          }
+        })      
+
+> Переходы при первичном рендеринге
+
+  • По умолчанию, на старте анимация не срабатывает
+    - Сабж.
+
+  • Атрибут appear для transition запустит appear-анимацию на старте
+    - Иногда требуется, чтобы анимация в начале сработала.
+    - Этого можно добиться, применив атрибут appear на эл-те transition:
+
+      <transition appear>
+        <!-- ... -->
+      </transition>
+
+  • Кастомные CSS-классы для appear-анимации с помощью атрибутов
+    
+    ▪ Пример кастомных CSS-стилей для appear-анимации
+      - По умолчани для appear-анимации будут применяться
+        те же стили, что для enter-анимации.
+      - Но если надо, чтобы appear-стили отличались:
+
+        <transition
+          appear
+          appear-class="custom-appear-class"
+          appear-to-class="custom-appear-to-class" (>= 2.1.8 only)
+          appear-active-class="custom-appear-active-class"
+        >
+          <!-- ... -->
+        </transition>      
+
+    ▪ appear-class
+      <transition appear-class="custom-appear-class"></transition> 
+
+    ▪ appear-to-class
+      <transition appear-to-class="custom-appear-to-class"></transition> 
+
+    ▪ appear-active-class
+      <transition appear-active-class="custom-appear-active-class"></transition> 
+
+  • Кастомные JS-хуки для appear-анимации
+
+    ▪ Пример кастомных JS-хуков для appear-анимации
+      - По умолчани для appear-анимации будут применяться
+        те же хуки, что для enter-анимации.
+      - Но если надо, чтобы appear-хуки отличались: 
+
+        <transition
+          appear
+          v-on:before-appear="customBeforeAppearHook"
+          v-on:appear="customAppearHook"
+          v-on:after-appear="customAfterAppearHook"
+          v-on:appear-cancelled="customAppearCancelledHook"
+        >
+          <!-- ... -->
+        </transition>
+
+    ▪ before-appear
+      <transition v-on:before-appear="customBeforeAppearHook"></transition> 
+
+    ▪ appear
+      <transition v-on:appear="customAppearHook"></transition> 
+
+    ▪ after-appear
+      <transition v-on:after-appear="customAfterAppearHook"></transition> 
+
+    ▪ appear-cancelled
+      <transition v-on:appear-cancelled="customAppearCancelledHook"></transition> 
+
+> Переходы между DOM-элементами
+
+  • Переход между DOM-эл-ми с разными тегами с помощью v-if / v-else
+    - Допустим, между списком и сообщением, что список пуст.
+    - Пример:
+
+        <transition>
+          <table v-if="items.length > 0">
+            <!-- ... -->
+          </table>
+          <p v-else>Sorry, no items found.</p>
+        </transition>    
+
+  • Переход между DOM-эл-ми с одинаковым тегами
+
+    ▪ Нужно использовать атрибут key
+      - Это актуально при переходе между DOM-эл-ми с одинаковыми тегами.
+      - Нужно дать понять Vue, что это разные элементы.
+      
+        ▪ Для этого использовать атрибуты key.
+        ▪ Значения для key д.б. уникальны в пределах тега transition.
+      
+      - Иначе, компилятор Vue лишь поменяет контент эл-в (экономя ресурсы).
+      - Вообще, даже если нет необходимость, признано хорошей практикой
+        использовать key внутри transition для одинаковых DOM-элементов.
+
+    ▪ Техника перехода с помощью v-if / v-else
+      - Допустим, есть 2 button внутри transition.
+      - Назначаем им атрибут key с уникальнымм внутри transition значениями.
+      - В зависимости от значения isEditing будет показан тот или иной эл-т:
+
+          <transition>
+            <button v-if="isEditing" key="save">
+              Save
+            </button>
+            <button v-else key="edit">
+              Edit
+            </button>
+          </transition>
+
+    ▪ [Продвинутая] Техника перехода с помощью key
+      - При изменении docState button будет заменяться целиком.
+      - Это, в т.ч., вызовет соотв.анимации, и хуки.
+      - При изменении docState будет меняться и надпись на кнопке.
+      - Код:
+
+        ▪ Шаблон
+
+          <transition>
+            <button v-bind:key="docState">
+              {{ buttonMessage }}
+            </button>
+          </transition>
+
+        ▪ Часть модели
+
+          computed: {
+            buttonMessage: function () {
+              switch (docState) {
+                case 'saved': return 'Edit'
+                case 'edited': return 'Save'
+                case 'editing': return 'Cancel'
+              }
+            }
+          }
+
+  • Режимы работы transition: атрибут mode
+
+    ▪ sync
+      - Является режимом по умолчанию работы transition.
+      - Новый входит, старый выходит, одновременно.
+      - В некоторых случаях этот режим норм, в некоторых не норм.      
+      - Чтобы его включить, надо просто не испольозвать атрибут mode.
+      - Писать mode="sync" не надо, не сработает.
+
+    ▪ in-out
+      - Сначала входит новый, потом выходит старый.
+      - Пример:
+
+          <transition name="fade" mode="in-out">
+            <!-- ... the buttons ... -->
+          </transition>      
+
+    ▪ out-in
+      - Сначала выходит старый, потом входит новый.
+      - Пример:
+
+          <transition name="fade" mode="out-in">
+            <!-- ... the buttons ... -->
+          </transition>  
 
 
+> Переходы между компонентами
 
+  • Атрибут key не нужен, используем component - динамиеский компонент    
+
+    ▪ Шаблон
+
+      <transition name="component-fade" mode="out-in">
+        <component v-bind:is="view"></component>
+      </transition>
+
+    ▪ Модель
+
+      new Vue({
+        el: '#transition-components-demo',
+        data: {
+          view: 'v-a'
+        },
+        components: {
+          'v-a': {
+            template: '<div>Component A</div>'
+          },
+          'v-b': {
+            template: '<div>Component B</div>'
+          }
+        }
+      })    
+
+    ▪ Стили
+
+      .component-fade-enter-active, .component-fade-leave-active {
+        transition: opacity .3s ease;
+      }
+      .component-fade-enter, .component-fade-leave-to
+      /* .component-fade-leave-active for <2.1.8 */ {
+        opacity: 0;
+      }    
+
+> Переходы в списках
+
+  • Компонент <transition-group> для анимации списков
+
+    ▪ Используется для sync-анимации в v-for списках
+      - Что, если мы хотим синхронную анимацию эл-в в списках?
+      - А эти списки отрисовываются с опмощью директивы v-for?
+      - В таком случае, надо использовать компонент <transition-group>.
+
+    ▪ <transition-group> рендерится в реальный DOM-элемент
+
+      ▪ По умолчанию <transition-group> рендерится в <span>
+        - Компонент <transition> не рендерится в реальный DOM-элемент.
+        - А компонент <transition-group> рендерится, по умолчанию, в span.
+
+      ▪ Атрибут tag: указать, в какой тег среднерится <transition-group>
+        - Чтобы изменить тэг DOM-элемента по умолчанию, используй атрибут tag.
+        - Например:
+
+          <transition-group name="list" tag="p">
+            ...
+          </transition-group> 
+
+    ▪ Элементы списка внутри <transition-group> ВСЕГДА ДОЛЖНЫ иметь уникальный key
+      - Сабж.
+
+  • Анимация добавления/удаления из списка
+
+    ▪ Шаблон
+
+      <div id="list-demo">
+        <button v-on:click="add">Add</button>
+        <button v-on:click="remove">Remove</button>
+        <transition-group name="list" tag="p">
+          <span v-for="item in items" v-bind:key="item" class="list-item">
+            {{ item }}
+          </span>
+        </transition-group>
+      </div>
+
+    ▪ Модель
+
+      new Vue({
+        el: '#list-demo',
+        data: {
+          items: [1,2,3,4,5,6,7,8,9],
+          nextNum: 10
+        },
+        methods: {
+          randomIndex: function () {
+            return Math.floor(Math.random() * this.items.length)
+          },
+          add: function () {
+            this.items.splice(this.randomIndex(), 0, this.nextNum++)
+          },
+          remove: function () {
+            this.items.splice(this.randomIndex(), 1)
+          },
+        }
+      })
+
+    ▪ Стили
+
+      .list-item {
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .list-enter-active, .list-leave-active {
+        transition: all 1s;
+      }
+      .list-enter, .list-leave-to /* .list-leave-active for <2.1.8 */ {
+        opacity: 0;
+        transform: translateY(30px);
+      }    
+
+  • Анимация изменения позиции в списке
+
+    ▪ Класс v-move на время анимации
+      - Vue добавляет класс v-move элементам списка
+        на время анимации изменения позиции в списке.
+      - Он работает по аналогии с другими анимационными классами.
+      - Префикс по умолчанию "v-", кастомизируется с помощью атрибута name.
+      - Чаще всего v-move используют для кастомизации
+        transition timing и easing curve.
+
+    ▪ Атрибут move-class для назначения кастомного имени для v-move
+      - Имя может быть вручную изменено атрибутом move-class.
+      - Например:
+
+        <transition-group name="flip-list" tag="ul">
+          ...
+        </transition-group>
+
+    ▪ Не работает с элементами с display: inline
+      - Для анимации позиции Vue использует технику FLIP.
+      - Подробнее о FLIP: https://aerotwist.com/blog/flip-your-animations/
+      - А FLIP не работает с эл-ми с display: inline.
+
+    ▪ Простой пример анимации изменения позиции в списке
+    
+      ▪ Шаблон
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+        <div id="flip-list-demo" class="demo">
+          <button v-on:click="shuffle">Shuffle</button>
+          <transition-group name="flip-list" tag="ul">
+            <li v-for="item in items" v-bind:key="item">
+              {{ item }}
+            </li>
+          </transition-group>
+        </div>
+
+      ▪ Модель
+
+        new Vue({
+          el: '#flip-list-demo',
+          data: {
+            items: [1,2,3,4,5,6,7,8,9]
+          },
+          methods: {
+            shuffle: function () {
+              this.items = _.shuffle(this.items)
+            }
+          }
+        })
+
+      ▪ Стили
+
+        .flip-list-move {
+          transition: transform 1s;
+        }
+
+    ▪ Пример с анимацей всего: добавления/удаления/изменения позиции
+
+      ▪ Шаблон
+
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+          <div id="list-complete-demo" class="demo">
+            <button v-on:click="shuffle">Shuffle</button>
+            <button v-on:click="add">Add</button>
+            <button v-on:click="remove">Remove</button>
+            <transition-group name="list-complete" tag="p">
+              <span
+                v-for="item in items"
+                v-bind:key="item"
+                class="list-complete-item"
+              >
+                {{ item }}
+              </span>
+            </transition-group>
+          </div>
+
+      ▪ Модель
+  
+          new Vue({
+            el: '#list-complete-demo',
+            data: {
+              items: [1,2,3,4,5,6,7,8,9],
+              nextNum: 10
+            },
+            methods: {
+              randomIndex: function () {
+                return Math.floor(Math.random() * this.items.length)
+              },
+              add: function () {
+                this.items.splice(this.randomIndex(), 0, this.nextNum++)
+              },
+              remove: function () {
+                this.items.splice(this.randomIndex(), 1)
+              },
+              shuffle: function () {
+                this.items = _.shuffle(this.items)
+              }
+            }
+          })
+
+      ▪ Стили
+
+          .list-complete-item {
+            transition: all 1s;
+            display: inline-block;
+            margin-right: 10px;
+          }
+          .list-complete-enter, .list-complete-leave-to
+          /* .list-complete-leave-active for <2.1.8 */ {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          .list-complete-leave-active {
+            position: absolute;
+          }
+
+  • Анимация фильтрации списка
+
+    ▪ Что имеется в виду под анимацией фильтрации
+      - Например, есть у нас список строк.
+      - Он формируется динамически через computed.
+      - При формировании он фильтруется по значению св-ва.
+      - Вводишь букву, и все не подходящие эл-ты отфильтровываются.
+      - Вот эта техника позволяет анимировать всё это дело.
+
+    ▪ Пример анимации фильтрации списка
+
+      ▪ Шаблон
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+        <div id="staggered-list-demo">
+          <input v-model="query">
+          <transition-group
+            name="staggered-fade"
+            tag="ul"
+            v-bind:css="false"
+            v-on:before-enter="beforeEnter"
+            v-on:enter="enter"
+            v-on:leave="leave"
+          >
+            <li
+              v-for="(item, index) in computedList"
+              v-bind:key="item.msg"
+              v-bind:data-index="index"
+            >{{ item.msg }}</li>
+          </transition-group>
+        </div>
+
+      ▪ Модель
+
+        new Vue({
+          el: '#staggered-list-demo',
+          data: {
+            query: '',
+            list: [
+              { msg: 'Bruce Lee' },
+              { msg: 'Jackie Chan' },
+              { msg: 'Chuck Norris' },
+              { msg: 'Jet Li' },
+              { msg: 'Kung Fury' }
+            ]
+          },
+          computed: {
+            computedList: function () {
+              var vm = this
+              return this.list.filter(function (item) {
+                return item.msg.toLowerCase().indexOf(vm.query.toLowerCase()) !== -1
+              })
+            }
+          },
+          methods: {
+            beforeEnter: function (el) {
+              el.style.opacity = 0
+              el.style.height = 0
+            },
+            enter: function (el, done) {
+              var delay = el.dataset.index * 150
+              setTimeout(function () {
+                Velocity(
+                  el,
+                  { opacity: 1, height: '1.6em' },
+                  { complete: done }
+                )
+              }, delay)
+            },
+            leave: function (el, done) {
+              var delay = el.dataset.index * 150
+              setTimeout(function () {
+                Velocity(
+                  el,
+                  { opacity: 0, height: 0 },
+                  { complete: done }
+                )
+              }, delay)
+            }
+          }
+        })
+
+> Повторно используемые переходы
+
+  • Пример компонента, реализующего повторно используемый переход
+  
+      Vue.component('my-special-transition', {
+        template: '\
+          <transition\
+            name="very-special-transition"\
+            mode="out-in"\
+            v-on:before-enter="beforeEnter"\
+            v-on:after-enter="afterEnter"\
+          >\
+            <slot></slot>\
+          </transition>\
+        ',
+        methods: {
+          beforeEnter: function (el) {
+            // ...
+          },
+          afterEnter: function (el) {
+            // ...
+          }
+        }
+      })
+
+  • Используй функциональные компоненты для повторных переходов (пример)
+    - Подробнее функц-ые компоненты описаны в главе про render-функцию.
+    - Кратко, это компоненты без состояния, т.е. без опции data.
+    - Они хорошо подходят для реализации повторных переходов.
+    - Пример:
+
+        Vue.component('my-special-transition', {
+          functional: true,
+          render: function (createElement, context) {
+            var data = {
+              props: {
+                name: 'very-special-transition',
+                mode: 'out-in'
+              },
+              on: {
+                beforeEnter: function (el) {
+                  // ...
+                },
+                afterEnter: function (el) {
+                  // ...
+                }
+              }
+            }
+            return createElement('transition', data, context.children)
+          }
+        })    
+
+> Динамические переходы: меняем св-ва анимации на основе data
+
+  • Что имеется в виду под динамическими переходами?
+    - Можно менять св-ва анимации динамически.
+    - Например, в зависимости от каких-то св-в в модели.
+    - Для этого прямо на transition можно использовать,
+      например, v-bind.
+
+  • Меняем css-классы анимаций в зависимости от св-ва модели
+
+    <transition v-bind:name="transitionName">
+      <!-- ... -->
+    </transition>
+
+  • Меняем js-хуки velocity-анимаций в зависимости от св-ва модели
+
+    ▪ Шаблон
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+      <div id="dynamic-fade-demo">
+        Fade In: <input type="range" v-model="fadeInDuration" min="0" v-bind:max="maxFadeDuration">
+        Fade Out: <input type="range" v-model="fadeOutDuration" min="0" v-bind:max="maxFadeDuration">
+        <transition
+          v-bind:css="false"
+          v-on:before-enter="beforeEnter"
+          v-on:enter="enter"
+          v-on:leave="leave"
+        >
+          <p v-if="show">hello</p>
+        </transition>
+        <button v-on:click="stop = true">Stop it!</button>
+      </div>
+
+    ▪ Модель
+
+      new Vue({
+        el: '#dynamic-fade-demo',
+        data: {
+          show: true,
+          fadeInDuration: 1000,
+          fadeOutDuration: 1000,
+          maxFadeDuration: 1500,
+          stop: false
+        },
+        mounted: function () {
+          this.show = false
+        },
+        methods: {
+          beforeEnter: function (el) {
+            el.style.opacity = 0
+          },
+          enter: function (el, done) {
+            var vm = this
+            Velocity(el,
+              { opacity: 1 },
+              {
+                duration: this.fadeInDuration,
+                complete: function () {
+                  done()
+                  if (!vm.stop) vm.show = false
+                }
+              }
+            )
+          },
+          leave: function (el, done) {
+            var vm = this
+            Velocity(el,
+              { opacity: 0 },
+              {
+                duration: this.fadeOutDuration,
+                complete: function () {
+                  done()
+                  vm.show = true
+                }
+              }
+            )
+          }
+        }
+      })
+
+
+Б3. Анимирование данных
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение  
+
+    ▪ Анимация данных
+
+--------------------------------------
+
+> Ссылки
+
+  # [Официальноу руководство] Анимирование переходов между состояниями
+      https://ru.vuejs.org/v2/guide/transitioning-state.html
+
+> Введение
+
+  • Анимация данных
+    - Инструменты Vue также облегчают анимацию данных.
+    - Например:
+
+      ▪ Чисел и арифметических выражений.
+      ▪ Отображаемых цветов.
+      ▪ Позиции SVG-элементов.
+      ▪ Размеров и прочих свойств элементов.
+
+    - Все эти параметры являются числами по сути.
+    - Значит, можно использовать сторонние библиотеки для анимации,
+      в сочетании с компонентными и реактивными системами Vue.
 
 
 
