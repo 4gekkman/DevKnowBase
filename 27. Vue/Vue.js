@@ -7520,8 +7520,32 @@
  
   # Встроенные компоненты
 
-    ▪ component         | 
+    ▪ component         | Встроенный компонент-обёртка для условного рендеринга компонентов
+      p. is             | - Какой компонент рендерить (имя лок.комп / ссылка на объект-определение)
+      p. inline-template| - Использовать html внутри component, как шаблон для обёрнутого компонента (иначе, распихать по слотам комп-та из is).
+       
     ▪ transition        | 
+
+      Св-ва общего назначения
+      ---
+      p. name           | - Кастомный префикс для transition-классов ('v' по умолчанию)
+      p. appear         | - Применять ли transition при начальном рендеринге (false по умолчанию)
+      p. css            | - Применять ли CSS transition-классы
+      p. type           | - Конец анимации определять по css/js анимации (брать сам.длинную по умолчанию)?
+      p. mode           | - Порядок срабатывания transition enter/leave (синхронно по умолчанию)
+      
+      Ручное переопределение transition-классов
+      ---
+      p. enter-class          | До анимации появления
+      p. leave-class          | До анимации исчезновения
+      p. appear-class         | До анимации появления при 1-м рендеринге
+      p. enter-to-class       | Завершение анимации появления
+      p. leave-to-class       | Завершение анимация исчезновения
+      p. appear-to-class      | Завершение анимации появления при 1-м рендеринге
+      p. enter-active-class   | Идёт анимация появления
+      p. leave-active-class   | 
+      p. appear-active-class  | 
+
     ▪ transition-group  | 
     ▪ keep-alive        | 
     ▪ slot              | 
@@ -7672,7 +7696,7 @@
   • component
 
     ▪ Использование
-      - Это мета-компонент для динамического рендеринга компонентов.
+      - Встроенный компонент-обёртка для условного рендеринга компонентов.
       - По сути, обёртка, которая рендерит указанный в атрибуте is компонент.
       - Подробнее ищи по ключевой фразе: "Горячая замена компонентов".
       - Пример:
@@ -7687,7 +7711,7 @@
     ▪ Свойства компонента
 
       ▪ is
-        - Какой компонент нужно отрендерить.
+        - Какой компонент рендерить (имя лок.комп / ссылка на объект-определение).
         - Возможные значения:
 
           ▪ string
@@ -7757,8 +7781,9 @@
                 });
 
       ▪ inline-template
+        - Использовать html внутри component, как шаблон для обёрнутого компонента (иначе, распихать по слотам комп-та из is).
         - Без этого атрибута содержимое <component>..содержимое..</component> 
-          будет распихано по слотам в его шаблоне.
+          будет распихано по слотам в шаблоне компонента из is.
         - А с ним оно само будет использовано, как шаблон.
         - Например:
 
@@ -7772,12 +7797,98 @@
   • transition
 
     ▪ Использование
+      - Встроенный компонент-обёртка для transition-эффектов на 1-ом обёрнутом компоненте/DOM-элементе.
+      - <transition> не отрисовывает в DOM никаких доп.элементов,
+        и не отображается в иерархии компонентов.
+      - Он лишь применяет transition-эффекты в завёрнутому
+        в него элементу/компоненту.
+      - Пример:
 
+        ▪ Шаблон
 
+          <!-- simple element -->
+          <transition>
+            <div v-if="ok">toggled content</div>
+          </transition>
+
+          <!-- dynamic component -->
+          <transition name="fade" mode="out-in" appear>
+            <component :is="view"></component>
+          </transition>
+
+          <!-- event hooking -->
+          <div id="transition-demo">
+            <transition @after-enter="transitionComplete">
+              <div v-show="ok">toggled content</div>
+            </transition>
+          </div>        
+
+        ▪ Модель
+
+          new Vue({
+            ...
+            methods: {
+              transitionComplete: function (el) {
+                // for passed 'el' that DOM element as the argument, something ...
+              }
+            }
+            ...
+          }).$mount('#transition-demo')
 
     ▪ Свойства компонента
 
+      ▪ name 
+        - Кастомный префикс для transition-классов ('v' по умолчанию).
+        - Transition-классы по умолчанию выглядят так:
+            v-enter        
+            v-enter-active 
+            v-enter-to     
+            v-leave        
+            v-leave-active 
+            v-leave-to               
+        - Как видно, везде используется стандартный
+          префикс "v".
+        - Но его можно изменить, задав другое name.
+        - Например, если name равно 'fade', то transition-
+          классы уже будут выглядеть так:
+            fade-enter        
+            fade-enter-active 
+            fade-enter-to     
+            fade-leave        
+            fade-leave-active 
+            fade-leave-to            
 
+      ▪ appear
+        - Применять ли transition при начальном рендеринге (false по умолчанию).
+
+      ▪ css
+        - Применять ли CSS transition-классы.
+        - По умолчанию: true.
+        - Если поставить false, то лишь будут исполнены
+          js-обработчики соответствующих событий.
+
+      ▪ type
+        - Конец анимации определять по css/js анимации (брать сам.длинную по умолчанию)?
+        - Тип transition-событий, по которым определять
+          конец transition.
+        - Возможные варианты: transition / animation
+        - По умолчанию, автоматически использует тип,
+          который длится дольше.
+
+      ▪ mode
+        - Порядок срабатывания transition enter/leave (синхронно по умолчанию)
+        - Возможные варианты: out-in / in-out.
+
+      ▪ enter-class
+      ▪ leave-class
+      ▪ appear-class
+      ▪ enter-to-class
+      ▪ leave-to-class
+      ▪ appear-to-class
+      ▪ enter-active-class
+      ▪ leave-active-class
+      ▪ appear-active-class
+        - Св-ва для ручного переопределения transition-классов.
 
     ▪ События
 
