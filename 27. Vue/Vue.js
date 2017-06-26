@@ -7640,7 +7640,7 @@
 
   # Опции / композиция
 
-    ▪ parent            |  
+    ▪ parent            | 
     ▪ mixins            | 
     ▪ extends           | 
     ▪ provide / inject  | 
@@ -9472,6 +9472,12 @@
         })       
 
 > Опции / композиция
+
+  • parent
+  • mixins
+  • extends
+  • provide / inject
+
 > Опции / разное
 > Свойства экземпляра
 > Методы экземпляра: данные
