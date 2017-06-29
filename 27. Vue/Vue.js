@@ -10938,7 +10938,9 @@
             console.log(store.state.count) // -> 1
 
       ▪ Применить мутацию 
-        - И инкрементировать count:
+        - И инкрементировать count.
+        - Заметим, что мы прямо не меняем значение count: это запрещено.
+        - Поэтому, мы используем мутацию.
 
             store.commit('increment')
             console.log(store.state.count) // -> 1
