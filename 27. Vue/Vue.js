@@ -12239,7 +12239,7 @@
         ▪ pathToRegexpOptions       | - Path-to-regexp options for compiling regex
       ▪ mode                        | Режим работы роутера (hash(default)/history/abstract)
       ▪ base                        | Базовый URI приложения
-      ▪ linkActiveClass             | 
+      ▪ linkActiveClass             | Глобальный active class для <router-link>
       ▪ linkExactActiveClass        | 
       ▪ scrollBehavior              | 
       ▪ parseQuery / stringifyQuery | 
@@ -13772,10 +13772,13 @@
     ▪ linkExactActiveClass
 
       ▪ Тип
+        - string
+
+      ▪ Значение по умолчанию
+        - "router-link-exact-active"
 
       ▪ Описание
-
-      ▪ Пример
+        - Глобальный active class для <router-link>.
 
     ▪ scrollBehavior
 
