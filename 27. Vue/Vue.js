@@ -12222,7 +12222,30 @@
 
   # Vue-router API
 
+    • Опции конструктора роутера
 
+      ▪ routes                      | Массив роутов (объектов типа RouteConfig)
+        ▪ path                      | - Абсолютный или относительный URI роута
+        ▪ component                 | - Связать роут лишь с 1-им компонентом
+        ▪ components                | - Связать роут с >= 1 компонентами; универсальнее, чем component
+        ▪ name                      | - Имя роута
+        ▪ redirect                  | - Редирект
+        ▪ alias                     | - Алиас
+        ▪ props                     | - Входящие параметры связанного с роутом компонента
+        ▪ children                  | - Массив вложенных объектов-роутов
+        ▪ beforeEnter               | - Навигационные before-middleware-хуки на уровне роута
+        ▪ meta                      | - Поле meta с мета-информацией роута
+        ▪ caseSensitive             | - Вкл/Выкл учёт регистра роутов (false по умолчанию)
+        ▪ pathToRegexpOptions       | - Path-to-regexp options for compiling regex
+      ▪ mode                        | 
+      ▪ base                        | 
+      ▪ linkActiveClass             | 
+      ▪ linkExactActiveClass        | 
+      ▪ scrollBehavior              | 
+      ▪ parseQuery / stringifyQuery | 
+      ▪ fallback                    | 
+
+ 
 
 --------------------------------------
 
@@ -13296,6 +13319,450 @@
   [TODO: по запросу]
 
 > Vue-router API
+
+  • Опции конструктора роутера
+
+    ▪ routes
+
+      ▪ Тип
+        - Array<RouteConfig>
+
+      ▪ Описание
+        - Массив роутов (объектов типа RouteConfig)
+
+      ▪ Возможные свойства RouteConfig
+        !! Все не обязательны, кроме path !!
+
+        ▪ path
+
+          ▪ Тип
+            - string
+
+          ▪ Описание
+            - Абсолютный или относительный URI роута.
+            - Обычно абсолютный URI используют для роутов
+              верхнего уровня.
+            - А относительный URI для вложенных роутов.
+
+        ▪ component
+          
+          ▪ Тип  
+            - Component
+
+          ▪ Описание
+            - Связать роут лишь с 1-им компонентом.
+            - Принимает объект-конструктор или созданный через Vue.extend() компонент.
+            - Будет отрисован в <router-view>.
+
+          ▪ Пример
+
+              const routes = [
+                { path: '/foo', component: Foo },
+                { path: '/bar', component: Bar }
+              ]          
+
+        ▪ components
+
+          ▪ Тип
+            - { [name: string]: Component }
+
+          ▪ Описание
+            - Связать роут с >= 1 компонентами; универсальнее, чем component
+            - Это более универсальное решение, чем для components.
+            - Так как позволяет связать роут с более, чем 1 компонетом.
+            - Обычный объект-роут использует component для связи с компонентом:
+
+              {
+                path: '/user/:userId',
+                name: 'user',
+                component: User
+              }    
+
+            - Но мы то хотим показать сразу N компонентов для этого path.
+            - Поэтому, вместо component надо использовать components.
+            - В components надо передать объект, где ключ - имя именованных 
+              <router-view>, а значение - ссылка на компонент:
+
+                const router = new VueRouter({
+                  routes: [
+                    {
+                      path: '/',
+                      components: {
+                        default: Foo,
+                        a: Bar,
+                        b: Baz
+                      }
+                    }
+                  ]
+                })  
+
+        ▪ name
+          
+          ▪ Тип
+            - String
+
+          ▪ Описание
+            - Имя роута.
+            - Роуты с именем называют именованными.
+
+          ▪ Пример
+
+              const router = new VueRouter({
+                routes: [
+                  {
+                    path: '/user/:userId',
+                    name: 'user',
+                    component: User
+                  }
+                ]
+              })    
+
+        ▪ redirect
+          
+          ▪ Тип
+            - string | Location | Function;
+
+          ▪ Описание
+            - Редирект.
+
+          ▪ Примеры
+
+            ▪ Редирект на URI
+
+              const router = new VueRouter({
+                routes: [
+                  { path: '/a', redirect: '/b' }
+                ]
+              })
+
+            ▪ Редирект по имени именованного роута
+
+              const router = new VueRouter({
+                routes: [
+                  { path: '/a', redirect: { name: 'foo' }}
+                ]
+              })
+
+            ▪ Динамический редирект со значением-функцией
+
+              const router = new VueRouter({
+                routes: [
+                  { path: '/a', redirect: to => {
+                    // в функцию в качестве аргумента передаётся путь
+                    // возвращаемым значением должна быть строка или объект пути
+                  }}
+                ]
+              })          
+
+        ▪ alias
+
+          ▪ Тип
+            - string | Array<string>;
+
+          ▪ Описание
+            - Алиас.
+
+          ▪ Примеры
+
+            ▪ Отличие редиректа от псевдонима
+              - Допустим, есть /a, и у него псевдоним /b.
+              - При посещении /b URI останется равным /b.
+              - Но роутер выполнинт все действия, как для /a.
+              - В общем, разница понятна интуитивно.
+
+            ▪ Св-во alias в объекте-роутере для настройки псевдонима
+
+              const router = new VueRouter({
+                routes: [
+                  { path: '/a', component: A, alias: '/b' }
+                ]
+              })
+
+        ▪ props
+          
+          ▪ Тип
+            - boolean | string | Function;
+
+          ▪ Описание
+            - Входящие параметры связанного с роутом компонента.
+
+          ▪ Типы принимаемых props значений
+
+            ▪ Boolean (true/false): св-ва из route.params становятся вход.параметрами
+              - Например, есть если path = "/user/:id".
+              - В нём мы имеем 1-ин параметр роутинга id.
+              - Вот он и станет входящим параметром компонента.
+              - Компонент должен быть готов его принять, например:
+
+                  const User = {
+                    props: ['id'],
+                    template: '<div>User {{ id }}</div>'
+                  }      
+
+            ▪ Объект: св-ва из него становятся вход.параметрами
+              - В нём можно передавать абсолютно любые значения.
+              - В том числе, и параметры роутинга.
+              - Например:
+
+                  const router = new VueRouter({
+                    routes: [
+                      { path: '/promotion/from-newsletter', component: Promotion, props: { newsletterPopup: false } }
+                    ]
+                  })      
+
+            ▪ Функция: которая вернёт объект, св-ва которого становятся вход.параметрами
+              - Тоже самое, что объект, просто объект формируется функцией.
+              - В примере ниже передадим значение параметра q из query string
+                с ключём query, в качестве входного параметра в компонент SearchUser:
+              - Например:
+
+                  const router = new VueRouter({
+                    routes: [
+                      { path: '/search', component: SearchUser, props: (route) => ({ query: route.query.q }) }
+                    ]
+                  })   
+                  
+              - Если URI был бы /search?q=vue, то был бы props == {query: "vue"}. 
+
+          ▪ Пример работы с 2-мя компонентами в 1-ом роуте
+
+            const router = new VueRouter({
+              mode: 'history',
+              routes: [
+                {
+                  path: '/',
+                  components: {
+                    default: Home,
+                    foo: Foo
+                  },
+                  props: {
+                    default: { name: 'Home' },
+                    foo: { name: 'Foo' }
+                  }
+                }
+              ]
+            })          
+
+        ▪ children
+          
+          ▪ Тип
+            - Array<RouteConfig>;
+
+          ▪ Описание
+            - Массив вложенных объектов-роутов.
+            - Эта матрёшка может иметь сколько угодно уровней вложенности.
+            - Роуты на верхнем уровне будем называть "роуты верхнего уровня".
+
+          ▪ Свои точки монтирования у вложенных роутов
+            - Представим такую структуру компонентов:
+
+                /user/foo/profile                     /user/foo/posts
+                +------------------+                  +-----------------+
+                | User             |                  | User            |
+                | +--------------+ |                  | +-------------+ |
+                | | Profile      | |  +------------>  | | Posts       | |
+                | |              | |                  | |             | |
+                | +--------------+ |                  | +-------------+ |
+                +------------------+                  +-----------------+    
+          
+            - Шаблон приложения выглядит так:
+
+                <div id="app">
+                  <router-view></router-view>
+                </div>    
+
+            - Здесь мы видим точку монтирования верхнего уровня <router-view>.
+            - Шаблон компонента User будет смонтирован вместо этого DOM-элемента.
+            - Но куда будут смонтированы шаблоны дочерних для User компонентов 
+              Profile и Posts?
+            - Для них в шаблоне Users надо также предусмотреть точку монтирования
+              <router-view>:
+
+                const User = {
+                  template: `
+                    <div class="user">
+                      <h2>Пользователь {{ $route.params.id }}</h2>
+                      <router-view></router-view>
+                    </div>
+                  `
+                }
+
+          ▪ Пример объекта router с вложенными роутами
+            - ВНИМАНИЕ! Path, начинающийся с '/', может быть только
+              у роутов верхнего уровня, и считается корневым.
+            - Код:
+
+              const router = new VueRouter({
+                routes: [
+                  { path: '/user/:id', component: User,
+                    children: [
+                      {
+                        // при совпадении пути с шаблоном /user/:id/profile
+                        // в <router-view> компонента User будет отображён UserProfile
+                        path: 'profile',
+                        component: UserProfile
+                      },
+                      {
+                        // при совпадении с шаблоном /user/:id/posts
+                        // в <router-view> компонента User будет отображён UserPosts
+                        path: 'posts',
+                        component: UserPosts
+                      }
+                    ]
+                  }
+                ]
+              })
+
+        ▪ beforeEnter
+          
+          ▪ Тип
+            - (to: Route, from: Route, next: Function) => void;
+
+          ▪ Описание
+            - Навигационные before-middleware-хуки на уровне роута.
+            - Аналог beforeEach, но на уровне роута.
+            - Всё тоже самое верно, что и для beforeEach.
+
+          ▪ Пример
+
+             const router = new VueRouter({
+              routes: [
+                {
+                  path: '/foo',
+                  component: Foo,
+                  beforeEnter: (to, from, next) => {
+                    // ...
+                  }
+                }
+              ]
+            })          
+
+        ▪ meta
+          
+          ▪ Тип
+            - any
+
+          ▪ Описание
+            - Поле meta с мета-информацией роута.
+
+          ▪ Свойство meta в объекте-роуте
+
+            const router = new VueRouter({
+              routes: [
+                {
+                  path: '/foo',
+                  component: Foo,
+                  children: [
+                    {
+                      path: 'bar',
+                      component: Bar,
+                      // a meta field
+                      meta: { requiresAuth: true }
+                    }
+                  ]
+                }
+              ]
+            })
+
+          ▪ Доступ к meta через массив $route.matched
+            - В примере выше изображены 2 роута.
+            - Причём роут с path = 'bar' вложен в другой роут.
+            - URL /foo/bar совпадёт одновременно с этими 2-мя роутами.
+            - Ссылки на совпавшие объекты роуты лежат в $route.matched.
+            - В примере ниже мы пробегаем to.matched, и ищем такой роут
+              там, у которого есть свойство requiresAuth. Если находим,
+              то не залогинненных польозвателей переадресуем на роут
+              '/login'. А если находим, завершаем работу beforeEach хука.
+            - Код:
+
+                router.beforeEach((to, from, next) => {
+                  if (to.matched.some(record => record.meta.requiresAuth)) {
+                    // this route requires auth, check if logged in
+                    // if not, redirect to login page.
+                    if (!auth.loggedIn()) {
+                      next({
+                        path: '/login',
+                        query: { redirect: to.fullPath }
+                      })
+                    } else {
+                      next()
+                    }
+                  } else {
+                    next() // make sure to always call next()!
+                  }
+                })
+
+        ▪ caseSensitive
+          
+          ▪ Тип
+            - boolean
+
+          ▪ Описание
+            - Вкл/Выкл учёт регистра роутов (false по умолчанию).
+
+        ▪ pathToRegexpOptions
+          
+          ▪ Тип
+            - Object
+
+          ▪ Описание
+            - Path-to-regexp options for compiling regex.
+
+    ▪ mode
+
+      ▪ Тип
+
+      ▪ Описание
+
+      ▪ Пример
+
+    ▪ base
+
+      ▪ Тип
+
+      ▪ Описание
+
+      ▪ Пример
+
+    ▪ linkActiveClass
+
+      ▪ Тип
+
+      ▪ Описание
+
+      ▪ Пример
+
+    ▪ linkExactActiveClass
+
+      ▪ Тип
+
+      ▪ Описание
+
+      ▪ Пример
+
+    ▪ scrollBehavior
+
+      ▪ Тип
+
+      ▪ Описание
+
+      ▪ Пример
+
+    ▪ parseQuery / stringifyQuery
+
+      ▪ Тип
+
+      ▪ Описание
+
+      ▪ Пример
+
+    ▪ fallback
+
+      ▪ Тип
+
+      ▪ Описание
+
+      ▪ Пример
 
 
 
