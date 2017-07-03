@@ -12097,7 +12097,7 @@
             }        
 
 
-Б14. Vue-router 2.x
+Б14. Vue-router 2.xБ14. Vue-router 2.xБ14. Vue-router 2.x
 
 --------------------------------------
 Подоглавление:
@@ -12196,7 +12196,32 @@
       ▪ beforeRouteLeave  | Срабатывает перед уходом со старого роута
 
   # Поле meta с мета-информацией роута
-    ▪ 
+    ▪ Свойство meta в объекте-роуте
+    ▪ Доступ к meta через массив $route.matched
+
+  # Transitions и роутинг
+    ▪ <transition> можно применять к <router-view>
+    ▪ Кастомизация классов по умолчанию: атрибут name для transition
+    ▪ Свой transition для каждого компонента: <transition> в шаблоне и name
+    ▪ Изощрённый пример применения transition с роутингом
+
+  # Извлечение и подготовка данных перед переходом
+    ▪ В чём вопрос с извлечением данных при навигации?
+    ▪ Варианты извлечения: до/после перехода
+      ▪ Извлечение после перехода
+      ▪ Извлечение до перехода
+
+  # Роутинг и скролл
+    ▪ Vue routing позволяет управлять скроллом
+    ▪ Работает только в режиме history роутинга
+    ▪ Управление скроллом ф-ией scrollBehavior в роутере
+    ▪ Изощрённый пример работы со скроллом при роутинге
+
+  # Ленивая загрузка компонентов во время роутинга
+    [TODO: по запросу]
+
+  # Vue-router API
+
 
 
 --------------------------------------
@@ -12973,19 +12998,304 @@
 
 > Поле meta с мета-информацией роута
 
+  • Свойство meta в объекте-роуте
 
+    const router = new VueRouter({
+      routes: [
+        {
+          path: '/foo',
+          component: Foo,
+          children: [
+            {
+              path: 'bar',
+              component: Bar,
+              // a meta field
+              meta: { requiresAuth: true }
+            }
+          ]
+        }
+      ]
+    })
 
+  • Доступ к meta через массив $route.matched
+    - В примере выше изображены 2 роута.
+    - Причём роут с path = 'bar' вложен в другой роут.
+    - URL /foo/bar совпадёт одновременно с этими 2-мя роутами.
+    - Ссылки на совпавшие объекты роуты лежат в $route.matched.
+    - В примере ниже мы пробегаем to.matched, и ищем такой роут
+      там, у которого есть свойство requiresAuth. Если находим,
+      то не залогинненных польозвателей переадресуем на роут
+      '/login'. А если находим, завершаем работу beforeEach хука.
+    - Код:
 
+        router.beforeEach((to, from, next) => {
+          if (to.matched.some(record => record.meta.requiresAuth)) {
+            // this route requires auth, check if logged in
+            // if not, redirect to login page.
+            if (!auth.loggedIn()) {
+              next({
+                path: '/login',
+                query: { redirect: to.fullPath }
+              })
+            } else {
+              next()
+            }
+          } else {
+            next() // make sure to always call next()!
+          }
+        })
 
+> Transitions и роутинг
 
+  • <transition> можно применять к <router-view>
+    - Ведь <router-view> в сущности является динамическим компонентом.
+    - Этот пример применит один transition ко всем роутам:
 
+      <transition>
+        <router-view></router-view>
+      </transition>
 
+  • Кастомизация классов по умолчанию: атрибут name для transition
+    - Псевдоэлементу <transition> можно указать атрибут name.
+    - Тогда он будет пытаться подсосать классы с префиксом,
+      равным значению name.
+    - Например, вместо класса v-enter будет применяться my-transition-enter:
 
+        <transition name="my-transition">
 
+  • Свой transition для каждого компонента: <transition> в шаблоне и name
+    - Что, если мы не хотим применять один transition ко
+      всем компонентам, которые побывают в <router-view></router-view> ?
+    - Тогда используем свой <transition> в шаблоне каждого
+      компонента, и кастомизируем его css-префикс с помощью name:
 
+        const Foo = {
+          template: `
+            <transition name="slide">
+              <div class="foo">...</div>
+            </transition>
+          `
+        }
 
+        const Bar = {
+          template: `
+            <transition name="fade">
+              <div class="bar">...</div>
+            </transition>
+          `
+        }
 
+    - Можно также сделать name наблюдаемой.
+    - И данимически задавать значения в зависимости от каких-либо условий:
 
+      <!-- use a dynamic transition name -->
+      <transition :name="transitionName">
+        <router-view></router-view>
+      </transition>
+
+      // then, in the parent component,
+      // watch the `$route` to determine the transition to use
+      watch: {
+        '$route' (to, from) {
+          const toDepth = to.path.split('/').length
+          const fromDepth = from.path.split('/').length
+          this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+        }
+      }
+
+  • Изощрённый пример применения transition с роутингом
+    - https://github.com/vuejs/vue-router/blob/dev/examples/transitions/app.js
+
+> Извлечение и подготовка данных перед переходом
+
+  • В чём вопрос с извлечением данных при навигации?
+    - Допустим, пользователь переходит в профиль.
+    - А данных для отображения профиля у нас нет.
+    - Архитектура у нас такая, что данные должны
+      динамически подгрузиться при переходе в профиль.
+    - И нам, прежде, чем отобразить компонент профиля
+      надо сначала запросить AJAX-ом данные с сервера.
+
+  • Варианты извлечения: до/после перехода
+
+    ▪ Извлечение после перехода
+      - Сначала осуществляется переход.
+      - Добавляем компоненту хук created.
+      - В нём показываем спиннер загрузки, подгружаем
+        данные с сервера, подготавливаем их, и убираем
+        спиннер загрузки.
+      - Пример:
+
+          <template>
+            <div class="post">
+              <div class="loading" v-if="loading">
+                Loading...
+              </div>
+
+              <div v-if="error" class="error">
+                {{ error }}
+              </div>
+
+              <div v-if="post" class="content">
+                <h2>{{ post.title }}</h2>
+                <p>{{ post.body }}</p>
+              </div>
+            </div>
+          </template>
+          export default {
+            data () {
+              return {
+                loading: false,
+                post: null,
+                error: null
+              }
+            },
+            created () {
+              // fetch the data when the view is created and the data is
+              // already being observed
+              this.fetchData()
+            },
+            watch: {
+              // call again the method if the route changes
+              '$route': 'fetchData'
+            },
+            methods: {
+              fetchData () {
+                this.error = this.post = null
+                this.loading = true
+                // replace `getPost` with your data fetching util / API wrapper
+                getPost(this.$route.params.id, (err, post) => {
+                  this.loading = false
+                  if (err) {
+                    this.error = err.toString()
+                  } else {
+                    this.post = post
+                  }
+                })
+              }
+            }
+          }      
+
+    ▪ Извлечение до перехода
+      - Всю операцию проводим в нав.хуке beforeRouteEnter,
+        ещё до перехода.
+      - В нём показываем спиннер загрузки, подгружаем
+        данные с сервера, подготавливаем их, убираем
+        спиннер загрузки, и вызываем next, что
+        продолжит процесс навигации.
+      - Пример:
+
+          export default {
+            data () {
+              return {
+                post: null,
+                error: null
+              }
+            },
+            beforeRouteEnter (to, from, next) {
+              getPost(to.params.id, (err, post) => {
+                next(vm => vm.setData(err, post))
+              })
+            },
+            // when route changes and this component is already rendered,
+            // the logic will be slightly different.
+            beforeRouteUpdate (to, from, next) {
+              this.post = null
+              getPost(to.params.id, (err, post) => {
+                this.setData(err, post)
+                next()
+              })
+            },
+            methods: {
+              setData (err, post) {
+                if (err) {
+                  this.error = err.toString()
+                } else {
+                  this.post = post
+                }
+              }
+            }
+          }
+      
+> Роутинг и скролл
+
+  • Vue routing позволяет управлять скроллом
+    - Современные браузеры в не SPA-приложениях сами
+      управляют скроллом.
+    - При переходе назад/вперед или перезагрузке
+      сохраняют скролл, в каких-то других случаях
+      отматывают скролл вверх.
+    - Vue routing имеет схожий функционал для SPA-приложений.
+
+  • Работает только в режиме history роутинга
+    - Функционал скроллинга Vue routing работает только
+      в режиме history.
+
+  • Управление скроллом ф-ией scrollBehavior в роутере
+
+    ▪ Описание
+      - Позволяет настроить скролл при роутинге.
+      - Примерно так:
+
+          const router = new VueRouter({
+            routes: [...],
+            scrollBehavior (to, from, savedPosition) {
+              // return desired position
+            }
+          })      
+
+    ▪ Аргументы
+
+      ▪ to            | Объект-роут, куда переходим
+      ▪ from          | Объект-роут, откуда переходим
+      ▪ savedPosition | Сохранённая позиция скролла
+                        - Доступен только при навигации кнопками
+                          вперёд/назад браузера.
+
+    ▪ Что должна возвращать scrollBehavior
+
+      ▪ { x: number, y: number }
+        - Объект с явными документными координатамид для скролла.
+        - Например:
+
+          scrollBehavior (to, from, savedPosition) {
+            return { x: 0, y: 0 }
+          }        
+
+      ▪ { selector: string, offset? : { x: number, y: number }} (offset only supported in 2.6.0+)
+        - Селектор эл-та, к л.в. углу которого надо прискролить.
+        - Можно ещё задать смещение с помощью offset.
+        - Например:
+
+          scrollBehavior (to, from, savedPosition) {
+            if (to.hash) {
+              return {
+                selector: to.hash
+                // , offset: { x: 0, y: 10 }
+              }
+            }
+          }        
+
+      ▪ savedPosition
+        - Вернуть сохранённый объект с координатами.
+        - Доступен только при навигации кнопками вперёд/назад браузера.
+        - Перед использованием надо проверять, существует ли savedPosition:
+
+          scrollBehavior (to, from, savedPosition) {
+            if (savedPosition) {
+              return savedPosition
+            } else {
+              return { x: 0, y: 0 }
+            }
+          }        
+
+  • Изощрённый пример работы со скроллом при роутинге
+    - https://github.com/vuejs/vue-router/blob/dev/examples/scroll-behavior/app.js
+
+> Ленивая загрузка компонентов во время роутинга
+  [TODO: по запросу]
+
+> Vue-router API
 
 
 
