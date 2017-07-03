@@ -12237,8 +12237,8 @@
         ▪ meta                      | - Поле meta с мета-информацией роута
         ▪ caseSensitive             | - Вкл/Выкл учёт регистра роутов (false по умолчанию)
         ▪ pathToRegexpOptions       | - Path-to-regexp options for compiling regex
-      ▪ mode                        | 
-      ▪ base                        | 
+      ▪ mode                        | Режим работы роутера (hash(default)/history/abstract)
+      ▪ base                        | Базовый URI приложения
       ▪ linkActiveClass             | 
       ▪ linkExactActiveClass        | 
       ▪ scrollBehavior              | 
@@ -13711,26 +13711,63 @@
     ▪ mode
 
       ▪ Тип
+        - string
+
+      ▪ Значение по умолчанию
+        - default: "hash" (in browser) | "abstract" (in Node.js)
 
       ▪ Описание
+        - Режим работы роутера (hash(default)/history/abstract).
+
+      ▪ Описание режимов
+
+        ▪ hash
+          - Для роутинга используется хэш URL'а.
+          - Режим по умолчанию, если API браузера присутствует.
+          - Работает во всех поддерживаемых Vue браузерах.
+          - Включая те, которые не поддерживают HTML5 History API.
+
+        ▪ history
+          - Позволяет получить красивые URI в браузере.
+          - Требует поддержку HTML5 History API.
+          - Управление скроллом работает только в режиме history.
+
+        ▪ abstract
+          - Работает в любой JS-среде.
+          - В т.ч. с nodejs на сервере.
+          - Если API браузера отсутствует, это будет
+            режим по умолчанию.
 
       ▪ Пример
+
+        const router = new VueRouter({
+          mode: 'history',
+          routes: [...]
+        })      
 
     ▪ base
 
       ▪ Тип
+        - string
+
+      ▪ Значение по умолчанию
+        - "/"
 
       ▪ Описание
-
-      ▪ Пример
+        - Базовый URI приложения.
+        - Например, если одностраничное приложение находится
+          по URI = '/app/', тогда base должно быть равно '/app/'.
 
     ▪ linkActiveClass
 
       ▪ Тип
+        - string
+
+      ▪ Значение по умолчанию
+        - "router-link-active"
 
       ▪ Описание
-
-      ▪ Пример
+        - Глобальный active class для <router-link>.
 
     ▪ linkExactActiveClass
 
