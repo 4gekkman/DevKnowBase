@@ -77,7 +77,6 @@
       ▪ Если нет, отвечаешь сам
     ▪ Переходишь к следующему вопросу
 
-
 --------------------------------------
 
 > Введение  
@@ -297,10 +296,13 @@
         How access custom textbox name in Laravel 
         using validation 'unique'?
 
-    ▪ Ответ
+    ▪ Ответ (??? Неопределённость)
 
+      Если столбец с именем пользователя "username", тогда:
         ‘admin_username’ => ‘required|min:5|max:15|unique:administrators,username’,
 
+      Если столбец с именем пользователя "admin_username", тогда:
+        ‘admin_username’ => ‘required|min:5|max:15|unique:administrators’,
 
   • Вопрос/Ответ #13
 
@@ -431,53 +433,96 @@
 
     ▪ Ответ
 
-
+        public function store(Request $request) {
+          $inputArrays = Input::all();
+          $schedule = new Schedule;
+          foreach ($inputArrays as $array) {
+            $student->name = $name;
+            $student->for_date = $date;
+            $student->save();
+          }
+          return view(‘students.index’);
+        }
 
   • Вопрос/Ответ #22
 
     ▪ Вопрос
 
-        
+        Creating database view in migration laravel 5.2
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
-
+        CREATE VIEW wones AS
+        SELECT
+          leagues.name,
+          sum(points.remnants) AS trem
+          sum(IF(points.remnants<4, 1, 0)) AS crem
+        FROM leagues
+          JOIN teams ON (leagues.id = team.country_id)
+          JOIN players ON (teams.id = players.team_id)
+          JOIN points ON (players.id = points.player_id);
 
   • Вопрос/Ответ #23
 
     ▪ Вопрос
 
-        
+        Which of the following is correct to create a 
+        route(s) to resource controller named 
+        «PostController»?
 
     ▪ Ответ
 
-
+        Route::resource(‘post’, ‘PostController’);
 
   • Вопрос/Ответ #24
 
     ▪ Вопрос
 
-        
+        Which of the following are correct to delete a model with primary key 2?
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
-
+        $flight = App\Flight::find(2);
+        $flight->delete();
 
   • Вопрос/Ответ #25
 
     ▪ Вопрос
 
-        
+        Which of the following loops are available in blade?
+        Note: There may be more than one right answer.
 
-    ▪ Ответ
+    ▪ Ответ - все
 
+        @for ($i = 0; $i < 10; $i++)
+          The current value is {{ $i }}
+        @endfor
 
+        @foreach ($users as $user)
+          <p>This is user {{ $user->id }}</p>
+        @endforeach
+
+        @forelse ($users as $user)
+          <li>{{ $user->name }}</li>
+        @empty
+          <p>No users</p>
+        @endforelse
+
+        @while (true)
+          <p>I'm looping forever.</p>
+        @endwhile
 
   • Вопрос/Ответ #26
 
     ▪ Вопрос
 
-        
+        ____ are an important part of any web-based 
+        application. They help control the flow of the 
+        application which allows us to receive input 
+        from our users and make decisions that affect 
+        the functionality of our applications.
 
     ▪ Ответ
 
