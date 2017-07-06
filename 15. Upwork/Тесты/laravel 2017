@@ -153,6 +153,7 @@
           }
         }
 
+
   • Вопрос/Ответ #2
 
     ▪ Вопрос
@@ -163,193 +164,270 @@
 
     ▪ Ответ
 
+        public function comments() {
+          return $this->hasMany('App\Comment');
+        }
 
 
   • Вопрос/Ответ #3
 
     ▪ Вопрос
 
-        
+        Using Form class to add the 'disabled' attribute 
+        for some options.
 
     ▪ Ответ
 
+        {{ Form::select(‘set’, $sets, $prod->set_id, array(‘class’ => ‘form-select’, ‘disabled’)) }}
 
 
   • Вопрос/Ответ #4
 
     ▪ Вопрос
 
-        
+        Which of the following are correct for route definitions?
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+        ▪ Route::get('user/{name?}')
+        ▪ Route::get('user/{name}')
+        ▪ Route::get('{user}/name')
 
 
   • Вопрос/Ответ #5
 
     ▪ Вопрос
 
-        
+        To protect application from cross-site request 
+        forgery attacks, which of the following should 
+        be included in forms?
 
     ▪ Ответ
 
+        {{ csrf_field() }}
 
 
   • Вопрос/Ответ #6
 
     ▪ Вопрос
 
-        
+        Which of the following will list all routes?
 
     ▪ Ответ
 
-
+        php artisan route:list
 
   • Вопрос/Ответ #7
 
     ▪ Вопрос
 
-        
+        Which of the following validator methods returns 
+        'True' when form data is valid?
 
     ▪ Ответ
 
+        passes()
 
 
   • Вопрос/Ответ #8
 
     ▪ Вопрос
 
-        
+        Which of the following is correct to define 
+        middleware for multiple views in controller file?
 
     ▪ Ответ
 
+        ▪ public function __construct() {
+          $this->middleware(‘admin’, [‘only’ => [‘create’, ‘edit’, ‘show’]]);
+        }
 
+        ▪ public function __construct() {
+          $this->middleware(‘admin’, [‘only’ => ‘create|edit|show’]);
+        }
+
+        ▪ public function __construct() {
+          $this->middleware(‘admin’, [‘only’ => ‘create’]);
+        }
+
+        ▪ All of the above    <----- THE ANSWER
 
   • Вопрос/Ответ #9
 
     ▪ Вопрос
 
-        
+        Which of the following command should be used 
+        to run all outstanding migration?
 
     ▪ Ответ
 
+        php artisan migrate
 
 
   • Вопрос/Ответ #10
 
     ▪ Вопрос
 
-        
+        Which of the following is/are correct to define 
+        custom validation messages?
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
-
+        ▪ Pass the custom messages as the third argument to the Validator::make method
+        ▪ Specify your custom messages in a language file.
 
   • Вопрос/Ответ #11
 
     ▪ Вопрос
 
-        
+        Which of the following can be included in route 
+        definition to validate form data?
 
     ▪ Ответ
 
+        Validator::make($formData, $rules);
 
 
   • Вопрос/Ответ #12
 
     ▪ Вопрос
 
-        
+        How access custom textbox name in Laravel 
+        using validation 'unique'?
 
     ▪ Ответ
 
+        ‘admin_username’ => ‘required|min:5|max:15|unique:administrators,username’,
 
 
   • Вопрос/Ответ #13
 
     ▪ Вопрос
 
-        
+        The field under validation must be present in the 
+        input data and not empty. A field is considered 
+        "empty" if one of the following conditions are true
 
     ▪ Ответ
 
+        ▪ The value is null.
+        ▪ The value is an empty string.
+        ▪ The value is an empty array or empty Countable object.
+        ▪ The value is an uploaded file with no path.
+        ▪ All of the above    <----- THE ANSWER
 
 
   • Вопрос/Ответ #14
 
     ▪ Вопрос
 
-        
+        To validate a date named finish_date against following rules:
+          
+          ▪ Should be date
+          ▪ Required
+          ▪ Should be greater than start_date
+
+        which of the following is correct validation rule?
 
     ▪ Ответ
 
+        'finish_date' => 'required|date|after:start_date'
 
 
   • Вопрос/Ответ #15
 
     ▪ Вопрос
 
+        If we have a following URL
         
+          ▪ http://myapp.dev/?foo=bar&baz=boo
+        
+        Which of the following will get the values 
+        of ‘foo’ and ‘baz’?
 
     ▪ Ответ
 
+        Request::only([‘foo’, ‘baz’]);
 
 
   • Вопрос/Ответ #16
 
     ▪ Вопрос
 
-        
+        Which of the following is correct syntax for passing data to views?
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+        ▪ return view(‘greetings’, [‘name’ => ‘Victoria’]);
+        ▪ return view(‘greeting’)->with(‘user’, ‘Victoria’);
 
 
   • Вопрос/Ответ #17
 
     ▪ Вопрос
 
-        
+        Which of the following is a correct way to 
+        assign middleware ‘auth’ to a route?
 
     ▪ Ответ
 
+        Route::get(‘profile’, [
+          ‘middleware’ => ‘auth’,
+          ‘uses’ => ‘UserController@show’
+        ]);
 
 
   • Вопрос/Ответ #18
 
     ▪ Вопрос
 
-        
+        Which of the following validation rule is correct 
+        to validate that the file is an image file having 
+        dimensions of min 200 height x min 400 width?
 
     ▪ Ответ
 
+        ‘avatar’ => ‘dimensions:min_width=100,min_height=200’
 
 
   • Вопрос/Ответ #19
 
     ▪ Вопрос
 
-        
+        Which of the following validation rules are 
+        acceptable?
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+        ▪ [‘field' => ‘accepted']
+        ▪ [‘field' => ‘active_url']
+        ▪ [‘field' => ‘alpha']
+        ▪ [‘field' => ‘after:10/10/16']
 
 
   • Вопрос/Ответ #20
 
     ▪ Вопрос
 
-        
+        If you don’t want Eloquent to automatically 
+        manage created_at and updated_at columns, 
+        which of the following will be correct?
 
     ▪ Ответ
 
+        Set the model $timestamps property to false
 
 
   • Вопрос/Ответ #21
 
     ▪ Вопрос
 
-        
+        Which of the following code is correct to 
+        insert multiple records?
 
     ▪ Ответ
 
