@@ -145,7 +145,7 @@
         foreach($emails as $email) {
           $validator = Validator::make(
             ['email' => $email],
-            ['email' => ‘required|email']
+            ['email' => 'required|email']
           );
           if ($validator->fails()) {
             // There is an invalid email in the input.
@@ -177,7 +177,7 @@
 
     ▪ Ответ
 
-        {{ Form::select(‘set’, $sets, $prod->set_id, array(‘class’ => ‘form-select’, ‘disabled’)) }}
+        {{ Form::select('set', $sets, $prod->set_id, array('class' => 'form-select', 'disabled')) }}
 
 
   • Вопрос/Ответ #4
@@ -239,15 +239,15 @@
     ▪ Ответ
 
         ▪ public function __construct() {
-          $this->middleware(‘admin’, [‘only’ => [‘create’, ‘edit’, ‘show’]]);
+          $this->middleware('admin', ['only' => ['create', 'edit', 'show']]);
         }
 
         ▪ public function __construct() {
-          $this->middleware(‘admin’, [‘only’ => ‘create|edit|show’]);
+          $this->middleware('admin', ['only' => 'create|edit|show']);
         }
 
         ▪ public function __construct() {
-          $this->middleware(‘admin’, [‘only’ => ‘create’]);
+          $this->middleware('admin', ['only' => 'create']);
         }
 
         ▪ All of the above    <----- THE ANSWER
@@ -298,11 +298,7 @@
 
     ▪ Ответ (??? Неопределённость)
 
-      Если столбец с именем пользователя "username", тогда:
-        ‘admin_username’ => ‘required|min:5|max:15|unique:administrators,username’,
-
-      Если столбец с именем пользователя "admin_username", тогда:
-        ‘admin_username’ => ‘required|min:5|max:15|unique:administrators’,
+        'admin_username' => 'required|min:5|max:15|unique:administrators',
 
   • Вопрос/Ответ #13
 
@@ -347,11 +343,11 @@
           ▪ http://myapp.dev/?foo=bar&baz=boo
         
         Which of the following will get the values 
-        of ‘foo’ and ‘baz’?
+        of 'foo' and 'baz'?
 
     ▪ Ответ
 
-        Request::only([‘foo’, ‘baz’]);
+        Request::only(['foo', 'baz']);
 
 
   • Вопрос/Ответ #16
@@ -363,8 +359,8 @@
 
     ▪ Ответ
 
-        ▪ return view(‘greetings’, [‘name’ => ‘Victoria’]);
-        ▪ return view(‘greeting’)->with(‘user’, ‘Victoria’);
+        ▪ return view('greetings', ['name' => 'Victoria']);
+        ▪ return view('greeting')->with('user', 'Victoria');
 
 
   • Вопрос/Ответ #17
@@ -372,13 +368,13 @@
     ▪ Вопрос
 
         Which of the following is a correct way to 
-        assign middleware ‘auth’ to a route?
+        assign middleware 'auth' to a route?
 
     ▪ Ответ
 
-        Route::get(‘profile’, [
-          ‘middleware’ => ‘auth’,
-          ‘uses’ => ‘UserController@show’
+        Route::get('profile', [
+          'middleware' => 'auth',
+          'uses' => 'UserController@show'
         ]);
 
 
@@ -392,7 +388,7 @@
 
     ▪ Ответ
 
-        ‘avatar’ => ‘dimensions:min_width=100,min_height=200’
+        'avatar' => 'dimensions:min_width=100,min_height=200'
 
 
   • Вопрос/Ответ #19
@@ -405,17 +401,17 @@
 
     ▪ Ответ
 
-        ▪ [‘field' => ‘accepted']
-        ▪ [‘field' => ‘active_url']
-        ▪ [‘field' => ‘alpha']
-        ▪ [‘field' => ‘after:10/10/16']
+        ▪ ['field' => 'accepted']
+        ▪ ['field' => 'active_url']
+        ▪ ['field' => 'alpha']
+        ▪ ['field' => 'after:10/10/16']
 
 
   • Вопрос/Ответ #20
 
     ▪ Вопрос
 
-        If you don’t want Eloquent to automatically 
+        If you don't want Eloquent to automatically 
         manage created_at and updated_at columns, 
         which of the following will be correct?
 
@@ -441,7 +437,7 @@
             $student->for_date = $date;
             $student->save();
           }
-          return view(‘students.index’);
+          return view('students.index');
         }
 
   • Вопрос/Ответ #22
@@ -463,6 +459,7 @@
           JOIN players ON (teams.id = players.team_id)
           JOIN points ON (players.id = points.player_id);
 
+
   • Вопрос/Ответ #23
 
     ▪ Вопрос
@@ -473,7 +470,8 @@
 
     ▪ Ответ
 
-        Route::resource(‘post’, ‘PostController’);
+        Route::resource('post', 'PostController');
+
 
   • Вопрос/Ответ #24
 
@@ -486,6 +484,7 @@
 
         $flight = App\Flight::find(2);
         $flight->delete();
+
 
   • Вопрос/Ответ #25
 
@@ -514,6 +513,7 @@
           <p>I'm looping forever.</p>
         @endwhile
 
+
   • Вопрос/Ответ #26
 
     ▪ Вопрос
@@ -526,243 +526,327 @@
 
     ▪ Ответ
 
+        Forms
 
 
   • Вопрос/Ответ #27
 
     ▪ Вопрос
 
-        
+        To define a single action controller for following route
+        Route::get('user/{id}', 'ShowProfile');
+        which of the following is correct?
 
     ▪ Ответ
 
+        You may place a single  __invoke method on the controller
 
 
   • Вопрос/Ответ #28
 
     ▪ Вопрос
 
-        
+        Which of the following HTML form actions are not supported?
+        Note: There may be more than one right answer
 
     ▪ Ответ
 
+        PUT
+        PATCH
+        DELETE
 
 
   • Вопрос/Ответ #29
 
     ▪ Вопрос
 
-        
+        Which of the following is the correct way to 
+        set SQLite as database for unit testing?
 
     ▪ Ответ
 
+        'sqlite' => [
+          'driver' => 'sqlite',
+          'database' => storage_path('database.sqlite'),
+          'prefix' => '',
+        ],
 
 
   • Вопрос/Ответ #30
 
     ▪ Вопрос
 
-        
+        Validation If checkbox ticked then Input text is required?
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+        return [
+          'has_login' => 'sometimes',
+          'pin' => 'required_if:has_login,on',
+        ];
 
 
   • Вопрос/Ответ #31
 
     ▪ Вопрос
 
-        
+        Which of the following methods can be used to 
+        register a route that responds to all HTTP verbs?
 
     ▪ Ответ
 
+        Route::any()
 
 
   • Вопрос/Ответ #32
 
     ▪ Вопрос
 
-        
+        Which of the following is correct directory for view files?
 
     ▪ Ответ
 
+        resources/views
 
 
   • Вопрос/Ответ #33
 
     ▪ Вопрос
 
-        
+        Which of the following is true to get the URL of an image 
+        'img/logo.png' from route '/example' ?
 
     ▪ Ответ
 
+        Route::get('example', function () {
+          return URL::asset('img/logo.png');
+        });
 
 
   • Вопрос/Ответ #34
 
     ▪ Вопрос
 
-        
+        How do you add default value to a select list in form.
 
     ▪ Ответ
 
+        Form::select(
+          'myselect',
+          array_merge(['' => ['label' => 'Please Select', 'disabled' => true], $categories),
+          $myselectedcategories,
+          array(
+            'class' => 'form-control',
+            'id' => 'myselect'
+          )
+        }}
 
 
   • Вопрос/Ответ #35
 
     ▪ Вопрос
 
-        
+        Which method can be used to create custom blade directives?
 
     ▪ Ответ
 
+        Blade::directive()
 
 
   • Вопрос/Ответ #36
 
     ▪ Вопрос
 
-        
+        To create a controller which handles all 
+        "CRUD" routes, which of the following is correct command?
 
     ▪ Ответ
 
+        php artisan make:controller PhotoController --resource
 
 
   • Вопрос/Ответ #37
 
     ▪ Вопрос
 
-        
+        Which of the following is correct to pass $name variable to views?
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+        public function index() {
+          return view('welcome')->with('name', 'Foo');
+        }
+
+        public function index() {
+          $name = 'Foo';
+          return view('welcome')->withName($name);
+        }
+
+        public function index() {
+          $name = 'Foo';
+          return view('welcome', compact('name'));
+        }        
 
 
   • Вопрос/Ответ #38
 
     ▪ Вопрос
 
-        
+        Which of the following methods can be chained 
+        to get a single column from a database table?   
 
     ▪ Ответ
 
+        ->pluck('title');
 
 
   • Вопрос/Ответ #39
 
     ▪ Вопрос
 
-        
+        Which of the following methods should be used to 
+        alter the columns of an existing table?
 
     ▪ Ответ
 
+        Schema::table()
 
 
   • Вопрос/Ответ #40
 
     ▪ Вопрос
 
-        
+        Which of the following can be used in 
+        Schema::create() method? (check all that apply)
+        Note: There may be more than one right answer.       
 
     ▪ Ответ
 
+        $table->integer('id');
+        $table->string('username');
+        $table->primary('id');
+        $table->unique('username');
 
 
   • Вопрос/Ответ #41
 
     ▪ Вопрос
 
-        
+        Which of the following is correct in order to 
+        create a model named 'Person' with accompanying migration?
 
     ▪ Ответ
 
-
+        php artisan make:model Person -m
 
   • Вопрос/Ответ #42
 
     ▪ Вопрос
 
-        
+        Which method can be used to store items in cache permanently?
 
     ▪ Ответ
 
+        Cache::forever(‘key’, ‘value’);
 
 
   • Вопрос/Ответ #43
 
     ▪ Вопрос
 
-        
+        Which of the following artisan command is correct 
+        to create a model with table named 'projects'?
 
     ▪ Ответ
 
-
+        php artisan make:model Project
 
   • Вопрос/Ответ #44
 
     ▪ Вопрос
 
-        
+        Which of the following is the correct way to 
+        retrieve soft deleted models?
 
     ▪ Ответ
 
+        $flights = App\Flight::onlyTrashed()->get();
 
 
   • Вопрос/Ответ #45
 
     ▪ Вопрос
 
-        
+        Which of the following methods can be used 
+        to retrieve the record as an object containing 
+        the column names and the data stored in the record?
 
     ▪ Ответ
 
+        find()
 
 
   • Вопрос/Ответ #46
 
     ▪ Вопрос
 
-        
+        Which of the following static methods can be 
+        used with our models? (choose all that apply)
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+        ::find()
+        ::destroy()
+        ::all()
 
 
   • Вопрос/Ответ #47
 
     ▪ Вопрос
 
-        
+        Which file contains the database configurations?
 
     ▪ Ответ
 
+        config/database.php
 
 
   • Вопрос/Ответ #48
 
     ▪ Вопрос
 
-        
+        Which of the following is the correct way to get 
+        all rows from the table named users?
 
     ▪ Ответ
 
+        DB::table('users')->get();
 
 
   • Вопрос/Ответ #49
 
     ▪ Вопрос
 
-        
+        Which of the following is used to retrieve 
+        all blog posts that have at least one comment?
 
     ▪ Ответ
 
+        $posts = App\Post::has(‘comments’)->get();
 
 
   • Вопрос/Ответ #50
 
     ▪ Вопрос
 
-        
+        The migrations directory contains PHP classes 
+        which allow Laravel to update the schema of 
+        your current____, or populate it with values 
+        while keeping all versions of the application 
+        in sync.
 
     ▪ Ответ
 
