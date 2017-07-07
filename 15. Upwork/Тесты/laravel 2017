@@ -857,207 +857,276 @@
 
     ▪ Вопрос
 
-        
+        Which of the following is correct to execute the below statement without error?
+        $flight = App\User::create([‘name’ => ‘John Doe’]);
 
     ▪ Ответ
 
+        In model, set:
+        protected $fillable = [‘name’];
 
 
   • Вопрос/Ответ #52
 
     ▪ Вопрос
 
-        
+        Which of the following methods can be used with models to build relationships?
+        Note: There may be more than one right answer.  
 
     ▪ Ответ
 
+        belongsTo()
+        hasMany()
+        hasOne()
+        belongsToMany()
 
 
   • Вопрос/Ответ #53
 
     ▪ Вопрос
 
-        
+        Which of the following databases are supported by Laravel 5?
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+        PostgreSQL
+        MySQL
+        SQLite
 
 
   • Вопрос/Ответ #54
 
     ▪ Вопрос
 
-        
+        Eloquent can fire the following events allowing you to hook into various points in the model’s lifecycle. (choose all that apply)
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+        creating
+        created
+        updating
+        restoring
 
 
   • Вопрос/Ответ #55
 
     ▪ Вопрос
 
-        
+        Which method will retrieve the first result of the query in Laravel eloquent?
 
     ▪ Ответ
 
+        findOrFail(1);
 
 
   • Вопрос/Ответ #56
 
     ▪ Вопрос
 
-        
+        Which of the following is correct to retrieve 
+        all comments that are associated with a single 
+        post (post_id = 1) with one to many relation 
+        in Model?
 
     ▪ Ответ
 
+        $comments = App\Post::find(1)->comments;
 
 
   • Вопрос/Ответ #57
 
     ▪ Вопрос
 
-        
+        Which of the following methods are provided by migration class?
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+        up()
+        down()
 
 
   • Вопрос/Ответ #58
 
     ▪ Вопрос
 
-        
+        Which of the following can be used to get only 
+        selected column from a database table?
 
     ▪ Ответ
 
+        $selected_vote = users_details::get([‘selected_vote’]);
 
 
   • Вопрос/Ответ #59
 
     ▪ Вопрос
 
-        
+        Which of the following are correct route methods?
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+        Route::get($uri, $callback);
+        Route::options($uri, $callback);
+        Route::put($uri, $callback);
+        Route::delete($uri, $callback);
 
 
   • Вопрос/Ответ #60
 
     ▪ Вопрос
 
-        
+        Which of the following is the correct way 
+        to display unescaped data in blade?   
 
     ▪ Ответ
 
+        Hello, {!! $name !!}.
 
 
   • Вопрос/Ответ #61
 
     ▪ Вопрос
 
-        
+        What will be the output of the following in view if $name = «Andy»?
+        Welcome, {{ $name or ‘John’ }}     
 
     ▪ Ответ
 
+        Welcome, Andy
 
 
   • Вопрос/Ответ #62
 
     ▪ Вопрос
 
-        
+        Which of the following is a shortcut for 
+        ternary statement in blade?
 
     ▪ Ответ
 
+        {{ $name or ‘Default’ }}
 
 
   • Вопрос/Ответ #63
 
     ▪ Вопрос
 
-        
+        To define a callback when view is rendered we can use:
 
     ▪ Ответ
 
+        View::composer()
 
 
   • Вопрос/Ответ #64
 
     ▪ Вопрос
 
-        
+        Suppose we have a collection which contains 
+        the website news. What is the best way to 
+        share that collection in all views?
 
     ▪ Ответ
 
+        view()->share(‘news’, NewsStory::orderBy(‘created_at’, ‘desc’)
+        ->paginate(5));
 
 
   • Вопрос/Ответ #65
 
     ▪ Вопрос
 
-        
+        Which view facade within a service provider’s 
+        boot method can be used to share data with all 
+        views?
 
     ▪ Ответ
 
+        View::share(‘key’, ‘value’);
 
 
   • Вопрос/Ответ #66
 
     ▪ Вопрос
 
-        
+        Which of the following can be used to add images 
+        in a view? (choose all that apply)
+        Note: There may be more than one right answer.   
 
     ▪ Ответ
 
+        <img src="{{ URL::asset('img/myimage.png') }}"" alt="a picture" />
+        {{ HTML::image('img/myimage.png', 'a picture') }}
 
+        ??? - скорее всего нет
+        include(app_path().»/../resources/views/fronthead.blade.php»);
+        ???
 
   • Вопрос/Ответ #67
 
     ▪ Вопрос
 
-        
+        Which of the following is executed first?
 
     ▪ Ответ
 
+        View::creator(‘profile’, ‘App\Http\ViewCreators\ProfileCreator’);
 
 
   • Вопрос/Ответ #68
 
     ▪ Вопрос
 
-        
+        Which of the following is true for Elixir and Gulp? 
+        (choose all that apply)
+        Note: There may be more than one right answer.
 
     ▪ Ответ
 
+      ▪ Elixir is built on top of Gulp, so to run your Elixir tasks you only need to run the gulp
+      ▪ The gulp watch command will continue running in your terminal and watch your assets for any changes
+      ▪ Adding the —production flag to the command will instruct Elixir to minify your CSS and JavaScript files
 
 
   • Вопрос/Ответ #69
 
     ▪ Вопрос
 
-        
+        Which of the following variable is available inside your loops in blade?
 
     ▪ Ответ
 
+        $loop
 
 
   • Вопрос/Ответ #70
 
     ▪ Вопрос
 
-        
+        Which of the following can be used in views 
+        to print a message if array is empty? 
 
     ▪ Ответ
 
+        <ul>
+          @forelse ($names as $name)
+            <li>{{ $name }}</li>
+          @empty
+            <li>Don’t have names to list.</li>
+          @endforelse
+        </ul>
 
 
   • Вопрос/Ответ #71
 
     ▪ Вопрос
 
-        
+        Which one of the following is the last parameter 
+        for @each directive in blade?
 
     ▪ Ответ
 
