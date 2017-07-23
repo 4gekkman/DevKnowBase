@@ -39,6 +39,7 @@
     А1. Зачем нужны тесты в проекте?
     А2. Установка PHPUnit
     А3. Обзор возможностей PHPUnit
+    А4. CLI PHPUnit для запуска тестов
     
   # Б.  Практика и наработки
 
@@ -153,16 +154,38 @@
 
     ▪ Простой пример unit-теста
 
+  # Test Dependencies: зависимости между методами-тестами
+
+    ▪ Что такое Test Dependencies
+    ▪ По умолчанию зависимости передаются по ссылке
+    ▪ Можно использовать более 1-го @depends в docblock
+    ▪ Примеры использования Test Dependencies
+      ▪ Простой пример использования @depends
+      ▪ Одновременное использование нескольких @depends
+
   # Data Providers: скормить тесту N наборов данных
 
     ▪ Что такое Data Providers
+    ▪ Что будет, если тест @depends от теста, использующего @dataProvider
+    ▪ Все dataProvider выполняются до setUpBeforeClass и setUp 
     ▪ Примеры использования Data Provider
       ▪ Простой пример; цифровые ключи
       ▪ Простой пример; строковые ключи
       ▪ Передача в тест содержимого csv-файла
+    
+    ▪ Одновременное использование @depends and @dataProvider
 
+  # Тест на наличие исключений
 
-    ▪
+    ▪ expectException     | Использовать для теста на исключения
+    ▪ @expectedException  | Альтернатива expectException в docblock
+
+  # Тест вывода
+
+    ▪ expectOutputString  | Вывод должен совпадать с указанной строкой
+    ▪ expectOutputRegex   | Вывод ложнен проходить проверку рег.выражением
+    ▪ setOutputCallback   | Колбэк для изменения содержимого вывода
+    ▪ getActualOutput     | Получить текущий вывод
 
 --------------------------------------
 
@@ -202,6 +225,11 @@
     Тесты можно запускать все скопом. Это должен делать каждый
     разработчик перед тем, как отправлязть pull request в 
     удалённый репозиторий. Осуществляется это с помощью CLI PHPUnit.
+
+    Кроме того, тесты являются, как правило неплохой документацией.
+    В docblock можно описывать, что делают методы классов. А сами
+    тесты показывают, что и при каких условиях эти методы должны
+    возвращать.
 
 > Введение
 
@@ -257,6 +285,107 @@
       }
       ?>
 
+> Test Dependencies: зависимости между методами-тестами
+
+  • Что такое Test Dependencies
+    - Возможность явной декларации зависимостей между методами-тестами.
+    - Но они позволяют в зависимом методе-тесте получать в качестве
+      аргументов результаты тестов, от которого зависит зависимый.
+    - Тесты, от которых зависит данный, будут вызваны до него,
+      но порядок их вызова не определён.
+    - Если любой из тестов, от которых зависит данный, будет провален,
+      то данный тест даже и выполняться не будет. Это позволит не засорять
+      вывод лишней информацией, и проще увидеть, где ошибка.
+    - Можно использовать более 1-го @depends в docblock.
+
+  • По умолчанию зависимости передаются по ссылке
+    - Чтобы это изменить, используй: @depends clone
+
+  • Можно использовать более 1-го @depends в docblock
+    - Вывод от первой зависимости будет передан в 1-й аргумент.
+    - От второй - во 2-й, от третьей - в 3-й, и так далее.
+
+  • Примеры использования Test Dependencies
+
+    ▪ Простой пример использования @depends
+      - testEmpty ни от чего не зависит.
+      - testPush зависит от testEmpty, и получает его вывод.
+      - testPop зависит от testPush, и получает его вывод.
+      - Код:
+
+        <?php
+        use PHPUnit\Framework\TestCase;
+
+        class StackTest extends TestCase
+        {
+            public function testEmpty()
+            {
+                $stack = [];
+                $this->assertEmpty($stack);
+
+                return $stack;
+            }
+
+            /**
+             * @depends testEmpty
+             */
+            public function testPush(array $stack)
+            {
+                array_push($stack, 'foo');
+                $this->assertEquals('foo', $stack[count($stack)-1]);
+                $this->assertNotEmpty($stack);
+
+                return $stack;
+            }
+
+            /**
+             * @depends testPush
+             */
+            public function testPop(array $stack)
+            {
+                $this->assertEquals('foo', array_pop($stack));
+                $this->assertEmpty($stack);
+            }
+        }
+        ?> 
+
+    ▪ Одновременное использование нескольких @depends
+      - Вывод от первой зависимости будет передан в 1-й аргумент.
+      - От второй - во 2-й, от третьей - в 3-й, и так далее.
+      - Код теста:
+
+        <?php
+        use PHPUnit\Framework\TestCase;
+
+        class MultipleDependenciesTest extends TestCase
+        {
+            public function testProducerFirst()
+            {
+                $this->assertTrue(true);
+                return 'first';
+            }
+
+            public function testProducerSecond()
+            {
+                $this->assertTrue(true);
+                return 'second';
+            }
+
+            /**
+             * @depends testProducerFirst
+             * @depends testProducerSecond
+             */
+            public function testConsumer()
+            {
+                $this->assertEquals(
+                    ['first', 'second'],
+                    func_get_args()
+                );
+            }
+        }
+        ?>    
+
+
 > Data Providers: скормить тесту N наборов данных
   
   • Что такое Data Providers
@@ -269,6 +398,16 @@
       возвращать массив массивов наборов данных.
     - Какой Data Provider использовать методу-тесту можно
       указать в его docblock с помощью @dataProvider (см.примеры ниже).
+
+  • Что будет, если тест @depends от теста, использующего @dataProvider
+    - Зависимый тест будет выполнен лишь после того, как 
+      хотя бы для одного набора данных тест, от которого
+      он зависит, который использует @dataProvider, будет
+      выполнен успешно.
+ 
+  • Все dataProvider выполняются до setUpBeforeClass и setUp 
+    - Поэтому из dataProvider нет доступа к созданным в них переменным.
+    - Это нужно PHPUnit для того, чтобы он мог подсчитать кол-во тестов.
 
   • Примеры использования Data Provider
 
@@ -407,6 +546,172 @@
               }
           }
           ?>      
+
+  • Одновременное использование @depends and @dataProvider
+    - В docblock можно одновременно указать директивы из сабжа.
+    - У @dataProvider будет приоритет, на каком бы месте её не указать,
+      т.е. в 1-м аргументе всегда будут данные из @dataProvider,
+      а данные от @depends пойдут, начиная со 2-го аргумента (см.код ниже).
+    - Например:
+
+        <?php
+        use PHPUnit\Framework\TestCase;
+
+        class DependencyAndDataProviderComboTest extends TestCase
+        {
+            public function provider()
+            {
+                return [['provider1'], ['provider2']];
+            }
+
+            public function testProducerFirst()
+            {
+                $this->assertTrue(true);
+                return 'first';
+            }
+
+            public function testProducerSecond()
+            {
+                $this->assertTrue(true);
+                return 'second';
+            }
+
+            /**
+             * @depends testProducerFirst
+             * @depends testProducerSecond
+             * @dataProvider provider
+             */
+            public function testConsumer()
+            {
+                $this->assertEquals(
+                    ['provider1', 'first', 'second'],
+                    func_get_args()
+                );
+            }
+        }
+        ?>  
+
+    - А вывод будет такой:
+
+        phpunit --verbose DependencyAndDataProviderComboTest
+        PHPUnit 6.2.0 by Sebastian Bergmann and contributors.
+
+        ...F
+
+        Time: 0 seconds, Memory: 3.50Mb
+
+        There was 1 failure:
+
+        1) DependencyAndDataProviderComboTest::testConsumer with data set #1 ('provider2')
+        Failed asserting that two arrays are equal.
+        --- Expected
+        +++ Actual
+        @@ @@
+        Array (
+        -    0 => 'provider1'
+        +    0 => 'provider2'
+        1 => 'first'
+        2 => 'second'
+        )
+
+        /home/sb/DependencyAndDataProviderComboTest.php:31
+
+        FAILURES!
+        Tests: 4, Assertions: 4, Failures: 1.
+
+> Тест на наличие исключений
+
+  ▪ expectException
+    - Использовать для теста на исключения.
+    - Пример:
+
+        <?php
+        use PHPUnit\Framework\TestCase;
+
+        class ExceptionTest extends TestCase
+        {
+            public function testException()
+            {
+                $this->expectException(InvalidArgumentException::class);
+            }
+        }
+        ?>
+
+  ▪ @expectedException
+    - Альтернатива expectException в docblock.
+    - Пример:
+
+        <?php
+        use PHPUnit\Framework\TestCase;
+
+        class ExceptionTest extends TestCase
+        {
+            /**
+             * @expectedException InvalidArgumentException
+             */
+            public function testException()
+            {
+            }
+        }
+        ?>    
+
+> Тест вывода
+  
+  • expectOutputString
+    - Вывод должен совпадать с указанной строкой
+    - С помощью expectOutputString обозначаем строку.
+    - С помощью pring или echo можем вывести также строку.
+    - Если эти строки не совпадут, тест провален; иначе - пройден.
+    - Пример теста, который провалится:
+
+      <?php
+      use PHPUnit\Framework\TestCase;
+
+      class OutputTest extends TestCase
+      {
+          public function testExpectFooActualFoo()
+          {
+              $this->expectOutputString('foo');
+              print 'foo';
+          }
+
+          public function testExpectBarActualBaz()
+          {
+              $this->expectOutputString('bar');
+              print 'baz';
+          }
+      }
+      ?>
+
+    • expectOutputRegex
+      - Вывод ложнен проходить проверку рег.выражением.
+
+    • setOutputCallback
+      - Колбэк для изменения содержимого вывода.
+
+    • getActualOutput
+      - Получить текущий вывод.
+
+А4. CLI PHPUnit для запуска тестов
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+
+--------------------------------------
+
+> Ссылки
+
+  # [оф.документация] The Command-Line Test Runner 
+      https://phpunit.de/manual/6.2/en/textui.html
+
+> Введение
+  - Здесь описан CLI PHPUnit для запуска тестов.
+  - По сути, это просто копия оф.справки, своими словами.
+
+> 
 
 
 
