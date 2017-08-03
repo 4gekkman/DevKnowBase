@@ -18051,9 +18051,26 @@ git submodule add --name D10013 https://f73f99ac1472e0b5a950ebfec8ebe851627c560b
 
   # Авторизация через политики
 
-    ▪ 
-    ▪ 
-    ▪ 
+    ▪ Создание и регистрация политик
+      ▪ О политиках в общем
+      ▪ Тайп-хинтинг зависимостей в класс-политику
+      ▪ Примеры создания политик с помощью make:policy
+        ▪ Создание пустого класса-политики
+        ▪ Создание класса-политики с CRUD-методами
+      ▪ Регистрация политик: связывание с конкретными моделями
+
+    ▪ Методы и фильтры политик
+      ▪ Методы в политике, как гейты для методов в модели
+      ▪ Метод в политике: с моделью
+      ▪ Метод в политике: без модели
+      ▪ Before-фильтры в политике
+
+    ▪ Авторизация действий через политики
+      ▪ Через модель пользователя
+      ▪ Через middleware
+      ▪ Через хелперы контроллера
+      ▪ Через Blade-шаблоны
+
 
 --------------------------------------
 
@@ -18187,39 +18204,224 @@ git submodule add --name D10013 https://f73f99ac1472e0b5a950ebfec8ebe851627c560b
 
   • Создание и регистрация политик
 
-    Политика, это класс, содержащий авторизационную логику
-    для конкретной модели/ресурса.
+    ▪ О политиках в общем
+      - Политика, это класс.
+      - Он содержит авторизационную логику для конкретной модели/ресурса.
+      - Например:
 
-    Например, если ваше приложение - блог. Можно организовать
-    авторизационную логику для модели Post в политике PostPolicy,
-    где авторизовать такие действия пользователя по отношению к постам,
-    как создание или обновление постов.
+          Если ваше приложение - блог. Можно организовать
+          авторизационную логику для модели Post в политике PostPolicy,
+          где авторизовать такие действия пользователя по отношению к постам,
+          как создание или обновление постов.
 
-    Создать политику можно командой make:policy.
-    Сгенерированная политика будет помещена в app/Policies.
-    
-    Созданный класс-политика будет пустым. Если вы хотите создать
-    класс-политику с базовыми CRUD-методыами, можно указать
-    флаг --model при выполнении make:policy.
+    ▪ Тайп-хинтинг зависимостей в класс-политику
+      - Все политики в Laravel разрешаются с помощью сервис-контейнера.
+      - Поэтому, можно тайп-хинтить зависимости в контроллер политики.
+      - И эти зависимости будут автоматически разрешены.
 
-    Все политики в Laravel разрешаются с помощью сервис-контейнера.
-    Поэтому, можно 
+    ▪ Примеры создания политик с помощью make:policy
 
+      ▪ Создание пустого класса-политики
+        - Создать политику можно командой make:policy.
+        - Сгенерированная политика будет помещена в app/Policies.
+        - Созданный класс-политика будет пустым.
+        
+      ▪ Создание класса-политики с CRUD-методами
+        - Для этого надо использовать флаг --model.
+        - Например: make:policy --model
 
+    ▪ Регистрация политик: связывание с конкретными моделями
+      - Осуществляется в сервис-провайдерах в свойстве $policies.
+      - Пример:
+
+          <?php
+
+          namespace App\Providers;
+
+          use App\Post;
+          use App\Policies\PostPolicy;
+          use Illuminate\Support\Facades\Gate;
+          use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+
+          class AuthServiceProvider extends ServiceProvider
+          {
+            /**
+             * The policy mappings for the application.
+             *
+             * @var array
+             */
+            protected $policies = [
+              Post::class => PostPolicy::class,
+            ];
+
+            /**
+             * Register any application authentication / authorization services.
+             *
+             * @return void
+             */
+            public function boot()
+            {
+              $this->registerPolicies();
+
+              //
+            }
+          }
 
   • Методы и фильтры политик
 
+    ▪ Методы в политике, как гейты для методов в модели
+      - Например, создали политику PostModel для модели Post.
+      - Связали PostModel с Post в сервис-провайдере.
+      - Допустим, в Post есть метод update для обновления поста.
+      - Создаём в PostModel одноимённый метод, он будет гейтом для
+        метода update в Post, который будет автоматически применяться.
+
+    ▪ Метод в политике: с моделью
+      - Хорошо, если мы хотим read/update/delete в нашем действии.
+      - Тогда мы можем в update@PostModel 2-ым аргументом передать экземпляр поста:
+
+          namespace App\Policies;
+          use App\User;
+          use App\Post;
+          class PostPolicy {
+            /**
+             * Determine if the given post can be updated by the user.
+             *
+             * @param  \App\User  $user
+             * @param  \App\Post  $post
+             * @return bool
+             */
+            public function update(User $user, Post $post) {
+              return $user->id === $post->user_id;
+            }
+          } 
+
+    ▪ Метод в политике: без модели
+      - А если мы хотим create? Экземпляра то ещё нет.
+      - Поэтому можем 2-ым аргументом его и не передавать:
+
+          public function create(User $user) {
+              //
+          }
+
+    ▪ Before-фильтры в политике
+      - Они срабатывают до того, как доло дойдёт до применения политики.
+      - Полезно, когда кому-то надо всё запретить, или всё разрешить.
+      - Например, когда надо разрешить всё администратору.
+      - Либо, когда надо запретить всё забаненному пользователю.
+      - Определить before-фильтр политики можно, определив в ней метод before.
+      - В зависимости от того, что вернуть из него, такое и будет поведение:
+
+        ▪ true  // разрешить всё
+        ▪ false // запретить всё
+        ▪ null  // применить политики
+
+      - Пример:
+
+          public function before($user, $ability) {
+            if ($user->isSuperAdmin()) {
+                return true;
+            }
+          }
 
   • Авторизация действий через политики
 
+    ▪ Через модель пользователя
+      - В стандартной комплектации Laravel идёт класс App\User.
+      - В нём есть методы can/cant.
+      - Они позволяют проверить, может ли юзер "действие" из указанной модели.
+      - Например, может ли $user сделать 'update' поста (модель $post):
 
+          // Операции типа read/update/delete
+          if ($user->can('update', $post)) {
+            //
+          }
 
+          // Операциит типа create
+          if ($user->can('create', Post::class)) {
+              // Executes the "create" method on the relevant policy...
+          }          
 
+      - Laravel автоматически вызовет соотв.метод соовт.политики.
+      - Если его нет, или политика не зарегистрирована, то соотв.гейт,
+        имя которого соответствует имени 'update'.
 
+    ▪ Через middleware
+      - Можно проводить авторизацию ещё до достижения запросом роута и контроллера.
+      - Для этого в Laravel есть middleware с ключём "can".
+      - Примеры (ситуация аналогична выше описанной):
 
+          // Операции типа read/update/delete
+          Route::put('/post/{post}', function (Post $post) {
+            // The current user may update the post...
+          })->middleware('can:update,post');
 
+          // Операциит типа create
+          Route::post('/post', function () {
+            // The current user may create posts...
+          })->middleware('can:create,App\Post');
 
+    ▪ Через хелперы контроллера
+      - У каждого контроллера есть хелпер authorize.
+      - Он может проверять, авторизован ли текущий юзер выполнять указанное действие.
+      - Если не авторизован, будет возбуждено исключение
+        "Illuminate\Auth\Access\AuthorizationException" и возвращён
+        ответ с кодом 403.
+      - Примеры:
 
+          // Операции типа read/update/delete
+          <?php
+
+          namespace App\Http\Controllers;
+          use App\Post;
+          use Illuminate\Http\Request;
+          use App\Http\Controllers\Controller;
+          class PostController extends Controller {
+            /**
+             * Update the given blog post.
+             *
+             * @param  Request  $request
+             * @param  Post  $post
+             * @return Response
+             */
+            public function update(Request $request, Post $post) {
+              $this->authorize('update', $post);
+
+              // The current user can update the blog post...
+            }
+          }   
+
+          // Операциит типа create  
+
+          ...
+          $this->authorize('create', Post::class);
+          ... 
+
+    ▪ Через Blade-шаблоны
+      - Можно проводить авторизацию прямо в blade-шаблоне.
+      - Примеры:
+
+          // Операции типа read/update/delete
+          @can('update', $post)
+              <!-- The Current User Can Update The Post -->
+          @elsecan('create', $post)
+              <!-- The Current User Can Create New Post -->
+          @endcan
+
+          @cannot('update', $post)
+              <!-- The Current User Can't Update The Post -->
+          @elsecannot('create', $post)
+              <!-- The Current User Can't Create New Post -->
+          @endcannot
+
+          // Операциит типа create
+          @can('create', App\Post::class)
+              <!-- The Current User Can Create Posts -->
+          @endcan
+
+          @cannot('create', App\Post::class)
+              <!-- The Current User Can't Create Posts -->
+          @endcannot
 
 
 
