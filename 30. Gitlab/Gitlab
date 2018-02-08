@@ -1,0 +1,255 @@
+////=================================================////
+////                                                 ////
+////                     Gitlab                      ////
+////                                                 ////
+////=================================================////
+////                      ////
+////         Ссылки       ////
+////                      ////
+////======================////
+
+  // Официальные ресурсы //
+  //---------------------//
+
+    # Сайт Gitlab
+        https://gitlab.com
+
+    # Документация Gitlab
+        
+      • Вся документация
+          https://docs.gitlab.com/
+
+      • Обновление omnibus до новых версий, ce -> ee
+          https://docs.gitlab.com/omnibus/update/README.html#updating-from-gitlab-66-and-higher-to-the-latest-version
+
+    # Интересные статьи из блока gitlab по годам
+
+      2014: 
+
+        # GitLab Flow
+            https://docs.gitlab.com/ee/workflow/gitlab_flow.html
+
+    # Как организованы процессы в Gitlab (Gitlab Handbook)
+        https://about.gitlab.com/handbook/
+
+    # Куда движется Gitlab
+        https://about.gitlab.com/direction/
+
+
+
+  // Неофициальные ресурсы //
+  //-----------------------//
+
+    # Статья в wiki (ru)
+        https://ru.wikipedia.org/wiki/GitLab
+
+    # Интересные видео на youtube
+
+      # Почему вы не можете игнорировать GitLab в 2016 году
+          https://www.youtube.com/watch?v=Cxb_Gv5qVfM&t=225s
+
+      # Процесс разработки и тестирования с Docker + Gitlab CI
+          https://www.youtube.com/watch?v=lJsqRwULRVA
+
+      # Idea to Production with GitLab 9.0
+          https://www.youtube.com/watch?v=PoBaY_rqeKA
+
+      # Playlist: gitlab university
+          https://www.youtube.com/playlist?list=PLFGfElNsQthbQu_IWlNOxul0TbS_2JH-e
+
+    # Интересные статьи о Gitlab на хабре по годам
+
+      2011: 
+
+        # GitLab: open source версия Github
+            https://habrahabr.ru/post/130570/
+
+      2012:
+
+        # Защита gitlab и gitolite от подбора паролей и ключей
+            https://habrahabr.ru/post/146130/
+
+      2015:
+
+        # Использование gitlab continuous integration для деплоя
+            https://habrahabr.ru/company/Voximplant/blog/269473/
+
+      2016:
+
+        # Введение в gitlab CI
+            https://habrahabr.ru/company/softmart/blog/309380/
+  
+        # GitLab CI: Учимся деплоить
+            https://habrahabr.ru/company/softmart/blog/310502/
+
+        # GitLab Container Registry (docker)
+            https://habrahabr.ru/company/softmart/blog/309102/
+
+      2017: 
+
+        # Пользователи убедили GitLab не уходить из облака
+            https://habrahabr.ru/company/southbridge/blog/325572/
+
+        # GitLab CI для непрерывной интеграции и доставки в production. Часть 1: наш пайплайн
+            https://habrahabr.ru/company/flant/blog/332712/
+
+        # GitLab CI для непрерывной интеграции и доставки в production. Часть 2: преодолевая трудности
+            https://habrahabr.ru/company/flant/blog/332842/
+
+        # Вышел GitLab 10.0: Авто-DevOps и групповые доски задач
+            https://habrahabr.ru/company/softmart/blog/339174/
+
+    # Непрерывная интеграция/внедрение приложения Symfony с помощью docker-compose и GitLab CI
+        https://habrahabr.ru/post/335564/
+
+
+////==================================================////
+////                         ////
+////        Оглавление       ////
+////                         ////
+////=========================////
+
+  # А.  Базовая общая информация
+
+    А1. Общая информация о Gitlab
+    А2. Версии и планы
+
+  # Б.  Прикладная информация из документации
+
+    Б1. 
+    Б2. 
+    Б3. 
+    Б4. 
+    Б5. 
+    Б6. 
+
+  # X.  Практика и наработки
+
+    X1. 
+
+
+
+
+////==================================================////
+////                         ////
+////        Содержание       ////
+////                         ////
+////=========================////
+
+А1. Общая информация о Gitlab
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+  # Общая информация о Gitlab
+  # Хроника проекта Gitlab
+
+--------------------------------------
+
+> Ссылки
+
+  # Статья в wiki (ru)
+      https://ru.wikipedia.org/wiki/GitLab
+
+> Введение
+  - В этой главе собрана общая информация о Gitlab.
+
+> Определение Gitlab
+
+    Основанная на git полнофункциональная платформа для
+    управления разработкой.
+
+> Общая информация о Gitlab
+  - Официальный сайт: gitlab.com
+  - Начало работы над проектом: 2011 год.
+  - Написан Дмитрием Запорожцем и Валерием Сизовым из Украины.
+  - Код на Ruby и Go.
+  - Головной офис в Сан-Франциско.
+  - Есть 2 версии: CE (community edition, бесплатная) и EE (enterprice edition, платная).
+  - Git репозитории не могут быть на github, bitbucket и т.п., а д.б. на машине,
+    где установлен Gitlab.
+  - Позволяет создавать сколько угодно публичных и приватных git репозиториев.
+
+> Хроника проекта Gitlab
+  2011: начало работы над проектом, opensource (MIT)
+  2013: проект делится на CE и EE версии.
+  2014: в EE добавлены фичи, недоступные в CE.
+  2015: привлечение ~$5 миллионов инвестиций.
+  2016: привлечение ~$20 миллионов инвестиций.
+  2017: привлечение ~$20 миллионов инвестиций.
+
+
+А2. Версии и планы
+
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+  # Версии и планы
+
+    ▪ Наш хост
+      ▪ CE (Community Edition)
+      ▪ EE (Enterprise Edition)
+        ▪ EES (Enterprise Edition Starter)
+        ▪ EEP (Enterprise Edition Premium)
+
+    ▪ Хост на gitlab.com
+      ▪ free  
+      ▪ bronze
+      ▪ silver
+      ▪ gold  
+
+--------------------------------------
+
+> Ссылки
+
+  # Версии и планы Gitlab
+      https://docs.gitlab.com/ee/README.html
+
+> Введение
+  - Gitlab представлен несколькими версиями продукта и планами подписок.
+  - Здесь описана ситуация на конец 2017-го.
+
+> Версии и планы
+
+  # Наш хост
+
+    - CE        | $0, тут нет досок
+    - EE        
+      - EES     | $3.25/user, тут продвинутый функционал досок, 2000 часов раннера и ещё набор доп.фич
+      - EEP     | $16.59/user, это для крупных компаний
+
+  # Хост на gitlab.com
+
+    - free      | $0, 
+    - bronze    | $4/user, тут продвинутый функционал досок, 2000 часов раннера и ещё набор доп.фич
+    - silver    | $19/user, это для крупных компаний
+    - gold      | $99/user, тоже самое, что silver, только 50k часов раннера вместо 10k.
+
+> Какую версию/план выбрать?
+
+  • Для начала
+    - Поднять CE на своём хостинге, используя Docker.
+    - Там же запустить свой runner, используя Docker.
+    - Этот же хостинг использовать для тестового сервера проекта.
+
+  • Если чего-то будет не хватать
+    - Заменить CE на EES на своём хостинге.
+
+
+
+
+
+# Узнать подробную инфу и версию gitlab
+sudo gitlab-rake gitlab:env:info
+
+# Узнать версию gitlab
+sudo apt-cache policy gitlab-ce | grep Installed
+
+# Проверить, какой gitlab установлен, omnibus или нет
+[ -f /etc/gitlab/gitlab.rb ] && echo "Omnibus" || echo "Not omnibus"
+
+
