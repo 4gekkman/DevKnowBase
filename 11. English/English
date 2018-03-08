@@ -5536,17 +5536,35 @@ G15. Adverbs
     ▪ Info 3: у некоторых 2 равнозначные формы с/без -ly (последние звучат официальнее)
     ▪ Info 4: у некоторых 2 формы с/без -ly (имеющих разные значения)
     
-    ▪ Diff 1: hard (сложно) vs hardly (едва ли, с трудом)
-    ▪ Diff 2: late (поздно) vs lately (в последнее время)
-    ▪ Diff 3: deep vs deeply
-    ▪ Diff 4: direct (напрямую) vs directly (тотчас, в прямом направлении, на прямую)
-    ▪ Diff 5: short (внезапно) vs shortly (вскоре)
-    ▪ Diff 6: last (в последний раз, позже всех) vs lastly (наконец)
-    ▪ Diff 7: near (рядом) vs nearly (практически)
+  # Adverbs: исключения, у которых значение с -ly меняется
 
-  # Adverbs: -ly adverbs spelling
+    ▪ Exc 1: hard (сложно) vs hardly (едва ли, с трудом)
+    ▪ Exc 2: late (поздно) vs lately (в последнее время)
+    ▪ Exc 3: deep (глубоко) vs deeply (оч.глубоко, в наивысшей степени)
+    ▪ Exc 4: direct (напрямую) vs directly (тотчас, в прямом направлении, на прямую)
+    ▪ Exc 5: short (внезапно) vs shortly (вскоре)
+    ▪ Exc 6: last (в последний раз, позже всех) vs lastly (наконец)
+    ▪ Exc 7: near (рядом) vs nearly (практически)
+    ▪ Exc 8: wide (широко) vs widely (широко распространённый)
+    ▪ Exc 9: wrong (неправильно) vs wrongly (несправедливо)
+    ▪ Exc 10: flat (плоско, ровно) vs flatly (плоско, ровно, категорически, решительно)
+    ▪ Exc 11: high (высоко) vs highly (очень, в высшей степени)
+    ▪ Exc 12: free (бесплатно) vs freely (охотно, вольно, по соб.желанию)
+    ▪ Exc 13: just (только что, просто) vs justly (справедливо, честно)
+    ▪ Exc 14: most (больше всего) vs mostly (обычно, в основном)
+    ▪ Exc 15: наречие от good, это well (что НЕ ПО ПРАВИЛАМ)
 
-    ▪ 
+  # Adverbs: образование наречий из прилагательных путем добавления -ly в конце
+
+    ▪ -ly 1: прилагательное<согласная> + ly [badly, madly]
+    ▪ -ly 2: прилагательное<-l> + ly [carefully]
+    ▪ -ly 3: прилагательное<-le>: e -> y [simply, terribly]
+    ▪ -ly 4: прилагательное<cогласная + y>: y -> i + ly [crazily, luckily]
+    ▪ -ly 5: whole->wholly, true->truly
+    ▪ -ly 6: прилагательное<-ic> + ally [historically]
+    ▪ -ly 7: in a <прилагательное-ly> way/manner [monthly, friendly]
+
+  # Adverbs: положение в предложении
 
 --------------------------------------
 
@@ -5641,7 +5659,9 @@ G15. Adverbs
     меняется значение. Они рассмотрены ниже в пунктах
     diff.
 
-  • Diff 1: hard (сложно) vs hardly (едва ли, с трудом)
+> Adverbs: исключения, у которых значение с -ly меняется
+
+  • Exc 1: hard (сложно) vs hardly (едва ли, с трудом)
   
     Hard      сложно, усердно
     Hardly    едва, почти не, с трудом
@@ -5651,7 +5671,7 @@ G15. Adverbs
 
     - She ate hardly anything. (она почти ничего не ела)
 
-  • Diff 2: late (поздно) vs lately (в последнее время)
+  • Exc 2: late (поздно) vs lately (в последнее время)
   
     late      поздно
     lately    в последнее время
@@ -5662,7 +5682,7 @@ G15. Adverbs
     - I have been busy lately.
       (В последнее время я занят)
 
-  • Diff 3: deep vs deeply
+  • Exc 3: deep (глубоко) vs deeply (оч.глубоко, в наивысшей степени)
   
     Deep, Deeply      глубого
     Deeply            в наивысшей степени
@@ -5679,7 +5699,7 @@ G15. Adverbs
     - They deeply love each other.
       (Они очень друг друга любят)
 
-  • Diff 4: direct (напрямую) vs directly (тотчас, в прямом направлении, на прямую)
+  • Exc 4: direct (напрямую) vs directly (тотчас, в прямом направлении, на прямую)
   
     Direct      напрямую, без остановок
     Directly    
@@ -5700,7 +5720,7 @@ G15. Adverbs
     - He drove her directly to her hotel.
       (Он сразу отвёз её в отель)
 
-  • Diff 5: short (внезапно) vs shortly (вскоре)
+  • Exc 5: short (внезапно) vs shortly (вскоре)
   
     Short     неожиданно, внезапно
     Shortly   вскоре, скоро
@@ -5711,7 +5731,7 @@ G15. Adverbs
     - I'll come back very shortly.
       (Я очень скоро вернусь)
 
-  • Diff 6: last (в последний раз, позже всех) vs lastly (наконец)
+  • Exc 6: last (в последний раз, позже всех) vs lastly (наконец)
   
     Last      в последний раз, позже всех
     Lastly    наконец
@@ -5725,7 +5745,7 @@ G15. Adverbs
     - When did you last have a hot-dog?
       (Когда в последний раз ты ел хот-дог?)
 
-  • Diff 7: near (рядом) vs nearly (практически)
+  • Exc 7: near (рядом) vs nearly (практически)
 
     Near      близко, около
     Nearly    почти, практически
@@ -5736,12 +5756,200 @@ G15. Adverbs
     - I have nearly bumped into that tree.
       (Я почти врезался в то дерево)
 
-> Adverbs: -ly adverbs spelling
+  • Exc 8: wide (широко) vs widely (широко распространённый)
 
+    Оба наречия wide/widely используются в значении
+    "широко". Однако, они передают разные оттенки
+    значения
 
+    wide    полностью, настежь, насколько возможно
 
+    - The door was left wide open.
+    - The doctor asked me to open my mouth wide.
 
+    widely  широко (распространнённый и т.д.),
+            охватывающий большую территорию
 
+    - Widely spread.      (широко распространённый)
+    - Widely admired.     (широко любимый)
+    - Widely used.        (широко используемый)
+    - Widely known.       (широко известный)
+    - He traveled widely. (он путешествовал по многим странам)
+
+  • Exc 9: wrong (неправильно) vs wrongly (несправедливо)
+
+    Wrong     неправильно, неверно (ставится после глагола)
+    Wrongly   нечестно, несправедливо
+
+    - Yesterday on the test I answered wrong.
+      (Вчера на контрольной работе я ответил неправильно)
+
+    - He was wrongly sentenced to 2 years in prison.
+      (Он был несправедливо приговорён к двум годам тюрьмы)
+
+  • Exc 10: flat (плоско, ровно) vs flatly (плоско, ровно, категорически, решительно)
+
+    Наречия flat и flatly могут использоваться в значении
+    "плоско", "ровно". Но flat употребляется в таком
+    значении чаще. Оттенки значения могут незначительно
+    меняться в зависимости от глагола.
+
+    flat      плоско (чаще), ровно (чаще)
+    flatly    плоско (реже), ровно (реже), категорически, решительно
+
+    - He fell flat in the water.
+      (он упал плашмя на воду)
+
+    - Try to apply paint flatly.
+      (попробуйте наносить краску ровно)
+
+    - She flatly refused to discuss it.
+      (она категорически отказалась это обсуждать)
+
+  • Exc 11: high (высоко) vs highly (очень, в высшей степени)
+
+    high      высоко
+    highly    очень, в высшей степени
+
+    - All eagles fly very high.
+    - He was a highly respected teacher.
+
+  • Exc 12: free (бесплатно) vs freely (охотно, вольно, по соб.желанию)
+
+    free      бесплатно
+    freely    охотно, вольно, по собственному желанию
+
+    - I usually travel free to the USA.
+      (я обачно путешествую по США бесплатно)
+
+    - He freely washes the dishes.
+      (Он охотно моет посуду)
+
+  • Exc 13: just (только что, просто) vs justly (справедливо, честно)
+
+    just      только что, просто
+    justly    справедливо, честно
+
+    - I have just met her in the hall.
+      (я только что встретил её в зале)
+
+    - I just wanted to find out how you were.
+      (я просто хотел узнать, как у тебя дела)
+
+    - He always acts justly.
+      (Он всегда поступает справедливо)
+
+  • Exc 14: most (больше всего) vs mostly (обычно, в основном)
+
+    most      больше всего
+    mostly    обычно, в основном
+
+    - Which of these wines do you like most?
+      (какое из этих вин тебе нравится больше всего?)
+
+    - He writes mostly about war.
+      (Он пишет в основном о войне)
+
+    - They mostly buy groceries on Sundays.
+      (Они обычно покупают продукты по воскресеньям)
+
+  • Exc 15: наречие от good, это well (что НЕ ПО ПРАВИЛАМ)
+
+    Наречие от прилагательного good образуется НЕ ПО ПРАВИЛАМ.
+    Его нужно запомнить.
+
+    well    хорошо
+
+    - I know Spanish very well.
+      (я знаю испанский очень хорошо)
+
+> Adverbs: образование наречий из прилагательных путем добавления -ly в конце
+
+  • -ly 1: прилагательное<согласная> + ly [badly, madly]
+
+    Если прилагательное оканчивается на согласную букву, то
+    просто добавляется -ly.
+
+      bad     badly
+
+  • -ly 2: прилагательное<-l> + ly [carefully]
+
+    Если прилагательное оканчивается на -l, то добавляется
+    -ly. Буква -l, таким образом, удваивается.
+
+      careful     carefully
+
+  • -ly 3: прилагательное<-le>: e -> y [simply, terribly]
+
+    Если прилагательное заканчивается на -le, то буква e
+    заменяется на y.
+
+      simple      simply
+      horrible    horribly
+      terrible    terribly
+
+  • -ly 4: прилагательное<cогласная + y>: y -> i + ly [crazily, luckily]
+
+    Если последняя буква в слове - согласная + y, 
+    то y заменяется на i, а в конце добавляется -ly.
+
+      crazy     crazily
+      lazy      lazily
+      lucky     luckily
+
+    Но есть и исключения:
+
+      shy     shyly (застенчиво)
+      sly     slyly (ловко)
+
+  • -ly 5: whole->wholly, true->truly
+
+    Запомните следующие прилагательные:
+
+      whole, true
+
+    Чтобы образовать от них наречия, необходимо не только
+    добавить -ly, но и убрать e на конце.
+
+      whole     wholly (полностью)
+      true      truly (верно)
+
+  • -ly 6: прилагательное<-ic> + ally [historically]
+
+    Если прилагательное оканчивается на -ic, то добавляется
+    -ally.
+
+      historic        historically
+      comic           comically
+      dramatic        dramatically
+
+    Но есть и исключение:
+
+      public          publicly
+
+  • -ly 7: in a <прилагательное-ly> way/manner [monthly, friendly]
+
+    Существуют прилагательные, которые похожи на наречия тем,
+    что заканчиваются на -ly. К этим прилагательным нельзя
+    добавить -ly для того, чтобы образовать из них наречия,
+    ибо не надо ничего добавлять, эти слова без изменений
+    становятся прилагательными или наречиями, в зависимости
+    от контекста.
+
+      monthly, weekly, daily, annyally,
+      friendly, lively, timely, masterly, 
+      и т.д.
+
+    Если вы хотите описать какое-то действие с помощью
+    наречий, образованных от этих прилагательных, используйте
+    такие фразы:
+
+      in a <наречие>ly way
+      in a <наречие>ly manner
+
+    - She met us in a very friendly manner.
+    - Some people exercise daily.
+    - Exercises are their daily routine.
 
 
 
