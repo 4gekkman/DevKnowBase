@@ -6342,6 +6342,20 @@ G16. Perfect Passive
     ▪ Info 2: в активном залоге подлежащее совершает действие
     ▪ Info 3: в пассивном залоге НАД подлежащим совершается действие
     ▪ Info 4: ещё несколько сравнений активного/пассивного залогов
+    ▪ Info 5: как переделать предложение из active в passive
+
+  # Perfect Passive: обзор всех форм для всех времён
+
+    ▪ Info 1: о формах пассивного залога
+
+    ▪ Form 1: (Present Simple)     am/is/are + [глагол 3ф.]
+    ▪ Form 2: (Present Continuous) am/is/are + being + [глагол 3ф.]
+    ▪ Form 3: (Past Simple)        was/were + [глагол 3ф.]
+    ▪ Form 4: (Past Continious)    was/were + being + [глагол 3ф.]
+    ▪ Form 5: (Future)             will be + [глагол 3ф.]
+    ▪ Form 6: (Present Perfect)    have/has + been + [глагол 3ф.]
+    ▪ Form 7: (Past Perfect)       had + been + [глагол 3ф.]
+    ▪ Form 8: (Future Perfect)     will + have been + [глагол 3ф.]
 
   # Perfect Passive: general form (НЕ perfect)
 
@@ -6414,6 +6428,108 @@ G16. Perfect Passive
 
     - I paint pictures.                 Активный залог
     - The pictures are painted by me.   Пассивный залог
+
+  • Info 5: как переделать предложение из active в passive
+
+    Для того, чтобы переделать предложение из активного
+    залога в пассивный, следуйте правилам:
+
+    1. Поставьте существительное, над которым совершается
+       действие, на место существительного, которое
+       совершает действие:
+
+       - Active:
+         My friend is looking after my puppy.
+         Мой друг присматривает за моим щенком.
+
+       - Passive:
+         My puppy is being looked after by my friend.
+         За моим щенком присматривает мой друг.
+
+    2. Переделайте форму глагола в соответствующую
+       форму пассивного залога:
+
+       - Active:
+         "is looking after" (Present Continious)
+
+       - Passive: 
+         "is being looked after" (Present Continious Passive)
+
+    3. Поставьте предмет, который совершает действие,
+       на место предмета, над которым совершается действие.
+       Для этого используется предлог by (если речь идет
+       о людях) и with (если речь идет о предметах).
+
+       - Active:
+         My friend (тот, кто совершает действие) is looking
+         after my puppy (тот, над кем совершается действие).
+
+       - Passive:
+         My puppy (тот, над кем совершается действие) is being 
+         looked after by my friend (тот, кто совершает действие).
+
+> Perfect Passive: обзор всех форм для всех времён
+
+  • Info 1: о формах пассивного залога
+
+    У каждого времени своя форма образования пассивного
+    залога. Однако, они образуются по одному принципу:
+
+      предмет + [to be в нужном времени] + [3 форма глагола]
+
+    Ниже в forms проведён обзор всех форм образования 
+    пассивного залога для всех времен, используя которые
+    можно образовать пассивный залог.
+
+    Они употребляются в соответствии со случаями употребления
+    каждого конкретного времени.
+
+    Рассмотрев внимательно все формы, вы сможете понять,
+    как образуется пассивный залог в разных временах.
+
+    Их НЕ НУЖНО учить наизусть! Для того, чтобы правильно
+    использовать пассивный залог в речи и на письме, достаточно
+    понять принцип его образования.
+
+  • Form 1: (Present Simple)     am/is/are + [глагол 3ф.]
+
+    - I am screwed.
+      Я влип.
+
+  • Form 2: (Present Continuous) am/is/are + being + [глагол 3ф.]
+
+    - I am being asked.
+      Меня спрашивают.
+
+  • Form 3: (Past Simple)        was/were + [глагол 3ф.]
+
+    - I was asked.
+      Меня спросили.
+
+  • Form 4: (Past Continious)    was/were + being + [глагол 3ф.]
+
+    - I was being asked.
+      Меня спрашивали.
+
+  • Form 5: (Future)             will be + [глагол 3ф.]
+
+    - I will be asked.
+      Меня спросят.
+
+  • Form 6: (Present Perfect)    have/has + been + [глагол 3ф.]
+
+    - I have been already asked.
+      Меня уже спросили (только что).
+
+  • Form 7: (Past Perfect)       had + been + [глагол 3ф.]
+
+    - I had been already asked.
+      Меня уже спросили (ранее).
+
+  • Form 8: (Future Perfect)     will + have been + [глагол 3ф.]
+
+    - I will have been asked.
+      Меня будут спрашивать.
 
 > Perfect Passive: general form (НЕ perfect)
 
@@ -8025,6 +8141,7 @@ G19. The Simple Passive Voice
     ▪ Info 2: в активном залоге подлежащее совершает действие
     ▪ Info 3: в пассивном залоге НАД подлежащим совершается действие
     ▪ Info 4: ещё несколько сравнений активного/пассивного залогов
+    ▪ Info 5: как переделать предложение из active в passive
 
   # Simple Passive Voice: обзор всех форм для всех времён
 
@@ -8068,10 +8185,6 @@ G19. The Simple Passive Voice
     ▪ Use 1: не указано, кем/чем совершается действие в будущем
     ▪ Use 2: указано, кем совершается действие в будущем (используем by)
     ▪ Use 3: указано, чем совершается действие в будущем (используем with)
-
-
-
-
 
 --------------------------------------
 
@@ -8119,6 +8232,45 @@ G19. The Simple Passive Voice
 
     - I paint pictures.                 Активный залог
     - The pictures are painted by me.   Пассивный залог
+
+  • Info 5: как переделать предложение из active в passive
+
+    Для того, чтобы переделать предложение из активного
+    залога в пассивный, следуйте правилам:
+
+    1. Поставьте существительное, над которым совершается
+       действие, на место существительного, которое
+       совершает действие:
+
+       - Active:
+         My friend is looking after my puppy.
+         Мой друг присматривает за моим щенком.
+
+       - Passive:
+         My puppy is being looked after by my friend.
+         За моим щенком присматривает мой друг.
+
+    2. Переделайте форму глагола в соответствующую
+       форму пассивного залога:
+
+       - Active:
+         "is looking after" (Present Continious)
+
+       - Passive: 
+         "is being looked after" (Present Continious Passive)
+
+    3. Поставьте предмет, который совершает действие,
+       на место предмета, над которым совершается действие.
+       Для этого используется предлог by (если речь идет
+       о людях) и with (если речь идет о предметах).
+
+       - Active:
+         My friend (тот, кто совершает действие) is looking
+         after my puppy (тот, над кем совершается действие).
+
+       - Passive:
+         My puppy (тот, над кем совершается действие) is being 
+         looked after by my friend (тот, кто совершает действие).
 
 > Simple Passive Voice: обзор всех форм для всех времён
 
@@ -8379,6 +8531,7 @@ G20. Present and Past Continuous Passive
     ▪ Info 2: в активном залоге подлежащее совершает действие
     ▪ Info 3: в пассивном залоге НАД подлежащим совершается действие
     ▪ Info 4: ещё несколько сравнений активного/пассивного залогов
+    ▪ Info 5: как переделать предложение из active в passive
 
   # Present and Past Continuous Passive: обзор всех форм для всех времён
 
@@ -8393,11 +8546,21 @@ G20. Present and Past Continuous Passive
     ▪ Form 7: (Past Perfect)       had + been + [глагол 3ф.]
     ▪ Form 8: (Future Perfect)     will + have been + [глагол 3ф.]
 
-  # 
+  # Present and Past Continuous Passive: Present Continious
+
+    ▪ Form 1: (+) cущ./местоим. + am/is/are + being + [глагол 3ф.]
+    ▪ Form 2: (-) cущ./местоим. + am/is/are + not + being + [глагол 3ф.]
+    ▪ Form 3: (?) am/is/are + cущ./местоим. + being + [глагол 3ф.]
+
+  # Present and Past Continuous Passive: Past Continious
+
+    ▪ Form 1: (+) cущ./местоим. + was/were + being + [глагол 3ф.]
+    ▪ Form 2: (-) cущ./местоим. + was/were + not + being + [глагол 3ф.]
+    ▪ Form 3: (?) was/were + cущ./местоим. + being + [глагол 3ф.]
 
 --------------------------------------
 
-> Simple Passive Voice: active/passive voice
+> Present and Past Continuous Passive: active/passive voice
 
   • Info 1: подлежащее - главный член предложения; кто? / что?
 
@@ -8442,7 +8605,46 @@ G20. Present and Past Continuous Passive
     - I paint pictures.                 Активный залог
     - The pictures are painted by me.   Пассивный залог
 
-> Simple Passive Voice: обзор всех форм для всех времён
+  • Info 5: как переделать предложение из active в passive
+
+    Для того, чтобы переделать предложение из активного
+    залога в пассивный, следуйте правилам:
+
+    1. Поставьте существительное, над которым совершается
+       действие, на место существительного, которое
+       совершает действие:
+
+       - Active:
+         My friend is looking after my puppy.
+         Мой друг присматривает за моим щенком.
+
+       - Passive:
+         My puppy is being looked after by my friend.
+         За моим щенком присматривает мой друг.
+
+    2. Переделайте форму глагола в соответствующую
+       форму пассивного залога:
+
+       - Active:
+         "is looking after" (Present Continious)
+
+       - Passive: 
+         "is being looked after" (Present Continious Passive)
+
+    3. Поставьте предмет, который совершает действие,
+       на место предмета, над которым совершается действие.
+       Для этого используется предлог by (если речь идет
+       о людях) и with (если речь идет о предметах).
+
+       - Active:
+         My friend (тот, кто совершает действие) is looking
+         after my puppy (тот, над кем совершается действие).
+
+       - Passive:
+         My puppy (тот, над кем совершается действие) is being 
+         looked after by my friend (тот, кто совершает действие).
+
+> Present and Past Continuous Passive: обзор всех форм для всех времён
 
   • Info 1: о формах пассивного залога
 
@@ -8505,8 +8707,69 @@ G20. Present and Past Continuous Passive
     - I will have been asked.
       Меня будут спрашивать.
 
+> Present and Past Continuous Passive: Present Continious
 
+  • Form 1: (+) cущ./местоим. + am/is/are + being + [глагол 3ф.]
 
+    I/You/We/They/He/She/It  am/is/are  being  [глагол 3ф.]  [остальное]
 
+    - This house is being built in the periof from June to October.
+      Этот дом строится с июня по октябрь.    
+
+    Present Continious в пассивном залоге используется в тех
+    случаях, что и в активном - если речь идёт о действиях,
+    которые продолжаются в тот момент, когда вы о них 
+    говорите:
+
+    - A new project is being discussed at the moment.
+      В данный момент обсуждается новый проект.
+
+  • Form 2: (-) cущ./местоим. + am/is/are + not + being + [глагол 3ф.]
+
+    I/You/We/They/He/She/It  am/is/are  not  being  [глагол 3ф.]  [остальное]
+
+    - The walls in the room are not being painted this year.
+      В этом году стены в комнате не красят.
+
+  • Form 3: (?) am/is/are + cущ./местоим. + being + [глагол 3ф.]
+
+    am/is/are   I/You/We/They/He/She/It  being  [глагол 3ф.]  [остальное]
+    What/When/Why/Where/Who/How/What  am/is/are   I/You/We/They/He/She/It  being  [глагол 3ф.]  [остальное]
+
+    - Is the poem being written by you?
+      Это стихотворение пишешь ты?
+
+    - What is being discussed by them?
+      Что ими обсуждается?
+
+> Present and Past Continuous Passive: Past Continious
+
+  • Form 1: (+) cущ./местоим. + was/were + being + [глагол 3ф.]
+
+    I/You/We/They/He/She/It  was/were  being  [глагол 3ф.]  [остальное]
+
+    - Pancakes were being made in the kitchen.
+      Блины пекли на кухне.
+
+    - The road was being repaired.
+      Дорогу чинили.
+
+  • Form 2: (-) cущ./местоим. + was/were + not + being + [глагол 3ф.]
+  
+    I/You/We/They/He/She/It  am/is/are  not  being  [глагол 3ф.]  [остальное]
+
+    - Her wedding was not being organised by the agency.
+      Её свадьбу не организовывало агентство.
+
+  • Form 3: (?) was/were + cущ./местоим. + being + [глагол 3ф.]
+
+    am/is/are   I/You/We/They/He/She/It  being  [глагол 3ф.]  [остальное]
+    What/When/Why/Where/Who/How/What  am/is/are   I/You/We/They/He/She/It  being  [глагол 3ф.]  [остальное]
+
+    - Was the bridge being painted last year?
+      Мост красили в прошлом году?
+
+    - Why were you being followed?
+      Почему вас преследовали?
 
 
