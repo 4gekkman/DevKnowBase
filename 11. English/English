@@ -9287,11 +9287,11 @@ G22. Reported speech
     ▪ Rule 2: Present Continious -> Past Continious
     ▪ Rule 3: Present Perfect -> Past Perfect
     ▪ Rule 4: Past Continious -> Past Perfect Continious
-    ▪ Rule 5: Past Simple -> Past Perfect
-    ▪ Rule 6: 
-    ▪ Rule 7: 
-    ▪ Rule 8: 
-    ▪ Rule 9: 
+    ▪ Rule 5: Past Simple -> Past Perfect (Past Simple, если событие произошло давно и не могло измениться)
+    ▪ Rule 6: Future Simple -> Future in the Past (would)
+    ▪ Rule 7: [не меняется] Past Perfect -> Past Perfect
+    ▪ Rule 8: [не меняется] Past Perfect Continious -> Past Perfect Continious
+    ▪ Rule 9: can/shell/may/have to/need -> could/should/might/had to/needed
 
 --------------------------------------
 
@@ -9391,7 +9391,7 @@ G22. Reported speech
     - Emily said that she had been talking with Jane when Alex had come.
       Эмили сказала, что она разговаривала с Джейн, когда пришел Алекс.
 
-  • Rule 5: Past Simple -> Past Perfect
+  • Rule 5: Past Simple -> Past Perfect (Past Simple, если событие произошло давно и не могло измениться)
 
     - "She finished the project".
       "Она закончила проект".
@@ -9399,4 +9399,70 @@ G22. Reported speech
     - The boss said that she had finished the project.
       Начальник сказал, что она закончила проект.
 
+    *Примечание:
+
+      Однако, если что-то произошло давным-давно и не могло
+      измениться с течением времени, то глагол остаётся
+      в Past Simple. Даже если глагол, с помощью которого
+      вводится косвенная речь (сказал и т.д.), стоит в 
+      прошедшем времени.
+
+      - "Dinosaurs died out 65 million years ago".
+        "Динозавры вымерли 65 миллионов лет назад".
+
+      - The lecturer said that dinosaurs died out 65 million years ago.
+        Лектор сказал, что динозавры вымерли 65 миллионов лет назад.
+
+  • Rule 6: Future Simple -> Future in the Past (would)
+
+    - "Sofia will meet you".
+      "София встретит тебя".
+
+    - Ha said that Sofia would meet me.
+      Он сказал, что София встретит меня.
+
+  • Rule 7: [не меняется] Past Perfect -> Past Perfect
+
+    Не меняется, т.к. "более прошедшего" времени нет
+    в английском языке.
+
+  • Rule 8: [не меняется] Past Perfect Continious -> Past Perfect Continious
+
+    Не меняется, т.к. "более прошедшего" времени нет
+    в английском языке.
+
+  • Rule 9: can/shell/may/have to/need -> could/should/might/had to/needed
+
+    То же самое происходит и с модальными глаголами. Они
+    меняются на свои прошедшие версии:
+
+      ▪ can         could
+      ▪ shall       should
+      ▪ may         might
+      ▪ have to     had to
+      ▪ need        needed
+
+    Причем, следующие глаголы не меняются:
+
+      ▪ must        had to (в случае выражения необходимости)
+      ▪ should
+      ▪ might
+
+    - "I can come".
+      "Я могу прийти".
+
+    - I said that I could come.
+      Я сказал, что я могу прийти.
+
+    *Примечание:
+
+      Модальный глагол must может меняться на had to,
+      если он используется для выражения необходимости.
+      В остальных случаях must более предпочтителен.
+
+      - "You must earn at least 240 points to pass the test".
+        Вы должны набрать как минимум 240 баллов, чтобы пройти тест.
+
+      - He said that I had to earn at least 240 points to pass the test.
+        Он сказал, что мне нужно набрать как минимум 240 баллов, чтобы сдать тест.
 
