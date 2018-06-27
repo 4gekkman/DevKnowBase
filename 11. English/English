@@ -10752,6 +10752,37 @@ G25. Inversion, ellipsis and substitution
   # Inversion: в литературе и письме
 
     ▪ Info 1: при инверсии если вспомог.глагола нет, используется do/does
+    ▪ Info 2: общий формат инверсии - [наречие/выражение] + [вспомог.глаг.или do/does] + [сущ./местоим.] + [основной глагол]
+
+    ▪ Use 1: инверсия, когда предложение начинается с опред.наречий или выражений
+      ▪ Adverb inversion 1: never (никогда)
+      ▪ Adverb inversion 2: rarely/seldom (редко)
+      ▪ Adverb inversion 3: no sooner ... than (не успел ... как ...)
+      ▪ Adverb inversion 4: hardly/barely/scarcely (едва ли)
+      ▪ Adverb inversion 5: little (вовсе не, совсем не)
+      
+      ▪ Expr inversion 1: in/under no circumstances (ни при каких обстоятельствах)
+      ▪ Expr inversion 2: at no time (никогда)
+      ▪ Expr inversion 3: on no account (ни в коем случае)
+      ▪ Expr inversion 4: on no way (никоим образом)
+    
+    ▪ Use 2: инверсия после not/only
+      ▪ Case 1: only later
+      ▪ Case 2: only once
+      ▪ Case 3: only by
+      ▪ Case 4: not [существительное]
+
+    ▪ Use 3: инверсия после not/only после придаточного предложения
+      ▪ Case 1: only when/after
+      ▪ Case 2: only if
+      ▪ Case 3: not until
+
+    ▪ Use 4: инверсия в сравнениях с as/than (as/than + глагол + существительное)
+   
+    ▪ Use 5: инверсия предложений с союзами if/in case/providing that/...
+      ▪ Case 1: если условие реальное, союз меняем на should
+      ▪ Case 2: в условных (-) предлож. используются полные (-) формы
+      ▪ Case 3: остальных типах условных предлож. союз заменяем на вспомог.глагол
 
   # Ellipsis
 
@@ -10866,10 +10897,158 @@ G25. Inversion, ellipsis and substitution
     Если же при обычном порядке слов вспомогательного
     глагола нет, используется do/does.
 
+    - I believe her. (я верю ей)
+      So do I. (и я тоже)
 
+  • Info 2: общий формат инверсии - [наречие/выражение] + [вспомог.глаг.или do/does] + [сущ./местоим.] + [основной глагол]
 
+    [наречие/выражение]  [вспомогательный глагол или do/does]  [сущ./местоим.]  [основной глагол]
 
+  • Use 1: инверсия, когда предложение начинается с опред.наречий
+    
+    ▪ Adverb inversion 1: never (никогда)
 
+      - Never could I think I would live in China.
+        Никогда бы не подумал, что буду жить в Китае.
+
+    ▪ Adverb inversion 2: rarely/seldom (редко)
+
+      - Rarely do I feel true happiness.
+        Редко я чувствую истинное счастье.
+
+    ▪ Adverb inversion 3: no sooner ... than (не успел ... как ...)
+
+      - NO SOONER did they open the door THAN the man had already left.
+        Не успели они открыть дверь, как мужчина уже ушёл.
+
+    ▪ Adverb inversion 4: hardly/barely/scarcely (едва ли)
+
+      - Hardly/Barely/Scarcely had he arrived before he returned to work.
+        Он едва успел приехать и сразу же вернулся на работу.
+
+    ▪ Adverb inversion 5: little (вовсе не, совсем не)
+
+      - Little did they know about the life of the poor.
+        Они совсем ничего не знали о жизни бедняков.
+
+    ▪ Expr inversion 1: in/under no circumstances (ни при каких обстоятельствах)
+    
+      - Under no circumstances would he call his wife.
+        Ни при каких обстоятельствах не позвонил бы он своей жене.
+
+    ▪ Expr inversion 2: at no time (никогда)
+    
+      - At no time did he witness speak to the press.
+        Никогда свидетель не разговаривал с прессой.
+
+    ▪ Expr inversion 3: on no account (ни в коем случае)
+    
+      - On no account may Princess Anastasia go without bodyguards.
+        Ни в коем случае принцесса Анастасия не может ходить без телохранителей.
+
+    ▪ Expr inversion 4: on no way (никоим образом)
+
+      - In no way was the information disclosed.
+        Информация никоим образом не была раскрыта.
+
+  • Use 2: инверсия после not/only
+
+    На письме также встречается инверсия после 
+    выражений с not/only. Некоторые из них:
+
+    ▪ Case 1: only later
+
+      - Only later did they realize how wrong they were.
+        Только спустя некоторое время они поняли, насколько не правы они были.
+
+    ▪ Case 2: only once
+
+      - Only once did I visit my aunt in the past five years.
+        Всего раз я навещал свою тетю за последние пять лет.
+
+    ▪ Case 3: only by
+
+      - Only by working together can we meet the challenges of globalization.
+        Лишь на основе совместных усилий мы можем принять вызовы глобализации.
+
+    ▪ Case 4: not [существительное]
+
+      - Not a word did he utter since his father's disappearance.
+        Ни слова не вымолвил он, после того как исчез его отец.
+
+  • Use 3: инверсия после not/only после придаточного предложения
+    
+    ▪ Case 1: only when/after
+
+      - Only when she asks will I give her my advice.
+        Только когда она попросит меня, я буду давать ей советы.
+
+    ▪ Case 2: only if
+
+      - Only if you finish the project will you get promoted.
+        Только если ты закончишь проект, тебя повысят.
+
+    ▪ Case 3: not until
+
+      - Not until August, 27th will you be able to apply for a citizenship.
+        Не ранее 27 августы вы сможете подавать документы на получение гражданства.
+
+      - Not untel we met in middle school did our paths cross.
+        Пока мы не встретились в средней школе, наши пути не пересекались.
+
+  • Use 4: инверсия в сравнениях с as/than (as/than + глагол + существительное)
+
+    - You're out of this game, as is your brother.
+      Ты вне игры, как и твой брат.
+
+    - Research shows that immigrants form more businesses than do domestic-born Americans.
+      Исследование показывает, что иммигранты чаще открывают своё дело, чем коренные американцы.
+
+  • Use 5: инверсия предложений с союзами if/in case/providing that/...
+
+    Речь идёт о том, что имеется условное предложение без инверсии
+    с указанными союзами. Как из таких предложений делать
+    предложения с инверсией здесь и описано. Есть несколько
+    случаев.
+
+    Один из самых распространённых случаев инверсии
+    в письменной речи - это инверсия в предложениях 
+    с:
+
+      ▪ if
+      ▪ in case
+      ▪ providing that
+      ▪ ... и другими союзами, обозначающими условие ...
+
+    ▪ Case 1: если условие реальное, союз меняем на should
+
+      В предложениях, указывающих на реальное условие, 
+      используется глагол should. В таких предложениях порядок слов не только меняется
+      на обратный, но и опускается союз (в данном случае if),
+      а вместо него ставят should.
+
+      - If you have any questions, please contact me.
+        Если у вас будут вопросы, пожалуйста, свяжитесь со мной.
+
+      - Should you have any questions, please contact me.
+        Если у вас будут вопросы, пожалуйста, свяжитесь со мной.
+     
+    ▪ Case 2: в условных (-) предлож. используются полные (-) формы
+
+      В условных предложениях с отрицанием используются только
+      полные отрицательные формы.
+
+      - Had it not been for my mother, I would have chosen another profession.
+        Если бы не моя мать, я бы выбрал другую профессию.
+
+    ▪ Case 3: остальных типах условных предлож. союз заменяем на вспомог.глагол
+
+      В остальных типах условных предложений союзы опускаются
+      и на первое место выносится вспомогательный глагол.
+
+      - Were he a true gentleman, he would have the good 
+        manners to stay away.
+        Был бы он истинным джентльменом, он бы не стал вмешиваться.
 
 
 
