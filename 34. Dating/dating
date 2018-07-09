@@ -367,7 +367,7 @@ var my_messages = {
 
           // Выполнить этот код через my_messages.data.contact_upl_sleep_ms/2 ms
           my_messages.methods.sleep(my_messages.data.contact_upl_sleep_ms/2).then(() => {
-console.log(i);
+
             // Перейти в i-тый контакт
             my_messages.data.contacts.list[i].querySelector('.im_user').click();
 
