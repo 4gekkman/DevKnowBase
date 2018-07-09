@@ -159,8 +159,27 @@ var my_encounters = {
 // Скрипт для страницы "Messages"
 var my_messages = {
   data: {
-    interval_ms: 1000,   // частота тиков скрипта,
-    contacts: []         // массив контактов
+    interval_ms: 1000,          // частота тиков скрипта,
+    contact_upl_sleep_ms: 1000, // сколько ждать загрузку данных после переход на контакт
+    contacts: [],               // массив контактов
+    no_dupl: true,              // не запускать скрипт, если предыдущий ещё выполняется
+    invoking: false,            // выполняется ли ещё скрипт
+    months: {
+      January: 1,
+      February: 2,
+      March: 3,
+      April: 4,
+      May: 5,
+      June: 6,
+      July: 7,
+      August: 8,
+      September: 9,
+      October: 10,
+      November: 11,
+      December: 12
+    },
+    days_in_month_avg: 30,
+    await_delete_modal: false
   },
   methods: {
 
@@ -175,11 +194,87 @@ var my_messages = {
       return document.querySelectorAll('.js-contacts .js-im-users .contacts__item');
     },
 
+    // Функция sleep
+    sleep: function(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    },
+
+    // Удалить старые контакты
+    remove_old_contact: function(contact_name){
+
+      // Получить кнопку "Delete" на модальном окне для подтверждения, и нажать
+      var confirm_del_btn = document.querySelector('.btn.btn--sm.js-im-confirm-delete');
+      if(confirm_del_btn) 
+        confirm_del_btn.click();
+
+      // Получить дату последнего сообщения
+      var el = document.querySelectorAll('#messages_body .message__date')[document.querySelectorAll('#messages_body .message__date').length-1];
+      if(!el)
+        return;
+      var lastdate = el.textContent;
+
+      // Если lastdate содержит фразу "hours ago", завершить
+      if(lastdate.trim().search(/hours ago/g) != -1)
+        return;
+
+      // Получить дату сообщения и текущую дату UTC
+      var dates = {
+        msg: {
+          year: lastdate.trim().slice(lastdate.trim().search(/\b(19|20)\d{2}\b/g), lastdate.trim().length),
+          month: my_messages.data.months[lastdate.trim().substr(lastdate.trim().search(/\D/g)+1, lastdate.trim().search(/\b(19|20)\d{2}\b/g)-2-lastdate.trim().search(/\D/g))],
+          day: lastdate.trim().substr(0, lastdate.trim().search(/\D/g))
+        },
+        now: {
+          year: new Date(Date.now()).getUTCFullYear(),
+          month: new Date(Date.now()).getUTCMonth(),
+          day: new Date(Date.now()).getUTCDay()
+        }
+      }
+
+      // Сколько дней прошло
+      var days_gone = (function(){
+        return (Date.parse(dates.now.year + "-" + dates.now.month + "-" + dates.now.day) - Date.parse(dates.msg.year + "-" + dates.msg.month + "-" + dates.msg.day))/1000/60/60/24;
+      })();
+
+      // Если более 14, удалить контакт
+      if(days_gone > 14) {
+
+        // Получить кнопку remove и нажать на неё
+        var remove_el = document.querySelector('.option__in.js-im-contact-remove');
+        console.log(remove_el);
+        if(!remove_el) {
+          console.log('Проблема в my_messages, метод remove_old_contact. Не могу получить кнопку удаления контакта.')
+          return;
+        }
+        if(!my_messages.data.await_delete_modal)
+          remove_el.click();
+
+        // Подать сигнал, что ожидается модальное окно для удаления
+        my_messages.data.await_delete_modal = true;
+
+        // Получить кнопку "Delete" на модальном окне для подтверждения, и нажать
+        var confirm_del_btn = document.querySelector('.btn.btn--sm.js-im-confirm-delete');
+        if(!confirm_del_btn) {
+          console.log('Проблема в my_messages, метод remove_old_contact. Не могу получить кнопку подтверждения удаления контакта.')
+          return;
+        }
+        confirm_del_btn.click();
+
+        // Подать сигнал, что контакт удалён
+        my_messages.data.await_delete_modal = false;
+
+        // Сообщить, что контакт удалён
+        console.log('Контакт '+contact_name+' удалён, так как прошло '+days_gone+' дней с момента последнего сообщения');
+
+      }
+
+    },
+
     // Пробежаться по списку контактов и выполнить нужные операции
     run: function(){
 
       // Получить свежий список контактов
-      my_messages.data.contacts = (function(){
+      my_messages.data.contacts.list = (function(){
         let result = my_messages.methods.get_contacts();
         if(!result) {
           console.log("ERROR! В my_messages проблема с get_contacts: возвращает пустое значение!");
@@ -189,19 +284,39 @@ var my_messages = {
           return result;
       })();
 
+      // Указать, что скрипт начал работу
+      if(my_messages.data.contacts.list.length > 0)
+        my_messages.data.invoking = true;      
+
       // Пробежаться по всем контактам
-      for(let i=0; i<my_messages.data.contacts.length; i++) {
+      for(let i=0; i<my_messages.data.contacts.list.length; i++) {
 
-        // Перейти в i-тый контакт
-        my_messages.data.contacts[i].querySelector('.im_user').click();
+        // Если ожидается модальное окно для удаления контакта
+        if(my_messages.data.await_delete_modal) {
+          var name = document.querySelector('.connection-header__name').textContent;
+          my_messages.methods.remove_old_contact(name);
+          continue;
+        }
 
-        // Получить имя контакта
-        var name = document.querySelector('.connection-header__name').textContent;
-        console.log(name);
+        setTimeout(() => {
+
+          // Перейти в i-тый контакт
+          my_messages.data.contacts.list[i].querySelector('.im_user').click();
+
+          // Получить имя контакта
+          var name = document.querySelector('.connection-header__name').textContent;
+          //console.log(name);
+
+          // Удалить старые контакты
+          my_messages.methods.remove_old_contact(name);
+
+          // Указать, что скрипт закончил работу
+          if(i == my_messages.data.contacts.list.length - 1)
+            my_messages.data.invoking = false;
+
+        }, +my_messages.data.contact_upl_sleep_ms*(+i+1));
 
       }
-
-
 
     },
 
@@ -210,6 +325,16 @@ var my_messages = {
 
       // Запустить setInterval через каждые my_messages.data.interval_ms
       my_messages.data.timerId = setInterval(function(){ 
+
+        // Если ожидается модальное окно для удаления контакта
+        if(my_messages.data.await_delete_modal) {
+          var name = document.querySelector('.connection-header__name').textContent;
+          my_messages.methods.remove_old_contact(name);
+        }
+
+        // Если предыдущий скрипт ещё не закончил работу, завершить
+        if(my_messages.data.no_dupl === true && my_messages.data.invoking === true)
+          return;
 
         // Открыть окошко "Messages" с сообщениями (если ещё не открыто)
         my_messages.methods.open_messages();
