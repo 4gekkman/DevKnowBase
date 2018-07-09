@@ -57,6 +57,9 @@
   План реализовать не сложно. Для этого нужно написать
   всего лишь один JS скрипт. Его нужно будет запускать
   на сайте badoo.com, предварительно залогинившись.
+  Этот скрипт должен автоматически запускаться после
+  перезагрузки браузера на домене badoo.com с помощью
+  расширения в Chrome.
   Вот, что он должен делать:
 
   • На странице "Encounters"
@@ -72,7 +75,7 @@
 
    ☐ Писать сообщение всем девушкам, у которых ещё нет моих сообщений.
 
-   ☐ Удалять все чаты, в которых последнее сообщение старше 14 дней.
+   ☑ Удалять все чаты, в которых последнее сообщение старше 14 дней.
 
 
 x. Скрипт
@@ -179,7 +182,37 @@ var my_messages = {
       December: 12
     },
     days_in_month_avg: 30,
-    await_delete_modal: false
+    await_delete_modal: false,
+    greetings: [
+      'Привет',
+      'Девушка, а у вас вкусная помада? Можно попробовать?',
+      'Мадмуазель, разрешите представиться',
+      'Кажется, я безответственно влюбился в вашу улыбку',
+      'Можно пригласить вас на танец?',
+      'У вас потрясающая улыбка!',
+      'Можно пригласить вас на танец?',
+      'Я уже час придумываю повод с вами познакомиться, но пока у меня ничего не придумалось.',
+      'Обычно я не знакомлюсь с девушками таким образом…',
+
+      //'Мадмуазель, разрешите приставиться',
+      //'Привет',
+      //'Привет, у тебя есть парень?',
+      //'Привет! Я один из тех надоедливых типов, кто считает, что вы потрясающе красивая.',
+      //'Мне сказали, вы меня искали...',
+      //'Кажется, я безответственно влюбился в вашу улыбку',
+      //'У вас потрясающая улыбка!',
+      //'Девушка, а не поможете мне найти мой пульс?',
+      //'Обычно я не знакомлюсь с девушками таким образом…',
+      //'Могу я заказать вам напиток?',
+      //'Прошу прощения, что прерываю, но мне нужно срочно сообщить вам, что вы ужасно милая.',
+      //'Хорошо, что здесь так многолюдно и вы все равно не услышите тех глупостей, которые я сейчас вам наговорю.',
+      //'Мне кажется, ваших родителей надо выдвигать на Нобелевскую премию. Или что там еще выдают создателям мировых шедевров?',
+      //'Можно пригласить вас на танец?',
+      //'Вы знаете, в Конституции написано, что нельзя лишать человека права на счастье...',
+      //'Девушка, а у вас вкусная помада? Можно попробовать?',
+      //'Я уже час придумываю повод с вами познакомиться, но пока у меня ничего не придумалось.',
+      //'Я проиграл пари и в качестве расплаты за проигрыш должен поцеловать самую красивую девушку на этом сайте.',
+    ]
   },
   methods: {
 
@@ -192,11 +225,6 @@ var my_messages = {
     // Получить весь список контактов
     get_contacts: function(){
       return document.querySelectorAll('.js-contacts .js-im-users .contacts__item');
-    },
-
-    // Функция sleep
-    sleep: function(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
     },
 
     // Удалить старые контакты
@@ -213,8 +241,8 @@ var my_messages = {
         return;
       var lastdate = el.textContent;
 
-      // Если lastdate содержит фразу "hours ago", завершить
-      if(lastdate.trim().search(/hours ago/g) != -1)
+      // Если lastdate содержит фразу "minutes ago" или "hours ago", завершить
+      if(lastdate.trim().search(/minutes ago/g) != -1 || lastdate.trim().search(/hours ago/g) != -1)
         return;
 
       // Получить дату сообщения и текущую дату UTC
@@ -270,6 +298,43 @@ var my_messages = {
 
     },
 
+    // Написать приветственное сообщение
+    write_a_greeting: function(name){
+
+      // Получить input
+      var input_field = document.querySelector('.messenger-tools__input');
+      if(!input_field) {
+        console.log("ERROR! В my_messages проблема с write_a_greeting: не могу найти элемент input для ввода сообщения!");
+        return false;
+      }
+
+      // Получить кнопку "отправить сообщение"
+      var send_button = document.querySelector('.messenger-tools__btn.js-send-message');
+      if(!send_button) {
+        console.log("ERROR! В my_messages проблема с write_a_greeting: не могу найти элемент кнопки отправки сообщения!");
+        return false;
+      }
+
+      // Проверить, есть ли тут уже мои сообщения
+      var are_my_msgs_present = (function(){
+        return document.querySelectorAll('.messages .message.js-message-block.message--out').length;
+      })();
+      
+      // Если моих сообщений тут ещё нет
+      if(!are_my_msgs_present) {
+        let message = my_messages.data.greetings[Math.floor(Math.random()*my_messages.data.greetings.length)];
+        console.log(message);
+        input_field.innerHTML = message;
+        send_button.click();
+      }
+
+    },
+
+    // Подождать, и выполнить какое-то действие
+    sleep: (ms) => {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    },
+
     // Пробежаться по списку контактов и выполнить нужные операции
     run: function(){
 
@@ -291,28 +356,36 @@ var my_messages = {
       // Пробежаться по всем контактам
       for(let i=0; i<my_messages.data.contacts.list.length; i++) {
 
-        // Если ожидается модальное окно для удаления контакта
-        if(my_messages.data.await_delete_modal) {
-          var name = document.querySelector('.connection-header__name').textContent;
-          my_messages.methods.remove_old_contact(name);
-          continue;
-        }
-
         setTimeout(() => {
 
-          // Перейти в i-тый контакт
-          my_messages.data.contacts.list[i].querySelector('.im_user').click();
+          // Если ожидается модальное окно для удаления контакта
+          if(my_messages.data.await_delete_modal) {
+            var name = document.querySelector('.connection-header__name').textContent;
+            my_messages.methods.remove_old_contact(name);
+            return;
+          }
 
-          // Получить имя контакта
-          var name = document.querySelector('.connection-header__name').textContent;
-          //console.log(name);
+          // Выполнить этот код через my_messages.data.contact_upl_sleep_ms/2 ms
+          my_messages.methods.sleep(my_messages.data.contact_upl_sleep_ms/2).then(() => {
+console.log(i);
+            // Перейти в i-тый контакт
+            my_messages.data.contacts.list[i].querySelector('.im_user').click();
 
-          // Удалить старые контакты
-          my_messages.methods.remove_old_contact(name);
+            // Получить имя контакта
+            var name = document.querySelector('.connection-header__name').textContent;
+            //console.log(name);
 
-          // Указать, что скрипт закончил работу
-          if(i == my_messages.data.contacts.list.length - 1)
-            my_messages.data.invoking = false;
+            // Удалить старые контакты
+            //my_messages.methods.remove_old_contact(name);
+
+            // Написать сообщение, если ещё ни одного моего нет
+            my_messages.methods.write_a_greeting(name);
+
+            // Указать, что скрипт закончил работу
+            if(i == my_messages.data.contacts.list.length - 1)
+              my_messages.data.invoking = false;
+
+          });
 
         }, +my_messages.data.contact_upl_sleep_ms*(+i+1));
 
@@ -358,6 +431,10 @@ var my_messages = {
 
 
 ---------------------
+
+
+
+
 
 
 
