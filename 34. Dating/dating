@@ -1,0 +1,239 @@
+////===============================////
+////                               ////
+////              Dating           ////
+////                               ////
+////===============================////
+////                    ////
+////       Links        ////
+////                    ////
+////====================////
+
+
+  - badoo.com
+
+
+////==========================================================////
+////                                   ////
+////          Table of contents        ////
+////                                   ////
+////===================================////
+
+
+  1. План действий
+  2. Как реализовать план
+
+  x. Скрипт
+
+
+////==================================================////
+////                      ////
+////        Content       ////
+////                      ////
+////======================////
+
+
+1. План действий
+
+  Требуется возможность включать/выключать автоматическое
+  (без временных и финансовых затрат) формирование входящего 
+  потока чатов с девушками, которые что-то уже написали 
+  (т.е. вышли на контакт) из Badoo*. 
+
+  Кроме того, необходимо автоматически удалять все чаты, 
+  в которых нет активности в течение 7 дней.
+
+  Всё это даст возможность периодически (по настроению) посещать
+  сайт или мобильное приложение badoo, и визуально просматривать
+  "улов". С понравившимися визуально девушками можно 
+  попереписываться.
+
+  * Выбран именно Badoo, как самая популярная в России, и в 
+  частности в РФ, площадка. На Tinder, например, в Сочи
+  вообще почти никого.
+
+
+2. Как реализовать план
+
+  План реализовать не сложно. Для этого нужно написать
+  всего лишь один JS скрипт. Его нужно будет запускать
+  на сайте badoo.com, предварительно залогинившись.
+  Вот, что он должен делать:
+
+  • На странице "Encounters"
+
+   ☑ Лайкать всех девушек подряд с заданными в профиле
+      параметрами до лимита.
+
+   ☑ Впадать в спячку по достижению лимита, и 
+      каждый час проверять, не спал ли лимит. Если спал,
+      продолжить. И так до бесконечности.
+
+  • На странице "Messages"
+
+   ☐ Писать сообщение всем девушкам, у которых ещё нет моих сообщений.
+
+   ☐ Удалять все чаты, в которых последнее сообщение старше 14 дней.
+
+
+x. Скрипт
+
+---------------------
+
+
+// Скрипт для страницы "Encounters"
+var my_encounters = {
+  data: {
+    interval_ms: 1500,          // сколько ждать после каждого лайка, чтобы поставить следующий
+    wait_counters_ms: 0,        // сколько скрипт уже ждёт новую квоту на свайпы
+    wait_interval_ms: 3600000,  // как часто скрипт проверяет, не дали ли новую квоту на свайпы
+    timerId: ""                 // идентификатор таймера
+  },
+  methods: {
+
+    // Достигнут ли лимит свайпов
+    is_limit_reached: function(){ 
+      if(document.evaluate("//h1[contains(., 'out of votes!')]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue) 
+        return true; 
+      return false; 
+    },
+
+    // Поставить лайк текущей анкете
+    autolike: function(){ 
+      document.querySelector('.js-profile-header-vote').click();
+    },
+
+    // При обнаружении, закрыть модальное окно
+    close_modal: function(){ 
+      document.querySelector('.icon.js-ovl-close').click();
+    },
+
+    // Перейти на вкладку "Encounters"
+    goto_encounters: function(){
+      document.evaluate("//a[contains(@href,'encounters')]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
+    },
+
+    // Запустить скрипт
+    start: function(){
+
+      // Запустить setInterval через каждые my_encounters.data.interval_ms
+      my_encounters.data.timerId = setInterval(function(){ 
+        
+        // Перейти на вкладку "Encounters"
+        my_encounters.methods.goto_encounters();
+
+        // Если лимит не достигнут
+        if(!my_encounters.methods.is_limit_reached() && +my_encounters.data.wait_counters_ms<=0) 
+          my_encounters.methods.autolike(); 
+
+        // Если лимит достигнут
+        else {
+
+          // Если уже прошли my_encounters.data.wait_interval_ms, закрыть модалку и сбросить счетчик
+          if(my_encounters.data.wait_counters_ms <= 0) { 
+            my_encounters.data.wait_counters_ms = my_encounters.data.wait_interval_ms;
+            my_encounters.methods.close_modal();
+          }
+
+          // Если ещё не прошли my_encounters.data.wait_interval_ms, прибавить к счётчику my_encounters.data.interval_ms
+          else 
+            my_encounters.data.wait_counters_ms = +my_encounters.data.wait_counters_ms - +my_encounters.data.interval_ms;
+
+          // Сообщить, сколько уже прошло по счётчику
+          console.log('LLR: '+my_encounters.data.wait_counters_ms);
+
+        }
+
+      }, my_encounters.data.interval_ms);    
+
+    },
+
+    // Остановить скрипт
+    stop: function(){
+      clearInterval(my_encounters.data.timerId);
+    }
+
+  }
+};
+
+
+// Скрипт для страницы "Messages"
+var my_messages = {
+  data: {
+    interval_ms: 1000,   // частота тиков скрипта,
+    contacts: []         // массив контактов
+  },
+  methods: {
+
+    // Открыть окошко "Messages" с сообщениями (если ещё не открыто)
+    open_messages: function(){
+      if(!document.querySelector('.messenger-ovl__body'))
+        document.evaluate("//a[contains(@href,'messenger')]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
+    },
+
+    // Получить весь список контактов
+    get_contacts: function(){
+      return document.querySelectorAll('.js-contacts .js-im-users .contacts__item');
+    },
+
+    // Пробежаться по списку контактов и выполнить нужные операции
+    run: function(){
+
+      // Получить свежий список контактов
+      my_messages.data.contacts = (function(){
+        let result = my_messages.methods.get_contacts();
+        if(!result) {
+          console.log("ERROR! В my_messages проблема с get_contacts: возвращает пустое значение!");
+          return [];
+        }
+        else
+          return result;
+      })();
+
+      // Пробежаться по всем контактам
+      for(let i=0; i<my_messages.data.contacts.length; i++) {
+
+        // Перейти в i-тый контакт
+        my_messages.data.contacts[i].querySelector('.im_user').click();
+
+        // Получить имя контакта
+        var name = document.querySelector('.connection-header__name').textContent;
+        console.log(name);
+
+      }
+
+
+
+    },
+
+    // Запустить скрипт
+    start: function(){
+
+      // Запустить setInterval через каждые my_messages.data.interval_ms
+      my_messages.data.timerId = setInterval(function(){ 
+
+        // Открыть окошко "Messages" с сообщениями (если ещё не открыто)
+        my_messages.methods.open_messages();
+
+        // Пробежаться по всем контактам и выполнить необходимые операции
+        my_messages.methods.run();
+
+      }, my_messages.data.interval_ms);    
+
+    },
+
+    // Остановить скрипт
+    stop: function(){
+      clearInterval(my_messages.data.timerId);
+    }
+
+  }
+};
+
+
+
+
+---------------------
+
+
+
+
