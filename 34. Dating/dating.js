@@ -59,7 +59,7 @@
   на сайте badoo.com, предварительно залогинившись.
   Этот скрипт должен автоматически запускаться после
   перезагрузки браузера на домене badoo.com с помощью
-  расширения в Chrome.
+  расширения в Chrome (custom javascript for websites, или CJS).
   Вот, что он должен делать:
 
   • На странице "Encounters"
@@ -73,12 +73,33 @@
 
   • На странице "Messages"
 
-   ☐ Писать сообщение всем девушкам, у которых ещё нет моих сообщений.
+   ☑ Писать сообщение всем девушкам, у которых ещё нет моих сообщений.
 
    ☑ Удалять все чаты, в которых последнее сообщение старше 14 дней.
 
 
 x. Скрипт
+
+Как пользоваться:
+
+  1. Открыть 2 вкладки с badoo.com. Залогиниться везде.
+  2. Включить консоль в обеих вкладках.
+  3. Вставить скрипт ниже в консоль в каждую из вкладок, и нажать enter.
+     Если расширение CJS стоит и настроено, то не надо, 
+     т.к. оно само это сделает.
+  4. В первой вкладке ввести и нажать enter: 
+     badoo.likes.start();
+  5. Во второй вкладке ввести и нажать enter: 
+     badoo.greetings.start();
+
+  Далее просто можно всё это оставить, оно само будет работать.
+  Либо запускать раз в день минут на 20-30.
+
+Какие будут результаты:
+
+  1. Pupularity станет максимальной.
+  2. В контактах будут появляться те, кто ответил на приветствие.
+     С ними можно общаться.
 
 ---------------------
 
@@ -169,11 +190,38 @@ var dating = {
     },
     contacts: [],               // список контактов
     chosen_contact_index: 0,    // индекс выбранного контакта в contacts
-    stack: [],                  // очередь задач на текущем тике
+    tasks: {
+      stack: [],                // очередь задач на текущем тике
+      checklist: {              // чеклист дел для каждого контакта
+        greeting: false,        // - добавили ли задачу "приветствие" в стек
+        clear: false            // - добавили ли задачу "очистит старые контакты" в стек
+      }
+    },
     cooldown: {
       timer: 0,                 // текущее значений кулдаун-таймера
-      s: 30                     // кулдаун в секундах
-    }
+      s: 600                    // кулдаун в секундах
+    },
+    greetings: [
+      'Привет',
+      'Мадмуазель, разрешите представиться',
+      'Можно пригласить вас на танец?',
+      'У вас потрясающая улыбка!',
+      'Можно пригласить вас на танец?',
+    ],
+    months: {
+      January: 1,
+      February: 2,
+      March: 3,
+      April: 4,
+      May: 5,
+      June: 6,
+      July: 7,
+      August: 8,
+      September: 9,
+      October: 10,
+      November: 11,
+      December: 12
+    },
   },
   methods: {
 
@@ -202,39 +250,50 @@ var dating = {
     // Processor
     processor: function(){
       
-      // 1] Добавить новый тик, если count != 0
-      if(dating.data.ticks.count != 0)
-        dating.data.ticks.count = +dating.data.ticks.count+1;
+      // 1] Добавить +1 к раунду, если count == 0 и это не 0-й раунд
+      if(dating.data.ticks.count == 0 && dating.data.cooldown.timer == 0) 
+        dating.data.ticks.round = +dating.data.ticks.round+1;
 
-      // 2] Если cooldown-таймер > 0
+      // 2] Добавить новый тик
+      dating.data.ticks.count = +dating.data.ticks.count+1;
+
+      // 3] Если cooldown-таймер > 0
       if(dating.data.cooldown.timer > 0) {
         dating.data.cooldown.timer = +dating.data.cooldown.timer-1;
         dating.data.ticks.count = 0;
-        if(dating.data.ticks.round == 0)
-          dating.data.ticks.round = 1;
+        console.log('Cooldown: '+dating.data.cooldown.timer);
         return;
       } else
         dating.data.cooldown.timer = 0;
 
-      // 3] Открыть messages, если ещё не открыты
+      // 4] Открыть messages, если ещё не открыты
       dating.methods.open_messages();
 
-      // 4] Получить весь список контактов, если индекс == 0, или если он пуст
-      if(dating.data.chosen_contact_index == 0 || dating.data.contacts.length == 0)
-        dating.methods.get_contacts();
-
-      // 5] Если очередь задач пуста, переключиться на следующий контакт
-      if(dating.data.stack.length == 0) {
-
-        // Если текущий индекс = 0, и это первый тик нового раунда
-        if(dating.data.chosen_contact_index == 0 && dating.data.ticks.count == 0) {
-          dating.data.ticks.count = 1;
-
-          
+      // 5] Получить весь список контактов, если индекс == 0, или если он пуст
+      if(dating.data.chosen_contact_index == 0 || dating.data.contacts.length == 0) {
+        let result = dating.methods.get_contacts();
+        if(!result) {
+          console.log('Список контактов пуст');
+          return;
         }
+      }
+
+      // 6] Добавить в очередь необходимые задачи
+      if(dating.data.tasks.checklist.greeting == false) {
+        dating.data.stack.push(dating.tasks.greeting); dating.data.tasks.checklist.greeting = true;
+        dating.data.stack.push(dating.tasks.clear); dating.data.tasks.checklist.clear = true;
+      }
+
+      // 7] Обработать следующую задачу в очереди, если стек не пуст
+      if(dating.data.stack.length) {
+        dating.data.stack[0]();
+      }
+
+      // n] Если очередь задач пуста, и чеклист задач заполнен, переключиться на следующий контакт
+      if(dating.data.stack.length == 0 && dating.methods.check_checklist()) {
 
         // Если следующего контакта нет
-        else if(dating.data.chosen_contact_index == dating.data.length-1) {
+        if(dating.data.chosen_contact_index >= dating.data.contacts.length-1) {
           
           // установить индекс = 0
           dating.data.chosen_contact_index = 0;
@@ -247,6 +306,8 @@ var dating = {
         // Если следующий контакт есть, поставить его
         else {
           dating.data.chosen_contact_index = +dating.data.chosen_contact_index+1;
+          dating.data.contacts[dating.data.chosen_contact_index].querySelector('.im_user').click();
+          dating.methods.clear_checklist();
         }
 
       }
@@ -257,7 +318,7 @@ var dating = {
       console.log('Round: '+dating.data.ticks.round);
       console.log('Tick: '+dating.data.ticks.count);
       console.log('Index: '+dating.data.chosen_contact_index);
-      console.log('Cooldown: '+dating.data.cooldown.timer);
+      console.log('Contacts: '+dating.data.contacts.length);
 
 
       // Пищем сообщения новым контактам
@@ -283,165 +344,43 @@ var dating = {
     // Получить весь список контактов
     get_contacts: function(){
       dating.data.contacts = document.querySelectorAll('.js-contacts .js-im-users .contacts__item');
-    },
-
-  }
-}
-
-// Скрипт для страницы "Messages"
-var my_messages = {
-  data: {
-    stack: [],                  // очередь задач
-    interval_ms: 1000,          // частота тиков скрипта,
-    contact_upl_sleep_ms: 1000, // сколько ждать загрузку данных после переход на контакт
-    contacts: [],               // массив контактов
-    no_dupl: true,              // не запускать скрипт, если предыдущий ещё выполняется
-    invoking: false,            // выполняется ли ещё скрипт
-    months: {
-      January: 1,
-      February: 2,
-      March: 3,
-      April: 4,
-      May: 5,
-      June: 6,
-      July: 7,
-      August: 8,
-      September: 9,
-      October: 10,
-      November: 11,
-      December: 12
-    },
-    days_in_month_avg: 30,
-    await_delete_modal: false,
-    greetings: [
-      'Привет',
-      'Девушка, а у вас вкусная помада? Можно попробовать?',
-      'Мадмуазель, разрешите представиться',
-      'Кажется, я безответственно влюбился в вашу улыбку',
-      'Можно пригласить вас на танец?',
-      'У вас потрясающая улыбка!',
-      'Можно пригласить вас на танец?',
-      'Я уже час придумываю повод с вами познакомиться, но пока у меня ничего не придумалось.',
-      'Обычно я не знакомлюсь с девушками таким образом…',
-
-      //'Мадмуазель, разрешите приставиться',
-      //'Привет',
-      //'Привет, у тебя есть парень?',
-      //'Привет! Я один из тех надоедливых типов, кто считает, что вы потрясающе красивая.',
-      //'Мне сказали, вы меня искали...',
-      //'Кажется, я безответственно влюбился в вашу улыбку',
-      //'У вас потрясающая улыбка!',
-      //'Девушка, а не поможете мне найти мой пульс?',
-      //'Обычно я не знакомлюсь с девушками таким образом…',
-      //'Могу я заказать вам напиток?',
-      //'Прошу прощения, что прерываю, но мне нужно срочно сообщить вам, что вы ужасно милая.',
-      //'Хорошо, что здесь так многолюдно и вы все равно не услышите тех глупостей, которые я сейчас вам наговорю.',
-      //'Мне кажется, ваших родителей надо выдвигать на Нобелевскую премию. Или что там еще выдают создателям мировых шедевров?',
-      //'Можно пригласить вас на танец?',
-      //'Вы знаете, в Конституции написано, что нельзя лишать человека права на счастье...',
-      //'Девушка, а у вас вкусная помада? Можно попробовать?',
-      //'Я уже час придумываю повод с вами познакомиться, но пока у меня ничего не придумалось.',
-      //'Я проиграл пари и в качестве расплаты за проигрыш должен поцеловать самую красивую девушку на этом сайте.',
-    ]
-  },
-  methods: {
-
-    // Открыть окошко "Messages" с сообщениями (если ещё не открыто)
-    open_messages: function(){
-      if(!document.querySelector('.messenger-ovl__body'))
-        document.evaluate("//a[contains(@href,'messenger')]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
+      return dating.data.contacts.length > 0;
     },
 
     // Получить весь список контактов
-    get_contacts: function(){
-      return document.querySelectorAll('.js-contacts .js-im-users .contacts__item');
+    clear_checklist: function(){
+      dating.data.tasks.checklist.greeting = false;
+      dating.data.tasks.checklist.clear = false;
     },
 
-    // Удалить старые контакты
-    remove_old_contact: function(contact_name){
-
-      // Получить кнопку "Delete" на модальном окне для подтверждения, и нажать
-      var confirm_del_btn = document.querySelector('.btn.btn--sm.js-im-confirm-delete');
-      if(confirm_del_btn) 
-        confirm_del_btn.click();
-
-      // Получить дату последнего сообщения
-      var el = document.querySelectorAll('#messages_body .message__date')[document.querySelectorAll('#messages_body .message__date').length-1];
-      if(!el)
-        return;
-      var lastdate = el.textContent;
-
-      // Если lastdate содержит фразу "minutes ago" или "hours ago", завершить
-      if(lastdate.trim().search(/minutes ago/g) != -1 || lastdate.trim().search(/hours ago/g) != -1)
-        return;
-
-      // Получить дату сообщения и текущую дату UTC
-      var dates = {
-        msg: {
-          year: lastdate.trim().slice(lastdate.trim().search(/\b(19|20)\d{2}\b/g), lastdate.trim().length),
-          month: my_messages.data.months[lastdate.trim().substr(lastdate.trim().search(/\D/g)+1, lastdate.trim().search(/\b(19|20)\d{2}\b/g)-2-lastdate.trim().search(/\D/g))],
-          day: lastdate.trim().substr(0, lastdate.trim().search(/\D/g))
-        },
-        now: {
-          year: new Date(Date.now()).getUTCFullYear(),
-          month: new Date(Date.now()).getUTCMonth(),
-          day: new Date(Date.now()).getUTCDay()
-        }
-      }
-
-      // Сколько дней прошло
-      var days_gone = (function(){
-        return (Date.parse(dates.now.year + "-" + dates.now.month + "-" + dates.now.day) - Date.parse(dates.msg.year + "-" + dates.msg.month + "-" + dates.msg.day))/1000/60/60/24;
-      })();
-
-      // Если более 14, удалить контакт
-      if(days_gone > 14) {
-
-        // Получить кнопку remove и нажать на неё
-        var remove_el = document.querySelector('.option__in.js-im-contact-remove');
-        console.log(remove_el);
-        if(!remove_el) {
-          console.log('Проблема в my_messages, метод remove_old_contact. Не могу получить кнопку удаления контакта.')
-          return;
-        }
-        if(!my_messages.data.await_delete_modal)
-          remove_el.click();
-
-        // Подать сигнал, что ожидается модальное окно для удаления
-        my_messages.data.await_delete_modal = true;
-
-        // Получить кнопку "Delete" на модальном окне для подтверждения, и нажать
-        var confirm_del_btn = document.querySelector('.btn.btn--sm.js-im-confirm-delete');
-        if(!confirm_del_btn) {
-          console.log('Проблема в my_messages, метод remove_old_contact. Не могу получить кнопку подтверждения удаления контакта.')
-          return;
-        }
-        confirm_del_btn.click();
-
-        // Подать сигнал, что контакт удалён
-        my_messages.data.await_delete_modal = false;
-
-        // Сообщить, что контакт удалён
-        console.log('Контакт '+contact_name+' удалён, так как прошло '+days_gone+' дней с момента последнего сообщения');
-
-      }
-
+    // Все ли задачи для текущего контакта добавлены в стек
+    check_checklist: function(){
+      return dating.data.tasks.checklist.greeting == true &&
+             dating.data.tasks.checklist.clear == true;
     },
+
+    // Является ли n числовым значением
+    isNumeric: function(n) {
+      return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+
+  },
+  tasks: {
 
     // Написать приветственное сообщение
-    write_a_greeting: function(name){
+    greeting: function(name){
 
       // Получить input
       var input_field = document.querySelector('.messenger-tools__input');
       if(!input_field) {
-        console.log("ERROR! В my_messages проблема с write_a_greeting: не могу найти элемент input для ввода сообщения!");
+        console.log("ERROR! В dating проблема с write_a_greeting: не могу найти элемент input для ввода сообщения!");
         return false;
       }
 
       // Получить кнопку "отправить сообщение"
       var send_button = document.querySelector('.messenger-tools__btn.js-send-message');
       if(!send_button) {
-        console.log("ERROR! В my_messages проблема с write_a_greeting: не могу найти элемент кнопки отправки сообщения!");
+        console.log("ERROR! В dating проблема с write_a_greeting: не могу найти элемент кнопки отправки сообщения!");
         return false;
       }
 
@@ -452,115 +391,135 @@ var my_messages = {
       
       // Если моих сообщений тут ещё нет
       if(!are_my_msgs_present) {
-        let message = my_messages.data.greetings[Math.floor(Math.random()*my_messages.data.greetings.length)];
+        let message = dating.data.greetings[Math.floor(Math.random()*dating.data.greetings.length)];
         console.log(message);
         input_field.innerHTML = message;
         send_button.click();
       }
 
+      // Убрать задачу из стека
+      dating.data.stack.shift();
+
     },
 
-    // Подождать, и выполнить какое-то действие
-    sleep: (ms) => {
-      return new Promise((resolve) => setTimeout(function(){
-        resolve(true);
-      }, ms));
-    },
+    // Удалить старые контакты
+    clear: function(){
 
-    // Пробежаться по списку контактов и выполнить нужные операции
-    run: function(){
+      // Получить имя контакта
+      var contact_name = document.querySelector('.connection-header__name').textContent;
 
-      // Получить свежий список контактов
-      my_messages.data.contacts.list = (function(){
-        let result = my_messages.methods.get_contacts();
-        if(!result) {
-          console.log("ERROR! В my_messages проблема с get_contacts: возвращает пустое значение!");
-          return [];
+      // Получить дату последнего сообщения
+      var el = document.querySelectorAll('#messages_body .message__date')[document.querySelectorAll('#messages_body .message__date').length-1];
+      if(!el) {
+        dating.data.stack.shift();
+        return;
+      }
+      var lastdate = el.textContent;
+
+      // Получить дату сообщения и текущую дату UTC
+      var dates = {
+        msg: {
+          year: lastdate.trim().slice(lastdate.trim().search(/\b(19|20)\d{2}\b/g), lastdate.trim().length),
+          month: dating.data.months[lastdate.trim().substr(lastdate.trim().search(/\D/g)+1, lastdate.trim().search(/\b(19|20)\d{2}\b/g)-2-lastdate.trim().search(/\D/g))],
+          day: lastdate.trim().substr(0, lastdate.trim().search(/\D/g))
+        },
+        now: {
+          year: new Date(Date.now()).getUTCFullYear(),
+          month: new Date(Date.now()).getUTCMonth(),
+          day: new Date(Date.now()).getUTCDay()
         }
-        else
-          return result;
+      }
+
+      // Если year, month или day для msg не число, перейти к след.итерации
+      if(!dating.methods.isNumeric(dates.msg.year) || !dating.methods.isNumeric(dates.msg.month) || !dating.methods.isNumeric(dates.msg.day)) {
+        dating.data.stack.shift();
+        return;
+      }
+
+      // Сколько дней прошло
+      var days_gone = (function(){
+        return (Date.parse(dates.now.year + "-" + dates.now.month + "-" + dates.now.day) - Date.parse(dates.msg.year + "-" + dates.msg.month + "-" + dates.msg.day))/1000/60/60/24;
       })();
 
-      // Указать, что скрипт начал работу
-      if(my_messages.data.contacts.list.length > 0)
-        my_messages.data.invoking = true;      
+      // Если прошло более 5 тысяч дней, завершить
+      if(Math.abs(days_gone) >= 5000) {
+        dating.data.stack.shift();
+        return;
+      }
 
-      // Пробежаться по всем контактам
-      for(let i=0; i<my_messages.data.contacts.list.length; i++) {
+      // Если более 14, удалить контакт
+      if(days_gone > 14) {
 
-        my_messages.methods.sleep(my_messages.data.contact_upl_sleep_ms).then(()=>{
+        // Получить кнопку remove и нажать на неё
+        var remove_el = document.querySelector('.option__in.js-im-contact-remove');
+        if(!remove_el) {
+          console.log('Проблема в my_messages, метод remove_old_contact. Не могу получить кнопку удаления контакта.')
+          dating.data.stack.shift();
+          return;
+        }
+        remove_el.click();
 
-          console.log(i);
+        // Получить кнопку "Delete" на модальном окне для подтверждения, и нажать
+        var confirm_del_btn = document.querySelector('.btn.btn--sm.js-im-confirm-delete');
+        if(!confirm_del_btn) {
+          console.log('Проблема в my_messages, метод remove_old_contact. Не могу получить кнопку подтверждения удаления контакта.')
+          dating.data.stack.shift();
+          return;
+        }
+        //confirm_del_btn.click();
 
-        });
-
-        //   // Если ожидается модальное окно для удаления контакта
-        //   if(my_messages.data.await_delete_modal) {
-        //     var name = document.querySelector('.connection-header__name').textContent;
-        //     my_messages.methods.remove_old_contact(name);
-        //     return;
-        //   }
-
-        //   // Перейти в i-тый контакт
-        //   my_messages.data.contacts.list[i].querySelector('.im_user').click();
-
-        //   // Получить имя контакта
-        //   var name = document.querySelector('.connection-header__name').textContent;
-        //   //console.log(name);
-
-        //   // Удалить старые контакты
-        //   //my_messages.methods.remove_old_contact(name);
-
-        //   // Написать сообщение, если ещё ни одного моего нет
-        //   my_messages.methods.write_a_greeting(name);
-
-        //   // Указать, что скрипт закончил работу
-        //   if(i == my_messages.data.contacts.list.length - 1)
-        //     my_messages.data.invoking = false;
-
-        // setTimeout(() => {
-
-        // }, +my_messages.data.contact_upl_sleep_ms*(+i+1));
+        // Сообщить, что контакт удалён
+        console.log('Контакт '+contact_name+' удалён, так как прошло '+days_gone+' дней с момента последнего сообщения');
 
       }
 
-    },
+      // Убрать задачу из стека
+      dating.data.stack.shift();
 
-    // Запустить скрипт
-    start: function(){
-
-      // Запустить setInterval через каждые my_messages.data.interval_ms
-      my_messages.data.timerId = setInterval(function(){ 
-
-        // Если ожидается модальное окно для удаления контакта
-        if(my_messages.data.await_delete_modal) {
-          var name = document.querySelector('.connection-header__name').textContent;
-          my_messages.methods.remove_old_contact(name);
-        }
-
-        // Если предыдущий скрипт ещё не закончил работу, завершить
-        if(my_messages.data.no_dupl === true && my_messages.data.invoking === true)
-          return;
-
-        // Открыть окошко "Messages" с сообщениями (если ещё не открыто)
-        my_messages.methods.open_messages();
-
-        // Пробежаться по всем контактам и выполнить необходимые операции
-        my_messages.methods.run();
-
-      }, my_messages.data.interval_ms);    
-
-    },
-
-    // Остановить скрипт
-    stop: function(){
-      clearInterval(my_messages.data.timerId);
-    }
+    },    
 
   }
-};
+}
 
+var badoo = {
+  info: function(){
+    console.log('BADooNATOR: ИНСТРУКЦИЯ\n\n\
+      Команды: \n\n\
+        badoo.likes.start() - начать ставить лайки;\n\
+        badoo.likes.stop() - закончить ставить лайки;\n\
+        badoo.greetings.start() - приветствовать, удалять старые контакты;\n\
+        badoo.greetings.start() - закончить приветствовать, удалять старые контакты\n\n\
+      Как пользоваться: \n\n\
+        1. Открыть 2 вкладки с badoo.com. Залогиниться везде.\n\
+        2. Включить консоль в обеих вкладках.\n\
+        3. Вставить скрипт ниже в консоль в каждую из вкладок, и нажать enter. Если расширение CJS стоит и настроено, то не надо, т.к. оно само это сделает.\n\
+        4. В первой вкладке ввести и нажать enter: badoo.likes.start();\n\
+        5. Во второй вкладке ввести и нажать enter: badoo.greetings.start();\n\n\
+        Далее просто можно всё это оставить, оно само будет работать.\n\
+        Либо запускать раз в день минут на 20-30.\n\n\
+      Какие будут результаты:\n\n\
+        1. Pupularity станет максимальной.\n\
+        2. В контактах будут появляться те, кто ответил на приветствие. С ними можно общаться.\n\n');
+  },
+  likes: {
+    start: function(){
+      my_encounters.methods.start();
+    },
+    stop: function(){
+      my_encounters.methods.stop();
+    }
+  },
+  greetings: {
+    start: function(){
+      dating.methods.start();
+    },
+    stop: function(){
+      dating.methods.stop();
+    }
+  }
+}
 
+badoo.info();
 
 
 ---------------------
