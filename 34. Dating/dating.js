@@ -40,7 +40,7 @@
   (т.е. вышли на контакт) из Badoo*. 
 
   Кроме того, необходимо автоматически удалять все чаты, 
-  в которых нет активности в течение 7 дней.
+  в которых нет активности в течение N дней.
 
   Всё это даст возможность периодически (по настроению) посещать
   сайт или мобильное приложение badoo, и визуально просматривать
@@ -81,7 +81,6 @@
 x. Скрипт
 
 ---------------------
-
 
 // Скрипт для страницы "Encounters"
 var my_encounters = {
@@ -159,9 +158,140 @@ var my_encounters = {
 };
 
 
+var dating = {
+  data: {
+    stack: [],                  // очередь задач
+    ticks: {
+      round: 0,                 // номер текущего раунда
+      count: 0,                 // кол-во тиков в текущем раунде
+      ms:    1000,              // частота тиков
+      id:    0,                 // id setInterval
+    },
+    contacts: [],               // список контактов
+    chosen_contact_index: 0,    // индекс выбранного контакта в contacts
+    stack: [],                  // очередь задач на текущем тике
+    cooldown: {
+      timer: 0,                 // текущее значений кулдаун-таймера
+      s: 30                     // кулдаун в секундах
+    }
+  },
+  methods: {
+
+    // Start ticks
+    start: function(){
+
+      dating.data.ticks.id = setInterval(function(){
+
+        dating.methods.processor();
+
+      }, dating.data.ticks.ms); 
+
+    },
+
+    // Stop ticks
+    stop: function(){
+      
+      dating.data.timerId = setInterval(function(){
+
+        clearInterval(dating.data.ticks.id);
+
+      }); 
+
+    },
+
+    // Processor
+    processor: function(){
+      
+      // 1] Добавить новый тик, если count != 0
+      if(dating.data.ticks.count != 0)
+        dating.data.ticks.count = +dating.data.ticks.count+1;
+
+      // 2] Если cooldown-таймер > 0
+      if(dating.data.cooldown.timer > 0) {
+        dating.data.cooldown.timer = +dating.data.cooldown.timer-1;
+        dating.data.ticks.count = 0;
+        if(dating.data.ticks.round == 0)
+          dating.data.ticks.round = 1;
+        return;
+      } else
+        dating.data.cooldown.timer = 0;
+
+      // 3] Открыть messages, если ещё не открыты
+      dating.methods.open_messages();
+
+      // 4] Получить весь список контактов, если индекс == 0, или если он пуст
+      if(dating.data.chosen_contact_index == 0 || dating.data.contacts.length == 0)
+        dating.methods.get_contacts();
+
+      // 5] Если очередь задач пуста, переключиться на следующий контакт
+      if(dating.data.stack.length == 0) {
+
+        // Если текущий индекс = 0, и это первый тик нового раунда
+        if(dating.data.chosen_contact_index == 0 && dating.data.ticks.count == 0) {
+          dating.data.ticks.count = 1;
+
+          
+        }
+
+        // Если следующего контакта нет
+        else if(dating.data.chosen_contact_index == dating.data.length-1) {
+          
+          // установить индекс = 0
+          dating.data.chosen_contact_index = 0;
+
+          // установить cooldown таймер
+          dating.data.cooldown.timer = dating.data.cooldown.s;
+
+        }
+
+        // Если следующий контакт есть, поставить его
+        else {
+          dating.data.chosen_contact_index = +dating.data.chosen_contact_index+1;
+        }
+
+      }
+
+
+      // debug
+      console.log('--- debug ---');
+      console.log('Round: '+dating.data.ticks.round);
+      console.log('Tick: '+dating.data.ticks.count);
+      console.log('Index: '+dating.data.chosen_contact_index);
+      console.log('Cooldown: '+dating.data.cooldown.timer);
+
+
+      // Пищем сообщения новым контактам
+      // - Перейти на messages.
+      // - Получить список контактов
+      // - Каждую секунду переключаться на новый контакт, и выполнять для него набор задач,
+      //   причём, пока они не будут выполнены, не переключаться на следующий.
+      // - Когда весь список пройдет, таймаут N минут,
+      //   обновить список контактов, и по новой.
+
+      // Удаляем старые чаты
+      // - Тоже самое, что с написание сообщений, только добавляется ещё один набор
+      //   задач.
+
+    },
+
+    // Открыть окошко "Messages" с сообщениями (если ещё не открыто)
+    open_messages: function(){
+      if(!document.querySelector('.messenger-ovl__body'))
+        document.evaluate("//a[contains(@href,'messenger')]", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
+    },
+
+    // Получить весь список контактов
+    get_contacts: function(){
+      dating.data.contacts = document.querySelectorAll('.js-contacts .js-im-users .contacts__item');
+    },
+
+  }
+}
+
 // Скрипт для страницы "Messages"
 var my_messages = {
   data: {
+    stack: [],                  // очередь задач
     interval_ms: 1000,          // частота тиков скрипта,
     contact_upl_sleep_ms: 1000, // сколько ждать загрузку данных после переход на контакт
     contacts: [],               // массив контактов
@@ -332,7 +462,9 @@ var my_messages = {
 
     // Подождать, и выполнить какое-то действие
     sleep: (ms) => {
-      return new Promise((resolve) => setTimeout(resolve, ms));
+      return new Promise((resolve) => setTimeout(function(){
+        resolve(true);
+      }, ms));
     },
 
     // Пробежаться по списку контактов и выполнить нужные операции
@@ -356,38 +488,39 @@ var my_messages = {
       // Пробежаться по всем контактам
       for(let i=0; i<my_messages.data.contacts.list.length; i++) {
 
-        setTimeout(() => {
+        my_messages.methods.sleep(my_messages.data.contact_upl_sleep_ms).then(()=>{
 
-          // Если ожидается модальное окно для удаления контакта
-          if(my_messages.data.await_delete_modal) {
-            var name = document.querySelector('.connection-header__name').textContent;
-            my_messages.methods.remove_old_contact(name);
-            return;
-          }
+          console.log(i);
 
-          // Выполнить этот код через my_messages.data.contact_upl_sleep_ms/2 ms
-          my_messages.methods.sleep(my_messages.data.contact_upl_sleep_ms/2).then(() => {
+        });
 
-            // Перейти в i-тый контакт
-            my_messages.data.contacts.list[i].querySelector('.im_user').click();
+        //   // Если ожидается модальное окно для удаления контакта
+        //   if(my_messages.data.await_delete_modal) {
+        //     var name = document.querySelector('.connection-header__name').textContent;
+        //     my_messages.methods.remove_old_contact(name);
+        //     return;
+        //   }
 
-            // Получить имя контакта
-            var name = document.querySelector('.connection-header__name').textContent;
-            //console.log(name);
+        //   // Перейти в i-тый контакт
+        //   my_messages.data.contacts.list[i].querySelector('.im_user').click();
 
-            // Удалить старые контакты
-            //my_messages.methods.remove_old_contact(name);
+        //   // Получить имя контакта
+        //   var name = document.querySelector('.connection-header__name').textContent;
+        //   //console.log(name);
 
-            // Написать сообщение, если ещё ни одного моего нет
-            my_messages.methods.write_a_greeting(name);
+        //   // Удалить старые контакты
+        //   //my_messages.methods.remove_old_contact(name);
 
-            // Указать, что скрипт закончил работу
-            if(i == my_messages.data.contacts.list.length - 1)
-              my_messages.data.invoking = false;
+        //   // Написать сообщение, если ещё ни одного моего нет
+        //   my_messages.methods.write_a_greeting(name);
 
-          });
+        //   // Указать, что скрипт закончил работу
+        //   if(i == my_messages.data.contacts.list.length - 1)
+        //     my_messages.data.invoking = false;
 
-        }, +my_messages.data.contact_upl_sleep_ms*(+i+1));
+        // setTimeout(() => {
+
+        // }, +my_messages.data.contact_upl_sleep_ms*(+i+1));
 
       }
 
