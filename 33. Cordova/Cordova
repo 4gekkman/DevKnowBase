@@ -407,6 +407,7 @@
 
   • Установка необходимых для сборки Android-приложения инструментов на Linux:
       https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html
+      https://gist.github.com/aryeharmon/85673d69b07c5b7061c38ac4323f409c
 
   • Деплой приложения в Google Play
       https://codeburst.io/publish-a-cordova-generated-android-app-to-the-google-play-store-c7ae51cccdd5
@@ -427,8 +428,7 @@
 
         ▪ Cordova
 
-      Необходимые для сборки проекта под android инструменты
-      (https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html):
+      Необходимые для сборки проекта под android инструменты:
 
         ▪ Java Development Kit (JDK)
         ▪ Gradle
