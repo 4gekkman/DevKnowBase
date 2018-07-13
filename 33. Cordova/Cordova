@@ -411,6 +411,12 @@
   • Деплой приложения в Google Play
       https://codeburst.io/publish-a-cordova-generated-android-app-to-the-google-play-store-c7ae51cccdd5
 
+  • Работа с платформой browser
+      https://www.raymondcamden.com/2016/03/22/the-cordova-browser-platform
+
+  • Android Studio
+      https://developer.android.com/studio/
+
 > План действий
 
   • Подготовить Docker-образ
@@ -536,7 +542,27 @@
 
   • Протестировать проект для платформы browser
 
-    Для этого мы 
+    Для этого запускаем на 8000 порту веб-сервер с проектом
+    командой:
+
+      cordova serve
+
+    После чего можно перейти по по следующему адресу и откроется
+    приложение: http://localhost:8000/browser/www
+
+    *Техническое примечание: 
+
+      Проброс порта 8000 из контейнера на Linux-хост 
+      осуществляется вовсе не в docker-compose.yml, а
+      в месте определения алиаса в project/other/cli/aliases.
+
+  • Протестировать проект для платформы android
+
+
+
+
+
+
 
 
 > Задеплоить приложение в Google Play: подробно
