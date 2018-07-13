@@ -473,18 +473,18 @@
   • Создать рыбу проекта
 
     Я решил размещать демо-проекты для cordova в папке
-    /bubbles/project/project/mobile/cordova.
+    /bubbles/mobile/cordova.
 
-    Перейдём в /bubbles/project/project и создадим проект
+    Перейдём в /bubbles/mobile/cordova и создадим проект
     DemoApp1 c помощью следующей команды:
 
-      cordova create mobile/cordova/demoapp1 pro.bubbles.demoapp1 DemoApp1
+      cordova create demoapp1 pro.bubbles.demoapp1 DemoApp1
 
   • Настроить, какие платформы будет поддерживать приложение
 
     Для этого сначала переходим в проект:
     
-      cd /bubbles/project/project/mobile/cordova/demoapp1
+      cd /bubbles/mobile/cordova/demoapp1
 
     Чтобы посмотреть список доступных и уже установленных
     платформ, нужно ввести:
@@ -534,7 +534,9 @@
       для его отладки, но не для деплоя в Google Play 
       (об этом будет подробнее ниже)
 
-  • 
+  • Протестировать проект для платформы browser
+
+    Для этого мы 
 
 
 > Задеплоить приложение в Google Play: подробно
