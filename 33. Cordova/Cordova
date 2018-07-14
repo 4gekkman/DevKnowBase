@@ -404,6 +404,14 @@
       ▪ Тест на реальном android-телефоне
       ▪ Тест на эмуляторе устройства (AVD manager)
 
+    ▪ Деплой приложения в Google Play
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+
 --------------------------------------
 
 > Ссылки
@@ -611,8 +619,146 @@
 
   • Деплой приложения в Google Play
 
+    ▪ Настройка package.json
+
+      Надо настроить package.json, который находится непосредственно
+      в папке с приложением (mobile/cordova/demoapp1).
+
+      Значения для каких конкретно свойств надо настроить,
+      и что они обозначают:
+
+      ▪ name
+
+        Это уникальный ID приложения. Общепринятым стандартом
+        является использовать реверс-домен вашего сайта, плюс
+        название проекта. Например:
+
+          pro.bubbles.demoapp1
+
+      ▪ displayName
+
+        Это название приложения, как его будут видеть 
+        пользователи. Например:
+
+          DemoApp1
+
+      ▪ version
+
+        Это версия приложения. Например:
+
+          1.0.0
+
+      ▪ description
+
+        Это описание приложения. Например:
+
+          This is my test cordova app. It does nothing.
+
+      ▪ author
+
+        Это строка, где обозначен автор приложения. Например:
+
+          German Manvelov
+
+      ▪ license
+
+        Это строка, обозначающая лицензию приложения. Например:
+
+          MIT
+
+    ▪ Настройка config.xml
+    
+      ▪ <widget id="...">
+
+        Необходимо в ID вставить уникальный ID приложения.
+        Это тоже самое, что в name в package.json.
+        Общепринятым стандартом
+        является использовать реверс-домен вашего сайта, плюс
+        название проекта. Например:
+
+          pro.bubbles.demoapp1
+
+    ▪ Настройка иконки приложения
+
+      Иконки обычно кладут в папку res/icon, которая
+      в корне приложения. В нашем случае это:
+
+        /bubbles/project/mobile/cordova/demoapp1/res/icon
+
+      Надо открыть config.xml и добавить тэг/теги
+      для иконки. 
 
 
+      ▪ 1 общая иконка
+
+          Можно использовать одну и ту же общую иконку
+          для android и ios
+
+          <widget>
+            ...
+            <icon src="/path/to/generic/icon" />
+            ...
+          </widget>
+
+      ▪ Для каждой платформы своя иконка
+
+        А можно свой набор отдельно для каждой платформы.
+
+        <widget>
+          ...
+          <platform name="android">
+            <icon src="/path/to/android/icon" />
+          </platform>
+          ...
+        </widget>
+
+      ▪ Для каждой платформы свой набор иконок под любое разрешение
+
+        А можно для каждого разрешения экрана предусмотреть
+        свою отдельную иконку:
+
+          <widget>
+            ...
+            <platform name="android">
+              <!--
+                  ldpi    : 36x36 px
+                  mdpi    : 48x48 px
+                  hdpi    : 72x72 px
+                  xhdpi   : 96x96 px
+                  xxhdpi  : 144x144 px
+                  xxxhdpi : 192x192 px
+              -->
+              <icon src="res/android/ldpi.png" density="ldpi" />
+              <icon src="res/android/mdpi.png" density="mdpi" />
+              <icon src="res/android/hdpi.png" density="hdpi" />
+              <icon src="res/android/xhdpi.png" density="xhdpi" />
+              <icon src="res/android/xxhdpi.png" density="xxhdpi" />
+              <icon src="res/android/xxxhdpi.png" density="xxxhdpi" />
+            </platform>      
+            ...
+          </widget>
+
+    ▪ Настройка версии приложения
+
+      Каждый раз при загрузке новой копии приложения
+      в store, надо актуализировать его версию
+      (version) в config.xml и в package.json.
+
+      Это надо сделать ПЕРЕД тем, как собарить приложение
+      и заливать его в store, иначе будет ошибка о том,
+      что такая версия уже есть.
+
+      В config.xml версия находится в widget:
+
+        <widget id="..." version="1.0.1">
+
+    ▪ Собираем релизную версию приложения для платформы android
+
+      Для этого выполняем:
+
+        cordova build android --release
+
+    ▪ 
 
 
 
