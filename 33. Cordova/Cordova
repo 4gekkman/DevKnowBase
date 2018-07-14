@@ -680,14 +680,13 @@
 
     ▪ Настройка иконки приложения
 
-      Иконки обычно кладут в папку res/icon, которая
+      Иконки обычно кладут в папку res/icon/generic, которая
       в корне приложения. В нашем случае это:
 
-        /bubbles/project/mobile/cordova/demoapp1/res/icon
+        /bubbles/project/mobile/cordova/demoapp1/res/icon/generic
 
       Надо открыть config.xml и добавить тэг/теги
       для иконки. 
-
 
       ▪ 1 общая иконка
 
@@ -696,7 +695,7 @@
 
           <widget>
             ...
-            <icon src="/path/to/generic/icon" />
+            <icon src="res/icon/generic/icon.png" />
             ...
           </widget>
 
@@ -757,6 +756,13 @@
       Для этого выполняем:
 
         cordova build android --release
+
+      Если будут какие-то ошибки, связанные с версией 
+      graddle, или ещё что, то открываем Android Studio
+      и пробуем собрать там. Эти ошибки снизу вылезут,
+      и студия сама предложит их исправить (там будут
+      такие сылочки рядом). Надо тока кликнуть.
+
 
     ▪ 
 
