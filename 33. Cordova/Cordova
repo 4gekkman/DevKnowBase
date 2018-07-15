@@ -405,9 +405,12 @@
       ▪ Тест на эмуляторе устройства (AVD manager)
 
     ▪ Деплой приложения в Google Play
-      ▪ 
-      ▪ 
-      ▪ 
+      ▪ Настройка package.json
+      ▪ Настройка config.xml
+      ▪ Настройка иконки приложения
+      ▪ Настройка версии приложения
+      ▪ Собираем релизную версию приложения для платформы android
+      ▪ Подписываем приложение сертификатом
       ▪ 
       ▪ 
       ▪ 
@@ -429,6 +432,11 @@
 
   • Android Studio
       https://developer.android.com/studio/
+
+  • Подписать приложение
+      https://cordova.apache.org/docs/en/latest/guide/platforms/android/#signing-an-app
+      https://developer.android.com/studio/publish/app-signing
+      https://codeburst.io/publish-a-cordova-generated-android-app-to-the-google-play-store-c7ae51cccdd5
 
 > План действий
 
@@ -795,7 +803,16 @@
           cordova platform rm android
           cordova platform add android
 
-    ▪ 
+    ▪ Подписываем приложение сертификатом
+
+      При выполнении "cordova build android --release" на 
+      выходе мы получаем файл app-release-unsigned.apk.
+      Где "unsigned" обозначает, что файл не подписан.
+
+      Google требует, чтобы APK-файл приложения был
+      подписан сертификатом. По этой подписи они
+    
 
 
-android/cordova/lib/builders/StudioBuilder
+
+
