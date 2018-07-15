@@ -757,14 +757,45 @@
 
         cordova build android --release
 
-      Если будут какие-то ошибки, связанные с версией 
-      graddle, или ещё что, то открываем Android Studio
-      и пробуем собрать там. Эти ошибки снизу вылезут,
-      и студия сама предложит их исправить (там будут
-      такие сылочки рядом). Надо тока кликнуть.
+      На выходе получаем файл 'unsigned' файл:
 
+        /bubbles/project/mobile/cordova/demoapp1/
+          platforms/android/app/build/outputs/apk/
+            release/app-release-unsigned.apk
+
+      *Примечание:
+
+        Если вы ранее импортировали проект в Android Studio,
+        то могут возникнуть следующие проблемы.
+
+          1. Будет создан файл local.gradle
+
+            А в нём будет прописан путь к android sdk,
+            который находится в windows, поскольку 
+            Android Studio установлен в windows. В
+            результате, при попытке сборки проекта
+            через docker-образ с cordova мы будем
+            получать ошибку "не найден android sdk"
+            и неправильный путь к нему.
+
+            Решение: удалить local.gradle
+
+          2. Установится плагин, требующий gradle >= 4.4
+
+            Android Studio установит какой-то плагин,
+            который требует gradle >= 4.4, но при этом,
+            в файле "android/cordova/lib/builders/StudioBuilder"
+            у нас прописан gradle 4.1. 
+
+            Решение: прописать gradle 4.4 в этом файле
+
+        Ещё вопрос можно решать путём передобавления платформы
+        android:
+
+          cordova platform rm android
+          cordova platform add android
 
     ▪ 
 
 
-
+android/cordova/lib/builders/StudioBuilder
