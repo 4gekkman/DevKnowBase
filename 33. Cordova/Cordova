@@ -894,23 +894,46 @@
 
   # Глобальные команды
 
-    ▪ create                | создать проект
-    ▪ help                  | получить справку по команде
-    ▪ telemetry             | вкл/выкл коллекцию телеметрии
-    ▪ config                | set/get/delete/edit и list глобальные опции cordova
+    С подробным описанием:
+    
+      ▪ create                | создать проект
+      ▪ telemetry             | вкл/выкл интерактивность (можно сделать, чтоб ничего не спрашивала)
+
+    Без подробного описания:
+    
+      ▪ help                  | получить справку по команде
+      ▪ config                | set/get/delete/edit и list глобальные опции cordova
 
   # Проектные команды
 
-    ▪ info                  | вывести информацию о проекте
-    ▪ requirements          | вывести требования всех платформ проекта
-    ▪ platform              | манипуляции платформами проекта
-    ▪ plugin                | манипуляции плагинами проекта
-    ▪ prepare               | скопировать файлы в платформы (приготовить к сборке)
-    ▪ compile               | скомпилировать скопированные командой prepare файлы (build без prepare)
-    ▪ build                 | собрать проект для всех или указанных платформ (prepare + compile)
-    ▪ clean                 | очистить проект от остатков билдов
-    ▪ run                   | запустить проект (вкл. prepare && compile)
-    ▪ serve                 | запустить проект на локальном NodeJS веб-сервере
+    С подробным описанием:
+
+      ▪ platform              | манипуляции платформами проекта
+        ▪ add                 | - добавить указанную платформу (<platform-spec>)
+        ▪ remove              | - удалить указанную платформу
+        ▪ update              | - обновить указанные платформы
+        ▪ list                | - вывести список всех установленных и доступных платформ
+        ▪ check               | - вывести список всех платформ, которые надо обновить
+        ▪ save                | - сохранить <platform-spec> всех добавленных в config.xml платформ
+
+      ▪ plugin                | манипуляции плагинами проекта
+        ▪ add                 | - добавить плагин
+        ▪ remove              | - удалить плагин
+        ▪ list                | - вывести список установленных плагинов
+        ▪ search              | - найти плагин
+        ▪ save                | - сохранить <platform-spec> всех добавленных в проект плагинов
+
+      ▪ prepare               | скопировать файлы в платформы (приготовить к сборке)
+      ▪ compile               | скомпилировать скопированные командой prepare файлы (build без prepare)
+      ▪ build                 | собрать проект для всех или указанных платформ (prepare + compile)
+      ▪ clean                 | очистить проект от артефактов сборок
+      ▪ run                   | запустить проект (вкл. prepare && compile)
+      ▪ serve                 | запустить проект на локальном NodeJS веб-сервере
+
+    Без подробного описания:
+
+      ▪ info                  | вывести информацию о проекте
+      ▪ requirements          | вывести требования всех платформ проекта
 
 --------------------------------------
 
@@ -1043,9 +1066,29 @@
       cordova create demoapp1 pro.bubbles.demoapp1 DemoApp1
 
   • telemetry
-    вкл/выкл коллекцию телеметрии
+    вкл/выкл интерактивность (можно сделать, чтоб ничего не спрашивала)
 
-    Когда запускаешь Cordova в первый раз, 
+    Когда запускаешь Cordova в первый раз, то она задаёт дурацкий
+    вопрос: 
+
+      "May Cordova anonymously report usage statistics to improve the tool over time?"
+
+    и ждёт 30 секунд, пока ты не ответишь, а потом автоматически
+    выбирает "да". 
+
+    Если Cordova установлена глобально и используется на этой же
+    машине, то можно просто отключить это, и она перестанет спрашивать:
+
+      cordova telemetry off
+
+    Если Cordova используется через Docker, то так телеметрию
+    не отключишь, т.к. каждый новый вызов создаёт новый экземпляр
+    кордовы. Тогда можно использовать флаг:
+
+      cordova --no-telemetry
+
+    Особенно это всё важно при использовании cordova из 
+    Docker где-нибудь в коде.
 
     ▪ Синтаксис
 
@@ -1061,17 +1104,329 @@
       cordova telemetry off
       cordova build --no-telemetry
 
-
-  • config
-
-
-
 > Проектные команды
 
+  Эти команды нужно выполнять, перейдя в папочку с проектом.
 
+  • platform
+    манипуляции платформами проекта
 
+    Команда позволяет добавлять, удалять, просматривать
+    списки добавленных и имеющихся платформ, обновлять
+    платформы.
 
+    Удаление платформы влечёт за собой удаление соответствующей
+    папки из platforms. А добавление - добавление туда оной папки.
 
+    ▪ Синтаксис
+
+      cordova {platform | platforms} [
+          add <platform-spec> [...] {--save | link=<path> } |
+          {remove | rm}  platform [...] {--save}|
+          {list | ls}  |
+          check |
+          save |
+          update ]
+
+      ▪ add <platform-spec>
+        добавить указанную платформу (<platform-spec>).
+
+        --nosave    | не добавлять <platform-spec> в config.xml и package.json используя тег <engine> 
+        --link=     | когда <platform-spec> это локальный путь, не копировать библиотеку платформы, а создать ссылку на неё
+
+      ▪ remove <platform>
+        удалить указанную платформу
+
+        --nosave  | не удалять <platform> из config.xml и package.json
+
+      ▪ update <platform>
+        обновить указанные платформы
+
+        Без <platform> - все. 
+        Если <platform> указан, оную.
+
+        --save  | обновляет указанную в config.xml версию
+
+      ▪ list
+        вывести список всех установленных и доступных платформ
+
+      ▪ check
+        вывести список всех платформ, которые надо обновить
+
+      ▪ save
+        сохранить <platform-spec> всех добавленных в config.xml платформ
+
+    ▪ Формат Platform-spec
+
+      Есть несколько способов, как можно обозначить 
+      платформу.
+
+        <platform-spec> : platform[@version] | path | url[#commit-ish]  
+
+      ▪ platform    | имя платформы, например: android, ios, windows
+      ▪ version     | версия (semver) платформы, major.minor.path
+      ▪ path        | путь к каталогу или архиву с платформой
+      ▪ url         | url к git-репозиторию или архиву с платформой
+      ▪ commit-ish  | [master] коммит/тег/ветка
+
+    ▪ Поддерживаемые платформы
+
+      ▪ Android
+      ▪ iOS
+      ▪ Windows (8.1, Phone 8.1, UWP - Windows 10)
+      ▪ Blackberry10
+      ▪ Ubuntu
+      ▪ Browser
+
+    ▪ Примеры
+
+      cordova platform add android ios
+      cordova platform add android@^5.0.0
+      cordova platform add https://github.com/myfork/cordova-android.git#4.0.0
+      cordova platform add ../android
+      cordova platform add ../cordova-android.tgz
+      cordova platform rm android
+      cordova platform rm android --nosave
+      cordova platform ls
+      cordova platform save
+
+  • plugin
+    манипуляции плагинами проекта
+
+    Команда позволяет добавлять, удалять, просматривать
+    установленные плагины и искать доступные для 
+    установки плагины.
+
+    Удаление плагина влечёт за собой удаление соответствующей
+    папки из plugins. А добавление - появление оной папки там.
+
+    ▪ Синтаксис
+
+      cordova {plugin | plugins} [
+          add <plugin-spec> [..] {--searchpath=<directory> | --noregistry | --link | --save | --browserify | --force} |
+          {remove | rm} {<pluginid> | <name>} --save |
+          {list | ls} |
+          search [<keyword>] |
+          save |
+      ]
+
+      ▪ add <plugin-spec>
+        добавить плагин
+
+        --searchpath <directory>
+
+          Во время поиска плагинов по ID, искать сначала в этой
+          папке и всех её подпапках, а уж потом в регистре в инете.
+
+        --noregistry    | Не искать плагины в регистре в инете.
+        --link         
+
+          При установке из локального каталога, создаёт
+          символьную ссылку вместо копирования файлов.
+          Полезно при разработке плагинов.
+
+        --nosave        | не сохранять <plugin-spec> как часть плагина в config.xml или package.json
+        --browserify    | скомпилировть JS плагина во время сборки используя browserfy
+        --force         | копировать файлы из плагина, даже если они уже существуют
+
+      ▪ remove
+        удалить плагин
+
+        --nosave  | не удалять указанный плагин из config.xml или package.json
+
+      ▪ list
+        вывести список установленных плагинов
+
+      ▪ search [<keyword>]
+        найти плагин
+
+        Искать плагин по keyword на http://plugins.cordova.io
+
+      ▪ save
+        сохранить <platform-spec> всех добавленных в проект плагинов
+
+    ▪ Формат Platform-spec
+
+      Есть несколько способов, как можно обозначить 
+      платформу.
+
+        <plugin-spec> : [@scope/]pluginID[@version]|directory|url[#commit-ish][:subdir]
+
+      ▪ scope       | пространство имён плагина, опубликованного, как scoped npm package
+      ▪ plugin      | id плагина (в npm или в --searchPath)
+      ▪ version     | версия (semver) плагина, major.minor.path
+      ▪ directory   | каталог с plugin.xml
+      ▪ url         | url к git-репозиторию с plugin.xml
+      ▪ commit-ish  | [master] коммит/тег/ветка
+
+    ▪ Примеры
+
+      cordova plugin add cordova-plugin-camera cordova-plugin-file --save --searchpath ../plugins
+      cordova plugin add cordova-plugin-camera@^2.0.0
+      cordova plugin add ../cordova-plugin-camera
+      cordova plugin add ../cordova-plugin-camera.tgz
+      cordova plugin rm camera
+      cordova plugin rm camera --nosave
+      cordova plugin ls
+
+  • prepare
+    скопировать файлы в платформы (приготовить к сборке)
+
+    Вот, что она делает
+
+    ▪ Трансформирует данные из config.xml в специфичные
+      для платформы manifest-файлы.
+    ▪ Копирует сплэшскрины и иконки в платформы в platforms.
+    ▪ Копирует плагины для указанных платформ.
+
+    В итоге, для указанной платформы проект становится 
+    готов к сборке с помощью соответствующего SDK платформы.
+
+    Сама по себе команда используется редко. Чаще всего, в составе
+    команд run или build.
+
+    ▪ Синтаксис
+
+      cordova prepare [<platform> [..]]
+           [--browserify]
+           
+      ▪ <platform>   | имя платформы
+      ▪ --browserify | скомпилировать JS плагинов во время сборки с помощью browserfy
+
+  • compile
+    скомпилировать скопированные командой prepare файлы (build без prepare)
+
+    Так же, как и prepare, это одна из частей команды build.
+    Команда compile должна выполняться после prepare, и 
+    выполняет компиляцию для указанной платформы.
+
+    Сама по себе команда используется редко. Чаще всего, в составе
+    команд run или build.
+
+    ▪ Синтаксис
+
+      cordova build [<platform> [...]]
+          [--debug|--release]
+          [--device|--emulator|--target=<targetName>]
+          [--buildConfig=<configfile>]
+          [--browserify]
+          [-- <platformOpts>]
+
+  • build
+    собрать проект для всех или указанных платформ (prepare + compile)
+
+    Команда build просто последовательно выполняет сначала
+    prepare, потом compile, для всех либо указанных платформ.
+
+    ▪ Синтаксис
+
+      cordova build [<platform> [...]]
+          [--debug|--release]
+          [--device|--emulator]
+          [--buildConfig=<configfile>]
+          [--browserify]
+          [-- <platformOpts>]
+
+      <platform> [..]
+
+        Если не указано, то собирает для всех платформ.
+        Можно указать 1 или несколько названийплатформ через пробел.
+
+      --debug
+
+        Выполнить debug-сборку для указанных платформ.
+        Такие сборки не могут быть залиты в store'ы платформ.
+
+      --release
+
+        Выполнить release-сборку для указанных платформ.
+        Такие сборки можно прямо во время сборки подписать
+        ключём, и залить в store'ы платформ.
+
+      --device    | собрать для девайса
+      --emulator  
+
+        Собрать для эмулятора. В частности, архитектура
+        платформы может быть разной для device и emulator.
+
+      --buildConfig=<configFile>
+
+        Вместо того, чтобы добавлять необходимые для подписи
+        release-сборки значения через опции, их можно расписать
+        в build.json, и указать к нему путь через эту опцию.
+
+        Однако, поскольку там присутствуют 2 пароля, этот
+        файл должен быть обезопашен от посторонних.
+
+      --browserify
+
+        Скомпилировать JS плагина во время сборки проекта,
+        а не во время его работы.
+
+      <platformOpts>
+
+        Чтобы добавить особые опции для платформы, нужно
+        писать их после разделителя -- 
+
+        Ищи эти платформо-специфичные опции в описаниях 
+        платформ в документации Cordova.
+
+    ▪ Примеры
+
+      ▪ Собрать release-сборку для android и 
+        сразу её подписать ключём из keystore
+
+        cordova build android --release -- --keystore=android.keystore --storePassword=<пароль> --alias=pro.bubbles.demoapp1 --password=<пароль>
+
+      ▪ Прочие примеры
+
+        cordova build android windows --debug --device
+        cordova build android --release --buildConfig=..\myBuildConfig.json
+        cordova build android --release -- --keystore="..\android.keystore" --storePassword=android --alias=mykey
+
+  • clean
+    очистить проект от артефактов сборок
+
+    Очищает все или указанные платформы от артефактов сборок.
+
+    ▪ Синтаксис
+
+      cordova clean [<platform> [...]]
+
+    ▪ Примеры
+
+      cordova clean android
+
+  • run
+    запустить проект (вкл. prepare && compile)
+
+    Выполняет prepare, build, и деплой приложения на 
+    указанное устройство или эмулятор.
+
+    Если устройство подключено, оно будет использовано,
+    в противном случае будет использован уже запущенный
+    эмулятор.
+
+    По факту, это всё не работает, если Cordova у 
+    вас находится в Docker-контейнере. Вместо этого,
+    надо использовать Android Studio для android,
+    и что-то там ещё для ios.
+
+  • serve
+    запустить проект на локальном NodeJS веб-сервере
+
+    Запускает локальный web-сервер на NodeJS для www,
+    использует указанный порт (8000 по умолчанию).
+
+    Доступ к проекту можно получить по URL:
+    http://HOST_IP:PORT/<PLATFORM>/www
+
+    Где <PLATFORM>, это android, ios или для какой там 
+    платформы вы запустили serve.
+
+    ▪ Синтаксис
+
+      cordova serve [port]
 
 
 А5. Cordova Events
