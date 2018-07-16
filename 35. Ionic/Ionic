@@ -1,6 +1,6 @@
 ////=================================================////
 ////                                                 ////
-////                     Cordova                     ////
+////                    Ionic 4.*                    ////
 ////                                                 ////
 ////=================================================////
 ////                      ////
@@ -9,15 +9,27 @@
 ////======================////
 
 
-  # Cordova
+  # Ionic
 
     • Сайт
       
-        https://cordova.apache.org
+        https://ionicframework.com
 
     • Документация
 
-        https://cordova.apache.org/docs/en/latest/
+        https://ionicframework.com/docs
+
+    • Маркет (плагины, темы, стартовые приложения)
+    
+        https://market.ionicframework.com
+
+    • Магазин аксесуаров (футболки, наклейки и прочее)
+
+        https://shop.ionicframework.com
+
+    • Прогресс разработки ionic 4.*
+
+        https://github.com/ionic-team/ionic/milestones
 
   # Плагины
 
