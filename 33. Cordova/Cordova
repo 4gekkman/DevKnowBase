@@ -1432,11 +1432,328 @@
 А5. Cordova Events
 --------------------------------------
 
-  
+  # О событиях в Cordova
+  # События в Cordova
+
+                   android ios 
+    ▪ deviceready       ☑  ☑  | после полной загрузки Cordov'ы
+    ▪ pause             ☑  ☑  | приложение помещено на background
+    ▪ resume            ☑  ☑  | приложение помещено на foreground
+    ▪ backbutton        ☑  ☐  | возбуждается при нажатии кнопки "назад"
+    ▪ menubutton        ☑  ☐  | возбуждается при нажатии кнопки "меню"
+    ▪ searchbutton      ☑  ☐  | возбуждается при нажатии кнопки "поиск"
+    ▪ startcallbutton   ☑  ☐  | возбуждается при нажатии кнопки "начать звонок"
+    ▪ endcallbutton     ☑  ☐  | возбуждается при нажатии кнопки "завершить звонок"
+    ▪ volumedownbutton  ☑  ☐  | возбуждается при нажатии кнопки "понизить громкость"
+    ▪ volumeupbutton    ☑  ☐  | возбуждается при нажатии кнопки "повысить громкость"
 
 --------------------------------------
 
-> 
+> О событиях в Cordova
+
+  Cordova во время своей работы возбуждает много разных
+  событий, которые приложение может отлавливать, и
+  обрабатывать с помощью обработчиков событий.
+
+  Например:
+
+    ▪ HTML
+
+      <!DOCTYPE html>
+      <html>
+          <head>
+          <title>Device Ready Example</title>
+
+          <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+          <script type="text/javascript" charset="utf-8" src="example.js"></script>
+          </head>
+          <body onload="onLoad()">
+          </body>
+      </html>
+
+    ▪ JS
+
+      // example.js file
+      // Wait for device API libraries to load
+      //
+      function onLoad() {
+          document.addEventListener("deviceready", onDeviceReady, false);
+      }
+
+      // device APIs are available
+      //
+      function onDeviceReady() {
+          document.addEventListener("pause", onPause, false);
+          document.addEventListener("resume", onResume, false);
+          document.addEventListener("menubutton", onMenuKeyDown, false);
+          // Add similar listeners for other events
+      }
+
+      function onPause() {
+          // Handle the pause event
+      }
+
+      function onResume() {
+          // Handle the resume event
+      }
+
+      function onMenuKeyDown() {
+          // Handle the menubutton event
+      }
+
+      // Add similar event handlers for other events
+    
+    Однако, не все события cordova поддерживаются всеми
+    платформами. В частности, ios поддерживает лишь
+    несколько из них.
+
+> События в Cordova
+
+  • deviceready     
+    после полной загрузки Cordov'ы
+    android, ios
+
+    Возбуждается после полной загрузки Cordov'ы. 
+    Это событие является ключевым для каждого приложения.
+    Оно сообщает, что устройство полностью загрузило Cordova API,
+    и оно готово к работе.
+
+    ▪ Как deviceready предотвращает преждевременный вызов Cordova API
+
+      Cordova состоит из двух основных частей: нативная и JS.
+      Пока нативная часть грузится, показывается экран загрузки
+      (скринсплиттер).
+
+      Однако, JS загружается только после загрузки DOM.
+      Это значит, веб-приложение может потенциально запустить
+      JS-функцию Codrov'ы до того, как соответствующий нативный
+      код будет готов к работе.
+
+      И вот как раз если использовать diviceready, как индикатор
+      полной загрузки нативного кода, можно избежать такой
+      неприятной ситуации.
+
+    ▪ Пример
+
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady() {
+            // Now safe to use device APIs
+        }
+
+  • pause           
+    приложение помещено на background
+    android, ios
+
+    Это событие возбуждается, когда приложение помещается
+    на background. Чаще всего, когда пользователь переключается
+    на другое приложение.
+
+    ▪ Пример
+
+      document.addEventListener("pause", onPause, false);
+
+      function onPause() {
+          // Handle the pause event
+      }
+
+    ▪ Проблемы с ios
+
+      В обработчике событий pause, любые запросы к Cordova API
+      или к нативным плагинам, идущие через Objective-C не
+      работают, как и интерактивные вызова, такие как 
+      console.log().
+
+      Всё это сработает разом только в тот момент, когда 
+      приложение выйдет из режима паузы (resume).
+
+      ▪ Альтернатива: resign
+
+        Есть специфичное для ios событие resign. Его можно
+        использовать в качестве альтернативы для pause.
+
+        Оно определяет, когда пользователи нажимают на 
+        кнопку "заблокировать" с приложением, запущенным
+        на foreground.
+
+      ▪ Особенности c iOS 5
+
+        Если приложение (и устройство) поддерживает
+        мультизадачность, это идёт в совокупности с 
+        последующим событием pause, но только в iOS 5.
+        В результате, все заблокированные приложения в 
+        iOS 5, имеющие мультизадачность, отправляются
+        в background. Поэтому, чтобы оставить приложение
+        на foreground после блокировки устройства, надо
+        отключать ему мультизадачность с помощью установки
+        UIApplicationExitsOnSuspend to YES. Для iOS 4 эта
+        опция не имеет значения.
+
+  • resume          
+    приложение помещено на foreground
+    android, ios
+
+    Это событие возбуждается, когда приложение помещается
+    на foreground. То есть, оно было на background. И
+    пользователь решил снова на него переключиться, и 
+    оно стало на foreground.
+
+    ▪ Пример
+
+      document.addEventListener("resume", onResume, false);
+
+      function onResume() {
+          // Handle the resume event
+      }
+
+    ▪ Проблемы с ios
+
+      Как уже было описано в pause, всё вызванное в приложении
+      в обработчике события pause, будет исполнено, как только
+      приложение перейдёт на foreground, что будет сопровождаться
+      событием resume.
+
+      ▪ iOS-специфичное событие active
+
+        В качестве альтернативы для события resume,
+        доступно iOS-специфичное событие active. Оно
+        отслеживает, когда пользователи нажимают на 
+        кнопку Lock и разблокируют устройство, на 
+        foreground которого запущено приложение.
+
+        Если в приложении (и устройстве) включена
+        многозадачность, то это сопровождается 
+        последующим событием resume, но только в iOS 5.
+        В результате, все заблокированные приложения в 
+        iOS 5, имеющие мультизадачность, отправляются
+        в background. Поэтому, чтобы оставить приложение
+        на foreground после блокировки устройства, надо
+        отключать ему мультизадачность с помощью установки
+        UIApplicationExitsOnSuspend to YES. Для iOS 4 эта
+        опция не имеет значения.
+
+      ▪ Надо заворачивать интерактивные фунции в setTimeout()
+
+        При вызове из обработчика событий resume, необходимо
+        заворачивать все интерактивные функции, такие как 
+        alert() в setTimeout() с 0 ms, иначе приложение
+        повиснет. 
+
+        Пример:
+
+          document.addEventListener("resume", onResume, false);
+          function onResume() {
+              setTimeout(function() {
+                      // TODO: do your thing!
+                  }, 0);
+          }
+
+  • backbutton      
+    возбуждается при нажатии кнопки "назад"
+
+    Событие возбуждается, когда пользователь нажимает кнопку
+    "назад". Чтобы перезаписать действие по умолчанию,
+    надо просто зарегистрировать свой обработчик события.
+
+    ▪ Пример
+
+        document.addEventListener("backbutton", onBackKeyDown, false);
+
+        function onBackKeyDown() {
+            // Handle the back button
+        }
+
+  • menubutton      
+    возбуждается при нажатии кнопки "меню"
+
+    События возбуждается, когда пользователь нажимает 
+    кнопку "меню". Чтобы перезаписать действие по умолчанию,
+    надо просто зарегистрировать свой обработчик события.
+
+    ▪ Пример
+
+        document.addEventListener("menubutton", onMenuKeyDown, false);
+
+        function onMenuKeyDown() {
+            // Handle the back button
+        }    
+
+  • searchbutton    
+    возбуждается при нажатии кнопки "поиск"
+
+    События возбуждается, когда пользователь нажимает 
+    кнопку "поиск". Чтобы перезаписать действие по умолчанию,
+    надо просто зарегистрировать свой обработчик события.
+
+    ▪ Пример
+
+        document.addEventListener("searchbutton", onSearchKeyDown, false);
+
+        function onSearchKeyDown() {
+            // Handle the search button
+        }    
+
+  • startcallbutton 
+    возбуждается при нажатии кнопки "начать звонок"
+
+    События возбуждается, когда пользователь нажимает 
+    кнопку "начать звонок". Чтобы перезаписать действие по умолчанию,
+    надо просто зарегистрировать свой обработчик события.
+
+    ▪ Пример
+
+        document.addEventListener("startcallbutton", onStartCallKeyDown, false);
+
+        function onStartCallKeyDown() {
+            // Handle the start call button
+        }
+
+  • endcallbutton   
+    возбуждается при нажатии кнопки "завершить звонок"
+
+    События возбуждается, когда пользователь нажимает 
+    кнопку "завершить звонок". Чтобы перезаписать действие по умолчанию,
+    надо просто зарегистрировать свой обработчик события.
+
+    ▪ Пример
+
+        document.addEventListener("endcallbutton", onEndCallKeyDown, false);
+
+        function onEndCallKeyDown() {
+            // Handle the end call button
+        }
+
+  • volumedownbutton
+    возбуждается при нажатии кнопки "понизить громкость"
+
+    События возбуждается, когда пользователь нажимает 
+    кнопку "понизить громкость". Чтобы перезаписать действие по умолчанию,
+    надо просто зарегистрировать свой обработчик события.
+
+    ▪ Пример
+
+        document.addEventListener("volumedownbutton", onVolumeDownKeyDown, false);
+
+        function onVolumeDownKeyDown() {
+            // Handle the volume down button
+        }
+
+  • volumeupbutton  
+    возбуждается при нажатии кнопки "повысить громкость"
+
+    События возбуждается, когда пользователь нажимает 
+    кнопку "повысить громкость". Чтобы перезаписать действие по умолчанию,
+    надо просто зарегистрировать свой обработчик события.
+
+    ▪ Пример
+
+        document.addEventListener("volumeupbutton", onVolumeUpKeyDown, false);
+
+        function onVolumeUpKeyDown() {
+            // Handle the volume up button
+        }
+
+
 
 
 
