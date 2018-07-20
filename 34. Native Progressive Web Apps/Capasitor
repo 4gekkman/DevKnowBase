@@ -1860,11 +1860,27 @@
     ▪ Возвращаемые плагином данные
     ▪ Предоставление нативных экранов
     ▪ Возбуждение событий
-      ▪ Возбуждение событий приложения
-      ▪ Возбуждение событий плагина
+      ▪ Возбуждение событий приложения (App events)
+      ▪ Возбуждение событий плагина (Plugin events)
     ▪ Экспорт класса Swift -> Objective-C, регистрация в Capacitor
 
   # Руководство по плагинам для Android
+
+    ▪ Потребуется писать код Java
+    ▪ Подготовка к началу разработки плагина для Android
+    ▪ Создание плагина на Java
+    ▪ Простой пример плагина для Android
+    ▪ Доступ ко входящим параметрам плагина (Called Data)
+    ▪ Возвращаемые плагином данные
+    ▪ Предоставление нативных экранов
+      ▪ Без желания получить результат
+      ▪ С желанием получить результат
+    ▪ Возбуждение событий
+      ▪ Возбуждение событий приложения (App events)
+      ▪ Возбуждение событий плагина (Plugin events)
+    ▪ Запрос прав доступа для плагинов с помощью инструментов Capacitor'а
+    ▪ Регистрация плагина в Capacitor
+
   # Руководство по плагинам для Web/PWA
   # Руководство по плагинам для JS
 
@@ -2119,22 +2135,115 @@
     Для этого надо использовать объект CAPBridge, доступный
     в классе CAPPlugin.
 
-    
+    Мы можем использовать UIViewController, чтобы предоставить
+    Native View Controllers над ним, вот так:
+
+      self.bridge.viewController.present(ourCustomViewController, animated: true, completion: nil)
+
+    На iPad вы также можете предоставить UIPopovers, чтобы 
+    это делать, есть функция-хелпер, позволяющая показывать
+    его по центру:
+
+      self.setCenteredPopover(ourCustomViewController)
+      self.bridge.viewController.present(ourCustomViewController, animated: true, completion: nil)
 
   • Возбуждение событий
 
-    • Возбуждение событий приложения
+    Плагины Capacitor'а могут возбуждать события приложения (App events),
+    и события плагинов (Plugin events)
 
+    • Возбуждение событий приложения (App events)
 
-    • Возбуждение событий плагина
+      События приложения являются обычными JS-событиями,
+      как window или document.
 
+      Capacitor предоставляет все эти функции для 
+      возбуждения событий:
+
+        //If you want to provide the target
+        self.bridge.triggerJSEvent(eventName: "myCustomEvent", target: "window")
+        self.bridge.triggerJSEvent(eventName: "myCustomEvent", target: "document", data: "my custom data")
+
+        // Window Events
+        self.bridge.triggerWindowJSEvent(eventName: "myCustomEvent")
+        self.bridge.triggerWindowJSEvent(eventName: "myCustomEvent", data: "my custom data")
+
+        // Document events
+        self.bridge.triggerDocumentJSEvent(eventName: "myCustomEvent")
+        self.bridge.triggerDocumentJSEvent(eventName: "myCustomEvent", data: "my custom data")
+
+      Вешать на эти события обработчики можно точно так же,
+      как вы это делаете обычно в JS:
+
+        window.addEventListener("myCustomEvent", function() {
+          console.log("myCustomEvent was fired")
+        });
+
+    • Возбуждение событий плагина (Plugin events)
+
+      Плагины могут возбуждать их собственные события,
+      которые вы можете слушать, подключая обработчики
+      событий к объекту плагина, вот так:
+
+        Plugins.MyPlugin.addListener('myPluginEvent', (info: any) => {
+          console.log('myPluginEvent was fired');
+        });
+
+      Возбудить событие из класса Swift-плагина вы можете
+      вот так:
+
+        self.notifyListeners("myPluginEvent", data: [:])
 
   • Экспорт класса Swift -> Objective-C, регистрация в Capacitor
 
+    Чтобы убедитсья в том, что Capacitor видит ваш плагин,
+    вам надо сделать 2 вещи:
 
+      ▪ Экспортировать ваш Swift-класс в Objective-C.
+      ▪ Зарегистрировать последний, используя предоставляемый
+        Capacitor'ом Objective-C-макрос.
+
+    Чтобы экспортировать ваш Swift-класс в Objective-C, 
+    убедитесь, что вы добавили @objc(YourPluginClass) над
+    вашем Swift-классом, и добавили @objc перед каждым
+    методом плагина, как показано в примерах выше.
+
+    Далее, вам понадобится создать новый Objective-C файл
+    (с расширением .m, а не .h !), соответствующий вашему
+    плагину. Например: MyPlugin.m
+
+      * Важно! Для создания файла вы обязательно должны использовать
+      диалог "New File" в Xcode. В процессе Xcode спросит у вас,
+      нужно ли создать Bridging Header, и вы должны согласиться.
+
+    Наконец, зарегистрируйте плагин, добавив необходимый 
+    макрос для Capacitor-плагинов в ваш новый .m файл:
+
+      #import <Capacitor/Capacitor.h>
+
+      CAP_PLUGIN(MyPlugin, "MyPlugin",
+        CAP_PLUGIN_METHOD(echo, CAPPluginReturnPromise);
+      )
+
+    Это делает ваш новый Capacitor-плагин MyPlugin, и метод
+    echo из него, доступными в вашем веб-приложении.
 
 > Руководство по плагинам для Android
 
+  • Потребуется писать код Java
+  • Подготовка к началу разработки плагина для Android
+  • Создание плагина на Java
+  • Простой пример плагина для Android
+  • Доступ ко входящим параметрам плагина (Called Data)
+  • Возвращаемые плагином данные
+  • Предоставление нативных экранов
+    • Без желания получить результат
+    • С желанием получить результат
+  • Возбуждение событий
+    • Возбуждение событий приложения (App events)
+    • Возбуждение событий плагина (Plugin events)
+  • Запрос прав доступа для плагинов с помощью инструментов Capacitor'а
+  • Регистрация плагина в Capacitor
 
 
 > Руководство по плагинам для Web/PWA
