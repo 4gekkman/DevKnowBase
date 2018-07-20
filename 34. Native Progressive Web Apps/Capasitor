@@ -49,6 +49,7 @@
     А5. Разработка под Web (Progressive Web Apps)
     А6. Разработка под Electron
     А7. Плагины Capacitor'а
+    А8. Capacitor APIs
 
   # X.  Практика и наработки
 
@@ -1873,8 +1874,8 @@
     ▪ Доступ ко входящим параметрам плагина (Called Data)
     ▪ Возвращаемые плагином данные
     ▪ Предоставление нативных экранов
-      ▪ Без желания получить результат
-      ▪ С желанием получить результат
+      ▪ Intents без желания получить результат
+      ▪ Intents с желанием получить результат
     ▪ Возбуждение событий
       ▪ Возбуждение событий приложения (App events)
       ▪ Возбуждение событий плагина (Plugin events)
@@ -1882,7 +1883,17 @@
     ▪ Регистрация плагина в Capacitor
 
   # Руководство по плагинам для Web/PWA
+
+    ▪ Плагин может работать как на Web/PWA, так на iOS/Android и пр.платформах
+    ▪ Подготовка к началу разработки плагина для Web/PWA
+    ▪ Пример плагина для Web/PWA
+
   # Руководство по плагинам для JS
+
+    ▪ Большинствов Capacitor-плагинов не требует писать JS-кода
+    ▪ Подготовка к добавлению кастомного JS-кода Capacitor-плагину
+    ▪ Публикация плагина
+    ▪ Использование плагина
 
 --------------------------------------
 
@@ -2231,26 +2242,476 @@
 > Руководство по плагинам для Android
 
   • Потребуется писать код Java
+
+    При сздании плагинов для Capacitor потребуется
+    писать код на Java.
+
+    Capacitor поощряет использование стандартных инструментов
+    для разрботки под Android для создания плагинов. Команда
+    Capacitor верит, что использование Java
+    напрямую сделает легче поиск решений на Stack Overflow,
+    привлечение к разработке нативных разработчиков, а также
+    использование новейших фич платформы
+
   • Подготовка к началу разработки плагина для Android
+
+    Для начала, сгенерируйте плагин, как было описано
+    выше.
+
+    Затем, в Android Studio откройте:
+    your-plugin/android/your-plugin
+
   • Создание плагина на Java
+
+    Capacitor-плагин для Android представляет собой простой
+    Java-класс, который наследует от com.getcapacitor.Plugin и 
+    имеет аннотацию @NativePlugin. Он имеет кое-какие методы
+    с аннотацией @PluginMethod(), которые доступны для
+    вызовов из JS.
+
+    Когда плагин сгенерирован, вы можете начать его
+    редактировать, открыв файл, имя которого совпадает
+    с именем плагина, которое вы указали в генераторе.
+
   • Простой пример плагина для Android
+
+    В генерируемом примере находится простой плагин 
+    с функцией echo, которая просто возвращает
+    переданное значение.
+
+    Этот пример демонстрирует несколько core-компонентов
+    плагинов Capacitor'а: получение входящих данных 
+    из Plugin Call, возвращение данных обратно тому,
+    кто плагин вызывал:
+
+    EchoPlugin.java
+    ---------------
+
+      package android.plugin.test;
+
+      import com.getcapacitor.JSObject;
+      import com.getcapacitor.NativePlugin;
+      import com.getcapacitor.Plugin;
+      import com.getcapacitor.PluginCall;
+      import com.getcapacitor.PluginMethod;
+
+      @NativePlugin()
+      public class EchoPlugin extends Plugin {
+
+          @PluginMethod()
+          public void echo(PluginCall call) {
+              String value = call.getString("value");
+
+              JSObject ret = new JSObject();
+              ret.put("value", value);
+              call.success(ret);
+          }
+      }
+
   • Доступ ко входящим параметрам плагина (Called Data)
+
+    Каждый метод плагина получает экземпляр com.getcapacitor.PluginCall,
+    содержащий всю информацию, переданную клиентом при
+    вызове плагина.
+
+    Клиент может отправлять любые данные, сериализуя их
+    в JSON. Эти данные доступны через поле getData 
+    вызываемого экземпляра, или через удобные методы,
+    такие как getString или getObject.
+
+    Например, вот как вы можете получить данные, переданные
+    в ваш метод:
+
+      @PluginMethod()
+      public void storeContact(PluginCall call) {
+        String name = call.getString("yourName", "default name");
+        JSObject address = call.getObject("address", new JSObject());
+        boolean isAwesome = call.getBoolean("isAwesome", false);
+
+        if (!call.getData().has("id")) {
+          call.reject("Must provide an id");
+          return;
+        }
+        // ...
+
+        call.resolve();
+      }
+
+    Обратите внимание, что данные можно извлечь из PluginCall
+    разными путями. А с помощью метода has можно требовать валидировать
+    входящие даннные, требуя, например наличие определённых
+    ключей со значениями определённых типов.
+
   • Возвращаемые плагином данные
+
+    Вызов плагина может завершиться успехом или неудачей.
+    Чаще всего, плагины вызываются через промисы. Поэтому,
+    вызов resolve свидетельствует об успехе, а reject - 
+    о неудаче.
+
+    Для тех, кто использует коллбэки, вызов success-колбэка
+    будет свидетельствовать об успехе, а вызов error-колбэка
+    - о неудаче.
+
+    Метод resolve, принадлежащий PluginCall, принимает массив 
+    и поддерживает сериализуемые в JSON типы данных. Вот 
+    пример того, что может возвращаться обратно клиенту:
+
+      JSObject ret = new JSObject();
+      ret.put("added", true);
+      JSObject info = new JSObject();
+      info.put("id", "unique-id-1234");
+      ret.put("info", info);
+      call.resolve(ret);
+
+    Неудачи, или вызов reject, вызывает call.reject, передаёт
+    строку с ошибкой и (опционально) экземпляр Exception:
+
+      call.reject(exception.getLocalizedMessage(), exception);
+
   • Предоставление нативных экранов
-    • Без желания получить результат
-    • С желанием получить результат
+
+    Чтобы предоставить нативный экран поверх экрана Capacitor'а,
+    нам необохимо получить использовать Android's Intents:
+
+      https://developer.android.com/guide/components/intents-filters
+
+    Intents позволяют вам запустить активность из вашего,
+    или другого приложения.
+
+    • Intents без желания получить результат
+
+      В большинстве случаев вы лишь хотите представить
+      нативную Activity:
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        getActivity().startActivity(intent);
+
+    • Intents с желанием получить результат
+
+      Иногда, когда вы запускаете Intent, вы ожидаете получить
+      некий результат назад. В этом случае, надо использовать
+      startActivityForResult:
+
+        static final int REQUEST_IMAGE_PICK = 12345;
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(call, intent, REQUEST_IMAGE_PICK);
+
+      Чтобы получить результат, надо перезаписать 
+      handleOnActivityResult:
+
+        @Override
+        protected void handleOnActivityResult(int requestCode, int resultCode, Intent data) {
+          super.handleOnActivityResult(requestCode, resultCode, data);
+
+          PluginCall savedCall = getSavedCall();
+
+          if (savedCall == null) {
+            return;
+          }
+          if (requestCode == REQUEST_IMAGE_PICK) {
+            // Do something with the data
+          }
+        }
+
+      Чтобы получить доступ к View-контроллеру Capacitor'а,
+      нам надо использовать объект CAPBridge в классе
+      CAPPlugin.
+
+      Мы можем использовать UIViewController, чтобы предоставить
+      Native View Controllers над ним, вот так:
+
+        self.bridge.viewController.present(ourCustomViewController, animated: true, completion: nil)
+
+      На iPad вы также можете предоставить UIPopovers, чтобы 
+      это делать, есть функция-хелпер, позволяющая показывать
+      его по центру:
+
+        self.setCenteredPopover(ourCustomViewController)
+        self.bridge.viewController.present(ourCustomViewController, animated: true, completion: nil)
+
   • Возбуждение событий
+
+    Плагины Capacitor'а могут возбуждать события приложения (App events),
+    и события плагинов (Plugin events)
+
     • Возбуждение событий приложения (App events)
+
+      События приложения являются обычными JS-событиями,
+      как window или document.
+
+      Capacitor предоставляет все эти функции для 
+      возбуждения событий:
+
+        //If you want to provide the target
+        bridge.triggerJSEvent("myCustomEvent", "window");
+        bridge.triggerJSEvent("myCustomEvent", "document", "my custom data");
+
+        // Window Events
+        bridge.triggerWindowJSEvent("myCustomEvent");
+        bridge.triggerWindowJSEvent("myCustomEvent", "my custom data");
+
+        // Document events
+        bridge.triggerDocumentJSEvent("myCustomEvent");
+        bridge.triggerDocumentJSEvent("myCustomEvent", "my custom data");
+
+      Вешать на эти события обработчики можно точно так же,
+      как вы это делаете обычно в JS:
+
+        window.addEventListener("myCustomEvent", function() {
+          console.log("myCustomEvent was fired")
+        });
+
     • Возбуждение событий плагина (Plugin events)
+
+      Плагины могут возбуждать их собственные события,
+      которые вы можете слушать, подключая обработчики
+      событий к объекту плагина, вот так:
+
+        Plugins.MyPlugin.addListener("myPluginEvent", (info: any) => {
+          console.log("myPluginEvent was fired");
+        });
+
+      Возбудить событие из класса плагина вы можете
+      вот так:
+
+        JSObject ret = new JSObject();
+        ret.put("value", "some value");
+        notifyListeners("myPluginEvent", ret);      
+
   • Запрос прав доступа для плагинов с помощью инструментов Capacitor'а
+
+    Некоторым плагинам потребуется, чтобы вы запросили кое-какие
+    права для их работы. Capacitor предоставляет хелперы
+    для этого.
+
+    Во-первых, задекларируйте необходимые вашему плагину
+    права в аннотации @NativePlugin:
+
+      @NativePlugin(
+        permissions={
+          Manifest.permission.ACCESS_NETWORK_STATE
+        }
+      )
+
+    Вы можете проверить, все ли необходимые права доступа
+    были предоставлены с помощью: 
+
+      hasRequiredPermissions().
+
+    Вы можете запросить все необходимые права доступа
+    с помощью: 
+
+      pluginRequestAllPermissions().
+
+    Вы можете запросить конкретное разрешение вот
+    таким образом:
+
+      pluginRequestPermission(Manifest.permission.CAMERA, 12345)
+
+    Или, вы можете запросить сразу группу прав доступа
+    с помощью:
+
+      static final int REQUEST_IMAGE_CAPTURE = 12345;
+      pluginRequestPermissions(new String[] {
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+      }, REQUEST_IMAGE_CAPTURE);
+
+    Чтобы обработать запрос прав доступа, вам необходимо
+    перезаписать handleRequestPermissionsResult:
+
+      @Override
+      protected void handleRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.handleRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        log("handling request perms result");
+        PluginCall savedCall = getSavedCall();
+        if (savedCall == null) {
+          log("No stored plugin call for permissions request result");
+          return;
+        }
+
+        for(int result : grantResults) {
+          if (result == PackageManager.PERMISSION_DENIED) {
+            savedCall.error("User denied permission");
+            return;
+          }
+        }
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+          // We got the permission
+        }
+      }
+
   • Регистрация плагина в Capacitor
 
+    Используя аннотации @NativePlugin и @PluginMethod()
+    в ваших плагинах, вы делаете их доступными для
+    Capacitor. Но вам нужно делать ещё одну вещь,
+    вам надо регистрировать класс вашего плагина в 
+    вашей Activity, чтобы Capacitor знал о нём:
+
+      // Other imports...
+      import com.example.myapp.EchoPlugin;
+
+      public class MainActivity extends BridgeActivity {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+          super.onCreate(savedInstanceState);
+
+          // Initializes the Bridge
+          this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
+            // Additional plugins you've installed go here
+            // Ex: add(TotallyAwesomePlugin.class);
+            add(EchoPlugin.class);
+          }});
+        }
+      }
 
 > Руководство по плагинам для Web/PWA
 
+  • Плагин может работать как на Web/PWA, так на iOS/Android и пр.платформах
 
+    Capacitor использует слой совместимости Web <-> Native,
+    делая простым делом создание плагинов, которые могут
+    функционировать как нативно, так и на Web/PWA.
+
+  • Подготовка к началу разработки плагина для Web/PWA
+
+    Для начала, сгенерируйте плагин, как было описано
+    выше.
+
+    Затем, в Android Studio откройте:
+    your-plugin/src/web.ts
+
+  • Пример плагина для Web/PWA
+
+    Базовая структура Web-плагина выглядит вот так,
+    всё подробнее описано в комментах:
+
+      import { WebPlugin } from '@capacitor/core';
+
+      export class MyPluginWeb extends WebPlugin {
+        constructor() {
+          // Call super with the name of our plugin (this should match the native name),
+          // along with the platforms this plugin will activate on. For example, it's possible
+          // to use a web plugin for Android and iOS by adding them to the platforms list (lowercased)
+          super({
+            name: 'MyPlugin',
+            platforms: ['web']
+          });
+        }
+
+        async echo(options: { value: string }) {
+          console.log('ECHO', options);
+          return Promise.resolve();
+        }
+      }
+
+      // Instantiate the plugin
+      const MyPlugin = new MyPluginWeb();
+
+      // Export the plugin
+      export { MyPlugin };
+
+    Наконец, убедитесь, что в вашем src/index.ts есть
+    эта строка:
+
+      export * from './web';
 
 > Руководство по плагинам для JS
+
+  • Большинствов Capacitor-плагинов не требует писать JS-кода
+
+    Все методы плагинов Capacitor'а становятся автоматически
+    доступными в среде выполнения JS. Поэтому, большинство
+    этих плагинов не требует писать какого-то дополнительного
+    JS-кода.
+
+    Однако, если вашему плагину нужен какой-то кастомный
+    JS, вы можете легко добавить JS-фронтенд к вашему
+    Capacitor-плагину.
+
+  • Подготовка к добавлению кастомного JS-кода Capacitor-плагину
+
+    Чтобы создать кастомный JS-фронтенд для Capacitor-плагина,
+    во первых, создайте плагин, как описано в:
+
+      "О плагинах Capacitor'а" -> "Подготовка к началу разработки плагина"
+
+    Затем, создайте свой плагин. Сгенерированный шаблон плагина
+    содержит TypeScript. Вы можете адаптировать (рекомендуется),
+    либо удалить эти файлы, и начать с нуля. Как закончите,
+    просто соберите всё.
+
+    Вы сможете получить доступ к своему плагину сразу
+    после импорта из @capacitor/core:
+
+      import { Plugins } from '@capacitor/core';
+      const { SuperGreatPlugin } = Plugins;
+      export class CustomSuperPlugin {
+        constructor() {
+        }
+        customAwesomeness() {
+          SuperGreatPlugin.awesome();
+        }
+      }
+
+  • Публикация плагина
+
+    Чтобы опубликовать ваш плагин, просто выполните:
+
+      npm publish
+
+  • Использование плагина
+
+    Одно из отличий плагинов с кастомным JS состоит в том,
+    как разработчики могут их использовать. Вместо того,
+    чтобы получать доступ к ним в Plugins.SuperGreatPlugin,
+    разработчики импортируют их напрямую из npm-пакета:
+
+      import { CustomSuperPlugin } from 'super-great-plugin';
+
+      const plugin = new CustomSuperPlugin();
+      plugin.customAwesomeness();
+
+
+А8. Capacitor APIs
+--------------------------------------
+
+  # Введение в APIs Capacitor'а
+  # Проверка доступности того или иного API
+  # 
+
+
+--------------------------------------
+
+> Введение в APIs Capacitor'а
+
+  У Capacitor'а есть набор нативных API, которые доступны
+  для использования на всех его платформах. 
+
+  Можете думать об этих API, как о core-плагинах 
+  Capacitor'а. Они позволяют легко получать доступ
+  к наиболее часто используемому функционалу на
+  каждой платформе.
+
+  Для тех, кто пришёл с Cordov'ы. Capacitor APIs покрывают
+  большую часть плагинов Cordov'ы, и даже содержит
+  немного новых.
+
+> Проверка доступности того или иного API
+
+
+
+
+
+
+
+
 
 
 
