@@ -2694,15 +2694,19 @@
     ▪ App                                 | управление высокоуровневым состоянием приложения и событиями
                                           | pwa / ios / android / electron
       ▪ canOpenUrl                        | - проверить, можно ли открыть приложение через указанный URL
-      ▪ exitApp                           | -
-      ▪ getLaunchUrl                      | -
-      ▪ openUrl                           | -
-      ▪ addListener('appStateChange')     | -
-      ▪ addListener('appUrlOpen')         | -
-      ▪ addListener('appRestoredResult')  | -
-      ▪ addListener('backButton')         | -
+      ▪ exitApp                           | - force'ировать выход из приложения
+      ▪ getLaunchUrl                      | - получить URL, через который приложение было запущено
+      ▪ openUrl                           | - открыть приложение по указанному URL
+      ▪ addListener('appStateChange')     | - отслеживать, в foreground приложение, или в background
+      ▪ addListener('appUrlOpen')         | - отслеживать событие открытия приложения через URL
+      ▪ addListener('appRestoredResult')  | - возвращает данные, с которыми было запущено приложение
+      ▪ addListener('backButton')         | - отслеживать хардварную кнопку "назад" (только Android)
 
-    ▪ Background Task               | 
+    ▪ Background Task               | управление фоновыми задачами
+                                    | ios / android
+      ▪ beforeExit                  | - 
+      ▪ finish                      | - 
+
     ▪ Browser                       | 
     ▪ Camera                        | 
     ▪ Clipboard                     | 
@@ -2770,7 +2774,7 @@
       ▪ addListener(eventName: "accessibilityScreenReaderStateChange", listenerFunc: ScreenReaderStateChangeCallback): PluginListenerHandle
         отслеживать изменения состояния screen reader'а
 
-    ▪ Пример
+    ▪ Примеры
 
       import { Plugins } from '@capacitor/core';
 
@@ -2841,107 +2845,99 @@
       ▪ canOpenUrl(options: { url: string }): Promise<{ value: boolean }>
         проверить, можно ли открыть приложение через указанный URL
 
-      ▪ 
-      ▪ 
-      ▪ 
+        Чтобы использовать canOpenUrl, вам надо установить
+        схемы URL, по которым ваше приложение может быть
+        запрошено, в LSApplicationQueriesSchemes в Info.plist
 
-    ▪ Пример
+        Подробнее:
+        https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/LaunchServicesKeys.html#//apple_ref/doc/uid/TP40009250-SW14
+        https://capacitor.ionicframework.com/docs/ios/configuration/
+
+      ▪ exitApp(): never
+        force'ировать выход из приложения
+
+        Это надо использовать только в сочетании с обработчиком
+        события нажатия на кнопку 'backButton' в Android,
+        чтобы выйти из приложения, когда назад уже некуда.
+
+      ▪ getLaunchUrl(): Promise<AppLaunchUrl>
+        получить URL, через который приложение было запущено
+
+      ▪ openUrl(options: { url: string }): Promise<{ completed: boolean }>
+        открыть приложение по указанному URL
+
+      ▪ addListener(eventName: "appStateChange", listenerFunc: (state: AppState) => void): PluginListenerHandle
+        отслеживать, в foreground приложение, или в background
+
+      ▪ addListener(eventName: "appUrlOpen", listenerFunc: (data: AppUrlOpen) => void): PluginListenerHandle
+        отслеживать событие открытия приложения через URL
+
+        Этот обработчик обрабатывает оба случая, и ссылки с
+        кастомной URL-схемой, и ссылки с URL-схемами, которые
+        обрабатывает ваше приложение (Universal Links на iOS
+        и App links на Android).
+
+      ▪ addListener(eventName: "appRestoredResult", listenerFunc: (data: AppRestoreResult) => void): PluginListenerHandle
+        возвращает данные, с которыми было запущено приложение
+
+        Если приложение было запущено с ранее присутствующими
+        данными плагина, например, как на Android, если 
+        активность возвращается к приложению, которое было
+        закрыто, этот вызов вернёт любые данные, с которыми
+        было запущено приложение, сконвертированными в 
+        форму результата от вызова плагина. 
+
+      ▪ addListener(eventName: "backButton", listenerFunc: (data: AppUrlOpen) => void): PluginListenerHandle
+        отслеживать хардварную кнопку "назад" (только Android)
+
+        Если вы хотите закрыть приложение, вызовите App.exitApp().
+
+    ▪ Примеры
+
+      import { Plugins, AppState } from '@capacitor/core';
+
+      const { App } = Plugins;
+
+      App.addListener('appStateChange', (state: AppState) => {
+        // state.isActive contains the active state
+        console.log('App state changed. Is active?', state.isActive);
+      });
+
+      // Listen for serious plugin errors
+      App.addListener('pluginError', (info: any) => {
+        console.error('There was a serious error with a plugin', err, info);
+      });
+
+      var ret = await App.canOpenUrl({ url: 'com.getcapacitor.myapp' });
+      console.log('Can open url: ', ret.value);
+
+      ret = await App.openUrl({ url: 'com.getcapacitor.myapp://page?id=ionicframework' });
+      console.log('Open url response: ', ret);
+
+      ret = await App.getLaunchUrl();
+      if(ret && ret.url) {
+        console.log('App opened with URL: ' + ret.url);
+      }
+      console.log('Launch url: ', ret);
+
+      App.addListener('appUrlOpen', (data: any) => {
+        console.log('App opened with URL: ' +  data.url);
+      });
+
+      App.addListener('appRestoredResult', (data: any) => {
+        console.log('Restored state:', data);
+      });
+
     ▪ Интерфейсы
 
-  • 
+      -
+
+  • Background Task API
 
     ▪ Поддерживаемые платформы
     ▪ Описание
     ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
-    ▪ Интерфейсы
-
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Пример
+    ▪ Примеры
     ▪ Интерфейсы
 
   • 
@@ -2949,7 +2945,7 @@
     ▪ Поддерживаемые платформы
     ▪ Описание
     ▪ API
-    ▪ Пример
+    ▪ Примеры
     ▪ Интерфейсы
 
   • 
@@ -2957,7 +2953,7 @@
     ▪ Поддерживаемые платформы
     ▪ Описание
     ▪ API
-    ▪ Пример
+    ▪ Примеры
     ▪ Интерфейсы
 
   • 
@@ -2965,7 +2961,7 @@
     ▪ Поддерживаемые платформы
     ▪ Описание
     ▪ API
-    ▪ Пример
+    ▪ Примеры
     ▪ Интерфейсы
 
   • 
@@ -2973,7 +2969,7 @@
     ▪ Поддерживаемые платформы
     ▪ Описание
     ▪ API
-    ▪ Пример
+    ▪ Примеры
     ▪ Интерфейсы
 
   • 
@@ -2981,7 +2977,7 @@
     ▪ Поддерживаемые платформы
     ▪ Описание
     ▪ API
-    ▪ Пример
+    ▪ Примеры
     ▪ Интерфейсы
 
   • 
@@ -2989,7 +2985,95 @@
     ▪ Поддерживаемые платформы
     ▪ Описание
     ▪ API
-    ▪ Пример
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
+    ▪ Интерфейсы
+
+  • 
+  
+    ▪ Поддерживаемые платформы
+    ▪ Описание
+    ▪ API
+    ▪ Примеры
     ▪ Интерфейсы
 
 
