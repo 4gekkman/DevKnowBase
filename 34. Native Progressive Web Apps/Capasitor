@@ -2717,13 +2717,7 @@
                                         
     ▪ Camera                            | доступ к камере и фотоальбому
                                           pwa / ios / android / electron
-
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
+      ▪ getPhoto                        | просит пользователя взять фотку из альбома, или снять камерой
 
     ▪ Clipboard                         | 
     ▪ Console                           | 
@@ -3105,7 +3099,7 @@
         urls : any
       }
 
-  • 
+  • Camera API
   
     ▪ Поддерживаемые платформы
 
@@ -3118,19 +3112,134 @@
 
       доступ к камере и фотоальбому
 
+      На iOS, этот плагин использует UIImagePickerController,
+      а на Android шлёт intent (намерение), которое будет
+      обработано по умолчанию core-приложением камеры.
 
+      ▪ Замечания на iOS
+
+        iOS требует, чтобы для вашего приложения в Info.plist
+        были добавлены следующие ключ-значение:
+
+        Ключ: Privacy - Camera Usage Description
+        Значение: NSCameraUsageDescription
+
+        Почитайте по поводу добавление прав доступа в iOS 
+        (https://capacitor.ionicframework.com/docs/apis/ios/permissions/)
+        в руководстве по iOS (https://capacitor.ionicframework.com/docs/apis/ios/).
+
+      ▪ Замечания на Android
+
+        Этот API требует, чтобы следующие права доступа были
+        добавлены в AndroidManifest.xml:
+
+          <uses-permission android:name="android.permission.CAMERA" />
+          <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+          <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+        Доступ к камере, доступы к хранилищу (чтение/запись).
+
+        Почитайте подробнее по поводу добавления прав доступа
+        в Android (https://capacitor.ionicframework.com/docs/apis/android/permissions/)
+        в руководстве по Android (https://capacitor.ionicframework.com/docs/apis/android/).
+
+        Дополнительно, поскольку Camera API запускает дополнительную
+        Activity для обработки взятых фото, вам понадобится
+        слушать событие appRestoredResult в плагине App для
+        обработки любых данных, которые были отправлены в 
+        случае, когда ваше приложение было уничтожено
+        операционной системой в то время, пока Activity 
+        ещё работала.
 
     ▪ API
+
+      ▪ getPhoto(options: CameraOptions): Promise<CameraPhoto>
+        просит пользователя взять фотку из альбома, или снять камерой
+
     ▪ Примеры
+
+      import { Plugins, CameraResultType } from '@capacitor/core';
+
+      const { Camera } = Plugins;
+
+      async takePicture() {
+        const image = await Camera.getPhoto({
+          quality: 90,
+          allowEditing: true,
+          resultType: CameraResultType.Uri
+        });
+        // image.webPath will contain a path that can be set as an image src. You can access
+        // the original file using image.path, which can be passed to the Filesystem API to
+        // read the raw data of the image, if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+        var imageUrl = image.webPath;
+        // can be set to the src of an image now
+        imageElement.src = imageUrl;
+      }
+
     ▪ Интерфейсы
 
-  • 
+      interface CameraOptions {
+
+        // Whether to allow the user to crop or make small edits (platform specific)
+        allowEditing ?: boolean
+        // Whether to automatically rotate the image "up" to correct for orientation in portrait mode Default: true
+        correctOrientation ?: boolean
+        // The height of the saved image
+        height ?: number
+        // The quality of image to return as JPEG, from 0-100
+        quality ?: number
+        // How the data should be returned. Currently, only 'base64' or 'uri' is supported
+        resultType : 
+        // Whether to save the photo to the gallery/photostream
+        saveToGallery ?: boolean
+        // The source to get the photo from. By default this prompts the user to select either the photo album or take a photo. Default: CameraSource.Prompt
+        source ?: 
+        // The width of the saved image
+        width ?: number
+
+      }
+
+      interface CameraPhoto {
+
+        // The base64 encoded data of the image, if using CameraResultType.Base64.
+        base64Data ?: string
+        // Exif data, if any, retrieved from the image
+        exif ?: any
+        // The format of the image. Currently, only "jpeg" is supported.
+        format : string
+        // If using CameraResultType.Uri, the path will contain a full, platform-specific file URL that can be read later using the Filsystem API.
+        path ?: string
+        // webPath returns a path that can be used to set the src attribute of an image for efficient loading and rendering.
+        webPath ?: string
+        
+      }
+
+  • Clipboard API
   
     ▪ Поддерживаемые платформы
+
+      - pwa
+      - ios
+      - android
+      - electron
+
     ▪ Описание
+
+      управляет copy/paste в/из clipboard
+
+      На iOS этот API также позволяет копировать изображения 
+       URL.
+
+
     ▪ API
+
+
     ▪ Примеры
+
+
     ▪ Интерфейсы
+
+
 
   • 
   
