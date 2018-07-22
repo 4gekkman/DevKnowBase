@@ -2719,7 +2719,11 @@
                                           pwa / ios / android / electron
       ▪ getPhoto                        | просит пользователя взять фотку из альбома, или снять камерой
 
-    ▪ Clipboard                         | 
+    ▪ Clipboard                         | управляет copy/paste в/из clipboard
+                                        | pwa / ios / android / electron
+      ▪ read                            | - прочитать значение из clipboard (paste action)
+      ▪ write                           | - записать значение в clipboard (copy action)
+                                        
     ▪ Console                           | 
     ▪ Device                            | 
     ▪ Filesystem                        | 
@@ -3228,18 +3232,47 @@
       управляет copy/paste в/из clipboard
 
       На iOS этот API также позволяет копировать изображения 
-       URL.
-
+      и URL.
 
     ▪ API
 
+      ▪ read(options: ClipboardRead): Promise<ClipboardReadResult>
+        прочитать значение из clipboard (paste action)
+
+      ▪ write(options: ClipboardWrite): Promise<void>
+        записать значение в clipboard (copy action)
 
     ▪ Примеры
 
+      import { Plugins } from '@capacitor/core';
+
+      const { Clipboard } = Plugins;
+
+      Clipboard.write({
+        string: "Hello, Moto"
+      });
+
+      let str = await Clipboard.read({
+        type: "string"
+      });
+      console.log('Got string from clipboard:', str.value);    
 
     ▪ Интерфейсы
 
+      interface ClipboardRead {
+        type : any
+      }
 
+      interface ClipboardReadResult {
+        value : string
+      }
+
+      interface ClipboardWrite {
+        image ?: string
+        label ?: string
+        string ?: string
+        url ?: string
+      }
 
   • 
   
