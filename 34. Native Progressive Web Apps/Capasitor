@@ -2702,28 +2702,44 @@
       ▪ addListener('appRestoredResult')  | - возвращает данные, с которыми было запущено приложение
       ▪ addListener('backButton')         | - отслеживать хардварную кнопку "назад" (только Android)
 
-    ▪ Background Task               | управление фоновыми задачами
-                                    | ios / android
-      ▪ beforeExit                  | - 
-      ▪ finish                      | - 
+    ▪ Background Task                   | управление фоновыми задачами
+                                        | ios / android
+      ▪ beforeExit                      | - запустить короткоживущую фоновую задачу при переходе приложения в фон
+      ▪ finish                          | - уведомить OS, что задача фсё, и OS может продолжить класть приложение в фон
 
-    ▪ Browser                       | 
-    ▪ Camera                        | 
-    ▪ Clipboard                     | 
-    ▪ Console                       | 
-    ▪ Device                        | 
-    ▪ Filesystem                    | 
-    ▪ Geolocation                   | 
-    ▪ Haptics                       | 
-    ▪ Keyboard                      | 
-    ▪ Modals                        | 
-    ▪ Motion                        | 
-    ▪ Network                       | 
-    ▪ Share                         | 
-    ▪ Splash Screen                 | 
-    ▪ Status Bar                    | 
-    ▪ Storage                       | 
-    ▪ Toast                         | 
+    ▪ Browser                           | открытие внут.браузера приложения, обработка аутентификации, и пр.
+                                        | pwa / ios / android / electron
+      ▪ close                           | - закрыть браузер (только в iOS)
+      ▪ open                            | - открыть страницу с указанным URL во внут.браузере
+      ▪ prefetch                        | - намекнуть браузеру, что укзазанные URLs будут открыты (чтобы улучшить время загрузки для клиента)
+      ▪ addListener('browserFinished')  | - браузер закончил
+      ▪ addListener('browserPageLoaded')| - страница браузера загружена
+                                        
+    ▪ Camera                            | доступ к камере и фотоальбому
+                                          pwa / ios / android / electron
+
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+
+    ▪ Clipboard                         | 
+    ▪ Console                           | 
+    ▪ Device                            | 
+    ▪ Filesystem                        | 
+    ▪ Geolocation                       | 
+    ▪ Haptics                           | 
+    ▪ Keyboard                          | 
+    ▪ Modals                            | 
+    ▪ Motion                            | 
+    ▪ Network                           | 
+    ▪ Share                             | 
+    ▪ Splash Screen                     | 
+    ▪ Status Bar                        | 
+    ▪ Storage                           | 
+    ▪ Toast                             | 
 
 --------------------------------------
 
@@ -2935,23 +2951,175 @@
   • Background Task API
 
     ▪ Поддерживаемые платформы
+
+      - ios
+      - android
+
     ▪ Описание
+
+      Background Task API позволяет легко запускать фоновые
+      задачи. В настоящий момент этот плагин поддерживает
+      запуск фоновых задач, когда приложение само находится
+      в фоне, и скоро будет поддерживать periodic background
+      fetch operation.
+
+      Мобильные операционные системы имеют строгие, и часто
+      меняющиеся методические рекомендации для задач, 
+      выполняющихся в фоне. Только пиложениям, выполняющим
+      следующие операции, разрешено бесконечно висеть в
+      фоновом режиме:
+
+        ▪ проигрывать аудио;
+        ▪ поддерживать VoIP-соединения;
+        ▪ отслеживать геолокацию в навигационных целях;
+        ▪ ...и ограниченный список других задач...
+
+      Все прочие приложения могут лишь выполнять периодические,
+      короткие задачи в фоне, такие, как:
+
+        ▪ завершение загрузки файла, когда приложение отправляется в фон;
+        ▪ периодическая синхронизация данных.
+
+      Плагины, которые претендуют на то, что они будут 
+      выполнять бесконечные фоновые операции, которые 
+      не укладываются в перечисленный выше небольшой
+      списочек, не пройдут модерацию в Store'ах! Это
+      ограничение не только для тех, кто использует
+      Capacitor, а вообще для всех мобильных разработчиков.
+
+      В общем, Android менее строк по отношению к фоновым
+      задачам, но в любом случае, вы должны разрабатывать
+      ваше приложение, ориентируюсь на наиболее строгие
+      ограничения, чтобы оно прошло на всех платформах.
+
     ▪ API
+
+      ▪ beforeExit(cb: Function): CallbackID
+        запустить короткоживущую фоновую задачу при переходе приложения в фон
+
+        Это позволит убедиться, что ваше приложение завершит
+        любую работу, которую должно доделать (например,
+        завершение загрузки файла, или сетевого запроса).
+
+        Это особенно важно на iOS, поскольку любые операции
+        обычно приостанавливаются без инициации фоновой
+        задачи.
+
+        cb: Function
+        Это задача, которая должна запуститься, когда приложение
+        перейдёт в фон, но перед его уничтожением.
+
+      ▪ finish(options: { taskId: CallbackID}): void
+        уведомить OS, что задача фсё, и OS может продолжить класть приложение в фон
+
     ▪ Примеры
+
+      import { Plugins } from '@capacitor/core';
+
+      const { App, BackgroundTask } = Plugins;
+
+      App.addEventListener('appStateChange', (state) => {
+
+        if (!state.isActive) {
+          // The app has become inactive. We should check if we have some work left to do, and, if so,
+          // execute a background task that will allow us to finish that work before the OS
+          // suspends or terminates our app:
+
+          let taskId = BackgroundTask.beforeExit(async () => {
+            // In this function We might finish an upload, let a network request
+            // finish, persist some data, or perform some other task
+
+            // Example
+            setTimeout(() => {
+              // Must call in order to end our task otherwise
+              // we risk our app being terminated, and possibly
+              // being labled as impacting battery life
+              BackgroundTask.finish({
+                taskId
+              });
+            }, 30000); // Set a long timeout as an example
+          });
+        }
+      })
+
     ▪ Интерфейсы
+
+      type alias CallbackID {
+      
+      }
+
+  • Browser APi
+  
+    ▪ Поддерживаемые платформы
+
+      - pwa
+      - ios
+      - android
+      - electron
+
+    ▪ Описание
+
+      открытие внут.браузера приложения, обработка аутентификации, и пр.
+
+      На iOS этот плагин использует SFSafariViewController 
+      и соответствует ведущим требованиям oAuth в 
+      приложениях для браузера.
+
+    ▪ API
+
+      ▪ close(): Promise<void>
+        закрыть браузер (только в iOS)
+
+      ▪ open(options: BrowserOpenOptions): Promise<void>
+        открыть страницу с указанным URL во внут.браузере
+
+      ▪ prefetch(options: BrowserPrefetchOptions): Promise<void>
+        намекнуть браузеру, что укзазанные URLs будут открыты (чтобы улучшить время загрузки для клиента)
+
+      ▪ addListener(eventName: "browserFinished", listenerFunc: (info: any) => void): PluginListenerHandle
+        браузер закончил
+
+      ▪ addListener(eventName: "browserPageLoaded", listenerFunc: (info: any) => void): PluginListenerHandle
+        страница браузера загружена
+
+    ▪ Примеры
+
+      import { Plugins } from '@capacitor/core';
+
+      const { Browser } = Plugins;
+
+      await Browser.open('http://capacitor.ionicframework.com/');
+
+    ▪ Интерфейсы
+
+      interface BrowserOpenOptions {
+        // A hex color to set the toolbar color to.
+        toolbarColor ?: string
+        // The URL to open the browser to
+        url : string
+        // Web only: Optional target for browser open. Follows the `target` property for window.open. Defaults to _blank
+        windowName ?: string
+      }
+
+      interface BrowserPrefetchOptions {
+        urls : any
+      }
 
   • 
   
     ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Примеры
-    ▪ Интерфейсы
 
-  • 
-  
-    ▪ Поддерживаемые платформы
+      - pwa
+      - ios
+      - android
+      - electron
+
     ▪ Описание
+
+      доступ к камере и фотоальбому
+
+
+
     ▪ API
     ▪ Примеры
     ▪ Интерфейсы
