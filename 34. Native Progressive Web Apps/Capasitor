@@ -2744,9 +2744,26 @@
       ▪ stat                            | - вернуть инфу о файле
       ▪ writeFile                       | - записать файл на диск в указанное место на устройстве
 
-    ▪ Geolocation                       | 
-    ▪ Haptics                           | 
-    ▪ Keyboard                          | 
+    ▪ Geolocation                       | обеспечивает доступ к геолокация
+                                        | pwa / ios / android / electron
+      ▪ clearWatch                      | - выключить отслеживание геолокации
+      ▪ getCurrentPosition              | - получить текущую геолокацию устройства
+      ▪ watchPosition                   | - включить отслеживание геолокации
+                                         
+    ▪ Haptics                           | управление вибрацией
+                                        | ios / android
+      ▪ impact                          | - запустить вибро-отклик "impact"
+      ▪ selectionChanged                | - запустить вибро-отклик "selection changed"
+      ▪ selectionEnd                    | - запустить вибро-отклик "selection end"
+      ▪ selectionStart                  | - запустить вибро-отклик "selection start"
+      ▪ vibrate                         | - вибрировать устройство
+
+    ▪ Keyboard                          | управление клавиатурой (отображение, видимость, события вкл/выкл)
+                                          ios / android
+      ▪ hide                            | - 
+      ▪ setAccessoryBarVisible          | - 
+      ▪ show                            | - 
+
     ▪ Modals                            | 
     ▪ Motion                            | 
     ▪ Network                           | 
@@ -3210,11 +3227,11 @@
         // The quality of image to return as JPEG, from 0-100
         quality ?: number
         // How the data should be returned. Currently, only 'base64' or 'uri' is supported
-        resultType : 
+        resultType : CameraResultType
         // Whether to save the photo to the gallery/photostream
         saveToGallery ?: boolean
         // The source to get the photo from. By default this prompts the user to select either the photo album or take a photo. Default: CameraSource.Prompt
-        source ?: 
+        source ?: CameraSource
         // The width of the saved image
         width ?: number
 
@@ -3510,9 +3527,9 @@
         // The data to write
         data : string
         // The FilesystemDirectory to store the file in
-        directory ?: 
+        directory ?: FilesystemDirectory
         // The encoding to write the file in (defautls to utf8)
-        encoding ?: 
+        encoding ?: FilesystemEncoding
         // the filename to write
         path : string
       }
@@ -3522,7 +3539,7 @@
 
       interface FileDeleteOptions {
         // The FilesystemDirectory to delete the file from
-        directory ?: 
+        directory ?: FilesystemDirectory
         // the filename to delete
         path : string
       }
@@ -3532,7 +3549,7 @@
 
       interface GetUriOptions {
         // The FilesystemDirectory to get the file under
-        directory : 
+        directory : FilesystemDirectory
         // The path of the file to get the URI for
         path : string
       }
@@ -3545,7 +3562,7 @@
         // Whether to create any missing parent directories as well
         createIntermediateDirectories : boolean
         // The FilesystemDirectory to make the new directory in
-        directory ?: 
+        directory ?: FilesystemDirectory
         // The path of the new directory
         path : string
       }
@@ -3555,9 +3572,9 @@
 
       interface FileReadOptions {
         // The FilesystemDirectory to read the file from
-        directory ?: 
+        directory ?: FilesystemDirectory
         // The encoding to read the file in, if not provided, data is read as binary and returned as base64 encoded data.
-        encoding ?: 
+        encoding ?: FilesystemEncoding
         // the filename to read
         path : string
       }
@@ -3568,7 +3585,7 @@
 
       interface ReaddirOptions {
         // The FilesystemDirectory to remove the directory from
-        directory ?: 
+        directory ?: FilesystemDirectory
         // The path of the directory to remove
         path : string
       }
@@ -3579,7 +3596,7 @@
 
       interface RmdirOptions {
         // The FilesystemDirectory to remove the directory from
-        directory ?: 
+        directory ?: FilesystemDirectory
         // The path of the directory to remove
         path : string
       }
@@ -3589,7 +3606,7 @@
 
       interface StatOptions {
         // The FilesystemDirectory to remove the directory from
-        directory ?: 
+        directory ?: FilesystemDirectory
         // The path of the directory to remove
         path : string
       }
@@ -3606,9 +3623,9 @@
         // The data to write
         data : string
         // The FilesystemDirectory to store the file in
-        directory ?: 
+        directory ?: FilesystemDirectory
         // The encoding to write the file in (defautls to utf8)
-        encoding ?: 
+        encoding ?: FilesystemEncoding
         // the filename to write
         path : string
       }
@@ -3616,28 +3633,265 @@
       interface FileWriteResult {
       }
 
-  • 
+  • Geolocation API
   
     ▪ Поддерживаемые платформы
+
+      - pwa
+      - ios
+      - android
+      - electron
+
     ▪ Описание
+
+      обеспечивает доступ к геолокация
+
+      Это API обеспечивает простые методы для получения
+      и отслеживания текущей позиции устройства через
+      GPS, высоты над уровнем моря, направления и скорости
+      движения.
+
+      ▪ Особенности на iOS
+
+        Apple требует, чтобы в Info.plist были прописаны
+        описания прав, которые будут запрошены у пользователя
+        приложением при попытке отслеживать геолокацию.
+
+        Name: Privacy - Location Always Usage Description
+        Key: NSLocationAlwaysUsageDescription
+
+        Name: Privacy - Location When In Use Usage Description
+        Key: NSLocationWhenInUseUsageDescription
+
+        Подробнее, как всё это через Xcode настроить, читайте:
+
+        ▪ Setting iOS Permissions
+          https://capacitor.ionicframework.com/docs/apis/ios/configuration/
+
+        ▪ iOS Guide
+          https://capacitor.ionicframework.com/docs/apis/ios/
+
+      ▪ Особенности на Android
+
+        Для этого API требуется добавить следующие права
+        доступа в AndroidManifest.xml:
+
+          <!-- Geolocation API -->
+          <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+          <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+          <uses-feature android:name="android.hardware.location.gps" />
+
+        Первые 2 права доступа запрашивают доступ к получению
+        информации о местоположении (грубой и точной).
+
+        Последняя строка не обязательна, но нужна, если 
+        вашему приложению требуется (requires) GPS для работы.
+        Конечно, можно её опустить, но тогда учтите, что ваше
+        приложение может быть установлено и на устройстве,
+        в котором нет GPS.
+
+        Подробнее, как всё это можно настроит, читайте:
+
+        ▪ Setting Android Permissions
+          https://capacitor.ionicframework.com/docs/apis/android/configuration/
+
+        ▪ Android Guide
+          https://capacitor.ionicframework.com/docs/apis/android/
+
     ▪ API
+
+      ▪ clearWatch(options: { id: string }): Promise<void>
+        выключить отслеживание изменения позиции
+
+      ▪ getCurrentPosition(options?: GeolocationOptions): Promise<GeolocationPosition>
+        получить текущую геолокацию устройства
+
+      ▪ watchPosition(options: GeolocationOptions, callback: GeolocationWatchCallback): CallbackID
+        включить отслеживание геолокации
+
+        Имейте в виду, что отслеживание изменения позиции
+        может потреблять большое количество энергии. Поэтому,
+        делайте это по-умному, и включайте, только когда
+        реально надо, или с перерывами.
+
     ▪ Примеры
+
+      import { Plugins } from '@capacitor/core';
+
+      const { Geolocation } = Plugins;
+
+      class GeolocationExample {
+        async getCurrentPosition() {
+          const coordinates = await Geolocation.getCurrentPosition();
+          console.log('Current', coordinates);
+        }
+
+        watchPosition() {
+          const wait = Geolocation.watchPosition({}, (position, err) => {
+          })
+        }
+      }
+
     ▪ Интерфейсы
+
+      interface GeolocationOptions {
+        enableHighAccuracy ?: boolean
+        maximumAge ?: number
+        // Whether your app needs altitude data or not. This can impact the sensor the device uses, increasing energy consumption. Note: altitude information may not be available even when passing true here. Similarly, altitude data maybe be returned even if this value is false, in the case where doing so requires no increased energy consumption.
+        requireAltitude ?: boolean
+        timeout ?: number
+      }
+
+      interface GeolocationPosition {
+        // The GPS coordinates along with the accuracy of the data
+        coords : any
+      }
+
+      type alias GeolocationWatchCallback {
+      }
+
+      type alias CallbackID {
+      }    
+
+  • Haptics API
+  
+    ▪ Поддерживаемые платформы
+
+      - ios
+      - android
+
+    ▪ Описание
+      управление вибрацией
+
+    ▪ API
+
+      ▪ impact(options: HapticsImpactOptions): void
+        запустить вибро-отклик "impact"
+
+      ▪ selectionChanged(): void
+        запустить вибро-отклик "selection changed"
+
+      ▪ selectionEnd(): void
+        запустить вибро-отклик "selection end"
+
+      ▪ selectionStart(): void
+        запустить вибро-отклик "selection start"
+
+      ▪ vibrate(): void
+        вибрировать устройство
+
+    ▪ Примеры
+
+      import {
+        Plugins,
+        HapticsImpactStyle
+      } from '@capacitor/core';
+
+      const { Haptics } = Plugins;
+
+      export class HapticsExample {
+        hapticsImpact(style = HapticsImpactStyle.Heavy) {
+          Haptics.impact({
+            style: style
+          });
+        }
+
+        hapticsImpactMedium(style) {
+          this.hapticsImpact(HapticsImpactStyle.Medium);
+        }
+
+        hapticsImpactLight(style) {
+          this.hapticsImpact(HapticsImpactStyle.Light);
+        }
+
+        hapticsVibrate() {
+          Haptics.vibrate();
+        }
+
+        hapticsSelectionStart() {
+          Haptics.selectionStart();
+        }
+
+        hapticsSelectionChanged() {
+          Haptics.selectionChanged();
+        }
+
+        hapticsSelectionEnd() {
+          Haptics.selectionEnd();
+        }
+      }
+
+    ▪ Интерфейсы
+
+      interface HapticsImpactOptions {
+        style: HapticsImpactStyle
+      }    
 
   • 
   
     ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Примеры
-    ▪ Интерфейсы
 
-  • 
-  
-    ▪ Поддерживаемые платформы
+      - ios
+      - android
+
     ▪ Описание
+
+      управление клавиатурой (отображение, видимость, события вкл/выкл)
+
     ▪ API
+
+      ▪ hide(): Promise<void>
+
+
+      ▪ setAccessoryBarVisible(options: { isVisible: boolean }): Promise<void>
+
+
+      ▪ show(): Promise<void>
+
+      
+
+    ▪ События
+
+      Названия говорят сами за себя.
+
+      ▪ keyboardWillShow
+      ▪ keyboardDidShow
+      ▪ keyboardWillHide
+      ▪ keyboardDidHide
+
     ▪ Примеры
+
+      // Events
+
+      window.addEventListener('keyboardWillShow', (e) => {
+        console.log("keyboard will show with height", (<CustomEvent>e).detail.keyboardHeight);
+      });
+
+      window.addEventListener('keyboardDidShow', (e) => {
+        console.log("keyboard did show with height", (<CustomEvent>e).detail.keyboardHeight);
+      });
+
+      window.addEventListener('keyboardWillHide', () => {
+        console.log("keyboard will hide");
+      });
+
+      window.addEventListener('keyboardDidHide', () => {
+        console.log("keyboard did hide");
+      });
+
+      // API
+
+      import { Plugins } from '@capacitor/core';
+
+      const { Keyboard } = Plugins;
+
+
+      Keyboard.setAccessoryBarVisible({isVisible: false});
+
+      Keyboard.show();
+
+      Keyboard.hide();
+
     ▪ Интерфейсы
 
   • 
