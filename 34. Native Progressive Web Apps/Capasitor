@@ -2724,9 +2724,26 @@
       ▪ read                            | - прочитать значение из clipboard (paste action)
       ▪ write                           | - записать значение в clipboard (copy action)
                                         
-    ▪ Console                           | 
-    ▪ Device                            | 
-    ▪ Filesystem                        | 
+    ▪ Console                           | через console.log отправлять msg не только в web, но и логи нативных платформ
+                                        | pwa / ios / android / electron
+      ▪ console.log                     | - отправить сообщение в логи всех платформ
+
+    ▪ Device                            | содержит инфу об устройстве, ОС, платформе, пользователе
+                                        | pwa / ios / android / electron
+      getInfo                           | - получить инфу об устройстве, ОС, платформе, пользователе
+
+    ▪ Filesystem                        | NodeJS-подобное API для работы с файлами на устройстве
+                                        | pwa / ios / android / electron
+      ▪ appendFile                      | - добавить в конец файла на диске в указанной локации на устройстве
+      ▪ deleteFile                      | - удалить файл с диска
+      ▪ getUri                          | - получить полный URI файла для пути и каталога
+      ▪ mkdir                           | - создать папку
+      ▪ readFile                        | - считать файл с диска
+      ▪ readdir                         | - вернуть (не рекурсивно) список файлов в папке
+      ▪ rmdir                           | - удалить папку
+      ▪ stat                            | - вернуть инфу о файле
+      ▪ writeFile                       | - записать файл на диск в указанное место на устройстве
+
     ▪ Geolocation                       | 
     ▪ Haptics                           | 
     ▪ Keyboard                          | 
@@ -3274,29 +3291,330 @@
         url ?: string
       }
 
-  • 
+  • Console API
   
     ▪ Поддерживаемые платформы
+
+      - pwa
+      - ios
+      - android
+      - electron
+    
     ▪ Описание
+
+      через console.log отправлять msg не только в web, но и логи нативных платформ
+
+      В настоящий момент эту фичу нельзя отключить.
+      Но разработчики Capacitor обещают, что будет можно.
+
     ▪ API
+
+      ▪ console.log
+
+        Это просто обычный console.log, который мы пишем
+        в JS-коде. Capacitor делает так, что он отправляет
+        сообщение не только в web, но и в логи нативных
+        платформ.
+
     ▪ Примеры
+
+      console.log('I really enjoy Avocado Toast, and I\'m not ashamed to admit it');
+
+      Это сообщение будет выведено, в том числе, 
+      в логи Xcode и Android Studio.
+
+  • Device API
+  
+    ▪ Поддерживаемые платформы
+
+      - pwa
+      - ios
+      - android
+      - electron
+
+    ▪ Описание
+
+      содержит инфу об устройстве, ОС, платформе, пользователе
+
+    ▪ API
+
+      ▪ getInfo(): Promise<DeviceInfo>
+        получить инфу об устройстве, ОС, платформе, пользователе
+
+  • Filesystem API
+  
+    ▪ Поддерживаемые платформы
+
+      - pwa
+      - ios
+      - android
+      - electron
+
+    ▪ Описание
+
+      NodeJS-подобное API для работы с файлами на устройстве
+
+      ▪ Про специальные директории
+
+        На iOS и Android есть дополнительный слой разделения
+        между файлами - специальные директории.
+
+        Например, есть специальные директории, которые
+        бэкапятся в облако. А есть оные для хранения
+        документов.
+
+        Это API предлагает простой способ указывать, 
+        к какой специальной директории относится 
+        запрашиваемая операция.
+
+      ▪ Параметр directory
+
+        В дополнение, это API поддерживает использование
+        полных путей к файлам в формате "file://",
+        или чтение "content://" файлов на Android. 
+        Просто оставьте параметр directory, чтобы
+        использовать полный путь к файлу. 
+
+    ▪ API
+
+      ▪ appendFile(options: FileAppendOptions): Promise<FileAppendResult>
+        добавить в конец файла на диске в указанной локации на устройстве
+
+      ▪ deleteFile(options: FileDeleteOptions): Promise<FileDeleteResult>
+        удалить файл с диска
+
+      ▪ getUri(options: GetUriOptions): Promise<GetUriResult>
+        получить полный URI файла для пути и каталога
+
+      ▪ mkdir(options: MkdirOptions): Promise<MkdirResult>
+        создать папку
+
+      ▪ readFile(options: FileReadOptions): Promise<FileReadResult>
+        считать файл с диска
+
+      ▪ readdir(options: ReaddirOptions): Promise<ReaddirResult>
+        вернуть (не рекурсивно) список файлов в папке
+
+      ▪ rmdir(options: RmdirOptions): Promise<RmdirResult>
+        удалить папку
+
+      ▪ stat(options: StatOptions): Promise<StatResult>
+        вернуть инфу о файле
+
+      ▪ writeFile(options: FileWriteOptions): Promise<FileWriteResult>
+        - записать файл на диск в указанное место на устройстве
+
+    ▪ Примеры
+
+      import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
+
+      const { Filesystem } = Plugins;
+
+      fileWrite() {
+        try {
+          Filesystem.writeFile({
+            path: 'secrets/text.txt',
+            data: "This is a test",
+            directory: FilesystemDirectory.Documents,
+            encoding: FilesystemEncoding.UTF8
+          })
+        } catch(e) {
+          console.error('Unable to write file', e);
+        }
+      }
+
+      async fileRead() {
+        let contents = await Filesystem.readFile({
+          path: 'secrets/text.txt',
+          directory: FilesystemDirectory.Documents,
+          encoding: FilesystemEncoding.UTF8
+        });
+        console.log(contents);
+      }
+
+      async fileAppend() {
+        await Filesystem.appendFile({
+          path: 'secrets/text.txt',
+          data: "MORE TESTS",
+          directory: FilesystemDirectory.Documents,
+          encoding: FilesystemEncoding.UTF8
+        });
+      }
+
+      async fileDelete() {
+        await Filesystem.deleteFile({
+          path: 'secrets/text.txt',
+          directory: FilesystemDirectory.Documents
+        });
+      }
+
+      async mkdir() {
+        try {
+          let ret = await Filesystem.mkdir({
+            path: 'secrets',
+            directory: FilesystemDirectory.Documents,
+            createIntermediateDirectories: false // like mkdir -p
+          });
+        } catch(e) {
+          console.error('Unable to make directory', e);
+        }
+      }
+
+      async rmdir() {
+        try {
+          let ret = await Filesystem.rmdir({
+            path: 'secrets',
+            directory: FilesystemDirectory.Documents
+          });
+        } catch(e) {
+          console.error('Unable to remove directory', e);
+        }
+      }
+
+      async readdir() {
+        try {
+          let ret = await Filesystem.readdir({
+            path: 'secrets',
+            directory: FilesystemDirectory.Documents
+          });
+        } catch(e) {
+          console.error('Unable to read dir', e);
+        }
+      }
+
+      async stat() {
+        try {
+          let ret = await Filesystem.stat({
+            path: 'secrets/text.txt',
+            directory: FilesystemDirectory.Documents
+          });
+        } catch(e) {
+          console.error('Unable to stat file', e);
+        }
+      }
+
+      async readFilePath() {
+        // Here's an example of reading a file with a full file path. Use this to
+        // read binary data (base64 encoded) from plugins that return File URIs, such as
+        // the Camera.
+        try {
+          let data = await Filesystem.readFile({
+            path: 'file:///var/mobile/Containers/Data/Application/22A433FD-D82D-4989-8BE6-9FC49DEA20BB/Documents/text.txt'
+          })
+        }
+      }
+
     ▪ Интерфейсы
 
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Примеры
-    ▪ Интерфейсы
+      interface FileAppendOptions {
+        // The data to write
+        data : string
+        // The FilesystemDirectory to store the file in
+        directory ?: 
+        // The encoding to write the file in (defautls to utf8)
+        encoding ?: 
+        // the filename to write
+        path : string
+      }
 
-  • 
-  
-    ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Примеры
-    ▪ Интерфейсы
+      interface FileAppendResult {
+      }
+
+      interface FileDeleteOptions {
+        // The FilesystemDirectory to delete the file from
+        directory ?: 
+        // the filename to delete
+        path : string
+      }
+
+      interface FileDeleteResult {
+      }
+
+      interface GetUriOptions {
+        // The FilesystemDirectory to get the file under
+        directory : 
+        // The path of the file to get the URI for
+        path : string
+      }
+
+      interface GetUriResult {
+        uri : string
+      }
+
+      interface MkdirOptions {
+        // Whether to create any missing parent directories as well
+        createIntermediateDirectories : boolean
+        // The FilesystemDirectory to make the new directory in
+        directory ?: 
+        // The path of the new directory
+        path : string
+      }
+
+      interface MkdirResult {
+      }
+
+      interface FileReadOptions {
+        // The FilesystemDirectory to read the file from
+        directory ?: 
+        // The encoding to read the file in, if not provided, data is read as binary and returned as base64 encoded data.
+        encoding ?: 
+        // the filename to read
+        path : string
+      }
+
+      interface FileReadResult {
+        data : string
+      }
+
+      interface ReaddirOptions {
+        // The FilesystemDirectory to remove the directory from
+        directory ?: 
+        // The path of the directory to remove
+        path : string
+      }
+
+      interface ReaddirResult {
+        files : any
+      }
+
+      interface RmdirOptions {
+        // The FilesystemDirectory to remove the directory from
+        directory ?: 
+        // The path of the directory to remove
+        path : string
+      }
+
+      interface RmdirResult {
+      }
+
+      interface StatOptions {
+        // The FilesystemDirectory to remove the directory from
+        directory ?: 
+        // The path of the directory to remove
+        path : string
+      }
+
+      interface StatResult {
+        ctime : number
+        mtime : number
+        size : number
+        type : string
+        uri : string
+      }
+
+      interface FileWriteOptions {
+        // The data to write
+        data : string
+        // The FilesystemDirectory to store the file in
+        directory ?: 
+        // The encoding to write the file in (defautls to utf8)
+        encoding ?: 
+        // the filename to write
+        path : string
+      }
+
+      interface FileWriteResult {
+      }
 
   • 
   
