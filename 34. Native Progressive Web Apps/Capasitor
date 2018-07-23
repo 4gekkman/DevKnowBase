@@ -2760,18 +2760,54 @@
 
     ▪ Keyboard                          | управление клавиатурой (отображение, видимость, события вкл/выкл)
                                           ios / android
-      ▪ hide                            | - 
-      ▪ setAccessoryBarVisible          | - 
-      ▪ show                            | - 
+      ▪ hide                            | - спрятать клавиатуру
+      ▪ setAccessoryBarVisible          | - показывать ли доп.поле с доп.кнопками на клаве
+      ▪ show                            | - показать клавиатуру (метод в альфе, может не работать)
 
-    ▪ Modals                            | 
-    ▪ Motion                            | 
-    ▪ Network                           | 
-    ▪ Share                             | 
-    ▪ Splash Screen                     | 
-    ▪ Status Bar                        | 
-    ▪ Storage                           | 
-    ▪ Toast                             | 
+    ▪ Modals                            | управление нативными модалками: alert, confirmations, input propts, actions sheets
+                                        | pwa / ios / android / electron
+      ▪ alert                           | - показать нативную alert-модалку
+      ▪ confirm                         | - показать нативную confirm-модалку
+      ▪ prompt                          | - показать нативную prompt-модалку
+      ▪ showActions                     | - показать модалку с Action Sheet с различными опциями, которые пользователь может выбрать
+
+    ▪ Motion                            | отслеживание акселерометра и ориентации устройства
+                                        | pwa / ios / android / electron
+      ▪ addListener('accel')            | - отслеживать данные с акселерометра
+      ▪ addListener('orientation')      | - отслеживать изменения ориентации устройства
+
+    ▪ Network                               | отслеживание состояния сети, запрос текущего состояния
+                                              pwa / ios / android / electron
+      ▪ getStatus()                         | - получить текущий статус сети
+      ▪ addListener('networkStatusChange')  | - отслеживать изменения статуса сети
+
+    ▪ Share                             | управление расшариванием контента в любое поддерживающее это приложение
+                                        | pwa / ios / android
+      ▪ share                           | - показать share-модалку для расшаривания контента из вашего в другие приложения
+
+    ▪ Splash Screen                     | управление показом/скрытием сплэш-скрина
+                                        | ios / android
+      ▪ hide                            | - спрятать сплэш-скрин
+      ▪ show                            | - показать сплэш-скрин
+
+    ▪ Status Bar                        | управление показом/скрытием Status Bar'а, настройка его стиля
+                                        | ios / android
+      ▪ hide                            | - спрятать статус-бар
+      ▪ setBackgroundColor              | - установить фон статус-бара
+      ▪ setStyle                        | - установить текущий стиль статус-бара
+      ▪ show                            | - показать статус-бар
+
+    ▪ Storage                           | предоставляет key-value хранилище для простых данных
+                                        | pwa / ios / android / electron
+      ▪ clear                           | - удалить все ключи и значения из хранилища
+      ▪ get                             | - получить из хранилища значение по ключу
+      ▪ keys                            | - вернуть все ключи
+      ▪ remove                          | - удалить значение для указанного ключа (если есть)
+      ▪ set                             | - установить значение для указанного ключа (сделать запись в хранилище)
+
+    ▪ Toast                             | управление тостами
+                                        | pwa / ios / android / electron
+      ▪ show                            | - показать тост
 
 --------------------------------------
 
@@ -3827,7 +3863,7 @@
         style: HapticsImpactStyle
       }    
 
-  • 
+  • Keyboard API
   
     ▪ Поддерживаемые платформы
 
@@ -3841,14 +3877,18 @@
     ▪ API
 
       ▪ hide(): Promise<void>
-
+        спрятать клавиатуру
 
       ▪ setAccessoryBarVisible(options: { isVisible: boolean }): Promise<void>
+        показывать ли доп.поле с доп.кнопками на клаве
 
+        Авторы Capacitor рекомендуют не показывать его на
+        коротких формах, типа логина, входа в аккаунт и похожих,
+        чтобы не засорять UI.
 
       ▪ show(): Promise<void>
+        показать клавиатуру (метод в альфе, может не работать)
 
-      
 
     ▪ События
 
@@ -3894,71 +3934,548 @@
 
     ▪ Интерфейсы
 
-  • 
+  • Modals API
   
     ▪ Поддерживаемые платформы
+
+      - pwa
+      - ios
+      - android
+      - electron
+
     ▪ Описание
+
+      управление нативными модалками: alert, confirmations, input propts, actions sheets
+
     ▪ API
+
+      ▪ alert(options: AlertOptions): Promise<void>
+        показать нативную alert-модалку
+
+      ▪ confirm(options: ConfirmOptions): Promise<ConfirmResult>
+        показать нативную confirm-модалку
+
+      ▪ prompt(options: PromptOptins): Promise<PromptResult>
+        показать нативную prompt-модалку
+
+      ▪ showActions(options: ActionSheetOptions): Promise<ActionSheetResult>
+        показать модалку с Action Sheet с различными опциями, которые пользователь может выбрать
+
     ▪ Примеры
+
+      import { Plugins } from '@capacitor/core';
+
+      const { Modals } = Plugins;
+
+      async showAlert() {
+        let alertRet = await Modals.alert({
+          title: 'Stop',
+          message: 'this is an error'
+        });
+      }
+
+      async showConfirm() {
+        let confirmRet = await Modals.confirm({
+          title: 'Confirm',
+          message: 'Are you sure you\'d like to press the red button?'
+        });
+        console.log('Confirm ret', confirmRet);
+      }
+
+      async showPrompt() {
+        let promptRet = await Modals.prompt({
+          title: 'Hello',
+          message: 'What\'s your name?'
+        });
+        console.log('Prompt ret', promptRet);
+      }
+
+      async showActions() {
+        let promptRet = await Modals.showActions({
+          title: 'Photo Options',
+          message: 'Select an option to perform',
+          options: [
+            {
+              title: 'Upload'
+            },
+            {
+              title: 'Share'
+            },
+            {
+              title: 'Remove',
+              style: ActionSheetOptionStyle.Destructive
+            }
+          ]
+        })
+        console.log('You selected', promptRet);
+      }
+
     ▪ Интерфейсы
 
-  • 
+      interface AlertOptions {
+        buttonTitle ?: string
+        message : string
+        title : string
+      }
+
+      interface ConfirmOptions {
+        cancelButtonTitle ?: string
+        message : string
+        okButtonTitle ?: string
+        title : string
+      }
+
+      interface ConfirmResult {
+        value : boolean
+      }
+
+      interface PromptOptions {
+        cancelButtonTitle ?: string
+        inputPlaceholder ?: string
+        message : string
+        okButtonTitle ?: string
+        title : string
+      }
+
+      interface PromptResult {
+        cancelled : boolean
+        value : string
+      }
+
+      interface ActionSheetOptions {
+        message ?: string
+        options : any
+        title : string
+      }
+
+      interface ActionSheetResult {
+        index : number
+      }
+
+  • Motion API
   
     ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Примеры
-    ▪ Интерфейсы
 
-  • 
+      - pwa
+      - ios
+      - android
+      - electron
+
+    ▪ Описание
+
+      отслеживание акселерометра и ориентации устройства
+
+    ▪ API
+
+      ▪ addListener(eventName: "accel", listenerFunc: (event: MotionEventResult) => void): PluginListenerHandle
+        отслеживать данные с акселерометра
+
+      ▪ addListener(eventName: "orientation", listenerFunc: (event: MotionOrientationEventResult) => void): PluginListenerHandler
+        отслеживать изменения ориентации устройства
+
+  • Network API
   
     ▪ Поддерживаемые платформы
+
+      - pwa
+      - ios
+      - android
+      - electron
+
     ▪ Описание
+
+      отслеживание состояния сети, запрос текущего состояния
+
+      ▪ Особенности на Android
+
+        Этому API требуются для работы следующие разрешения,
+        которые надо добавить в AndroidManifest.xml:
+
+          <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+        Это разрешение позволяет приложению получить доступ
+        к информации о текущей сети, есть ли подключение
+        через wifi или сеть сотовой связи.
+
     ▪ API
+
+      ▪ getStatus(): Promise<NetworkStatus>
+        получить текущий статус сети
+
+      ▪ addListener(eventName: "networkStatusChange", listenerFunc: (status: NetworkStatus) => void): PluginListenerHandler
+        отслеживать изменения статуса сети
+
     ▪ Примеры
+
+      import { Plugins } from '@capacitor/core';
+
+      const { Network } = Plugins;
+
+      let handler = Network.addListener('networkStatusChange', (status) => {
+        console.log("Network status changed", status);
+      });
+      // To stop listening:
+      // handler.remove();
+
+      // Get the current network status
+      let status = await Network.getStatus();
+
+      // Example output:
+      {
+        "connected": true,
+        "connectionType": "wifi"
+      }
+
     ▪ Интерфейсы
 
-  • 
+  • Share API
   
     ▪ Поддерживаемые платформы
+
+      - pwa
+      - ios
+      - android
+
     ▪ Описание
+
+      управление расшариванием контента в любое поддерживающее это приложение
+
     ▪ API
+
+      ▪ share(options: ShareOptions): Promise<any>
+        показать share-модалку для расшаривания контента из вашего в другие приложения
+
     ▪ Примеры
+
+      import { Plugins } from '@capacitor/core';
+      const { Share } = Plugins;
+
+      let shareRet = await Share.share({
+        title: 'See cool stuff',
+        text: 'Really awesome thing you need to see right meow',
+        url: 'http://ionicframework.com/',
+        dialogTitle: 'Share with buddies'
+      });
+
+      Каждая платформа использует разный набор полей,
+      но вы должны передать их все.
+
     ▪ Интерфейсы
 
-  • 
+      interface ShareOptions {
+        // Set a title for the share modal. Android only
+        dialogTitle ?: string
+        // Set some text to share
+        text ?: string
+        // Set a title for any message. This will be the subject if sharing to email
+        title ?: string
+        // Set a URL to share
+        url ?: string
+      }    
+
+  • Splash Screen API
   
     ▪ Поддерживаемые платформы
+
+      - ios
+      - android
+
     ▪ Описание
+
+      управление показом/скрытием сплэш-скрина
+
+      По умолчанию, сплэш-скрин настроен скрываться через
+      определённое кол-во времени (3 секунды). Однако,
+      ваше приложение должно загружаться намного быстрее!
+
+      Чтобы с уверенностью предоставлять вашим пользователям
+      наиболее быстро загружающееся приложинеи, лучше прятать
+      сплэш-скрин сразу после его загрузки. 
+
+      Для этого, просто добавьте SplashScreen.hide() в
+      верхнюю часть вашего JS.
+      
+      Однако, учтите, что это не отменит исчезновение 
+      сплэш-скрина через 3 секунды. Если вашему приложению
+      нужно более 3-х секунд для загрузки, вы можете увеличить
+      это значение в capacitor.config.json:
+
+        {
+          "plugins": {
+            "SplashScreen": {
+              "launchShowDuration": 5000
+            }
+          }
+        }
+
+      После чего не забудьте запустить, чтобы скопировать 
+      изменения на платформы:
+
+        npx cap copy
+
     ▪ API
+
+      ▪ hide(options?: SplashScreenOptions, callback?: Function): void
+        спрятать сплэш-скрин
+
+      ▪ show(options?: SplashScreenShowOptions, callback?: Function): void
+        показать сплэш-скрин
+
     ▪ Примеры
+
+      import { Plugins } from '@capacitor/core';
+      const { SplashScreen } = Plugins;
+
+      // Hide the splash (you should do this on app launch)
+      SplashScreen.hide();
+
+      // Show the splash for an indefinite amount of time:
+      SplashScreen.show({
+        autoHide: false
+      });
+
+      // Show the splash for two seconds and then auto hide:
+      SplashScreen.show({
+        showDuration: 2000,
+        autoHide: true
+      });
+
     ▪ Интерфейсы
 
-  • 
+      interface SplashScreenHideOptions {
+        // How long (in ms) to fade out. Default is 200ms
+        fadeOutDuration ?: number
+      }
+
+      interface SplashScreenShowOptions {
+        // Whether to auto hide the splash after showDuration
+        autoHide ?: boolean
+        // How long (in ms) to fade in. Default is 200ms
+        fadeInDuration ?: number
+        // How long (in ms) to fade out. Default is 200ms
+        fadeOutDuration ?: number
+        // How long to show the splash screen when authHide is enabled (in ms) Default is 3000ms
+        showDuration ?: number
+      }
+
+  • Status Bar API
   
     ▪ Поддерживаемые платформы
+
+      - ios
+      - android
+
     ▪ Описание
+
+      управление показом/скрытием Status Bar'а, настройка его стиля
+
+      ▪ Особенности на iOS
+
+        Для этого файла в Info.plist требуется установить
+        UIViewControllerBasedStatusBarAppearance в yes.
+
+        Подробнее см.
+        https://capacitor.ionicframework.com/docs/ios/configuration/
+
+
     ▪ API
+
+      ▪ hide(): Promise<void>
+        спрятать статус-бар
+
+      ▪ setBackgroundColor(options: StatusBarBackgroundColorOptions): Promise<void>
+        установить фон статус-бара
+
+      ▪ setStyle(options: StatusBarStyleOptions): Promise<void>
+        установить текущий стиль статус-бара
+
+      ▪ show(): Promise<void>
+        показать статус-бар
+
+    ▪ События
+
+      ▪ statusTap
+
     ▪ Примеры
+
+      // Events (iOS only)
+      window.addEventListener('statusTap', function () {
+        console.log("statusbar tapped");
+      });
+
+      //API
+      import {
+        Plugins,
+        StatusBarStyle,
+      } from '@capacitor/core';
+
+      const { StatusBar } = Plugins;
+
+      export class StatusBarExample {
+        isStatusBarLight = true
+
+        changeStatusBar() {
+          StatusBar.setStyle({
+            style: this.isStatusBarLight ? StatusBarStyle.Dark : StatusBarStyle.Light
+          }, () => {});
+          this.isStatusBarLight = !this.isStatusBarLight;
+        }
+
+        hideStatusBar() {
+          StatusBar.hide();
+        }
+
+        showStatusBar() {
+          StatusBar.show();
+        }
+      }
+
     ▪ Интерфейсы
 
-  • 
+      interface StatusBarBackgroundColorOptions {
+        color : string
+      }
+
+      interface StatusBarStyleOptions {
+        style : 
+      }
+
+  • Storage API
   
     ▪ Поддерживаемые платформы
-    ▪ Описание
-    ▪ API
-    ▪ Примеры
-    ▪ Интерфейсы
 
-  • 
+      - pwa
+      - ios
+      - android
+      - electron
+
+    ▪ Описание
+
+      предоставляет key-value хранилище для простых данных
+
+      ▪ Не используйте window.localStorage
+
+        Мобильные ОС могут периодически очищать данные из
+        window.localStorage. Поэтому, этот API должен
+        быть использован вместо window.localStorage.
+
+        За кадром, этот API использует window.localStorage
+        для pwa.
+
+      ▪ Это хранилище не обладает высокой скростью read/write
+
+        Этот API не предназначен для высокопроизводительных
+        приложений, где очень активно используется хранилище.
+
+        Для таких приложений лучше подумайте о том, чтобы
+        использовать SQLite или отдельный движок для данных,
+        если вашему приложению нужно хранить много данных,
+        и иметь высокую скорость чтения/записи, или 
+        осуществлять сложные запросы.
+
+      ▪ Работа с JSON
+
+        Storage API работает только со строками. Поэтому,
+        всякие объекты и массивы можно упаковывать в JSON,
+        и спокойно сохранять в storage.
+
+    ▪ API
+
+      ▪ clear(): Promise<void>
+        удалить все ключи и значения из хранилища
+
+      ▪ get(options: { key: string }): Promise<{ value: string }>
+        получить из хранилища значение по ключу
+
+      ▪ keys(): Promise<{ keys: any }>
+        вернуть все ключи
+
+      ▪ remove(options: { key: string }): Promise<void>
+        удалить значение для указанного ключа (если есть)
+
+      ▪ set(options: { key: stringvalue: string }): Promise<void>
+        установить значение для указанного ключа (сделать запись в хранилище)
+
+    ▪ Примеры
+
+      // JSON "set" example
+      async setObject() {
+        await Storage.set({
+          key: 'user',
+          value: JSON.stringify({
+            id: 1,
+            name: 'Max'
+          })
+        });
+      }
+
+      // JSON "get" example
+      async getObject() {
+        const user = JSON.parse(await Storage.get({ key: 'user' }));
+      }
+
+      async setItem() {
+        await Storage.set({
+          key: 'name',
+          value: 'Max'
+        });
+      }
+
+      async getItem() {
+        const value = await Storage.get({ key: 'name' });
+        console.log('Got item: ', value);
+      }
+
+      async removeItem() {
+        await Storage.remove({ key: 'name' });
+      }
+
+      async keys() {
+        const keys = await Storage.keys();
+        console.log('Got keys: ', keys);
+      }
+
+      async clear() {
+        await Storage.clear();
+      }
+
+  • Toast API
   
     ▪ Поддерживаемые платформы
+
+      - pwa
+      - ios
+      - android
+      - electron
+
     ▪ Описание
+
+      управление тостами
+
+      Показывает информационные уведомления - тосты.
+
     ▪ API
+
+      ▪ show(options: ToastShowOptions): Promise<void>
+        показать тост
+
     ▪ Примеры
+
+      import { Plugins } from '@capacitor/core';
+      const { Toast } = Plugins;
+
+      async show() {
+        await Toast.show({
+          text: 'Hello!'
+        });
+      }
+
     ▪ Интерфейсы
 
-
+      interface ToastShowOptions {
+        duration ?: any
+        text : string
+      }
 
 
 
