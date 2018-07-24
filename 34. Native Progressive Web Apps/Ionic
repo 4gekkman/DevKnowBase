@@ -44,6 +44,28 @@
         https://forum.ionicframework.com/
         http://ionicworldwide.herokuapp.com/
 
+    • Статьи про использование Ionic 4 + Vue
+
+      ▪ Ionic 4 + Capacitor tutorials list #1
+          https://ionictheme.com/ionic4-capacitor-tutorials-list-1/
+
+      ▪ [02.06.2018] Building Mobile Apps With Capacitor And Vue.js
+          https://www.smashingmagazine.com/2018/07/mobile-apps-capacitor-vue-js/
+
+      ▪ [28.05.2018] Using the Capacitor in Vue.js app
+          http://akhromieiev.com/tutorials/using-capacitor-in-vue-js-app/
+
+      ▪ [15.02.2018]Ionic 4 Tutorial with Vue
+          https://www.techiediaries.com/ionic-vue/
+
+      ▪ [16.01.2018]Using Ionic 4 Components in Your Vue.js Apps
+          https://alligator.io/vuejs/vue-ionic/
+
+    • Демо-приложения на capacitor + vue + ionic 4
+
+      ▪ A Mobile Demo App with Vue, Capacitor and Ionic 4 Components
+          https://github.com/techiediaries/vue-capacitor-ionic-app
+
     • Блог
 
         https://blog.ionicframework.com/
@@ -94,17 +116,6 @@
 
       ▪ [18.09.2017] The end of Framework Churn
           https://blog.ionicframework.com/the-end-of-framework-churn/
-
-  # Плагины
-
-    • Поиск
-
-        https://cordova.apache.org/plugins/
-        https://www.npmjs.com/search?q=ecosystem%3Acordova
-
-    • Разработка
-
-        https://cordova.apache.org/docs/en/8.x/guide/hybrid/plugins/index.html
 
 
 ////==================================================////
