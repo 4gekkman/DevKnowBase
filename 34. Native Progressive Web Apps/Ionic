@@ -128,6 +128,7 @@
   # А.  Теоретические основы Ionic
 
     А1. Как пользоваться документацией Ionic 4.*
+    А2. 
 
   # X.  Практика и наработки
 
@@ -147,7 +148,8 @@
 
   # Ссылки
   # Как обстоят дела с документацией на конец июля 2017
-
+  # Как пользоваться документацией, пока она не опубликована
+  
 --------------------------------------
 
 > Ссылки
@@ -166,18 +168,25 @@
 
 > Как пользоваться документацией, пока она не опубликована
 
-  1. Открываем свой рабочий linux-дистрибутив
-  2. Создаём папку ionic в корне и переходим в неё.
-  3. Клонируем репозиторий с доками в неё:
+  1. Сначала устанавливаем NodeJS и NPM, если ещё нет
+
+    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    npm i npm@latest -g
+    npm update npm -g
+
+  2. Открываем свой рабочий linux-дистрибутив
+  3. Создаём папку ionic в корне и переходим в неё.
+  4. Клонируем репозиторий с доками в неё:
 
     git clone https://github.com/ionic-team/ionic-docs.git docs  
 
-  4. Переходим в docs, и устанавливаем все npm-зависимости
+  5. Переходим в docs, и устанавливаем все npm-зависимости
 
     cd docs
     npm install
 
-  5. Устанавливаем Ionic v4 component preview app
+  6. Устанавливаем Ionic v4 component preview app
 
     Это приложение, которое используется в документации
     для демонстрации компонентов Ionica вживую, так сказать.
@@ -202,19 +211,24 @@
     в .gitignore проекта, так что можно без опаски
     делать git pull
 
-  6. Собираем проект
+  7. Устанавливаем документы для API, CLI, Native, Storage, Component preview
+
+    cd /ionic/docs
+    npm run api-docs
+
+  8. Собираем проект
 
     npm run build
 
-  7. Запускаем сервак
+  9. Запускаем сервак
 
     npm run start
 
-  8. Заходим в браузер и видим доки по адресу 
+  10. Заходим в браузер и видим доки по адресу 
 
     localhost:3000/docs
 
-  9. Периодически делаем git pull свежих изменений
+  11. Периодически делаем git pull свежих изменений
 
     Разработчики Ionic периодически редактируют и
     обновляют доки, поэтому, пока ты их используешь
@@ -231,14 +245,33 @@
 
     ▪ Обновление Ionic v4 component preview app
 
-      cd /ionic/docs/src/content/component-preview-app
+      cd /ionic/component-preview-app
       git pull
 
       npm install
       npm run build
 
+      Затем, копируем с заменой папку /ionic/component-preview-app/docs-www
+      в /ionic/docs/src/content/component-preview-app/
+
+    ▪ Обновление документов для API, CLI, Native, Storage, Component preview
+
+      cd /ionic/docs
+      git pull
+      npm run api-docs
+      npm run build
 
 
+А2. 
+--------------------------------------
 
+  # 
 
+    ▪ 
+
+--------------------------------------
+
+> 
+
+  • 
 
