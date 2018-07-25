@@ -177,11 +177,7 @@
     cd docs
     npm install
 
-  5. Собираем проект
-
-    npm run build
-
-  6. Устанавливаем Ionic v4 component preview app
+  5. Устанавливаем Ionic v4 component preview app
 
     Это приложение, которое используется в документации
     для демонстрации компонентов Ionica вживую, так сказать.
@@ -205,6 +201,10 @@
     Если что, папка component-preview-app находится
     в .gitignore проекта, так что можно без опаски
     делать git pull
+
+  6. Собираем проект
+
+    npm run build
 
   7. Запускаем сервак
 
