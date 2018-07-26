@@ -17,7 +17,13 @@
 
     • Документация
 
+      ▪ Официальные доки (пока что v3.*)
+
         https://ionicframework.com/docs
+
+      ▪ Доки для beta v4
+
+        https://beta.ionicframework.com/docs/
 
     • Репозиторий и документация для Ionic 4.*
 
@@ -75,6 +81,9 @@
         https://blog.ionicframework.com/
 
     • Интересные посты в блоге
+
+      ▪ [24.07.2018] Announcing the Ionic 4 Beta
+          https://blog.ionicframework.com/announcing-ionic-4-beta/
 
       ▪ [23.07.2018] Announcing Ionic Identity Vault: Secure Biometric Authentication for Your Mobile App
           https://blog.ionicframework.com/announcing-ionic-identity-vault-secure-biometric-authentication-for-your-mobile-app/
@@ -137,6 +146,7 @@
 
     А1. Как пользоваться документацией Ionic 4.*
     А2. Введение в Ionic
+    А3. Установка Ionic
 
   # X.  Практика и наработки
 
@@ -800,9 +810,220 @@
     этой методички =)
 
 
+А3. Установка Ionic
+--------------------------------------
 
+  # Установка через Ionic CLI
 
+    ▪ Установка Ionic CLI
+    ▪ Создание Ionic-приложения из шаблонов
 
+  # Подключение через CDN
+
+    ▪ Подключение Ionic Framework через CDN
+    ▪ Подключение Ionicons из CDN
+
+  # Настройка среды окружения
+
+    ▪ Node & NPM
+    ▪ Git
+
+  # Настройка среды для разработки под iOS
+
+    ▪ Xcode
+      ▪ Настройка Development Team
+      ▪ Создание симулятора iOS
+
+    ▪ ios-sim & ios-deploy
+
+  # Настройка среды для разработки под Android
+
+    ▪ Java
+    ▪ Gradle
+    ▪ Android Studio
+      ▪ Установка Android Studio
+      ▪ Установка Android SDK
+      ▪ Настройка CLI
+      ▪ Создание Android Virtual Device
+      ▪ Настройка Android Device
+
+--------------------------------------
+
+> Установка через Ionic CLI
+
+  Ionic-приложения создаются и разрабатываются преимущественно
+  с помощью Ionic CLI. Оный является предпочтительным способом
+  установки Ionic, и предлагает много полезных в разработке
+  инструментов. Через него также можно запускать приложение,
+  и взаимодействовать с Ionic Pro.
+
+  • Установка Ionic CLI
+
+    Прежде, чем продолжить, убедитесь, что последние версии
+    NodeJS и NPM установлены.
+
+    Затем можно установить Ionic CLI глобально:
+
+      sudo npm install -g @ionic/core
+
+  • Создание Ionic-приложения из шаблонов
+
+    Создать Ionic-приложение можно, использовав один из 
+    шаблонов, либо пустой шаблон. Три наиболее популярных
+    варианта, говорящих сами за себя:
+
+    ▪ blank
+    ▪ tabs
+    ▪ sidemenu
+
+    Пример:
+
+      ionic start myApp tabs
+
+    Подробнее про это читайте в главе про создание и 
+    разработку Ionic-приложения.
+
+> Подключение через CDN
+
+  Поскольку Ionic Framework состоит из веб-компонент,
+  возможно просто подключить его в HTML-файл через
+  CDN.
+
+  • Подключение Ionic Framework через CDN
+
+    Рекомендуется использовать unpgk. Рекомендуется
+    подключать Ionic в <head></head> в html-файле:
+
+      <script src="https://unpkg.com/@ionic/core@latest/dist/ionic.js"></script>
+
+    Подключив его таким образом, возможно использовать 
+    компоненты Ionic без установки чего-либо.
+
+  • Подключение Ionicons из CDN
+
+    Если вы используете Ionic, Ionicons идут в комплекте,
+    и их не надо отдельно устанавливать.
+
+    Но если вы хотите использовать Ionicons без Ionic,
+    то можете просто подключить их через CDN:
+
+      <script src="https://unpkg.com/ionicons@4.0.0/dist/ionicons.js"></script>
+
+> Настройка среды окружения
+
+  Для работы с Ionic нужны NodeJS и NPM.
+
+  • Node & NPM
+
+    Почти все современные инструменты для JS-проектов 
+    используют NodeJS. Ionic не исключение. Установите
+    последние версии NodeJS и NPM.
+
+    После установки проверьте версии, загуглите в инете,
+    какие последние, и сравните.
+
+      node -v
+      npm -v
+
+  • Git
+
+    Хотя Git не необходим, рекомендуется установить 
+    его в последней версии. Чтобы проверить версию:
+
+      git -v
+
+> Настройка среды для разработки под iOS
+
+  Чтобы разрабатывать под iOS, надо поднастроить среду.
+  Разрабатывать под iOS можно только на MacOS.
+  Так что, если у вас Windows или Linux, виртуальная
+  машина с MacOS вам в помощь.
+
+  • Xcode
+
+    Xcode, это IDE для создания нативных iOS-приложений.
+    Она включает в себя iOS SDK и Xcode CLI.
+    Xcode можно скачать в магазине приложений App Store.
+    Для этого понадобится аккаунт Apple.
+
+    ▪ Настройка Development Team
+
+      Все iOS-приложения должны быть подписаны, даже те,
+      которые в разработке. К счастью, Xcode позволяет 
+      легко делать это автоматически. Для этого нужен
+      лишь Apple ID.
+
+      Откройте Xcode и идите в Xcode -> Preferences -> Accounts.
+      Добавьте Apple ID, если его там нет ещё.
+      Залогинившись, в списке команд появится ваша Personal Team.
+
+    ▪ Создание симулятора iOS
+
+      Симулятор iOS эмулирует iOS-устройства на MacOS.
+      Вот официальная инструкция от Apple, как его 
+      настроить:
+
+        https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/simulator_help_topics/Chapter/Chapter.html
+
+      В принципе, это легко. Пройдите в Window -> Devices and
+      Simulators. Создайте, например, симулятор iPhone X.
+
+  • ios-sim & ios-deploy
+
+    ios-sim и ios-deploy, это инструменты для деплоя
+    приложения в iOS-симулятор и iOS-устройства в 
+    процессе разработки.
+
+    Их можо установить глобально через npm:
+
+      npm install -g ios-sim
+      npm install -g ios-deploy
+
+> Настройка среды для разработки под Android
+
+  Чтобы разрабатывать под Android, надо поднастроить среду.
+  В отличие от разработкипод iOS, под Android можно
+  разрабатывать на Windows, MacOS и Linux.
+
+  • Java
+
+    Нативные приложения под Android компилируются с помощью
+    Java. Скачайте JDK8 (JDK10 ещё слишком новый на 07.2018) с 
+    официального сайта:
+
+      http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+  • Gradle
+
+    Gradle это инструмент для сборки, используемый в 
+    Android-приложениях, и может быть установлен отдельно.
+
+    См.официальный сайт с инструкцией, где описана его
+    установка:
+
+      https://gradle.org/install/
+
+  • Android Studio
+
+    Android Studio, это IDE для создания нативных 
+    Android-приложений. Он включает Android SDK, который
+    понадобится настроить для использования в командной
+    строке.
+
+    ▪ Установка Android Studio
+
+      Качнуть Android Studio можно бесплатно с официального
+      сайта:
+
+        https://developer.android.com/studio/
+
+    ▪ Установка Android SDK
+
+      Установка 
+
+    ▪ Настройка CLI
+    ▪ Создание Android Virtual Device
+    ▪ Настройка Android Device
 
 
 
