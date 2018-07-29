@@ -1652,11 +1652,19 @@
 
   • Использование Safari Web Inspector
 
-    
+    В Safari есть поддержка Web Inspector для iOS эмуляторов
+    и устройств. Откройте меню "Develop" и выберите эмулятор
+    или устройство, затем выберите Ionic-приложение, чтобы
+    открыть Web Inspector.
+
+    Если меню Develop скрыто, включите его в настройках:
+    Safari -> Preferences -> Advanced.
 
   • Просмотр нативных логов
 
-
+    Нативные логи можно просмотреть в Xcode в Console.
+    Если Console скрыта, включите её в настройках:
+    View -> Debug Area -> Activate Console.
 
 
 
