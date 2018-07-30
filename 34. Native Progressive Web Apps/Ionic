@@ -1134,6 +1134,9 @@
     ▪ Просмотр нативных логов
 
   # Как деплоить на Android-платформу с помощью Cordova/Capacitor /Running on Android/
+
+
+
   # Организация unit-тестов /testing/
   # Подробнее про Web View /Web View/
   # Про Ionic Storage /Ionic Storage/
@@ -1666,6 +1669,17 @@
     Если Console скрыта, включите её в настройках:
     View -> Debug Area -> Activate Console.
 
+> Как деплоить на Android-платформу с помощью Cordova/Capacitor /Running on Android/
+
+  В этом руководстве описано, как деплоить Android-приложения,
+  написанные на Ionic, с помощью Capacitor и Cordova.
+
+  Чтобы деплоить приложения на устройство с Android и 
+  отлаживать их, разработчик должен включить на устройстве
+  "developer mode" и "USB debugging". Как это сделать,
+  описано здесь:
+
+    https://developer.android.com/studio/debug/dev-options#enable
 
 
 
