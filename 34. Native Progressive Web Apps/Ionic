@@ -148,6 +148,7 @@
     А2. Введение в Ionic
     А3. Установка Ionic
     А4. Процесс разработки Ionic-приложения
+    А5. Компоненты Ionic'а
 
   # X.  Практика и наработки
 
@@ -2130,8 +2131,161 @@
       получить имя используемого драйвера
 
 
+А5. Компоненты Ionic'а
+--------------------------------------
 
+  # О компонентах Ionic'а
+  # Список core-компонентов Ionic'а
 
+    ▪ Action Sheet    | 
+    ▪ Alert           | 
+    ▪ Badge           | 
+    ▪ Button          | 
+    ▪ Card            | 
+    ▪ Checkbox        | 
+    ▪ DateTime        | 
+    ▪ Fab             | 
+    ▪ Grid            | 
+    ▪ Infinite scroll | 
+    ▪ Input           | 
+    ▪ List            | 
+    ▪ Loading         | 
+    ▪ Menu            | 
+    ▪ Modal           | 
+    ▪ Nav             | 
+    ▪ Popover         | 
+    ▪ Range           | 
+    ▪ Refresher       | 
+    ▪ Searchbar       | 
+    ▪ Select          | 
+    ▪ Slides          | 
+    ▪ Spinner         | 
+    ▪ Tabs            | 
+    ▪ Toast           | 
+    ▪ Virtual Scroll  | 
+
+--------------------------------------
+
+> О компонентах Ionic'а
+
+  Ionic-приложения разрабатываются из высокоуровневых
+  блоков, которые мы занываем "компоненты".
+
+  Компоненты позволяют вам быстро собирать интерфейсы
+  ваших приложений. Ionic поставляется с набором
+  core-компонентов, включая модалки, попапы и карточки.
+
+  Ниже вы можете найти их список, краткие описания, 
+  и небольшие примеры.
+
+  Подробные же их API можете посмотреть в главе
+  Ionic API.
+
+> Список core-компонентов Ionic'а
+
+  • Action Sheet   
+
+    
+
+  • Alert          
+
+    
+
+  • Badge          
+
+    
+
+  • Button         
+
+    
+
+  • Card           
+
+    
+
+  • Checkbox       
+
+    
+
+  • DateTime       
+
+    
+
+  • Fab            
+
+    
+
+  • Grid           
+
+    
+
+  • Infinite scroll
+
+    
+
+  • Input          
+
+    
+
+  • List           
+
+    
+
+  • Loading        
+
+    
+
+  • Menu           
+
+    
+
+  • Modal          
+
+    
+
+  • Nav            
+
+    
+
+  • Popover        
+
+    
+
+  • Range          
+
+    
+
+  • Refresher      
+
+    
+
+  • Searchbar      
+
+    
+
+  • Select         
+
+    
+
+  • Slides         
+
+    
+
+  • Spinner        
+
+    
+
+  • Tabs           
+
+    
+
+  • Toast          
+
+    
+
+  • Virtual Scroll 
+
+    
 
 
 
