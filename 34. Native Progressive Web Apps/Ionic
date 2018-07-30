@@ -1143,7 +1143,40 @@
 
   # Организация unit-тестов в ionic/angular приложениях /testing/
   # Подробнее про Web View /Web View/
+
+    ▪ Что такое Web View
+    ▪ CORS (кросс-доменный AJAX) всегда включен в Web View
+      ▪ Что такое CORS
+      ▪ Нативный плагин, чтобы обойтись без CORS
+      ▪ Чеклист на пригодность к CORS для сервера
+      
+    ▪ Конвертация запросов file:// в http:// для Cordova и Capacitor
+      ▪ Что на Cordova
+      ▪ Что на Capacitor
+
+    ▪ Реализации Web View на разных платформах
+
   # Про Ionic Storage /Ionic Storage/
+  
+    ▪ Как работает Ionic Storage
+      ▪ Список поддерживаемых Ionic Storage хранилищ
+      ▪ Почему SQLite в приоритете?
+    ▪ Использование Ionic Storage
+    ▪ Настройка Ionic Storage
+    ▪ API для Ionic Storage
+      
+      Методы
+      ▪ constructor   | создать новый экземпляр хранилища
+      ▪ clear         | полностью очистить хранилище
+      ▪ forEach       | пробежаться по всем парам key/value в хранилище
+      ▪ get           | получить значение, связанное с указанным ключом
+      ▪ keys          | список всех ключей в хранилище
+      ▪ length        | кол-во ключей в хранилище
+      ▪ ready         | готово ли хранилище
+      ▪ remove        | удаление из хранилище пары key/value по ключу
+
+      Свойства
+      ▪ driver        | получить имя используемого драйвера
   
 --------------------------------------
 
@@ -1849,5 +1882,257 @@
       Многие веб-фреймворки могут иметь встроенную поддержку
       CORS, либо какие-то дополнения, например, как пакет
       cors для Express. Если такого нет, то надо выполнить
-      следующие действия, чтобы 
+      следующие действия, чтобы CORS на сервере мог работать:
+
+      1. Разрешить http://localhost:8080 в качестве origin
+         (см. Access-Control-Allow-Origin)
+
+          https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+
+      2. Разрешить любые необходимые HTTP-методы
+         (см. Access-Control-Allow-Methods)
+
+          https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Methods
+
+      3. Разрешить любые необходимые HTTP-заголовки
+         (см. Access-Control-Allow-Headers)
+
+          https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
+
+      4. Убедитсья, что сервер может обрабатывать
+         preflight requests.
+
+          https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request
+
+  • Конвертация запросов file:// в http:// для Cordova и Capacitor
+
+    Приложения на Cordova или Capacitor хостятся на локальном
+    HTTP-сервере и работаю на протоколе http://
+
+    Некоторые плагины, однако, пытаются получить доступ
+    к файлам устройства через протокол file://
+
+    Чтобы избежать проблем, пути к файлам на устройстве 
+    должны быть переписаны на http-протокол. Например,
+    путь:
+
+      file:///path/to/device/file
+
+    надо переписать по такому шаблону:
+
+      http://<host>:<port>/<prefix>/path/to/device/file
+
+    ▪ Что на Cordova
+
+      Для Cordova-приложений Ionic Web View Plugin предоставляет
+      функцию для конвертирования файловых URL: 
+
+        window.Ionic.WebView.convertFileSrc()
+
+      И есть соответствующий нативный плагин:
+
+        @ionic-native/ionic-webview.
+
+    ▪ Что на Capacitor
+
+      В Capacitor-приложениях, файловые URL конвертируются
+      автоматически.
+
+  • Реализации Web View на разных платформах
+
+    ▪ WKWebView на iOS
+
+      https://developer.apple.com/documentation/webkit/wkwebview
+
+    ▪ Web View на Android
+
+      https://developer.chrome.com/multidevice/webview/overview
+
+> Про Ionic Storage /Ionic Storage/
+
+  • Как работает Ionic Storage
+
+    Ionic Storage позволяет легко сохранять пары key/value
+    и JSON-объекты. По сути, это один API для нескольких
+    реализаций хранилищ, которые оно поддерживает. В зависимости
+    от платформы, оно само решает, какую реализацию хранилища
+    целесообразнее всего использовать, и применяет её.
+
+    Когда запускаешь приложение на нативной платформе, 
+    Storage отдаёт предпочтение SQLite, как одной из
+    наиболее широко-используемых и основанных на сохранении
+    данных в файлы баз данных. 
+
+    Если приложение работает на web или pwa, Storage будет
+    пробовать использовать IndexedDB, WebSQL и Localstorage,
+    именно в таком порядке.
+
+    ▪ Список поддерживаемых Ionic Storage хранилищ
+
+      В настоящий момент (конец июля 2018), отсортированный 
+      список поддерживаемых хранилищь от лучшего к худшему:
+
+      ▪ SQLite
+      ▪ IndexedDB
+      ▪ WebSQL
+      ▪ LocalStorage
+
+    ▪ Почему SQLite в приоритете?
+
+      Одной важной причиной, по которой SQLite в приоритете,
+      является то, что многие нативные платформы (iOS, например),
+      в настоящее время, периодически и непредсказуемо чистят
+      Local Storage (и IndexedDB), когда устройству начинает
+      не хватать памяти. Чтобы избежать потери данных, лучше
+      использовать хранищище с файлами, такое как SQLite.    
+
+  • Использование Ionic Storage
+
+    Если вы предпочитаете использовать SQLite, установите
+    cordova-sqlite-storage plugin:
+
+      ionic cordova plugin add cordova-sqlite-storage
+
+    Затем установите соответствующий пакет (идёт по 
+    умолчанию для Ionic-приложений >= V2):
+
+      npm install --save @ionic/storage
+
+    Затем, добавьте в список imports в вашем объявлении 
+    NgModule. Например в src/app/app.module.ts:
+
+      import { IonicStorageModule } from '@ionic/storage';
+
+      @NgModule({
+        declarations: [
+          // ...
+        ],
+        imports: [
+          BrowserModule,
+          IonicModule.forRoot(MyApp),
+          IonicStorageModule.forRoot()
+        ],
+        bootstrap: [IonicApp],
+        entryComponents: [
+          // ...
+        ],
+        providers: [
+          // ...
+        ]
+      })
+      export class AppModule {}
+
+    Наконец, вставьте в ваше приложение:
+
+      import { Storage } from '@ionic/storage';
+
+      export class MyApp {
+        constructor(private storage: Storage) { }
+
+        ...
+
+        // set a key/value
+        storage.set('name', 'Max');
+
+        // Or to get a key/value pair
+        storage.get('age').then((val) => {
+          console.log('Your age is', val);
+        });
+      }
+
+  • Настройка Ionic Storage
+
+    Storage Engine может быть настроен как конкретными
+    свойствами движка хранилища, так и кастомными 
+    опциями для передачи в LocalForge.
+    Подробнее об этом:
+
+      https://github.com/localForage/localForage#configuration
+
+    *Примечание:
+
+      Любые кастомные конфигурации будут смёржены с 
+      дефолнтыми конфигурациями.
+
+    import { IonicStorageModule } from '@ionic/storage';
+
+    @NgModule({
+      declarations: [...],
+      imports: [
+        IonicStorageModule.forRoot({
+          name: '__mydb',
+    driverOrder: ['indexeddb', 'sqlite', 'websql']
+        })
+      ],
+      bootstrap: [...],
+      entryComponents: [...],
+       providers: [...]
+    })
+    export class AppModule { }
+
+  • API для Ionic Storage
+
+    ▪ constructor
+      создать новый экземпляр хранилища
+
+      Создать новый экземпляр хранилища. Какой драйвер будет
+      использован, зависит от алгоритма этого метода, как он
+      работает описано выше в пункте про хранилища. Доступные
+      драйверы, в порядке приоритетности:
+
+        ['sqlite', 'indexeddb', 'websql', 'localstorage']
+
+    ▪ clear
+      полностью очистить хранилище
+
+      Внимание: операция тяжёлая! 
+      Возвращает: промис, который разрешается, когда
+                  хранилище успешно очищено.
+
+    ▪ forEach
+      пробежаться по всем парам key/value в хранилище
+
+      Возвращает: промис, который разрешается, когда
+                  итерирование завершено.
+
+    ▪ get
+      получить значение, связанное с указанным ключом
+
+      Возвращает: промис, который разрешается, когда
+                  значение успешно извлечено.
+
+    ▪ keys
+      список всех ключей в хранилище
+
+      Возвращает: промис, который разрешается, когда 
+                  список ключей успешно извлечён.
+
+
+    ▪ length  
+      кол-во ключей в хранилище
+
+      Возвращает: промис, который разрешается, когда
+                  кол-во ключей в хранилище пересчитано.
+
+    ▪ ready
+      готово ли хранилище
+
+      Возвращает: промис, который разрешается, когда
+                  хранилище готово к использованию.
+
+    ▪ remove
+      удаление из хранилище пары key/value по ключу
+
+      Возвращает: промис, который разрешается, когда
+                  значение удалено.
+    
+    ▪ driver
+      получить имя используемого драйвера
+
+
+
+
+
+
+
 
