@@ -2676,31 +2676,277 @@
 
   # Примеры layout'ов
 
-    ▪ Header
-    ▪ Footer
-    ▪ Header + Footer
-    ▪ Header + Tabs
-    ▪ Header + Menu
-    ▪ Разные layout'ы в зависимости от ширины экрана
+    ▪ header, content and footer
+      ▪ header + content
+      ▪ footer + content
+      ▪ header + footer + content
 
+    ▪ header, content, tabs
+    ▪ header, content, menu
+    ▪ Split pane layouts (разные layout'ы в зависимости от ширины экрана)
+
+  # Отзывчивая сеточка (responsive grid)
+
+    ▪ О сеточке
+    ▪ 
+    ▪ 
+    ▪ 
+    ▪ 
+    ▪ 
 
 --------------------------------------
 
 > Примеры layout'ов
 
-  • Header
+  • Header, Content and Footer
 
+    ▪ header + content
 
-  • Footer
+      Самый простой возможный layout состоит из header и 
+      content. Большинство страниц в приложении обычно
+      имеют и то, и другое. Но заголовок не требуется
+      для использования контента.
 
+      Пример кода:
 
-  • Header + Footer
+        <ion-app>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Header</ion-title>
+            </ion-toolbar>
+          </ion-header>
 
+          <ion-content padding>
+            <h1>Main Content</h1>
+          </ion-content>
+        </ion-app>      
 
-  • Header + Tabs
+    ▪ footer + content
 
+      Как в можете увидеть выше, toolbar в header появляется
+      на экране над контентом. Но иногда приложению требуется
+      тулбар под контентом, для этого и используют footer.
 
-  • Header + Menu
+      Пример кода:
+
+        <ion-app>
+          <ion-content padding>
+            <h1>Main Content</h1>
+          </ion-content>
+
+          <ion-footer>
+            <ion-toolbar>
+              <ion-title>Footer</ion-title>
+            </ion-toolbar>
+          </ion-footer>
+        </ion-content>
+
+    ▪ header + footer + content
+
+      Никто не мешает комбинировать header и footer
+      вместе, получая toolbar'ы как над, так и под
+      контентом.
+
+      Пример кода:
+
+        <ion-app>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Header</ion-title>
+            </ion-toolbar>
+          </ion-header>
+
+          <ion-content padding>
+            <h1>Main Content</h1>
+          </ion-content>
+
+          <ion-footer>
+            <ion-toolbar>
+              <ion-title>Footer</ion-title>
+            </ion-toolbar>
+          </ion-footer>
+        </ion-content>
+
+  • header, content, tabs
+
+    Этот layout состоит из заголовка, контента и табов
+    снизу. Каждый таб может содержать статический контент,
+    или навигационный стек, используя router-outlet или
+    ion-nav.
+
+    Пример кода:
+
+      <ion-app>
+        <ion-tabs>
+          <ion-tab label="Home" icon="home">
+            <ion-header>
+              <ion-toolbar>
+                <ion-title>Home</ion-title>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content padding>
+              <h1>Home Content</h1>
+            </ion-content>
+          </ion-tab>
+
+          <ion-tab label="Map" icon="map">
+            <ion-header>
+              <ion-toolbar>
+                <ion-title>Map</ion-title>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content padding>
+              <h1>Map Content</h1>
+            </ion-content>
+          </ion-tab>
+
+          <ion-tab label="Camera" icon="camera">
+            <ion-header>
+              <ion-toolbar>
+                <ion-title>Camera</ion-title>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content padding>
+              <h1>Camera Content</h1>
+            </ion-content>
+          </ion-tab>
+        </ion-tabs>
+      </ion-app>    
+
+  • header, content, menu
+
+    Это стандартный layout в мобильных приложениях, в нём
+    есть возможность открытия/закрытия меню нажатием на 
+    кнопку, или свайпом через левый край экрана.
+
+    Чаще всего боковые меню используются для навигации,
+    но могут содержать и какой-то контент.
+
+    Пример кода:
+
+      <ion-app>
+        <ion-menu>
+          <ion-header>
+            <ion-toolbar color="primary">
+              <ion-title>Menu</ion-title>
+            </ion-toolbar>
+          </ion-header>
+
+          <ion-content>
+            <ion-list>
+              <ion-list-header>
+                Navigate
+              </ion-list-header>
+              <ion-menu-toggle auto-hide="false">
+                <ion-item button>
+                  <ion-icon slot="start" name='home'></ion-icon>
+                  <ion-label>
+                    Home
+                  </ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            </ion-list>
+          </ion-content>
+        </ion-menu>
+
+        <ion-page class="ion-page" main>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-menu-toggle>
+                  <ion-button>
+                    <ion-icon slot="icon-only" name="menu"></ion-icon>
+                  </ion-button>
+                </ion-menu-toggle>
+              </ion-buttons>
+              <ion-title>Header</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content padding>
+            <h1>Main Content</h1>
+            <p>Click the icon in the top left to toggle the menu.</p>
+          </ion-content>
+        </ion-page>
+      </ion-app>
+
+      <ion-menu-controller></ion-menu-controller>
+
+  • Split pane layouts (разные layout'ы в зависимости от ширины экрана)
+
+    Split pane layouts имеют более сложную структуру, потому
+    что они могут комбинировать все предыдущие layouts.
+
+    По сути, они работают, как адаптивный дизайн. Если ширина
+    больше определённого значения, то показывается дополнительный
+    элемент (например, постоянное мнею слева). А если меньше,
+    то не показывается.
+
+    По умолчанию, триггерная точка установлена на 768px
+    (md breakpoint), но это можно настраивать через св-во 
+    when.
+
+    Ниже можно увидеть код примера, в котором меню видимо
+    для sm-экранов (576px) и больше.
+
+    Важно отметить, что элемент с атрибутом main будет 
+    считаться главным контентом, который всегда видим. 
+    Это может быть любой элемент, включая ion-nav, 
+    ion-router-outlet, или ion-tabs.
+
+    Пример кода:
+
+      <ion-app>
+        <ion-split-pane when="sm">
+          <ion-menu>
+            <ion-header>
+              <ion-toolbar color="primary">
+                <ion-title>Menu</ion-title>
+              </ion-toolbar>
+            </ion-header>
+
+            <ion-content>
+              <ion-list>
+                <ion-list-header>
+                  Navigate
+                </ion-list-header>
+                <ion-menu-toggle auto-hide="false">
+                  <ion-item button>
+                    <ion-icon slot="start" name='home'></ion-icon>
+                    <ion-label>
+                      Home
+                    </ion-label>
+                  </ion-item>
+                </ion-menu-toggle>
+              </ion-list>
+            </ion-content>
+          </ion-menu>
+
+          <ion-page class="ion-page" main>
+            <ion-header>
+              <ion-toolbar>
+                <ion-buttons slot="start">
+                  <ion-menu-toggle>
+                    <ion-button>
+                      <ion-icon slot="icon-only" name="menu"></ion-icon>
+                    </ion-button>
+                  </ion-menu-toggle>
+                </ion-buttons>
+                <ion-title>Header</ion-title>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content padding>
+              <h1>Main Content</h1>
+            </ion-content>
+          </ion-page>
+
+        </ion-split-pane>
+      </ion-app>
+
+> Отзывчивая сеточка (responsive grid)
 
   
-  • Разные layout'ы в зависимости от ширины экрана
+
+
+
+
+
