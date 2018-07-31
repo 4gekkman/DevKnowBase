@@ -2674,10 +2674,33 @@
 А6. Организация layout'а в Ionic-приложении
 --------------------------------------
 
-  # 
+  # Примеры layout'ов
+
+    ▪ Header
+    ▪ Footer
+    ▪ Header + Footer
+    ▪ Header + Tabs
+    ▪ Header + Menu
+    ▪ Разные layout'ы в зависимости от ширины экрана
+
 
 --------------------------------------
 
-> 
+> Примеры layout'ов
+
+  • Header
 
 
+  • Footer
+
+
+  • Header + Footer
+
+
+  • Header + Tabs
+
+
+  • Header + Menu
+
+  
+  • Разные layout'ы в зависимости от ширины экрана
