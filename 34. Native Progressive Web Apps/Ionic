@@ -150,6 +150,7 @@
     А4. Процесс разработки Ionic-приложения
     А5. Компоненты Ionic'а
     А6. Организация layout'а в Ionic-приложении
+    А7. Тематизация 
 
   # X.  Практика и наработки
 
@@ -2688,11 +2689,64 @@
   # Отзывчивая сеточка (responsive grid)
 
     ▪ Введение про сеточку в Ionic
-    ▪ 
-    ▪ 
-    ▪ 
-    ▪ 
-    ▪ 
+    ▪ Как работает сеточка в Ionic
+    ▪ Размеры сеточки, брейкпоинты: xs, sm, md, lg, xl
+    ▪ Атрибуты сеточки
+      
+      ▪ no-padding    | убрать padding ячеек
+      ▪ fixed         | настроить max ширину сетки
+
+    ▪ CRUD-настройка брейкпоинтов
+    ▪ Управление шириной колонок
+      ▪ По умолчанию, ширина всех колонок в row одинакова
+      ▪ Изменить ширину одной колонки в row
+      ▪ Основанная на контенте ширины для колонки в row
+
+    ▪ Управление адаптивностью
+      ▪ Атрибут size для изменения ширины колонки для всех устройств
+      ▪ Комбинация size и size-<bp> для перехода от стека к горизонтальным колонкам в зависимости от ширины экрана
+
+    ▪ Управление взаимным порядком колонок
+      ▪ Управление отступами (offset)
+        ▪ Отступы без брейкпоинтов
+        ▪ Отступы с брейкпоинтами      
+      ▪ Управление взаимным порядком (push, pull)
+        ▪ Взаимный порядок без брейкпоинтов
+        ▪ Взаимный порядок с брейкпоинтами    
+
+    ▪ Выравнивание колонок
+      ▪ Вертикальное выравнивание колонок
+        ▪ Относительное выравниваниевсех cols в row
+        ▪ Персональное выравнивание отдельных col в row
+      ▪ Горизонтальное выравнивание колонок
+
+    ▪ Кастомизация сеточки
+
+      ▪ --ion-grid-columns            | [12] изменение кол-ва колонок
+      
+      ▪ --ion-grid-padding            | [5px] изменение padding контейнера сетки
+      ▪ --ion-grid-padding-xs         | [5px] изменение padding контейнера сетки для xs
+      ▪ --ion-grid-padding-sm         | [5px] изменение padding контейнера сетки для sm
+      ▪ --ion-grid-padding-md         | [5px] изменение padding контейнера сетки для md
+      ▪ --ion-grid-padding-lg         | [5px] изменение padding контейнера сетки для lg
+      ▪ --ion-grid-padding-xl         | [5px] изменение padding контейнера сетки для xl
+
+      ▪ --ion-grid-width-xs           | [100%]   изменение ширины сетки для xs
+      ▪ --ion-grid-width-sm           | [540px]  изменение ширины сетки для sm
+      ▪ --ion-grid-width-md           | [720px]  изменение ширины сетки для md
+      ▪ --ion-grid-width-lg           | [960px]  изменение ширины сетки для lg
+      ▪ --ion-grid-width-xl           | [1140px] изменение ширины сетки для xl
+
+      ▪ --ion-grid-column-padding:    | [5px] изменение padding колонки
+      ▪ --ion-grid-column-padding-xs  | [5px] изменение padding колонки для xs
+      ▪ --ion-grid-column-padding-sm  | [5px] изменение padding колонки для sm   
+      ▪ --ion-grid-column-padding-md  | [5px] изменение padding колонки для md  
+      ▪ --ion-grid-column-padding-lg  | [5px] изменение padding колонки для lg  
+      ▪ --ion-grid-column-padding-xl  | [5px] изменение padding колонки для xl  
+
+  # CSS-инструменты для управления сеткой
+
+    См. https://beta.ionicframework.com/docs/layout/css-utilities
 
 --------------------------------------
 
@@ -2963,7 +3017,704 @@
     меньше или больше. Кол-во колонок можно настраивать через
     CSS.
 
-  • 
+  • Как работает сеточка в Ionic
+
+    ▪ Пример сеточки (без атрибутов)
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>
+              1 of 3
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              2 of 3
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              3 of 3
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>    
+
+    ▪ Grid работает, как контейнер для rows и cols.
+      Grid по умолчанию занимает полную ширину их 
+      контейнера, но добавление атрибута fixed позволяет
+      задать свою ширину для каждого из доступных размеров
+      экрана (подробнее ниже).
+
+    ▪ Rows - горизонтальные группа элементов col. 
+
+    ▪ Контент надо класть в cols. Только cols можгут
+      быть непосредственными детьми элементов rows.
+
+    ▪ Атрибут "size-<breakpoint>" у col обозначает, сколько
+      колонок заёмет данный col, учитывая, что в row 
+      всего 12 колонок.
+
+      Например, если назначить какому-то col атрибут 
+      size="4", то он займёт 4 из 12 колонок, то есть,
+      1/3 от ширины сетки.
+
+    ▪ Cols без явно заданного значения для size автоматически
+      получают равную ширину. Например, если в row есть 4 
+      cols, то каждая col получит 25% ширины.
+
+    ▪ Ширина cols всегда задаётся в %, поэтому они всегда
+      тянутся и подстраиваются под ширину родительского
+      элемента.
+
+    ▪ У cols есть padding между ними. Но его можно удалить,
+      добавив атрибут no-padding в элемент grid.
+
+    ▪ У сетки есть 5 брейкпоинтов для различных ширин экрана:
+      xs, sm, md, lg, lx. Подробнее о них ниже.
+
+    ▪ Брейкпоинт сетки применяется к любой ширине, которая
+      >= его собственной. Например, size-sm применяется
+      к sm, md, lg, lx (если для md, lg, lx не указано
+      иное, конечно).
+
+    ▪ Сетку можно легко кастомизировать с помощью 
+      CSS-переменных (см.ниже).
+
+  • Размеры сеточки, брейкпоинты: xs, sm, md, lg, xl
+
+    По умолчанию, сеточка занимает 100% ширины. Чтобы установить
+    основанную на размере экрана ширину сеточки, используйте
+    атрибут fixed. Ширина сеточки для каждого брейкпоинта 
+    определён в CSS-переменныэ "--ion-grid-width-<breakpoint>".
+    Подробнее об этом ниже.
+
+    xs    100%      Не ставьте ширину сетки для xs экранов.
+    sm    540px     Ставьте ширину сетки 540px, когда min-width: 576px
+    md    720px     Ставьте ширину сетки 720px, когда min-width: 768px
+    lg    960px     Ставьте ширину сетки 960px, когда min-width: 992px
+    xl    1140px    Ставьте ширину сетки 1140px, когда min-width: 1200px
+
+  • Атрибуты сеточки
+
+    По умолчанию, сеточка занимает 100% ширины экрана, а 
+    её ячейки имеют padding. С помощью нижеописанных атрибутов
+    это можно менять.
+
+    ▪ no-padding | убрать padding ячеек
+
+      Удаляет padding из сеточки, чтобы между ячейками
+      его не было.
+
+    ▪ fixed | настроить max ширину сетки
+
+      Позволяет настроить max ширину сетки на основе
+      ширины экрана, используя xs, sm, md, lg, xl.
+
+  • CRUD-настройка брейкпоинтов
+
+    Брейкпоинты по умолчанию определены в CSS-переменных
+    --ion-grid-breakpoints. Всё это можно легко 
+    кастомизировать, задать другие значения для
+    брейкпоинтов, переименовывать их, добавлять/удалять
+    брейкпоинтов. Подробнее см.ниже.
+
+                    Prefixes
+                    ----------------------------------------
+    Name    Value   With      Offset      Push      Pull
+    --------------------------------------------------------
+    xs      0       size-     offset-     push-     pull
+    sm      576px   size-sm-  offset-sm-  push-sm-  pull-sm-
+    md      768px   size-md-  offset-md-  push-md-  pull-md-
+    lg      992px   size-lg-  offset-lg-  push-lg-  pull-lg-
+    xl      1200px  size-xl-  offset-xl-  push-xl-  pull-xl-
+
+  • Управление шириной колонок
+
+    ▪ По умолчанию, ширина всех колонок в row одинакова
+
+      По умолчанию, колонки в row занимают равную ширину
+      для всех устройств и размеров экрана.
+
+      |--|--|--|--|--|--|--|--|--|--|--|--|
+      |-----|-----|-----|-----|-----|-----|
+
+      Пример и код:
+
+        |--1 из 3 --|--2 из 3 --|--3 из 3 --|
+        |---- 1 из 2  ----|--- -2 из 2  ----|
+
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <div>
+                1 of 2
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                2 of 2
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <div>
+                1 of 3
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                2 of 3
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                3 of 3
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+    ▪ Изменить ширину одной колонки в row
+
+      Если установить вручную ширину для одной конкретной
+      колонки, прочие колонки автоматически подстроятся,
+      но их ширины останутся равными.
+
+      Пример и код:
+
+        |-1 из 3-|-----2 из 3-----|--3 из 3-|
+        |-1 из 3---|---2 из 3---|----3 из 3-|
+
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <div>
+                1 of 3
+              </div>
+            </ion-col>
+            <ion-col size="8">
+              <div>
+                2 of 3
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                3 of 3
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <div>
+                1 of 3
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div>
+                2 of 3
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                3 of 3
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+    ▪ Основанная на контенте ширины для колонки в row
+
+      Если установить значение size-<breakpoint> в auto,
+      ширина колонки будет подстраиваться под контент
+      в ней. Такую колонку называют колонокой переменной
+      ширины.
+
+      Колонка, следующая сразу за колонкой переменной
+      ширины, будет автоматически изменять свою ширину,
+      чтобы подстроиться под последнюю.
+
+      Пример и код:
+
+        |--1 из 3 --|--content--|--3 из 3 --|
+        |--1 из 3 --|--content 123--|-3 из 3|
+
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <div>
+                1 of 3
+              </div>
+            </ion-col>
+            <ion-col size="auto">
+              <div>
+                Variable width content
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                3 of 3
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <div>
+                1 of 4
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                2 of 4
+              </div>
+            </ion-col>
+            <ion-col size="auto">
+              <div>
+                <ion-input placeholder="Variable width input"></ion-input>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                4 of 4
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+  • Управление адаптивностью
+
+    ▪ Атрибут size для изменения ширины колонки для всех устройств
+
+      Чтобы изменять ширину отдельных колонок, используйте
+      атрибут size. Его значение может быть от 1 до 12. 
+      Оно определяет, сколько колонок (из 12) данная
+      колонка будет занимать.
+
+      Пример и код:
+
+        |---1/4----|-2/4--|--3/4-|----4/4---|
+
+        <ion-grid>
+          <ion-row>
+            <ion-col size="4">
+              <div>
+                1 of 4
+              </div>
+            </ion-col>
+            <ion-col size="2">
+              <div>
+                2 of 4
+              </div>
+            </ion-col>
+            <ion-col size="2">
+              <div>
+                3 of 4
+              </div>
+            </ion-col>
+            <ion-col size="4">
+              <div>
+                4 of 4
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+    ▪ Комбинация size и size-<bp> для перехода от стека к горизонтальным колонкам в зависимости от ширины экрана
+
+      Используя комбинацию атрибутов size и size-<breakpoint>,
+      можно организовать адаптивный эффект перехода от
+      расположения колонок в виде вертикального стека
+      (актуально для небольших экранов), к обачному горизонтальному
+      расположению колонок в ряду, при расширении экрана.
+
+      Пример вертикального стека (для узких экранов):
+
+        |----1/3----|
+        |----2/3----|
+        |----3/3----|
+
+      Пример горизонтального расположения тех же колонок 
+      (для более широких экранов):
+
+        |----1/3----|----2/3----|----3/3----|
+
+      Пример кода:
+
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-sm>
+            <div>
+              1 of 4
+            </div>
+          </ion-col>
+          <ion-col size="12" size-sm>
+            <div>
+              2 of 4
+            </div>
+          </ion-col>
+          <ion-col size="12" size-sm>
+            <div>
+              3 of 4
+            </div>
+          </ion-col>
+          <ion-col size="12" size-sm>
+            <div>
+              4 of 4
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>      
+
+  • Управление взаимным порядком колонок
+
+    ▪ Управление отступами (offset)
+
+      С помощью атрибута offset можно управлять отступами
+      колонок. Этот атрибут увеличивает margin left
+      указанной колонки на указанное кол-во колонок
+      n/12.
+
+      ▪ Отступы без брейкпоинтов
+
+        Например, в следующей сетке последняя колонка получила
+        offset=3, в результате чего, находится от первой 
+        колонки на расстоянии 3-х колонок.
+
+                  offset3
+        |--1/2---|        |--2/2---|
+
+        <ion-grid>
+          <ion-row>
+            <ion-col size="3">
+              <div>
+                1 of 2
+              </div>
+            </ion-col>
+            <ion-col size="3" offset="3">
+              <div>
+                2 of 2
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      ▪ Отступы с брейкпоинтами
+
+        Также для offset, как и для size, можно использовать
+        брейкпоинты, чтобы в зависимости от ширины экрана
+        манипулировать отступами:
+
+        <ion-grid>
+          <ion-row>
+            <ion-col size-md="3">
+              <div>
+                1 of 3
+              </div>
+            </ion-col>
+            <ion-col size-md="3">
+              <div>
+                2 of 3
+              </div>
+            </ion-col>
+            <ion-col size-md="3" offset-md="3">
+              <div>
+                3 of 3
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+    ▪ Управление взаимным порядком (push, pull)
+
+      С помощью атрибутов push и pull можно управлять
+      взаимным порядком колонок. Эти атрибуты смещают
+      колонки вправо или влево на указанное число
+      колонок n/12. 
+
+      ▪ Взаимный порядок без брейкпоинтов
+
+        В этом примере мы меняем местами колонки
+        "1 of 2" и "2 of 2".
+
+        <ion-grid>
+          <ion-row>
+            <ion-col size="9" push="3">
+              <div>
+                1 of 2
+              </div>
+            </ion-col>
+            <ion-col size="3" pull="9">
+              <div>
+                2 of 2
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      ▪ Взаимный порядок с брейкпоинтами
+
+        <ion-grid>
+          <ion-row>
+            <ion-col size-md="6" push-md="3">
+              <div>
+                1 of 3
+              </div>
+            </ion-col>
+            <ion-col size-md="3" push-md="3">
+              <div>
+                2 of 3
+              </div>
+            </ion-col>
+            <ion-col size-md="3" pull-md="9">
+              <div>
+                3 of 3
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+  • Выравнивание колонок
+
+    ▪ Вертикальное выравнивание колонок
+
+      ▪ Относительное выравниваниевсех cols в row
+
+        Все cols в row можно выровнять по 
+        верхнему/нижнему краю, или по центру. Для этого
+        на весь row применяют атрибуты:
+
+        ▪ align-items-start
+        ▪ align-items-center
+        ▪ align-items-end
+
+          Подробнее: 
+          https://beta.ionicframework.com/docs/layout/grid/#customizing-the-grid
+
+        Пример:justify-content-start
+
+          <ion-grid>
+            <ion-row align-items-start>
+              <ion-col>
+                <div>
+                  1 of 4
+                </div>
+              </ion-col>
+              <ion-col>
+                <div>
+                  2 of 4
+                </div>
+              </ion-col>
+              <ion-col>
+                <div>
+                  3 of 4
+                </div>
+              </ion-col>
+              <ion-col>
+                <div>
+                  4 of 4 <br>
+                  # <br>
+                  # <br>
+                  #
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row align-items-center>
+              <ion-col>
+                <div>
+                  1 of 4
+                </div>
+              </ion-col>
+              <ion-col>
+                <div>
+                  2 of 4
+                </div>
+              </ion-col>
+              <ion-col>
+                <div>
+                  3 of 4
+                </div>
+              </ion-col>
+              <ion-col>
+                <div>
+                  4 of 4 <br>
+                  # <br>
+                  # <br>
+                  #
+                </div>
+              </ion-col>
+            </ion-row>
+
+            <ion-row align-items-end>
+              <ion-col>
+                <div>
+                  1 of 4
+                </div>
+              </ion-col>
+              <ion-col>
+                <div>
+                  2 of 4
+                </div>
+              </ion-col>
+              <ion-col>
+                <div>
+                  3 of 4
+                </div>
+              </ion-col>
+              <ion-col>
+                <div>
+                  4 of 4 <br>
+                  # <br>
+                  # <br>
+                  #
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+      ▪ Персональное выравнивание отдельных col в row
+
+        Аналогично, каждый col можно выравнивать по 
+        верхнему/нижнему краю, или по центру. Для этого
+        на каждом col используются атрибуты:
+
+        ▪ align-self-start 
+        ▪ align-self-center
+        ▪ align-self-end
+
+          Подробнее: 
+          https://beta.ionicframework.com/docs/layout/grid/#customizing-the-grid
+
+        Пример:
+
+          <ion-grid>
+            <ion-row>
+              <ion-col align-self-start>
+                <div>
+                  1 of 4
+                </div>
+              </ion-col>
+              <ion-col align-self-center>
+                <div>
+                  2 of 4
+                </div>
+              </ion-col>
+              <ion-col align-self-end>
+                <div>
+                  3 of 4
+                </div>
+              </ion-col>
+              <ion-col>
+                <div>
+                  4 of 4 <br>
+                  # <br>
+                  # <br>
+                  #
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+    ▪ Горизонтальное выравнивание колонок
+
+      Все cols могут горизонтально выравниваться внутри
+      row, для этого можно на него применять атрибуты:
+
+      ▪ justify-content-start
+      ▪ justify-content-center
+      ▪ justify-content-end
+      ▪ justify-content-around
+      ▪ justify-content-between
+
+        Подробнее: 
+        https://beta.ionicframework.com/docs/layout/grid/#customizing-the-grid
+
+      Пример:
+
+        <ion-grid>
+          <ion-row justify-content-start>
+            <ion-col size="3">
+              <div>
+                1 of 2
+              </div>
+            </ion-col>
+            <ion-col size="3">
+              <div>
+                2 of 2
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row justify-content-center>
+            <ion-col size="3">
+              <div>
+                1 of 2
+              </div>
+            </ion-col>
+            <ion-col size="3">
+              <div>
+                2 of 2
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row justify-content-end>
+            <ion-col size="3">
+              <div>
+                1 of 2
+              </div>
+            </ion-col>
+            <ion-col size="3">
+              <div>
+                2 of 2
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row justify-content-around>
+            <ion-col size="3">
+              <div>
+                1 of 2
+              </div>
+            </ion-col>
+            <ion-col size="3">
+              <div>
+                2 of 2
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row justify-content-between>
+            <ion-col size="3">
+              <div>
+                1 of 2
+              </div>
+            </ion-col>
+            <ion-col size="3">
+              <div>
+                2 of 2
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid> 
+
+  • Кастомизация сеточки
+
+    С помощью CSS-переменных можно производить кастомизацию
+    сеточки. В оглавлении этого пункта перечислены 
+    соответствующие переменные.
+
+
+А7. Тематизация
+--------------------------------------
+
+  # 
+
+--------------------------------------
+
+> 
 
 
 
