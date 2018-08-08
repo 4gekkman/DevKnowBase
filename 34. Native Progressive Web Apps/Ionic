@@ -25,6 +25,10 @@
 
         https://beta.ionicframework.com/docs/
 
+    • Ionic Changelog (что изменилось в новой версии)
+
+      https://github.com/ionic-team/ionic/blob/master/CHANGELOG.md
+
     • Репозиторий и документация для Ionic 4.*
 
       ▪ Ionic Core 4.0.0
@@ -152,6 +156,7 @@
     А6. Организация layout'а в Ionic-приложении
     А7. Тематизация 
     А8. Публикация Ionic-приложения
+    А9. FAQ
 
   # X.  Практика и наработки
 
@@ -4343,6 +4348,9 @@
 
   # Публикация для Electron
 
+    ▪ Публикация для macOS
+    ▪ Публикация для Windows
+
 --------------------------------------
 
 > Ссылки
@@ -4371,6 +4379,16 @@
 
     ▪ Itunes Connect
         https://itunesconnect.apple.com/
+ 
+  • Android
+
+    ▪ Google Play Console
+        https://play.google.com/apps/publish/?account=5139749501163457798#
+
+  • Electron
+
+    ▪ Официально руководство по Electron
+        https://electronjs.org/docs/tutorial/first-app
  
 > Публикация для PWA
 
@@ -4676,13 +4694,229 @@
       приложение для релиза следуя вышеописанным
       инструациям.
 
-
-
 > Публикация для Electron
 
+  Разработка desktop-приложени на Ionic позволяет разработчикам
+  на 100% переиспользовать весь их код и поставлять 
+  традиционное desktop-приложение, сохраняя доступ ко всем
+  нативным фичам, вроде push-уведомлений. Это руководство
+  подразумевает, что вы знакомы с Electron, и не описывает,
+  как разрабатывать Electron-приложения.
+
+  • Публикация для macOS
+
+    ▪ Требования
+
+      ▪ Последняя версия XCode
+      ▪ Активный Apple Developers Account ($100/год).
+
+    ▪ Публикация
+
+      В руководстве Electron есть отдельный раздел про то,
+      как публиквать приложение для macOS:
+
+        https://electronjs.org/docs/tutorial/mac-app-store-submission-guide
+
+  • Публикация для Windows
+
+    ▪ Требования
+
+      ▪ Windows 10 with Anniversary Update
+      ▪ The Windows 10 SDK
+      ▪ NodeJS
+      ▪ electron-windows-store CLI
+
+      Установить electron-windows-store через npm:
+
+        npm install -g electron-windows-store
+
+    ▪ Публикация
+
+      В руководстве Electron есть отдельный раздел про то,
+      как публиквать приложение для Windows:   
+
+        https://electronjs.org/docs/tutorial/windows-store-guide
+
+А9. FAQ
+--------------------------------------
+
+  # Build Errors
+
+    ▪ Забыть () на декораторе
+    ▪ Cannot resolve all parameters for MyClass ...
+    ▪ No provider for ParamType! (MyClass -> ParamType)
+    ▪ Can't bind to 'propertyName' since it isn't a known ...
+    ▪ No provider for ControlContainer! (NgControlName -> ControlContainer)
+    ▪ No component factory found for
+
+  # Runtime Errors
+
+    ▪ Пустой белый экран, ошибок нет
+    ▪ Директива не работает
+    ▪ Большой лаг при обработке события click
+    ▪ Cordova-плагины не работают в браузере
+    ▪ Множественные экземпляры provider'а
+
+  # Native Errors
+
+    ▪ Проблемы с подписыванием приложения
+    ▪ Xcode build error 65
+    ▪ Сбой версий Google Play Services
+
+  # Подсказки разработчикам
+
+--------------------------------------
+
+> Build Errors
+
+  Подробнее о них см.в документации Ionic:
+  https://beta.ionicframework.com/docs/faq/build
+
+> Runtime Errors
+
+  • Пустой белый экран, ошибок нет
+
+    Это может происходить по разным причинам. Если вам не 
+    удаётся найти решение в интернете, на форуме, попробуйте
+    это:
+
+    ▪ Root @Component has a template or templateUrl.
+    ▪ Root @Component template has an <ion-nav> with a root property:
+
+      <ion-nav [root]="rootPage"></ion-nav>
+
+  • Директива не работает
+
+    Есть несколько вещей, которые вы можете 
+    проверить:
+
+    ▪ убедитесь, что включили директиву в массив directives
+      в @Component, который вы хотите её использовать
+      (только, если версия вашего ionic-angular ниже RC0);
+
+    ▪ в вашем селекторе нет очепяток;
+
+    ▪ вы правильно используете селектор, как атрибут, элемент или класс;
+
+    ▪ у вашего селектора верный синтаксис
+
+      ▪ [attr] для attribute-селектора
+      ▪ element для element-селектора
+      ▪ .class для class-селектора
+
+    Вот пример использования attribute-селектора:
+
+      @Directive({
+        selector: '[my-dir]' // <-- [my-dir] because it is an attribute
+      })                     // Could be my-dir, [my-dir], .my-dir
+      class MyDir {
+        constructor() {
+          console.log('I'm alive!');
+        }
+      }
+
+      @Component({
+        // We add my-dir as an attribute to match the directive's selector
+        template: `<div my-dir>Hello World</div>`,
+
+        // Alternatively, if you were attaching the directive to an element it would be:
+        // template: `<my-dir>Hello World</my-dir>`
+        // and if you were attaching by class the template would be:
+        // template: `<div class="my-dir">Hello World</div>`
+
+        directives: [MyDir] // <-- Don't forget me! (only if your ionic-angular version is below RC0)
+      })
+      class MyPage { }
+
+  • Большой лаг при обработке события click
+
+    Авторы рекоменюуют использовать событие "click" только
+    на элементах, на которые должны именно кликать мышкой
+    (а не тапать пальцем, и т.д). Как правило, это элементы
+    <button> и <a>.
+
+    Если вы используете событие click на элементах, которые
+    обычно не являются кликабельными, вы получаете задержку
+    обработки события в 300мс с момента клика по элементу и
+    возбуждения события. Чтобы удалить эту задержку, вы 
+    можете добавить атрибут tappable вашему элементу:
+
+      <div tappable (click)="doClick()">I am clickable!</div>
+
+  • Cordova-плагины не работают в браузере
+
+    В какой-то момент, при разработке, вы можете вызвать
+    Cordova-плагин, и получить warning:
+
+      [Warning] Native: tried calling StatusBar.styleDefault, but Cordova is not
+      available. Make sure to include cordova.js or run in a device/simulator
+      (app.bundle.js, line 83388)
+
+    Это происходит, когда вы пытаетесь вызвать нативный плагин,
+    но Cordova недоступна. К счастью, Ionic Native выводит
+    Warning вместо ошибки.
+
+    В других случаях, когда плагин не был использован через
+    Ionic Native, вы можете получить менее ясный warning:
+
+      EXCEPTION: Error: Uncaught (in promise): TypeError: undefined is not an object
+      (evaluating 'navigator.camera.getPicture')
+
+  • Множественные экземпляры provider'а
+
+    Это Angular-специфичная проблема, меня не касается.
+
+> Native Errors
+
+  • Проблемы с подписыванием приложения
+
+    Ошибка:
+
+      "Code Signing Error: Failed to create provisioning profile. 
+      The app ID “com.csform.ionic.yellow” cannot be registered 
+      to your development team. Change your bundle identifier 
+      to a unique string to try again. Code Signing Error: 
+      No profiles for ‘com.csform.ionic.yellow’ were found: 
+      Xcode couldn’t find any iOS App Development provisioning 
+      profiles matching ‘com.csform.ionic.yellow’. 
+      Code Signing Error: Code signing is required for product 
+      type ‘Application’ in SDK ‘iOS 11.1’"
+
+    Решение:
+
+      Запуск приложения на iOS-устройстве требует наличия
+      provisioning-профиля. Если оный ещё не был создан,
+      следуйте следующим указаниям:
+
+      1. Установите Package ID
+
+        ▪ Capacitor
+
+          Откройте файл capacitor.config.json и измените
+          свойство appId.
+
+        ▪ Cordova
+
+          Откройте файл config.xml и измените атрибут
+          id корневого элемента <widget>.
+
+      2. 
+
+
+  • Xcode build error 65
+
+
+
+  • Сбой версий Google Play Services
+
+
+
+
+
+
+> Подсказки разработчикам
+
   
-
-
 
 
 
