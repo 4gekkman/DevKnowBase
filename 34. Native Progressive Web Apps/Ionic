@@ -151,6 +151,7 @@
     А5. Компоненты Ionic'а
     А6. Организация layout'а в Ionic-приложении
     А7. Тематизация 
+    А8. Публикация Ionic-приложения
 
   # X.  Практика и наработки
 
@@ -3737,11 +3738,17 @@
   # Полезный инструмент: генератор цвета
   # Продвинутая тематизация
 
-    ▪ 
-    ▪ 
-    ▪ 
-    ▪ 
+    ▪ Язык цвета
 
+      ▪ Многослойные цвета
+      ▪ Цвета приложения
+      ▪ Ступенчатые цвета
+      ▪ Цветовая карта
+      ▪ Многослойные цвета в цветовой карте
+      ▪ Alpha-проблема
+
+    ▪ Применение стилей
+  
 --------------------------------------
 
 > Ссылки
@@ -4009,15 +4016,335 @@
     может быть использована во всём приложении. 
 
     ▪ Многослойные цвета
+
+      ▪ contrast  | видимый относительно базового цвета
+      ▪ shade     | немного более тёмный цвет относительно базового
+      ▪ tint      | немного более светлый цвет относительно базового
+      ▪ RGB       | RGB-версия основного цвета, позволяет применить opacity
+
+      Например, secondary-цвет использует следующие
+      CSS-свойства:
+
+        --ion-color-secondary: #0cd1e8;
+        --ion-color-secondary-rgb: 12,209,232;
+        --ion-color-secondary-contrast: #000000;
+        --ion-color-secondary-contrast-rgb: 0,0,0;
+        --ion-color-secondary-shade: #0bb8cc;
+        --ion-color-secondary-tint: #0bb8cc;
+
+      Когда secondary применяется к кнопке, используется
+      не только базовый цвет, но и contrast для текста,
+      shade и tint для разных состояний кнопки.
+
     ▪ Цвета приложения
-    ▪ 
-    ▪ 
-    ▪ 
-    ▪ 
+
+      Имена цветов приложения обычно соответствуют сфере их
+      применения в компоненте. Ниже представлен список
+      top-level цветов приложения:
+
+        --ion-backdrop-color
+        --ion-overlay-background-color
+        --ion-background-color
+        --ion-border-color
+        --ion-box-shadow-color
+        --ion-text-color
+        --ion-tabbar-background-color
+        --ion-tabbar-border-color
+        --ion-tabbar-text-color
+        --ion-tabbar-text-color-active
+        --ion-toolbar-background-color
+        --ion-toolbar-border-color
+        --ion-toolbar-color-active
+        --ion-toolbar-color-inactive
+        --ion-toolbar-text-color
+        --ion-item-background-color
+        --ion-item-background-color-active
+        --ion-item-border-color
+        --ion-item-text-color
+        --ion-placeholder-text-color
+
+    ▪ Ступенчатые цвета
+
+      Исследовав множество приложений и тем для них, 
+      мы (команда Ionic) обнаружили, что в большинстве
+      дизайнов фон никогда не является одним цветом.
+      Всегда имеются тонкие вариации, используемые для
+      обозначения важности и глубины во всём дизайне.
+      Чтобы применить это в Ionic, мы создали ступенчатые
+      цвета.
+
+      Есть только 2 цвета, которые используются во всех
+      Ionic-компонентах:
+
+      ▪ --ion-text-color
+      ▪ --ion-background-color
+
+      Ступенчатые цвета позволяют лучше контролировать
+      то, как выглядит ваше приложение.
+
+      Цветовой шаг - тонкая вариация цвета на пути к 
+      другому цвету.
+
+      Например, цветовые шаги для --ion-text-color сдвигают
+      его по направлению к --ion-background-color.
+
+      Ступенчатые цвета также требуют наличие RGB-списка
+      для контроля над alpha. См. "Alpha-проблема" ниже.
+
+      Простой пример для иллюстрации концепции, 
+      всего с 4-мя цветовыми шагами:
+
+        --ion-text-color: #000000;
+        --ion-background-color: #ffffff;
+        --ion-background-color-step-250: #bfbfbf;
+        --ion-background-color-step-500: #808080;
+        --ion-background-color-step-750: #404040;
+        --ion-background-color-step-1000: #000000;
+        --ion-text-color-step-250: #404040;
+        --ion-text-color-step-500: #808080;
+        --ion-text-color-step-750: #bfbfbf;
+        --ion-text-color-step-1000: #ffffff;
+
+      В этом примере вы можете видеть, как цветовые 
+      шаги для --ion-background-color смещают цвет
+      из белого в чёрный. И как оные для --ion-text-color
+      смещают цвет из чёрного в белый.
+
+      Ionic используют номера цветовых шагов, как проценты
+      для генерации этих цветов. Например, --ion-text-color-step-250,
+      это --ion-text-color, смешанный с 25% цвета --ion-background-color.
+
+      Ionic генерирует 20 шагов для каждого цвета, получая
+      в результате следующий CSS:
+
+        --ion-background-color: #ffffff;
+        --ion-background-color-step-50: #f2f2f2;
+        --ion-background-color-step-100: #e6e6e6;
+        --ion-background-color-step-150: #d9d9d9;
+        --ion-background-color-step-200: #cccccc;
+        --ion-background-color-step-250: #bfbfbf;
+        --ion-background-color-step-300: #b3b3b3;
+        --ion-background-color-step-350: #a6a6a6;
+        --ion-background-color-step-400: #999999;
+        --ion-background-color-step-450: #8c8c8c;
+        --ion-background-color-step-500: #808080;
+        --ion-background-color-step-550: #737373;
+        --ion-background-color-step-600: #666666;
+        --ion-background-color-step-650: #595959;
+        --ion-background-color-step-700: #4d4d4d;
+        --ion-background-color-step-750: #404040;
+        --ion-background-color-step-800: #333333;
+        --ion-background-color-step-850: #262626;
+        --ion-background-color-step-900: #191919;
+        --ion-background-color-step-950: #0d0d0d;
+        --ion-background-color-step-1000: #000000;
+        --ion-text-color: #000000;
+        --ion-text-color-step-50: #0d0d0d;
+        --ion-text-color-step-100: #1a1a1a;
+        --ion-text-color-step-150: #262626;
+        --ion-text-color-step-200: #333333;
+        --ion-text-color-step-250: #404040;
+        --ion-text-color-step-300: #4d4d4d;
+        --ion-text-color-step-350: #595959;
+        --ion-text-color-step-400: #666666;
+        --ion-text-color-step-450: #737373;
+        --ion-text-color-step-500: #808080;
+        --ion-text-color-step-550: #8c8c8c;
+        --ion-text-color-step-600: #999999;
+        --ion-text-color-step-650: #a6a6a6;
+        --ion-text-color-step-700: #b3b3b3;
+        --ion-text-color-step-750: #bfbfbf;
+        --ion-text-color-step-800: #cccccc;
+        --ion-text-color-step-850: #d9d9d9;
+        --ion-text-color-step-900: #e6e6e6;
+        --ion-text-color-step-950: #f2f2f2;
+        --ion-text-color-step-1000: #ffffff;
+
+      Вообще, цветовые шаги для текста/фона являются 
+      зеркальным отражением друг-друга. Дизайнеры
+      могут кастомизировать отдельные шаги, если необходимо.
+
+      Например, может для дизайна надо, чтобы цвет
+      ion-text-color-step-250 был розовым, а не серым.
+
+    ▪ Цветовая карта
+
+      Цветовая карта - коллекция абстрактных цветов, 
+      которые используются во всех компонентах. Цветам
+      в этой коллекции также присваиваются CSS-классы,
+      чтобы можно было легко применять их к компонентам.
+
+      Например, чтобы применить цвет primary к компоненту,
+      можно просто добавить primary в качестве значения
+      атрибута color компонента:
+
+        <ion-button color="primary">Primary</ion-button>
+
+      Вот список всех top-level цветов в цветовой карте:
+
+        --ion-color-primary
+        --ion-color-secondary
+        --ion-color-tertiary
+        --ion-color-success
+        --ion-color-warning
+        --ion-color-danger
+        --ion-color-light
+        --ion-color-medium
+        --ion-color-dark
+
+    ▪ Многослойные цвета в цветовой карте
+
+      Предполагается, что цвета в цветовой карте должны
+      быть многослойными - то есть, каждый такой цвет
+      НЕ является одним лишь HEX-значением.
+
+      Когда вы применяете 'primary' к кнопке, меняется не
+      только цвет фона кнопки, но и цвет текста, цвета
+      кнопки для состояний hover и active. Это только один
+      маленький пример того, как применяеются многослойные
+      цвета.
+
+      В общем, если вы хотите изменить многослойный цвет,
+      вам надо изменить цвет для всех его слоёв. Многослойный
+      цвет состоит из:
+
+      ▪ base      | базовый цвет
+      ▪ contrast  | видимый относительно базового цвета
+      ▪ shade     | немного более тёмный цвет относительно базового
+      ▪ tint      | немного более светлый цвет относительно базового
+
+      Например, цвет --ion-color-primary состоит из следующих
+      CSS-свойств:
+
+        --ion-color-primary: #488aff;
+        --ion-color-primary-contrast: #ffffff;
+        --ion-color-primary-shade: #3f79e0;
+        --ion-color-primary-tint: #5a96ff;
+
+      Ionic использует следующий шаблон для наименования
+      цветов в цветовой карте:
+
+        --ion-color-[name]-[variation]
+
+      Вообще, причина применения многослойных цветов в том,
+      что CSS не поддерживает любой метод для модификации
+      цвета (mixing colors, tint, shading, etc).
+
+      Цвета в цветовых картах также страдают от alpha-проблемы.
+      Прочитайте про неё ниже, и при изменении многослойных
+      цветов проверяйте, что сгенерировали RGB-список версий
+      ваших цветов, и, таким образом, он может быть использовать
+      для alpha-переходов.
+
+    ▪ Alpha-проблема
+
+      CSS в настоящий момент (начало августа 2018) не поддерживает
+      granular alpha color цвета. Конечно, команда Ionic в курсе
+      про rgba(), но проблема в том, что rgba() принимает только
+      RGB-список. Например, вам не удастся сделать следующее:
+
+        rgba(#ff0000, .5)
+
+      Это означает, что для настройки только альфа-значения
+      цвета, отдельно от самого цвета, требуется, сделать
+      это через RGB-список. Чтобы решить эту проблему, 
+      Ionic генерирует ступенчатый RGB-список, и цветовую
+      карту. Рекомендуется при изменении любого из этих
+      цветов перегенерировать и RGB-список, чтобы позволить
+      использовать этот цвет для alpha-переходов.
+
+      Вот RGB-список по умолчанию:
+
+        --ion-color-primary-rgb: 72, 138, 255;
+        --ion-color-secondary-rgb: 50, 219, 100;
+        --ion-color-tertiary-rgb: 244, 169, 66;
+        --ion-color-success-rgb: 16, 220, 96;
+        --ion-color-warning-rgb: 255, 206, 0;
+        --ion-color-danger-rgb: 245, 61, 61;
+        --ion-color-light-rgb: 244, 244, 244;
+        --ion-color-medium-rgb: 152, 154, 162;
+        --ion-color-dark-rgb: 34, 34, 34;
+
+        --ion-background-color-rgb: 255, 255, 255;
+        --ion-text-color-rgb: 0, 0, 0;
+
+      Как вы видите, используются в точности те же самые
+      значения для цветов, но теперь они могут использоваться
+      в rgba(). Например, primary может теперь быть 
+      использовать так:
+
+        color: rgba(var(--ion-color-primary-rgb), 0.25);
 
   • Применение стилей
 
+    Стилизация приложения - такое же простое дело, как 
+    применение CSS-файла с блоком :root, или использование
+    JS для изменения значений CSS-свойств.
 
+    Полная тематизация подразумевает наличие всех 
+    CSS-переменных, которые будут использоваться
+    по всей коллекции Ionic-компонентов.
+
+    В этом небольшом примере лишь показано, как цвет
+    primary может быть изменён через CSS:
+
+      :root {
+        --ion-color-primary: #ff0000;
+        --ion-color-primary-contrast: #ffffff;
+        --ion-color-primary-shade: #ae0000;
+        --ion-color-primary-tint: #ff3633;
+        --ion-color-primary-rgb: 255, 0, 0;
+      }
+
+    Можно менять цвет не глобально, а персонально для 
+    конкретной кнопки:
+
+      .my-fancy-button {
+        --ion-color-primary: #ff0000;
+        --ion-color-primary-contrast: #ffffff;
+        --ion-color-primary-shade: #ae0000;
+        --ion-color-primary-tint: #ff3633;
+        --ion-color-primary-rgb: 255, 0, 0;
+      }
+
+    Это также можно делать через JS, функцией setProperty:
+
+      const el = document.querySelector('.my-fancy-button');
+      el.style.setProperty('--ion-color-primary', '#ff0000');
+      el.style.setProperty('--ion-color-primary-contrast', '#ffffff');
+      el.style.setProperty('--ion-color-primary-shade', '#ae0000');
+      el.style.setProperty('--ion-color-primary-tint', '#ff3633');
+      el.style.setProperty('--ion-color-primary-rgb', '255,0,0');
+
+
+А8. Публикация Ionic-приложения
+--------------------------------------
+
+  # Ссылки
+  # Публикация для PWA
+  # Публикация для iOS в App Store
+  # Публикация для Android в Play Store
+  # Публикация для Electron
+
+--------------------------------------
+
+> Ссылки
+
+> Публикация для PWA
+
+  
+
+> Публикация для iOS в App Store
+
+  
+
+> Публикация для Android в Play Store
+
+  
+
+> Публикация для Electron
+
+  
 
 
 
