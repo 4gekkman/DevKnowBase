@@ -5154,11 +5154,133 @@
 А10. Ionic API (справочник)
 --------------------------------------
 
-  #
+  Component API
+
+    # ion-action-sheet      | 
+    # ion-alert             | 
+    # ion-anchor            | 
+    # ion-app               | 
+    # ion-avatar            | 
+    # ion-back-button       | 
+    # ion-backdrop          | 
+    # ion-badge             | 
+
+    # ion-button            |
+    # ion-buttons           |
+
+    # ion-card              |
+    # ion-card-content      |
+    # ion-card-header       |
+    # ion-card-subtitle     |
+    # ion-card-title        |
+
+    # ion-checkbox          |
+ 
+    # ion-chip              |
+    # ion-chip-button       |
+    # ion-chip-icon         |
+    
+    # ion-grid              |
+    # ion-col               |
+    # ion-row               |
+
+    # ion-content           |
+    # ion-datetime          |
+
+    # ion-fab               |
+    # ion-fab-button        |
+    # ion-fab-list          |
+
+    # ion-footer            |
+    # ion-header            |
+    # ion-hide-when         |
+    # ion-img               |
+
+    # ion-infinite-scroll   |
+    # ion-infinite-scroll-content  |
+
+    # ion-input             |
+    # ion-item-divider      |
+    # ion-item-group        |
+    # ion-item-option       |
+    # ion-item-options      |
+    # ion-item-sliding      |
+    
+    # ion-label             |
+    # ion-list              |
+    # ion-list-header       |
+    # ion-loading           |
+
+    # ion-menu              |
+    # ion-menu-button       |
+    # ion-menu-toggle       |
+
+    # ion-modal             |
+    # ion-modal-controller  |
+    # ion-nav               |
+    # ion-nav-pop           |
+    # ion-nav-push          |
+    # ion-nav-set-root      |
+    # ion-note              |
+    # ion-picker            |
+    # ion-picker-column     |
+    # ion-popover           |
+    
+    # ion-radio             |
+    # ion-radio-group       |
+    # ion-range             |
+    # ion-range-knob        |
+    # ion-refresher         |
+    # ion-reorder           |
+    # ion-reorder-group     |
+    # ion-ripple-effect     |
+    # ion-route             |
+    # ion-route-redirect    |
+    # ion-router            |
+    # ion-router-outlet     |
+    # ion-scroll            |
+    # ion-searchbar         |
+    # ion-segment           |
+    # ion-segment-button    |
+    # ion-select            |
+    # ion-select-option     |
+    # ion-select-popover    |
+    # ion-show-when         |
+    # ion-skeleton-text     |
+    # ion-slide             |
+    # ion-slides            |
+    # ion-spinner           |
+    # ion-split-pane        |
+
+    # ion-tab               |
+    # ion-tab-button        |
+    # ion-tabbar            |
+    # ion-tabs              |
+
+    # ion-text              |
+    # ion-textarea          |
+    # ion-thumbnail         |
+    # ion-title             |
+    # ion-toast             |
+    # ion-toggle            |
+    # ion-toolbar           |
+    # ion-virtual-scroll    |
+
+  Programmatic API
+
+    # ion-action-sheet-controller  |
+    # ion-alert-controller         |
+    # ion-animation-controller     |
+    # ion-loading-controller       |
+    # ion-menu-controller          |
+    # ion-picker-controller        |
+    # ion-popover-controller       |
+    # ion-refresher-content        |
+    # ion-toast-controller         |
 
 --------------------------------------
 
->
+> ion-action-sheet
 
 
 Это про внешний вид и оформление.
