@@ -5156,8 +5156,62 @@
 
   Component API
 
-    # ion-action-sheet      | 
-    # ion-alert             | 
+    # ion-action-sheet      | Fullscreen-модалка о списком действий поверх контента
+      
+      ▪ buttons               | Массив кнопок для Action Sheet
+      ▪ cssClass              | Какие доп.классы применить. Если их > 1, надо разделять пробелами
+      ▪ enableBackdropDismiss | [true] Если true, Action Sheet можно будет закрыть кликом по фону
+      ▪ enterAnimation        | Анимация появления Action Sheet
+      ▪ Builde                | Заголовок для Action Sheet
+      ▪ header                | Заголовок для Action Sheet
+      ▪ keyboardClose         | Должен ли Action Sheet закрыть клавиатуру
+      ▪ leaveAnimation        | Анимация закрытия Action Sheet
+      ▪ overlayId             | Уникальный ID экземпляра Action Sheet (для внутреннего использования)
+      ▪ subHeader             | Подзаголовок для Action Sheet
+      ▪ translucent           | [false] Включить ли полупрозрачность для Action Sheet
+      ▪ willAnimate           | [true] Анимировать ли Action Sheet
+
+      • dismiss()             | Закрыть Action Sheet
+      • onDidDismiss()        | Вернуть промис, резолвящийся после закрытия Action Sheet (можно передать callback)
+      • onWillDismiss()       | Вернуть промис, резолвящийся перед закрытием Action Sheet (можно передать callback)
+      • present()             | Показать Action Sheet
+
+      ► ionActionSheetDidDismiss  | Возбуждается после закрытия alert
+      ► ionActionSheetDidLoad     | Возбуждается после загрузки alert
+      ► ionActionSheetDidPresent  | Возбуждается после представления alert
+      ► ionActionSheetDidUnload   | Возбуждается после выгрузки alert
+      ► ionActionSheetWillDismiss | Возбуждается перед закрытием alert
+      ► ionActionSheetWillPresent | Возбуждается перед представлением alert
+
+    # ion-alert             | Не-fullscreen модалка с текстом и элементами формы
+
+      ▪ buttons             | Массив кнопок для Alert
+      ▪ cssClass            | Какие доп.классы применить. Если их > 1, надо разделять пробелами
+      ▪ enableBackdropDismiss | [true] Если true, Action Sheet можно будет закрыть кликом по фону
+      ▪ enterAnimation      | Анимация появления Action Sheet
+      ▪ header              | Заголовок для Alert
+      ▪ inputs              | Массив input'ов, которые показать в alert
+      ▪ keyboardClose       | Должен ли Alert закрыть клавиатуру
+      ▪ leaveAnimation      | Анимация закрытия Action Sheet
+      ▪ message             | Главное сообщение для показа в alert
+      ▪ mode                | В каком режиме (md или ios) отображать alert
+      ▪ overlayId           | Уникальный ID экземпляра Alert (для внутреннего использования).
+      ▪ subHeader           | Подзаголовок для Action Sheet
+      ▪ translucent         | [false] Включить ли полупрозрачность для Action Sheet
+      ▪ willAnimate         | [true] Анимировать ли Action Sheet
+
+      • dismiss()           | Закрыть Alert
+      • onDidDismiss()      | Вернуть промис, резолвящийся после закрытия Alert (можно передать callback)
+      • onWillDismiss()     | Вернуть промис, резолвящийся перед закрытием Alert (можно передать callback)
+      • present()           | Показать Alert
+
+      ► ionAlertDidDismiss  | Возбуждается после закрытия alert
+      ► ionAlertDidLoad     | Возбуждается после загрузки alert
+      ► ionAlertDidPresent  | Возбуждается после представления alert
+      ► ionAlertDidUnload   | Возбуждается после выгрузки alert
+      ► ionAlertWillDismiss | Возбуждается перед закрытием alert
+      ► ionAlertWillPresent | Возбуждается перед представлением alert
+
     # ion-anchor            | 
     # ion-app               | 
     # ion-avatar            | 
@@ -5268,7 +5322,12 @@
 
   Programmatic API
 
-    # ion-action-sheet-controller  |
+    # ion-action-sheet-controller  | Программный контроль над компонентом action sheet
+
+      • create()            | Создать Action Sheet, передав опции
+      • dismiss()           | Закрыть Action Sheet
+      • getTop()            | Получить самый недавний Action Sheet
+
     # ion-alert-controller         |
     # ion-animation-controller     |
     # ion-loading-controller       |
@@ -5282,8 +5341,1923 @@
 
 > ion-action-sheet
 
+  Fullscreen-модалка о списком действий поверх контента.
 
-Это про внешний вид и оформление.
+  ▪ Описание
+
+    Action Sheet является диалогом, который отображает набор
+    опций. Оно появляется поверх контента приложения, и 
+    должно быть закрыто вручную пользователем, прежде чем
+    он сможет продолжить взаимодействие с пользователем.
+
+    Есть несколько способов закрыть окно, в том числе кликнуть
+    фон или нажать esc на desctop.
+
+    ▪ Создание
+
+      Action Sheet можно создать с помощью Action Sheet Controller,
+      из массива buttons, в котором каждая кнопка имеет text, 
+      handler и role. 
+
+      Если обработчик возвращает false, то Action Sheet не будет
+      закрыт.
+
+      Опционально, Action Sheet может иметь title, subTitle и
+      Icon.
+
+    ▪ Особенности Buttons
+
+      В качестве значения role для button могут быть также
+      destructive или cancel. 
+
+      Кнопки без определённого значения для role будут иметь
+      вид по умолчанию для платформы.
+
+      Кнопки с ролью cancel будут всегда отображаться в самом
+      низу, вне зависимости от своего расположения в массиве.
+
+      Все остальные кнопки, будут отображаться в том порядке,
+      в котором они появляются в массиве buttons.
+
+      Авторы рекомендуют размещать кнопку с ролью distructive
+      в самом верху массива buttons.
+
+      При закрытии Action Sheet путём тапа по фону, будет
+      вызван обработчик кнопки с ролью cancel.
+
+  ▪ Использование
+
+    async function presentActionSheet() {
+      const actionSheetController = document.querySelector('ion-action-sheet-controller');
+      await actionSheetController.componentOnReady();
+
+      const actionSheet = await actionSheetController.create({
+        header: "Albums",
+        buttons: [{
+          text: 'Delete',
+          role: 'destructive',
+          icon: 'trash',
+          handler: () => {
+            console.log('Delete clicked');
+          }
+        }, {
+          text: 'Share',
+          icon: 'share',
+          handler: () => {
+            console.log('Share clicked');
+          }
+        }, {
+          text: 'Play (open modal)',
+          icon: 'arrow-dropright-circle',
+          handler: () => {
+            console.log('Play clicked');
+          }
+        }, {
+          text: 'Favorite',
+          icon: 'heart',
+          handler: () => {
+            console.log('Favorite clicked');
+          }
+        }, {
+          text: 'Cancel',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }]
+      });
+      await actionSheet.present();
+    }  
+
+  ▪ Свойства
+
+    ▪ buttons
+      - Массив кнопок для Action Sheet.
+      - Атрибуты:
+
+        ▪ buttons
+
+      - Тип: ActionSheetButton[]
+
+    ▪ cssClass
+      - Какие доп.классы применить. Если их > 1, надо разделять пробелами.
+      - Атрибуты:
+
+        ▪ css-class
+
+      - Тип: string
+
+    ▪ enableBackdropDismiss
+      - [true] Если true, Action Sheet можно будет закрыть кликом по фону.
+      - Атрибуты:
+
+        ▪ enable-backdrop-dismiss
+
+      - Тип: boolean
+
+    ▪ enterAnimation
+      - Анимация появления Action Sheet.
+      - Атрибуты:
+
+        ▪ enter-animation
+
+      - Тип: AnimationBuilder
+
+    ▪ header
+      - Заголовок для Action Sheet.
+      - Атрибуты:
+
+        ▪ header
+
+      - Тип: string
+
+    ▪ keyboardClose
+      - Должен ли Action Sheet закрыть клавиатуру.
+      - Атрибуты:
+
+        ▪ keyboard-close
+
+      - Тип: boolean
+
+    ▪ leaveAnimation
+      - Анимация закрытия Action Sheet.
+      - Атрибуты:
+
+        ▪ leave-animation
+
+      - Тип: AnimationBuilder
+
+    ▪ overlayId
+      - Уникальный ID экземпляра Action Sheet (для внутреннего использования).
+      - Атрибуты:
+
+        ▪ overlay-id
+
+      - Тип: number
+
+    ▪ subHeader
+      - Подзаголовок для Action Sheet.
+      - Атрибуты:
+
+        ▪ sub-header
+
+      - Тип: string
+
+    ▪ translucent
+      - [false] Включить ли полупрозрачность для Action Sheet.
+      - Атрибуты:
+
+        ▪ translucent
+
+      - Тип: boolean
+
+    ▪ willAnimate
+      - [true] Анимировать ли Action Sheet.
+      - Атрибуты:
+
+        ▪ will-animate
+
+      - Тип: boolean
+
+  ▪ Методы
+
+    ▪ dismiss()       | Закрыть Action Sheet
+    ▪ onDidDismiss()  | Вернуть промис, резолвящийся после закрытия Action Sheet (можно передать callback)
+    ▪ onWillDismiss() | Вернуть промис, резолвящийся перед закрытием Action Sheet (можно передать callback)
+    ▪ present()       | Показать Action Sheet
+
+  ▪ События
+
+    ▪ ionActionSheetDidDismiss  | Возбуждается после закрытия action sheet
+    ▪ ionActionSheetDidLoad     | Возбуждается после загрузки action sheet
+    ▪ ionActionSheetDidPresent  | Возбуждается после представления action sheet
+    ▪ ionActionSheetDidUnload   | Возбуждается после выгрузки action sheet
+    ▪ ionActionSheetWillDismiss | Возбуждается перед закрытием action sheet
+    ▪ ionActionSheetWillPresent | Возбуждается перед представлением action sheet
+
+> ion-alert
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+    Alert является диалогом, который предоставляет пользователью
+    какую-то информацию, и/или собирает информацию у пользователя.
+
+    Alert появляется поверх контента приложения, и должен 
+    быть вручную уничтожен пользователем, прежде чем он
+    сможет продолжить взаимодействие с приложение.
+
+    Опционально, Alert может иметь title, subTitle и message.
+
+    ▪ Создание
+
+      Alert'ы можно создавать с помощью Alert Controller.
+      Кастомизировать alert'ы можно, передавая параметры
+      в метод "create" контроллера.
+
+    ▪ Buttons
+
+      В массиве buttons, каждая кнопка имеет свойства text,
+      и (опционально) handler. 
+
+      Если handler возвращает false, то alert НЕ закроется
+      автоматически после нажатия на кнопку.
+
+      Все кнопки будут отображаться в том же порядке, в каком
+      они были добавлены в массив buttons, слева-направо.
+
+      Самая правая (последняя) кнопка является главной.
+
+      Опционально, кнопке можно добавить свойство role,
+      значением может быть, например, cancel.
+
+      Если role со значением cancel назначена одной из
+      кнопок, то при закрытии alert путём нажания на 
+      фон, будет вызван handler от этой кнопки.
+
+    ▪ Inputs
+
+      Alert'ы могут также включать различные input'ы, 
+      через которые можно собирать различными способами
+      данные у пользователя, которые передавать обратно
+      в приложение.
+
+      Radio's, checkboxes и text'овые input'ы использовать
+      можно, но их нельзя смешивать в одном alert'е.
+      Например, alert может состоять целиком из radio
+      button'ов, или целиком из checkbox'ов, но он не
+      может одновременно содержать и те, и другие.
+
+      Однако, различные виды тестовых input'ов могут 
+      быть смешаны. Например, таких как url, email,
+      text, и т.д. 
+
+      Если вам нужна сложная форма, которая не вписывается
+      в ограничения alert, то рекомендуем вам собрать
+      форму на modal, а не на alert.
+
+  ▪ Использование
+
+    async function presentAlert() {
+      const alertController = document.querySelector('ion-alert-controller');
+      await alertController.componentOnReady();
+
+      const alert = await alertController.create({
+        header: 'Alert',
+        subHeader: 'Subtitle',
+        message: 'This is an alert message.',
+        buttons: ['OK']
+      });
+      return await alert.present();
+    }
+
+    async function presentAlertMultipleButtons() {
+      const alertController = document.querySelector('ion-alert-controller');
+      await alertController.componentOnReady();
+
+      const alert = await alertController.create({
+        header: 'Alert',
+        subHeader: 'Subtitle',
+        message: 'This is an alert message.',
+        buttons: ['Cancel', 'Open Modal', 'Delete']
+      });
+      return await alert.present();
+    }
+
+    async function presentAlertConfirm() {
+      const alertController = document.querySelector('ion-alert-controller');
+      await alertController.componentOnReady();
+
+      const alert = await alertController.create({
+        header: 'Confirm!',
+        message: 'Message <strong>text</strong>!!!',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              console.log('Confirm Cancel: blah');
+            }
+          }, {
+            text: 'Okay',
+            handler: () => {
+              console.log('Confirm Okay')
+            }
+          }
+        ]
+      });
+      return await alert.present();
+    }
+
+    async function presentAlertPrompt() {
+      const alertController = document.querySelector('ion-alert-controller');
+      await alertController.componentOnReady();
+
+      const alert = await alertController.create({
+        header: 'Prompt!',
+        inputs: [
+          {
+            placeholder: 'Placeholder 1'
+          },
+          {
+            name: 'name2',
+            id: 'name2-id',
+            value: 'hello',
+            placeholder: 'Placeholder 2'
+          },
+          {
+            name: 'name3',
+            value: 'http://ionicframework.com',
+            type: 'url',
+            placeholder: 'Favorite site ever'
+          },
+          // input date with min & max
+          {
+            name: 'name4',
+            type: 'date',
+            min: '2017-03-01',
+            max: '2018-01-12'
+          },
+          // input date without min nor max
+          {
+            name: 'name5',
+            type: 'date'
+          },
+          {
+            name: 'name6',
+            type: 'number',
+            min: -5,
+            max: 10
+          },
+          {
+            name: 'name7',
+            type: 'number'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel')
+            }
+          }, {
+            text: 'Ok',
+            handler: () => {
+              console.log('Confirm Ok')
+            }
+          }
+        ]
+      });
+      return await alert.present();
+    }
+
+    async function presentAlertRadio() {
+      const alertController = document.querySelector('ion-alert-controller');
+      await alertController.componentOnReady();
+
+      const alert = await alertController.create({
+        header: 'Radio',
+        inputs: [
+          {
+            type: 'radio',
+            label: 'Radio 1',
+            value: 'value1',
+            checked: true
+          },
+          {
+            type: 'radio',
+            label: 'Radio 2',
+            value: 'value2'
+          },
+          {
+            type: 'radio',
+            label: 'Radio 3',
+            value: 'value3'
+          },
+          {
+            type: 'radio',
+            label: 'Radio 4',
+            value: 'value4'
+          },
+          {
+            type: 'radio',
+            label: 'Radio 5',
+            value: 'value5'
+          },
+          {
+            type: 'radio',
+            label: 'Radio 6 Radio 6 Radio 6 Radio 6 Radio 6 Radio 6 Radio 6 Radio 6 Radio 6 Radio 6 ',
+            value: 'value6'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel')
+            }
+          }, {
+            text: 'Ok',
+            handler: () => {
+              console.log('Confirm Ok')
+            }
+          }
+        ]
+      });
+      return await alert.present();
+    }
+
+    async function presentAlertCheckbox() {
+      const alertController = document.querySelector('ion-alert-controller');
+      await alertController.componentOnReady();
+
+      const alert = await alertController.create({
+        header: 'Checkbox',
+        inputs: [
+          {
+            type: 'checkbox',
+            label: 'Checkbox 1',
+            value: 'value1',
+            checked: true
+          },
+
+          {
+            type: 'checkbox',
+            label: 'Checkbox 2',
+            value: 'value2'
+          },
+
+          {
+            type: 'checkbox',
+            label: 'Checkbox 3',
+            value: 'value3'
+          },
+
+          {
+            type: 'checkbox',
+            label: 'Checkbox 4',
+            value: 'value4'
+          },
+
+          {
+            type: 'checkbox',
+            label: 'Checkbox 5',
+            value: 'value5'
+          },
+
+          {
+            type: 'checkbox',
+            label: 'Checkbox 6 Checkbox 6 Checkbox 6 Checkbox 6 Checkbox 6 Checkbox 6 Checkbox 6 Checkbox 6 Checkbox 6 Checkbox 6',
+            value: 'value6'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel')
+            }
+          }, {
+            text: 'Ok',
+            handler: () => {
+              console.log('Confirm Ok')
+            }
+          }
+        ]
+      });
+      return await alert.present();
+    }
+
+  ▪ Свойства
+
+    ▪ buttons 
+      - Массив кнопок для Alert.
+      - Атрибуты:
+
+        ▪ buttons
+
+      - Тип: (AlertButton | string)[]
+
+    ▪ cssClass 
+      - Какие доп.классы применить. Если их > 1, надо разделять пробелами.
+      - Атрибуты:
+
+        ▪ css-class
+
+      - Тип: string
+              
+    ▪ enableBackdropDismiss 
+      - [true] Если true, Action Sheet можно будет закрыть кликом по фону.
+      - Атрибуты:  
+
+        ▪ enable-backdrop-dismiss
+              
+      - Тип: boolean
+ 
+    ▪ enterAnimation 
+      - Анимация появления Action Sheet.
+      - Атрибуты: 
+
+        ▪ enter-animation
+               
+      - Тип: AnimationBuilder
+        
+    ▪ header 
+      - Заголовок для Alert.
+      - Атрибуты: 
+
+        ▪ header
+               
+      - Тип: string
+                
+    ▪ inputs 
+      - Массив input'ов, которые показать в alert.
+      - Атрибуты: 
+
+        ▪ inputs
+               
+      - Тип: AlertInput[]
+                
+    ▪ keyboardClose 
+      - Должен ли Alert закрыть клавиатуру.
+      - Атрибуты: 
+
+        ▪ keyboard-close
+               
+      - Тип: boolean
+         
+    ▪ leaveAnimation 
+      - Анимация закрытия Action Sheet.
+      - Атрибуты: 
+
+        ▪ leave-animation
+               
+      - Тип: AnimationBuilder
+        
+    ▪ message 
+      - Главное сообщение для показа в alert.
+      - Атрибуты: 
+
+        ▪ message
+               
+      - Тип: string
+               
+    ▪ mode 
+      - В каком режиме (md или ios) отображать alert.
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+                  
+    ▪ overlayId 
+      - Уникальный ID экземпляра Alert (для внутреннего использования).
+      - Атрибуты: 
+
+        ▪ overlay-id
+               
+      - Тип: number
+             
+    ▪ subHeader 
+      - Подзаголовок для Action Sheet.
+      - Атрибуты: 
+
+        ▪ sub-header
+               
+      - Тип: string
+             
+    ▪ translucent 
+      - [false] Включить ли полупрозрачность для Action Sheet.
+      - Атрибуты: 
+
+        ▪ translucent
+               
+      - Тип: boolean
+           
+    ▪ willAnimate 
+      - [true] Анимировать ли Action Sheet.
+      - Атрибуты: 
+
+        ▪ will-animate
+               
+      - Тип: boolean
+      
+  ▪ Методы
+
+    ▪ dismiss()           | Закрыть Alert
+    ▪ onDidDismiss()      | Вернуть промис, резолвящийся после закрытия Alert (можно передать callback)
+    ▪ onWillDismiss()     | Вернуть промис, резолвящийся перед закрытием Alert (можно передать callback)
+    ▪ present()           | Показать Alert
+
+  ▪ События
+
+    ▪ ionAlertDidDismiss  | Возбуждается после закрытия alert
+    ▪ ionAlertDidLoad     | Возбуждается после загрузки alert
+    ▪ ionAlertDidPresent  | Возбуждается после представления alert
+    ▪ ionAlertDidUnload   | Возбуждается после выгрузки alert
+    ▪ ionAlertWillDismiss | Возбуждается перед закрытием alert
+    ▪ ionAlertWillPresent | Возбуждается перед представлением alert 
+
+> ion-anchor     
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-app        
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-avatar     
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-back-button
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-backdrop   
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-badge 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-button 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-buttons     
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-card         
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-card-content 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-card-header  
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-card-subtitle
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-card-title   
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-checkbox
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-chip       
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-chip-button
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-chip-icon  
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-grid
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-col 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-row 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-content 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-datetime
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-fab       
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-fab-button
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-fab-list  
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-footer   
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-header   
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-hide-when
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-img      
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-infinite-scroll
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-infinite-scroll-content
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-input       
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-item-divider
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-item-group  
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-item-option 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-item-options
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-item-sliding
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-label      
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-list       
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-list-header
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-loading    
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-menu       
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-menu-button
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-menu-toggle
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-modal           
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-modal-controller
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-nav             
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-nav-pop         
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-nav-push        
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-nav-set-root    
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-note            
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-picker          
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-picker-column   
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-popover         
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-radio         
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-radio-group   
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-range         
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-range-knob    
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-refresher     
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-reorder       
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-reorder-group 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-ripple-effect 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-route         
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-route-redirect
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-router        
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-router-outlet 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-scroll        
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-searchbar     
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-segment       
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-segment-button
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-select        
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-select-option 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-select-popover
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-show-when     
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-skeleton-text 
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-slide         
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-slides        
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-spinner       
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-split-pane    
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-tab       
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-tab-button
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-tabbar    
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-tabs      
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-text          
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-textarea      
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-thumbnail     
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-title         
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-toast         
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-toggle        
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-toolbar       
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+> ion-virtual-scroll
+
+  Не-fullscreen модалка с текстом и элементами формы
+
+  ▪ Описание
+
+  ▪ Использование
+
+  ▪ Свойства
+
+  ▪ Методы
+
+  ▪ События
+
+  
+  
+> ion-action-sheet-controller 
+
+  Программный контроль над компонентом action sheet.
+
+  ▪ Описание
+
+    Action Sheet можно создать или закрыть с помощью
+    этого контроллера.
+
+  ▪ Методы
+
+    ▪ create()  | Создать Action Sheet, передав опции
+    ▪ dismiss() | Закрыть Action Sheet
+    ▪ getTop()  | Получить самый недавний Action Sheet
+
 
 
 
