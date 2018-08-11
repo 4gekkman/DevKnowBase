@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/Vendors/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/phpunit/php-code-coverage" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/phpunit/php-file-iterator" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/phpunit/php-text-template" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/phpunit/php-timer" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/phpunit/php-token-stream" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/phpunit/phpunit" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/phpunit/phpunit-mock-objects" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/sebastian/diff" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/sebastian/exporter" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/sebastian/version" />
+      <excludeFolder url="file://$MODULE_DIR$/Vendors/vendor/symfony/yaml" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

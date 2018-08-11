@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/Vendors/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/composer" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/phpunit/php-token-stream" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/phpunit/phpunit-mock-objects" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/Vendors/vendor/sebastian/exporter" />
+    </include_path>
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings load_method="CUSTOM_LOADER" custom_loader_path="$PROJECT_DIR$/Vendors/vendor/autoload.php" />
+    </phpunit_settings>
+  </component>
+</project>

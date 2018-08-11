@@ -5328,7 +5328,12 @@
       • dismiss()           | Закрыть Action Sheet
       • getTop()            | Получить самый недавний Action Sheet
 
-    # ion-alert-controller         |
+    # ion-alert-controller         | Программный контроль над компонентом alert
+
+      • create()            | Создать Alert, передав опции
+      • dismiss()           | Закрыть Alert
+      • getTop()            | Получить самый недавний Alert
+
     # ion-animation-controller     |
     # ion-loading-controller       |
     # ion-menu-controller          |
@@ -7258,7 +7263,36 @@
     ▪ dismiss() | Закрыть Action Sheet
     ▪ getTop()  | Получить самый недавний Action Sheet
 
+> ion-alert-controller
 
+  Программный контроль над компонентом alert.
+
+  ▪ Описание
+
+    Alert'ы можно создавать и убирать с помощью этого
+    контроллера.
+
+  ▪ Использование
+
+    async function presentAlert() {
+      const alertController = document.querySelector('ion-alert-controller');
+      await alertController.componentOnReady();
+
+      const alert = await alertController.create({
+        header: 'Alert',
+        subHeader: 'Subtitle',
+        message: 'This is an alert message.',
+        buttons: ['OK']
+      });
+      return await alert.present();
+    }
+
+
+  ▪ Методы
+
+    ▪ create()  | Создать Alert, передав опции в create
+    ▪ dismiss() | Закрыть открытый Alert
+    ▪ getTop()  | Получить самый недавний Alert
 
 
 А11. Ionic CLI (справочник)
