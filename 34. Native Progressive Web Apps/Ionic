@@ -5154,6 +5154,11 @@
 А10. Ionic API (справочник)
 --------------------------------------
 
+  ▪   свойство
+  •   метод
+  ►   событие
+  Ⓐ  атрибут
+
   Component API
 
     # ion-action-sheet      | Fullscreen-модалка о списком действий поверх контента
@@ -5299,16 +5304,91 @@
       ► ionFocus            | Возбуждается при получении фокуса чекбоксом
       ► ionStyle            | Возбуждается при изменении styles
     
-    # ion-chip              |
-    # ion-chip-button       |
-    # ion-chip-icon         |
-    
-    # ion-grid              |
-    # ion-col               |
-    # ion-row               |
+    # ion-chip              | Сложные сущности в небольших блоках, как контакт
 
-    # ion-content           |
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
+    # ion-chip-button       | Inset-кнопка, которая размещается внутри chip
+
+      ▪ disabled            | [false] Может ли пользователь взаимодействовать с chip button?
+      ▪ fill                | Установить значение clear, чтобы вкл прозрачный стиль для кнопки
+      ▪ href                | Содержит URL (или фрагмент), куда ведёт ссылка.
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
+    # ion-chip-icon         | Иконка, которая размещается внутри chip
+    
+      ▪ name                | Имя для элемента иконки
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
+    # ion-grid              | CSS-сетка для создания layout'ов
+
+      ▪ fixed               | [false] Будет ли сетка иметь fix ширину, на основе ширины экрана?
+
+    # ion-col               | Column-компонент для размещения внутри grid, внутри row
+
+      ▪ offset              | На какое кол-во колонок сместить текущую вправо
+      ▪ offsetLg            | (для lg-экранов) На какое кол-во колонок сместить текущую вправо
+      ▪ offsetMd            | (для md-экранов) На какое кол-во колонок сместить текущую вправо
+      ▪ offsetSm            | (для sm-экранов) На какое кол-во колонок сместить текущую вправо
+      ▪ offsetXl            | (для xl-экранов) На какое кол-во колонок сместить текущую вправо
+      ▪ offsetXs            | (для xs-экранов) На какое кол-во колонок сместить текущую вправо
+      ▪ pull                | На какое кол-во колонок сместить текущую влево
+      ▪ pullLg              | (для lg-экранов) На какое кол-во колонок сместить текущую влево
+      ▪ pullMd              | (для md-экранов) На какое кол-во колонок сместить текущую влево
+      ▪ pullSm              | (для sm-экранов) На какое кол-во колонок сместить текущую влево
+      ▪ pullXl              | (для xl-экранов) На какое кол-во колонок сместить текущую влево
+      ▪ pullXs              | (для xs-экранов) На какое кол-во колонок сместить текущую влево
+      ▪ push                | На какое кол-во колонок push'нуть текущую вправо
+      ▪ pushLg              | (для lg-экранов) На какое кол-во колонок push'нуть текущую вправо
+      ▪ pushMd              | (для md-экранов) На какое кол-во колонок push'нуть текущую вправо
+      ▪ pushSm              | (для sm-экранов) На какое кол-во колонок push'нуть текущую вправо
+      ▪ pushXl              | (для xl-экранов) На какое кол-во колонок push'нуть текущую вправо
+      ▪ pushXs              | (для xs-экранов) На какое кол-во колонок push'нуть текущую вправо
+      ▪ size                | Размер колонки в колонках (n/12)
+      ▪ sizeLg              | (для lg-экранов) Размер колонки в колонках (n/12)
+      ▪ sizeMd              | (для md-экранов) Размер колонки в колонках (n/12)
+      ▪ sizeSm              | (для sm-экранов) Размер колонки в колонках (n/12)
+      ▪ sizeXl              | (для xl-экранов) Размер колонки в колонках (n/12)
+      ▪ sizeXs              | (для xs-экранов) Размер колонки в колонках (n/12)
+
+      Ⓐ align-self-start      | Колонка будет выравнена во вертикали на top
+      Ⓐ align-self-center     | Колонка будет выравнена во вертикали на center
+      Ⓐ align-self-end        | Колонка будет выравнена во вертикали на bottom
+      Ⓐ align-self-stretch    | Колонка будет растянута по вертикали, чтобы занять 100% высоты row
+      Ⓐ align-self-baseline   | Колонка будет выравнена во вертикали на baseline
+
+    # ion-row               | Row-компонент для размещения внутри grid
+
+      Ⓐ nowrap                  | Приведение столбцов в одну строку
+      Ⓐ wrap-reverse            | Реверс порядка столбцов
+      Ⓐ align-items-start       | Вертикальное выравнивание столбцов на top
+      Ⓐ align-items-center      | Вертикальное выравнивание столбцов на center
+      Ⓐ align-items-end         | Вертикальное выравнивание столбцов на end
+      Ⓐ align-items-stretch     | Растягивание всех колонок по вертикали до высоты row
+      Ⓐ align-items-baseline    | Вертикальное выравнивание столбцов на baseline
+      Ⓐ justify-content-start   | Горизонтальное выравнивание колонок на старт
+      Ⓐ justify-content-center  | Горизонтальное выравнивание колонок на центр
+      Ⓐ justify-content-end     | Горизонтальное выравнивание колонок на конец
+      Ⓐ justify-content-around  | Горизонтальное выравнивание с равным расстоянием между
+      Ⓐ justify-content-between | Горизонтальное выравнивание с half-size расстоянием на обоих концах
+
+    # ion-content           | Главная зона для контента, со скроллом
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения.
+      ▪ forceOverscroll     | [false] Выключить ли bounce-эффект?
+      ▪ fullscreen          | [false] Будет ли контент скроллиться за header'ом и footer'ом?
+      ▪ scrollEnabled       | [true] Включить ли скролл в content через scroll?
+      ▪ scrollEvents        | [false] Включить ли возбуждение событий scroll'а?
+
+      • getScrollElement()  | Получить скролл элемента
+
     # ion-datetime          |
+
+      ► ionCancel           | Возбуждается, когда выбор datetime был отменён
+      ► ionStyle            | Возбуждается при изменение styles
 
     # ion-fab               |
     # ion-fab-button        |
@@ -6936,115 +7016,1102 @@
 
 > ion-chip       
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Сложные сущности в небольших блоках, как контакт.
 
   ▪ Описание
 
+    Chip может содержать несколько разных элементов, 
+    таких как avatar, text, buttons и icons.
+
   ▪ Использование
+
+    <ion-chip>
+      <ion-label>Default</ion-label>
+    </ion-chip>
+
+    <ion-chip>
+      <ion-label color="secondary">Secondary Label</ion-label>
+    </ion-chip>
+
+    <ion-chip color="secondary">
+      <ion-label color="dark">Secondary w/ Dark label</ion-label>
+    </ion-chip>
+
+    <ion-chip>
+      <ion-icon name="pin"></ion-icon>
+      <ion-label>Default</ion-label>
+    </ion-chip>
+
+    <ion-chip>
+      <ion-icon name="heart" color="dark"></ion-icon>
+      <ion-label>Default</ion-label>
+    </ion-chip>
+
+    <ion-chip>
+      <ion-label>Button Chip</ion-label>
+      <ion-chip-button fill="clear" color="light">
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip-button>
+    </ion-chip>
+
+    <ion-chip>
+      <ion-icon name="pin" color="primary"></ion-icon>
+      <ion-label>Icon Chip</ion-label>
+      <ion-chip-button>
+        <ion-icon name="close"></ion-icon>
+      </ion-chip-button>
+    </ion-chip>
+
+    <ion-chip>
+      <ion-avatar>
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+      <ion-label>Avatar Chip</ion-label>
+      <ion-chip-button fill="clear" color="dark">
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip-button>
+    </ion-chip>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
 
 > ion-chip-button
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
+  Inset-кнопка, которая размещается внутри chip.
 
   ▪ Использование
 
+    <ion-chip>
+      <ion-label>Button Chip</ion-label>
+      <ion-chip-button fill="clear" color="light">
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip-button>
+    </ion-chip>
+
+    <ion-chip>
+      <ion-icon name="pin" color="primary"></ion-icon>
+      <ion-label>Icon Chip</ion-label>
+      <ion-chip-button>
+        <ion-icon name="close"></ion-icon>
+      </ion-chip-button>
+    </ion-chip>
+
+    <ion-chip>
+      <ion-avatar>
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+      <ion-label>Avatar Chip</ion-label>
+      <ion-chip-button fill="clear" color="dark">
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip-button>
+    </ion-chip>
+
   ▪ Свойства
 
-  ▪ Методы
+    ▪ disabled 
+      - [false] Может ли пользователь взаимодействовать с chip button?
+      - Атрибуты: 
 
-  ▪ События
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ fill 
+      - Установить значение clear, чтобы вкл прозрачный стиль для кнопки
+      - Атрибуты: 
+
+        ▪ fill
+               
+      - Тип: string
+
+    ▪ href 
+      - Содержит URL (или фрагмент), куда ведёт ссылка.
+        Если это значение задано, anchor-тэг будет отрисован.
+      - Атрибуты: 
+
+        ▪ href
+               
+      - Тип: string      
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
 
 > ion-chip-icon  
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Иконка, которая размещается внутри chip.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ name 
+      - Имя для элемента иконки.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string      
 
 > ion-grid
 
-  Не-fullscreen модалка с текстом и элементами формы
+  CSS-сетка для создания layout'ов.
 
   ▪ Описание
 
+    Сетка является мощной системой на flexbox'ах, 
+    позволяющей создавать кастомные layout'ы.
+
+    Сетка состоит из 3-х основных компонентов:
+
+      ▪ grid
+      ▪ row
+      ▪ column
+
+    Column будет стараться заполнить весь row по ширине.
+    
+    Если в row несколько columns, то последние будут
+    менять размер так, чтобы все влезли в row.
+
+    По умолчанию, в одном row может быть максимум 12 
+    columns. Это можно менять через css-переменные.
+
+    С помощью различных брейкпоинтов, основанных на ширине
+    экрана, можно адаптировать layout под оную.
+
+    Подробнее про всё это читайте в главе:
+      А6. Организация layout'а в Ionic-приложении
+
   ▪ Использование
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          ion-col
+        </ion-col>
+        <ion-col>
+          ion-col
+        </ion-col>
+        <ion-col>
+          ion-col
+        </ion-col>
+        <ion-col>
+          ion-col
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="6">
+          ion-col [size="6"]
+        </ion-col>
+        <ion-col>
+          ion-col
+        </ion-col>
+        <ion-col>
+          ion-col
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="3">
+          ion-col [size="3"]
+        </ion-col>
+        <ion-col>
+          ion-col
+        </ion-col>
+        <ion-col size="3">
+          ion-col [size="3"]
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="3">
+          ion-col [size="3"]
+        </ion-col>
+        <ion-col size="3" offset="3">
+          ion-col [size="3"] [offset="3"]
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          ion-col
+        </ion-col>
+        <ion-col>
+          ion-col
+          <br>#
+        </ion-col>
+        <ion-col>
+          ion-col
+          <br>#
+          <br>#
+        </ion-col>
+        <ion-col>
+          ion-col
+          <br>#
+          <br>#
+          <br>#
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col align-self-start>
+          ion-col [start]
+        </ion-col>
+        <ion-col align-self-center>
+          ion-col [center]
+        </ion-col>
+        <ion-col align-self-end>
+          ion-col [end]
+        </ion-col>
+        <ion-col>
+          ion-col
+          <br>#
+          <br>#
+        </ion-col>
+      </ion-row>
+
+      <ion-row align-items-start>
+        <ion-col>
+          [start] ion-col
+        </ion-col>
+        <ion-col>
+          [start] ion-col
+        </ion-col>
+        <ion-col align-self-end>
+          [start] ion-col [end]
+        </ion-col>
+        <ion-col>
+          ion-col
+          <br>#
+          <br>#
+        </ion-col>
+      </ion-row>
+
+      <ion-row align-items-center>
+        <ion-col>
+          [center] ion-col
+        </ion-col>
+        <ion-col>
+          [center] ion-col
+        </ion-col>
+        <ion-col>
+          [center] ion-col
+        </ion-col>
+        <ion-col>
+          ion-col
+          <br>#
+          <br>#
+        </ion-col>
+      </ion-row>
+
+      <ion-row align-items-end>
+        <ion-col>
+          [end] ion-col
+        </ion-col>
+        <ion-col align-self-start>
+          [end] ion-col [start]
+        </ion-col>
+        <ion-col>
+          [end] ion-col
+        </ion-col>
+        <ion-col>
+          ion-col
+          <br>#
+          <br>#
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12" size-sm>
+          ion-col [size="12"] [size-sm]
+        </ion-col>
+        <ion-col size="12" size-sm>
+          ion-col [size="12"] [size-sm]
+        </ion-col>
+        <ion-col size="12" size-sm>
+          ion-col [size="12"] [size-sm]
+        </ion-col>
+        <ion-col size="12" size-sm>
+          ion-col [size="12"] [size-sm]
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12" size-md>
+          ion-col [size="12"] [size-md]
+        </ion-col>
+        <ion-col size="12" size-md>
+          ion-col [size="12"] [size-md]
+        </ion-col>
+        <ion-col size="12" size-md>
+          ion-col [size="12"] [size-md]
+        </ion-col>
+        <ion-col size="12" size-md>
+          ion-col [size="12"] [size-md]
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="6" size-lg offset="3">
+          ion-col [size="6"] [size-lg] [offset="3"]
+        </ion-col>
+        <ion-col size="3" size-lg>
+          ion-col [size="3"] [size-lg]
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
   ▪ Свойства
 
+    ▪ fixed 
+      - [false] Будет ли сетка иметь fix ширину, на основе ширины экрана?
+      - Атрибуты: 
+
+        ▪ fixed
+               
+      - Тип: boolean  
+ 
   ▪ Методы
 
   ▪ События
 
 > ion-col 
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Column-компонент для размещения внутри grid, внутри row.
 
   ▪ Описание
 
-  ▪ Использование
+    Column будет стараться заполнить весь row по ширине.
+    
+    Если в row несколько columns, то последние будут
+    менять размер так, чтобы все влезли в row.
+
+    Подробнее про всё это читайте в главе:
+      А6. Организация layout'а в Ionic-приложении
+
+  ▪ Атрибуты
+
+    ▪ align-self-start
+
+      Добавляет: align-self: flex-start
+      Колонка будет выравнена во вертикали на top.
+
+    ▪ align-self-center
+
+      Добавляет: align-self: flex-center
+      Колонка будет выравнена во вертикали на center.
+
+    ▪ align-self-end
+
+      Добавляет: align-self: flex-end
+      Колонка будет выравнена во вертикали на bottom.
+
+    ▪ align-self-stretch
+
+      Добавляет: align-self: stretch
+      Колонка будет растянута по вертикали, чтобы занять 100% высоты row.
+
+    ▪ align-self-baseline
+
+      Добавляет: align-self: baseline
+      Колонка будет выравнена во вертикали на baseline.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ offset
+      - На какое кол-во колонок сместить текущую вправо.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ offset
+               
+      - Тип: string
 
+    ▪ offsetLg
+      - (для lg-экранов) На какое кол-во колонок сместить текущую вправо.
+      - Атрибуты: 
+
+        ▪ offset-lg
+               
+      - Тип: string
+
+    ▪ offsetMd
+      - (для md-экранов) На какое кол-во колонок сместить текущую вправо.
+      - Атрибуты: 
+
+        ▪ offset-md
+               
+      - Тип: string
+
+    ▪ offsetSm
+      - (для sm-экранов) На какое кол-во колонок сместить текущую вправо.
+      - Атрибуты: 
+
+        ▪ offset-sm
+               
+      - Тип: string
+
+    ▪ offsetXl
+      - (для xl-экранов) На какое кол-во колонок сместить текущую вправо.
+      - Атрибуты: 
+
+        ▪ offset-xl
+               
+      - Тип: string
+
+    ▪ offsetXs
+      - (для xs-экранов) На какое кол-во колонок сместить текущую вправо.
+      - Атрибуты: 
+
+        ▪ offset-xs
+               
+      - Тип: string
+
+    ▪ pull
+      - На какое кол-во колонок сместить текущую влево.
+      - Атрибуты: 
+
+        ▪ pull
+               
+      - Тип: string
+
+    ▪ pullLg
+      - (для lg-экранов) На какое кол-во колонок сместить текущую влево.
+      - Атрибуты: 
+
+        ▪ pull-lg
+               
+      - Тип: string
+
+    ▪ pullMd
+      - (для md-экранов) На какое кол-во колонок сместить текущую влево.
+      - Атрибуты: 
+
+        ▪ pull-md
+               
+      - Тип: string
+
+    ▪ pullSm
+      - (для sm-экранов) На какое кол-во колонок сместить текущую влево.
+      - Атрибуты: 
+
+        ▪ pull-sm
+               
+      - Тип: string
+
+    ▪ pullXl
+      - (для xl-экранов) На какое кол-во колонок сместить текущую влево.
+      - Атрибуты: 
+
+        ▪ pull-xl
+               
+      - Тип: string
+
+    ▪ pullXs
+      - (для xs-экранов) На какое кол-во колонок сместить текущую влево.
+      - Атрибуты: 
+
+        ▪ pull-xs
+               
+      - Тип: string
+
+    ▪ push
+      - На какое кол-во колонок push'нуть текущую вправо.
+      - Атрибуты: 
+
+        ▪ push
+               
+      - Тип: string     
+
+    ▪ pushLg
+      - (для lg-экранов) На какое кол-во колонок push'нуть текущую вправо.
+      - Атрибуты: 
+
+        ▪ push-lg
+               
+      - Тип: string
+
+    ▪ pushMd
+      - (для md-экранов) На какое кол-во колонок push'нуть текущую вправо.
+      - Атрибуты: 
+
+        ▪ push-md
+               
+      - Тип: string
+
+    ▪ pushSm
+      - (для sm-экранов) На какое кол-во колонок push'нуть текущую вправо.
+      - Атрибуты: 
+
+        ▪ push-sm
+               
+      - Тип: string
+
+    ▪ pushXl
+      - (для xl-экранов) На какое кол-во колонок push'нуть текущую вправо.
+      - Атрибуты: 
+
+        ▪ push-xl
+               
+      - Тип: string
+
+    ▪ pushXs
+      - (для xs-экранов) На какое кол-во колонок push'нуть текущую вправо.
+      - Атрибуты: 
+
+        ▪ push-xs
+               
+      - Тип: string
+
+    ▪ size
+      - Размер колонки в колонках (n/12).
+      - Атрибуты: 
+
+        ▪ size
+               
+      - Тип: string
+
+    ▪ sizeLg
+      - (для lg-экранов) Размер колонки в колонках (n/12).
+      - Атрибуты: 
+
+        ▪ size-lg
+               
+      - Тип: string
+
+    ▪ sizeMd
+      - (для md-экранов) Размер колонки в колонках (n/12).
+      - Атрибуты: 
+
+        ▪ size-md
+               
+      - Тип: string
+
+    ▪ sizeSm
+      - (для sm-экранов) Размер колонки в колонках (n/12).
+      - Атрибуты: 
+
+        ▪ size-sm
+               
+      - Тип: string
+
+    ▪ sizeXl
+      - (для xl-экранов) Размер колонки в колонках (n/12).
+      - Атрибуты: 
+
+        ▪ size-xl
+               
+      - Тип: string
+
+    ▪ sizeXs
+      - (для xs-экранов) Размер колонки в колонках (n/12).
+      - Атрибуты: 
+
+        ▪ size-xs
+               
+      - Тип: string
+  
 > ion-row 
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Row-компонент для размещения внутри grid
 
   ▪ Описание
 
-  ▪ Использование
+    Может содержать различное количество col-компонентов.
 
-  ▪ Свойства
+    Подробнее про всё это читайте в главе:
+      А6. Организация layout'а в Ionic-приложении    
 
-  ▪ Методы
+  ▪ Атрибуты
 
-  ▪ События
+    ▪ nowrap
+
+      Добавляет flex-wrap: nowrap.
+      Приведение столбцов в одну строку
+
+    ▪ wrap-reverse
+
+      Добавляет flex-wrap: wrap-reverse
+      Реверс порядка столбцов.
+
+    ▪ align-items-start
+
+      Добавляет align-items: flex-start
+      Вертикальное выравнивание столбцов на top,
+      игнорирование их собственных настроек выравнивания.
+
+    ▪ align-items-center
+
+      Добавляет align-items: flex-center
+      Вертикальное выравнивание столбцов на center,
+      игнорирование их собственных настроек выравнивания.
+
+    ▪ align-items-end
+
+      Добавляет align-items: flex-end
+      Вертикальное выравнивание столбцов на end,
+      игнорирование их собственных настроек выравнивания.
+
+    ▪ align-items-stretch
+
+      Добавляет align-items: stretch
+      Растягивание всех колонок по вертикали до высоты row,
+      игнорирование их собственных настроек выравнивания.
+
+    ▪ align-items-baseline
+
+      Добавляет align-items: baseline
+      Вертикальное выравнивание столбцов на baseline,
+      игнорирование их собственных настроек выравнивания.
+
+    ▪ justify-content-start
+
+      Добавляет justify-content: start
+      Горизонтальное выравнивание колонок на старт.
+
+    ▪ justify-content-center
+
+      Добавляет justify-content: center
+      Горизонтальное выравнивание колонок на центр.
+
+    ▪ justify-content-end
+
+      Добавляет justify-content: end
+      Горизонтальное выравнивание колонок на конец.
+
+    ▪ justify-content-around
+
+      Добавляет justify-content: space-around
+      Горизонтальное выравнивание с равным расстоянием между.
+
+    ▪ justify-content-between
+
+      Добавляет justify-content: space-between
+      Горизонтальное выравнивание с half-size расстоянием
+      на обоих концах.
 
 > ion-content 
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Главная зона для контента, со скроллом.
 
   ▪ Описание
 
+    Должен быть лишь 1 content в single view component.
+
   ▪ Использование
+
+    HTML:
+
+      <ion-content></ion-content>
+
+    JS:
+
+      var content = document.querySelector('ion-content');
+      content.scrollEvents = true;
+      content.addEventListener('ionScrollStart', () => console.log('scroll start'));
+      content.addEventListener('ionScroll', (ev) => console.log('scroll', ev.detail));
+      content.addEventListener('ionScrollEnd', () => console.log('scroll end'));    
 
   ▪ Свойства
 
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ forceOverscroll
+      - [false] Выключить ли bounce-эффект?
+        Если true, и контент не вызывает overflow scroll,
+        скроллинг к началу/концу контента будет вызывать 
+        bounce-эффект (подпрыгивание).
+        Если контент достигает краёв ionContent, ничего
+        не изменится. Имейте в виду, что оно не отключает
+        системный bounce-эффект на iOS (это эффект на 
+        уровне системы iOS)
+
+      - Атрибуты: 
+
+        ▪ force-overscroll
+               
+      - Тип: boolean
+
+    ▪ fullscreen
+      - [false] Будет ли контент скроллиться за header'ом и footer'ом?
+      - Атрибуты: 
+
+        ▪ fullscreen
+               
+      - Тип: boolean 
+
+    ▪ scrollEnabled
+      - [true] Включить ли скролл в content через scroll?
+      - Атрибуты: 
+
+        ▪ scroll-enabled
+               
+      - Тип: boolean
+
+    ▪ scrollEvents
+      - [false] Включить ли возбуждение событий scroll'а?
+        Они отключены по умолчанию по соображениям производительности.
+      - Атрибуты: 
+
+        ▪ scroll-events
+               
+      - Тип: boolean
+
   ▪ Методы
 
-  ▪ События
+    ▪ getScrollElement()  | Получить скролл элемента
 
 > ion-datetime
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Datetime-picker, который вылазит снизу экрана.
 
   ▪ Описание
 
+    Datetime представляет собой интерфейс, позволяющий
+    пользователю выбирать дату и время, и вылезающий
+    снизу экрана.
+
+    Отображает прокручиваемые колонки, которые могут
+    быть использованы для индивидуального выбора
+    года, месяца, даты, часа, минуты. 
+
+    Datetime аналогичен нативному элементу input типа
+    datetime-local. Однако, компонент datetime Ionic'а 
+    позволяет легко отображать дату и время в предпочитаемом
+    формате, и управлять значениями datetime.
+
+    Подробнее о работе этого компонента см.официальную
+    документацию:
+
+      https://beta.ionicframework.com/docs/api/datetime
+
   ▪ Использование
+
+    HTML: 
+
+      <ion-item>
+        <ion-label>MMMM</ion-label>
+        <ion-datetime display-format="MMMM" value="2012-12-15T13:47:20.789"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>MM DD YY</ion-label>
+        <ion-datetime display-format="MM DD YY" placeholder="Select Date"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Disabled</ion-label>
+        <ion-datetime id="dynamicDisabled" display-format="MM DD YY" disabled value="1994-12-15"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>YYYY</ion-label>
+        <ion-datetime id="customPickerOptions" placeholder="Custom Options" display-format="YYYY" min="1981" max="2002"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">MMMM YY</ion-label>
+        <ion-datetime display-format="MMMM YY" min="1989-06-04" max="2004-08-23" value="1994-12-15T13:47:20.789"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">MM/DD/YYYY</ion-label>
+        <ion-datetime display-format="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" value="2002-09-23T15:03:46.789"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">MM/DD/YYYY</ion-label>
+        <ion-datetime display-format="MM/DD/YYYY" min="1994-03-14" max="2012-12-09"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>DDD. MMM DD, YY (custom locale)</ion-label>
+        <ion-datetime id="customDayShortNames" value="1995-04-15" min="1990-02" max="2000"
+          display-format="DDD. MMM DD, YY"
+          month-short-names="jan, feb, mar, apr, mai, jun, jul, aug, sep, okt, nov, des"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>D MMM YYYY H:mm</ion-label>
+        <ion-datetime display-format="D MMM YYYY H:mm" min="1997" max="2010" value="2005-06-17T11:06Z"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>DDDD MMM D, YYYY</ion-label>
+        <ion-datetime display-format="DDDD MMM D, YYYY" min="2005" max="2016" value="2008-09-02"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>HH:mm</ion-label>
+        <ion-datetime display-format="HH:mm"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>h:mm a</ion-label>
+        <ion-datetime display-format="h:mm a"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>hh:mm A (15 min steps)</ion-label>
+        <ion-datetime display-format="h:mm A" minute-values="0,15,30,45"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Leap years, summer months</ion-label>
+        <ion-datetime id="customYearValues" display-format="MM/YYYY" picker-format="MMMM YYYY" month-values="6,7,8"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Specific days/months/years</ion-label>
+        <ion-datetime month-values="6,7,8" year-values="2014,2015" day-values="01,02,03,04,05,06,08,09,10, 11, 12, 13, 14" display-format="DD/MMM/YYYY"></ion-datetime>
+      </ion-item>
+
+    JS: 
+
+      var yearValuesArray = [2020, 2016, 2008, 2004, 2000, 1996];
+      var customYearValues = document.getElementById('customYearValues');
+      customYearValues.yearValues = yearValuesArray;
+
+      var dayShortNamesArray = [
+        's\u00f8n',
+        'man',
+        'tir',
+        'ons',
+        'tor',
+        'fre',
+        'l\u00f8r'
+      ];
+      var customDayShortNames = document.getElementById('customDayShortNames');
+      customDayShortNames.dayShortNames = dayShortNamesArray;
+
+      var customPickerButtons = {
+        buttons: [{
+          text: 'Save',
+          handler: () => console.log('Clicked Save!')
+        }, {
+          text: 'Log',
+          handler: () => {
+            console.log('Clicked Log. Do not Dismiss.');
+            return false;
+          }
+        }]
+      }
+      var customPickerOptions = document.getElementById('customPickerOptions');
+      customPickerOptions.pickerOptions = customPickerButtons;    
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ cancelText
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ dayNames
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ dayShortNames
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ dayValues
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ disabled
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ displayFormat
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ doneText
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ hourValues
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ max
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ min
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ minuteValues
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ monthNames
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ monthShortNames
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ monthValues
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ pickerFormat
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ pickerOptions
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ placeholder
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ value
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
+
+    ▪ yearValues
+      - 
+      - Атрибуты: 
+
+        ▪ 
+               
+      - Тип: 
 
   ▪ События
+
+    ▪ ionCancel   | Возбуждается, когда выбор datetime был отменён
+    ▪ ionStyle    | Возбуждается при изменение styles
 
 > ion-fab       
 
