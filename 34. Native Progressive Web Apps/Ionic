@@ -5212,9 +5212,14 @@
       ► ionAlertWillDismiss | Возбуждается перед закрытием alert
       ► ionAlertWillPresent | Возбуждается перед представлением alert
 
-    # ion-anchor            | 
-    # ion-app               | 
-    # ion-avatar            | 
+    # ion-anchor            | Используется для перехода к указанной ссылке
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ href                | Содержит URL (или фрагмент), куда ведёт ссылка
+      ▪ routerDirection     | При использовании роутера, указать направление анимации при переходе на др.страницу через href
+
+    # ion-app               | Элемент-контейнер для Ionic-приложения
+    # ion-avatar            | Круговой компонент, оборачивающий изображение или иконку
     # ion-back-button       | 
     # ion-backdrop          | 
     # ion-badge             | 
@@ -5322,25 +5327,28 @@
 
   Programmatic API
 
-    # ion-action-sheet-controller  | Программный контроль над компонентом action sheet
+    # ion-action-sheet-controller   | Программный контроль над компонентом action sheet
 
-      • create()            | Создать Action Sheet, передав опции
-      • dismiss()           | Закрыть Action Sheet
-      • getTop()            | Получить самый недавний Action Sheet
+      • create()                    | Создать Action Sheet, передав опции
+      • dismiss()                   | Закрыть Action Sheet
+      • getTop()                    | Получить самый недавний Action Sheet
 
-    # ion-alert-controller         | Программный контроль над компонентом alert
+    # ion-alert-controller          | Программный контроль над компонентом alert
 
-      • create()            | Создать Alert, передав опции
-      • dismiss()           | Закрыть Alert
-      • getTop()            | Получить самый недавний Alert
+      • create()                    | Создать Alert, передав опции
+      • dismiss()                   | Закрыть Alert
+      • getTop()                    | Получить самый недавний Alert
 
-    # ion-animation-controller     |
-    # ion-loading-controller       |
-    # ion-menu-controller          |
-    # ion-picker-controller        |
-    # ion-popover-controller       |
-    # ion-refresher-content        |
-    # ion-toast-controller         |
+    # ion-animation-controller      | Используется для создания экземпляра анимации
+
+      • create()                    | Создать экземпляр анимации
+
+    # ion-loading-controller        | 
+    # ion-menu-controller           | 
+    # ion-picker-controller         | 
+    # ion-popover-controller        | 
+    # ion-refresher-content         | 
+    # ion-toast-controller          | 
 
 --------------------------------------
 
@@ -5974,45 +5982,93 @@
 
 > ion-anchor     
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Используется для перехода к указанной ссылке.
 
   ▪ Описание
 
-  ▪ Использование
+    Как и аналогичный тег в браузере, у него есть свойство
+    href для передачи локации, и direction - чтобы задать
+    направление анимации.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения. 
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+
+    ▪ href 
+      - Содержит URL (или фрагмент), куда ведёт ссылка.
+        Если это значение задано, anchor-тэг будет отрисован.
+      - Атрибуты: 
+
+        ▪ href
+               
+      - Тип: string
+
+    ▪ routerDirection 
+      - При использовании роутера, указать направление анимации при переходе на др.страницу через href.
+      - Атрибуты: 
+
+        ▪ router-direction
+               
+      - Тип: string            
 
 > ion-app        
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Элемент-контейнер для Ionic-приложения.
 
   ▪ Описание
 
-  ▪ Использование
-
-  ▪ Свойства
-
-  ▪ Методы
-
-  ▪ События
+    Во всём проекте должен быть лишь 1-ин элемент <ion-app>.
+    Внутри может быть много Ionic-компонентов, включая
+    menus, headers, content, footers. Overlay-компоненты
+    прикрепляются к <ion-app> при их показе.
 
 > ion-avatar     
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Круговой компонент, оборачивающий изображение или иконку.
 
   ▪ Описание
 
+    Его можно использовать, чтобы представлять человека 
+    или объект.
+
+    Avatar можно использовать как самостоятельно, так и 
+    внутри другого элемента.
+
+    При размерещиня avatar внутри <ion-chip> или <ion-item>,
+    avatar подстроит свои размеры под размер родительского
+    компонента.
+
+    Чтобы отпозиционировать аватар в левой или в правой части
+    item'а, установите slot на start или end соответственно
+    (см.пример ниже).
+
   ▪ Использование
 
-  ▪ Свойства
+    <ion-avatar>
+      <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+    </ion-avatar>
 
-  ▪ Методы
+    <ion-chip>
+      <ion-avatar>
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+      <ion-label>Chip Avatar</ion-label>
+    </ion-chip>
 
-  ▪ События
+    <ion-item>
+      <ion-avatar slot="start">
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+      <ion-label>Item Avatar</ion-label>
+    </ion-item>
 
 > ion-back-button
 
@@ -7293,6 +7349,15 @@
     ▪ create()  | Создать Alert, передав опции в create
     ▪ dismiss() | Закрыть открытый Alert
     ▪ getTop()  | Получить самый недавний Alert
+
+> ion-animation-controller
+
+  Используется для создания экземпляра анимации.
+
+  ▪ Методы
+
+    ▪ create()  | Создать экземпляр анимации
+
 
 
 А11. Ionic CLI (справочник)
