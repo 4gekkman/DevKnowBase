@@ -5220,17 +5220,66 @@
 
     # ion-app               | Элемент-контейнер для Ionic-приложения
     # ion-avatar            | Круговой компонент, оборачивающий изображение или иконку
-    # ion-back-button       | 
-    # ion-backdrop          | 
-    # ion-badge             | 
+    # ion-back-button       | Кнопка "назад" для перехода на 1 шаг назад по истории приложения
 
-    # ion-button            |
-    # ion-buttons           |
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ defaultHref         | URL по умолчанию для навигации "назад", когда в стеке истории уже пусто
+      ▪ icon                | Какую иконку (имя) использовать для back button
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ text                | Какой текст показывать на кнопке
 
-    # ion-card              |
-    # ion-card-content      |
-    # ion-card-header       |
-    # ion-card-subtitle     |
+    # ion-backdrop          | Fullscreen-компонент, перекрывающий другие компоненты
+
+      ▪ stopPropagation     | [true] Останавливать ли всплытие события при тапе на backdrop?
+      ▪ tappable            | [true] Возбуждать ли при клике/тапе по backdrop событие ionBackdropTap?
+      ▪ visible             | [true] Видим ли backdrop?
+
+      ► ionBackdropTap      | Возбуждается при клике/тапе по backdrop
+
+    # ion-badge             | Inline-block элемент, который обычно возникает рядом с другим элементом
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
+    # ion-button            | Кликабельный элемент "кнопка"
+
+      ▪ buttonType          | Тип кнопки: "button", "bar-button"
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения.
+      ▪ disabled            | [false] Отключить ли кнопку (на неё нельзя нажать)?
+      ▪ expand              | Делает кнопке block вместо inline-block, т.е. full-width: "block" (с border'ами справа/слева), "full" (без border'ов справа/слева)
+      ▪ fill                | [clear] "Clear" - прозрачный фон и границы; "outline" - прозрачный фон, границы видны; "solid" - непрозрачный фон и границы.
+      ▪ href                | Содержит URL (или фрагмент), куда ведёт ссылка.
+      ▪ mode                | Какие стили использовать, "ios" или "md".
+      ▪ routerDirection     | При использовании роутера, указать направление анимации при переходе на др.страницу через href
+      ▪ shape               | Форма кнопки, возможные значения: "round"
+      ▪ size                | Размер кнопки. Значения: "small", "default", "large"
+      ▪ strong              | [false] Включить ли для кнопки более жирный шрифт?
+      ▪ type                | [button] Тип кнопки. Значения: "submit", "reset", "button"
+
+      ► ionBlur             | Возбуждается, когда кнопка теряет фокус
+      ► ionFocus            | Возбуждается, когда кнопка получает фокус
+
+    # ion-buttons           | Компонент-контейнер для элементов button
+    # ion-card              | Карточки, стандартный элемент UI для размещения контента
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
+    # ion-card-content      | Дочерний для ion-card компонент для контента
+
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
+    # ion-card-header       | Дочерний для ion-card компонент для заголовка
+
+      ▪ translucent         | [false] Включить ли полупрозрачность
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
+    # ion-card-subtitle     | Дочерний для ion-card компонент для подзаголовка
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+    
     # ion-card-title        |
 
     # ion-checkbox          |
@@ -6072,129 +6121,671 @@
 
 > ion-back-button
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Кнопка "назад" для перехода на 1 шаг назад по истории приложения.
 
   ▪ Описание
 
+    Она достаточно умна, чтобы знать, что отрисовывать, 
+    основываясь на mode, и когда отображаться, основываясь
+    на навигационном стеке.
+
+    Чтоби изменить надпись на back button, используйте
+    свойства text и icon.
+
   ▪ Использование
+
+    <!-- Default back button -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <!-- Back button with a default href -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button default-href="home"></ion-back-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <!-- Back button with custom text and icon -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button text="Volver" icon="close"></ion-back-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <!-- Back button with no text and custom icon -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button text="" icon="add"></ion-back-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <!-- Danger back button next to a menu button -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+          <ion-back-button color="danger"></ion-back-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения. 
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
 
-> ion-backdrop   
+    ▪ defaultHref 
+      - URL по умолчанию для навигации "назад", когда в стеке истории уже пусто.
+      - Атрибуты: 
 
-  Не-fullscreen модалка с текстом и элементами формы
+        ▪ default-href
+               
+      - Тип: string 
+
+    ▪ icon 
+      - Какую иконку (имя) использовать для back button.
+      - Атрибуты: 
+
+        ▪ icon
+               
+      - Тип: string 
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string 
+
+    ▪ text 
+      - Какой текст показывать на кнопке.
+      - Атрибуты: 
+
+        ▪ text
+               
+      - Тип: string                         
+
+> ion-backdrop
+
+  Fullscreen-компонент, перекрывающий другие компоненты.
 
   ▪ Описание
 
+    Полезен позади компонентов, которые transition'ятся
+    на передний план перед прочим контентом, и может
+    быть использован для закрытия этого компонента.
+
   ▪ Использование
+
+    HTML:
+
+      <!-- Default backdrop -->
+      <ion-backdrop></ion-backdrop>
+
+      <!-- Backdrop that is not tappable -->
+      <ion-backdrop tappable="false"></ion-backdrop>
+
+      <!-- Backdrop that is not visible -->
+      <ion-backdrop visible="false"></ion-backdrop>
+
+      <!-- Backdrop with propagation -->
+      <ion-backdrop stop-propagation="false"></ion-backdrop>
+
+      <!-- Backdrop that sets dynamic properties -->
+      <ion-backdrop id="customBackdrop"></ion-backdrop>
+
+    JS:
+
+      var backdrop = document.getElementById('customBackdrop');
+      backdrop.visible = false;
+      backdrop.tappable = false;
+      backdrop.stopPropagation = false;
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ stopPropagation 
+      - [true] Останавливать ли всплытие события при тапе на backdrop?
+      - Атрибуты: 
+
+        ▪ stop-propagation
+               
+      - Тип: boolean 
+
+    ▪ tappable 
+      - [true] Возбуждать ли при клике/тапе по backdrop событие ionBackdropTap?
+      - Атрибуты: 
+
+        ▪ tappable
+               
+      - Тип: boolean 
+
+    ▪ visible 
+      - [true] Видим ли backdrop?
+      - Атрибуты: 
+
+        ▪ visible
+               
+      - Тип: boolean             
 
   ▪ События
+
+    ▪ ionBackdropTap  | Возбуждается при клике/тапе по backdrop
 
 > ion-badge 
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Inline-block элемент, который обычно возникает рядом с другим элементом.
 
   ▪ Описание
 
+    Часто, badge содержит внутри какой-то текст или цифры.
+    Часто badge используют в качестве уведомления о том,
+    что появились дополнительные элементы, связанные с 
+    элементом, и показывать, как много их появилось.
+
   ▪ Использование
+
+    <!-- Default -->
+    <ion-badge>99</ion-badge>
+
+    <!-- Colors -->
+    <ion-badge color="primary">11</ion-badge>
+    <ion-badge color="secondary">22</ion-badge>
+    <ion-badge color="tertiary">33</ion-badge>
+    <ion-badge color="success">44</ion-badge>
+    <ion-badge color="warning">55</ion-badge>
+    <ion-badge color="danger">66</ion-badge>
+    <ion-badge color="light">77</ion-badge>
+    <ion-badge color="medium">88</ion-badge>
+    <ion-badge color="dark">99</ion-badge>
+
+    <!-- Item with badge on left and right -->
+    <ion-item>
+      <ion-badge slot="start">11</ion-badge>
+      <ion-label>My Item</ion-label>
+      <ion-badge slot="end">22</ion-badge>
+    </ion-item>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string    
 
 > ion-button 
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Кликабельный элемент "кнопка"
 
   ▪ Описание
 
+    Может использоваться как в формах, так и где угодно,
+    где требуется простая, стандартная кнопка.
+
+    На кнопке может быть текст, иконки, или и то, и другое.
+    Стили кнопки можно изменять несколькими атрибутами (см.ниже).
+
+    ▪ Атрибут expand
+
+      Этот атрибут позволяет вам определять, насколько
+      широкой должна быть кнопка.
+
+      По умолчанию, кнопки являются inline-blocks, но
+      установка значения для этого атрибута сделает из них
+      blocks со 100% шириной.
+
+      Возможные значения:
+
+        ▪ block   | Full-width button с закруглёнными краями
+        ▪ full    | Full-width button с квадратными краями и без border слева/справа
+
+    ▪ Атрибут fill
+
+      Этот атрибут определяет цвет background'а и border'а
+      кнопки. По умолчанию, button имеет solid background,
+      кроме случая, когда кнопка внутри toolbar'а - в этом
+      случае, background прозрачный.
+
+      Возможные значения:
+
+        ▪ clear     | кнопка с прозрачным фоном, походит на flat-кнопку
+        ▪ outline   | кнопка с прозрачным фоном и видимыми border'ами
+        ▪ solid     | кнопка с непрозрачным фоном, полезно для кнопок в toolbar'ах
+
+    ▪ Атрибут size
+
+      Этот атрибут определяет размер кнопки. Установка этого
+      атрибута изменит высоту и padding кнопки.
+
+      Возможные значения:
+
+        ▪ small     | мелкая кнопка, малые size и padding (по умолчанию для кнопок в item)
+        ▪ default   | средняя кнопка, средние size и padding (полезно для кнопок в item)
+        ▪ large     | большая кнопка, большие size и padding
+
   ▪ Использование
+
+    <!-- Default -->
+    <ion-button>Default</ion-button>
+
+    <!-- Anchor -->
+    <ion-button href="#">Anchor</ion-button>
+
+    <!-- Anchor with backwards transition -->
+    <ion-button href="/" go-back>Backwards Anchor</ion-button>
+
+    <!-- Colors -->
+    <ion-button color="primary">Primary</ion-button>
+    <ion-button color="secondary">Secondary</ion-button>
+    <ion-button color="tertiary">Tertiary</ion-button>
+    <ion-button color="success">Success</ion-button>
+    <ion-button color="warning">Warning</ion-button>
+    <ion-button color="danger">Danger</ion-button>
+    <ion-button color="light">Light</ion-button>
+    <ion-button color="medium">Medium</ion-button>
+    <ion-button color="dark">Dark</ion-button>
+
+    <!-- Expand -->
+    <ion-button expand="full">Full Button</ion-button>
+    <ion-button expand="block">Block Button</ion-button>
+
+    <!-- Round -->
+    <ion-button round>Round Button</ion-button>
+
+    <!-- Fill -->
+    <ion-button expand="full" fill="outline">Outline + Full</ion-button>
+    <ion-button expand="block" fill="outline">Outline + Block</ion-button>
+    <ion-button round fill="outline">Outline + Round</ion-button>
+
+    <!-- Icons -->
+    <ion-button>
+      <ion-icon slot="start" name="star"></ion-icon>
+      Left Icon
+    </ion-button>
+
+    <ion-button>
+      Right Icon
+      <ion-icon slot="end" name="star"></ion-icon>
+    </ion-button>
+
+    <ion-button>
+      <ion-icon slot="icon-only" name="star"></ion-icon>
+    </ion-button>
+
+    <!-- Sizes -->
+    <ion-button size="large">Large</ion-button>
+    <ion-button>Default</ion-button>
+    <ion-button size="small">Small</ion-button>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ buttonType 
+      - Тип кнопки: "button", "bar-button"
+      - Атрибуты: 
+
+        ▪ button-type
+               
+      - Тип: string   
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ disabled 
+      - [false] Отключить ли кнопку (на неё нельзя нажать)?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean   
+
+    ▪ expand 
+      - Делает кнопке block вместо inline-block, т.е. full-width: "block" (с border'ами справа/слева), "full" (без border'ов справа/слева)
+      - Атрибуты: 
+
+        ▪ expand
+               
+      - Тип: string   
+
+    ▪ fill 
+      - [clear] "Clear" - прозрачный фон и границы; "outline" - прозрачный фон, границы видны; "solid" - непрозрачный фон и границы.
+      - Атрибуты: 
+
+        ▪ fill
+               
+      - Тип: string   
+
+    ▪ href 
+      - Содержит URL (или фрагмент), куда ведёт ссылка.
+        Если это значение задано, anchor-тэг будет отрисован.
+      - Атрибуты: 
+
+        ▪ href
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string   
+
+    ▪ routerDirection 
+      - При использовании роутера, указать направление анимации при переходе на др.страницу через href.
+      - Атрибуты: 
+
+        ▪ router-direction
+               
+      - Тип: string     
+
+    ▪ shape 
+      - Форма кнопки, возможные значения: "round"
+      - Атрибуты: 
+
+        ▪ shape
+               
+      - Тип: string   
+
+    ▪ size 
+      - Размер кнопки. Значения: "small", "default", "large".
+      - Атрибуты: 
+
+        ▪ size
+               
+      - Тип: string
+
+    ▪ strong 
+      - [false] Включить ли для кнопки более жирный шрифт?
+      - Атрибуты: 
+
+        ▪ strong
+               
+      - Тип: boolean
+
+    ▪ type 
+      - [button] Тип кнопки. Значения: "submit", "reset", "button"
+      - Атрибуты: 
+
+        ▪ type
+               
+      - Тип: string
 
   ▪ События
+
+    ▪ ionBlur   | Возбуждается, когда кнопка теряет фокус
+    ▪ ionFocus  | Возбуждается, когда кнопка получает фокус
 
 > ion-buttons     
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Компонент-контейнер для элементов button.
 
   ▪ Описание
 
+    Кнопки в toolbar обязательно должны размещаться внутри
+    блока <ion-buttons>.
+
+    Элемент <ion-buttons> можно размещать внутри toolbar'а
+    с помощью slot'ов. Ниже описание каждого слота:
+
+    ▪ secondary
+
+      Размещает элемент слева от контента в ios-mode, 
+      и прям справа от контента в md-mode.
+
+    ▪ primary
+
+      Размещает элемент справа от контента в ios-mode,
+      и далеко справа в md-mode.
+
+    ▪ start
+
+      Размещает элемент слева от контента в LTR,
+      и справа в RTL.
+
+    ▪ end
+
+      Размещает элемент справа от контента в LTR,
+      и слева в RTL.
+
   ▪ Использование
 
-  ▪ Свойства
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title>Back Button</ion-title>
+    </ion-toolbar>
 
-  ▪ Методы
+    <ion-toolbar>
+      <ion-buttons slot="secondary">
+        <ion-button>
+          <ion-icon slot="icon-only" name="contact"></ion-icon>
+        </ion-button>
+        <ion-button>
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Default Buttons</ion-title>
+      <ion-buttons slot="primary">
+        <ion-button color="secondary">
+          <ion-icon slot="icon-only" name="more"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
 
-  ▪ События
+    <ion-toolbar>
+      <ion-buttons slot="primary">
+        <ion-button onclick="clickedStar()">
+          <ion-icon slot="icon-only" name="star"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Right side menu toggle</ion-title>
+      <ion-buttons slot="end">
+        <ion-menu-toggle auto-hide="false">
+          <ion-button>
+            <ion-icon slot="icon-only" name="menu"></ion-icon>
+          </ion-button>
+        </ion-menu-toggle>
+      </ion-buttons>
+    </ion-toolbar>  
 
 > ion-card         
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Карточки, стандартный элемент UI для размещения контента.
 
   ▪ Описание
 
+    Карточка часто содержит header, title, subtitle и content.
+    <ion-card> разбита на несколько компонентов, чтобы это
+    отразить. См.:
+
+    ▪ ion-card-content
+    ▪ ion-card-header
+    ▪ ion-card-title
+    ▪ ion-card-subtitle
+
   ▪ Использование
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+        <ion-card-title>Card Title</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Keep close to Nature's heart... and break clear away, once in awhile,
+        and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-item>
+        <ion-icon name="pin" slot="start"></ion-icon>
+        <ion-label>ion-item in a card, icon left, button right</ion-label>
+        <ion-button fill="outline" slot="end">View</ion-button>
+      </ion-item>
+
+      <ion-card-content>
+        This is content, without any paragraph or header tags,
+        within an ion-card-content element.
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-item href="#" class="activated">
+        <ion-icon name="wifi" slot="start"></ion-icon>
+        <ion-label>Card Link Item 1 .activated</ion-label>
+      </ion-item>
+
+      <ion-item href="#">
+        <ion-icon name="wine" slot="start"></ion-icon>
+        <ion-label>Card Link Item 2</ion-label>
+      </ion-item>
+
+      <ion-item class="activated">
+        <ion-icon name="warning" slot="start"></ion-icon>
+        <ion-label>Card Button Item 1 .activated</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="walk" slot="start"></ion-icon>
+        <ion-label>Card Button Item 2</ion-label>
+      </ion-item>
+    </ion-card>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string   
 
 > ion-card-content 
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Дочерний для ion-card компонент для контента.
 
   ▪ Описание
 
-  ▪ Использование
+    Рекомендуется размещать в ion-card-content текстовый
+    контент.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ mode
+               
+      - Тип: string   
 
 > ion-card-header  
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Дочерний для ion-card компонент для заголовка.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ translucent
+      - [false] Включить ли полупрозрачность.
+      - Атрибуты:
 
-  ▪ События
+        ▪ translucent
+
+      - Тип: boolean
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string  
 
 > ion-card-subtitle
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Дочерний для ion-card компонент для подзаголовка.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
 
 > ion-card-title   
 
