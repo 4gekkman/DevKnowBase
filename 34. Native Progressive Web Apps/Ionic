@@ -5269,7 +5269,7 @@
 
       ▪ mode                | Какие стили использовать, "ios" или "md"
 
-    # ion-card-header       | Дочерний для ion-card компонент для заголовка
+    # ion-card-header       | Дочерний для ion-card компонент для header'а
 
       ▪ translucent         | [false] Включить ли полупрозрачность
       ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
@@ -5280,10 +5280,25 @@
       ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
       ▪ mode                | Какие стили использовать, "ios" или "md"
     
-    # ion-card-title        |
+    # ion-card-title        | Дочерний для ion-card компонент для заголовка
 
-    # ion-checkbox          |
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
+    # ion-checkbox          | Компонент-чекбокс
+
+      ▪ checked             | [false] Включён ли чекбокс?
+      ▪ disabled            | [false] Отключить ли чекбокс (на него нельзя нажать)?
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ name                | Имя для чекбокса, которое отправится вместе с form data.
+      ▪ value               | Значение чекбокса
  
+      ► ionBlur             | Возбуждается при потере фокуса чекбоксом
+      ► ionChange           | Возбуждается при переключении значения чекбокса
+      ► ionFocus            | Возбуждается при получении фокуса чекбоксом
+      ► ionStyle            | Возбуждается при изменении styles
+    
     # ion-chip              |
     # ion-chip-button       |
     # ion-chip-icon         |
@@ -6733,7 +6748,7 @@
 
 > ion-card-header  
 
-  Дочерний для ion-card компонент для заголовка.
+  Дочерний для ion-card компонент для header'а.
 
   ▪ Свойства
 
@@ -6789,31 +6804,135 @@
 
 > ion-card-title   
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Дочерний для ion-card компонент для заголовка.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
 
 > ion-checkbox
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Компонент-чекбокс.
 
   ▪ Описание
 
+    Чекбоксы позволяют пользователю осуществлять выбор
+    одновременно нескольких опций. 
+
+    Клик по чекбоксу приводит к переключению значения
+    свойства checked. Его значение также можно изменить
+    программно через одноименное свойство.
+
   ▪ Использование
+
+    <!-- Default Checkbox -->
+    <ion-checkbox></ion-checkbox>
+
+    <!-- Disabled Checkbox -->
+    <ion-checkbox disabled></ion-checkbox>
+
+    <!-- Checked Checkbox -->
+    <ion-checkbox checked></ion-checkbox>
+
+    <!-- Checkbox Colors -->
+    <ion-checkbox color="primary"></ion-checkbox>
+    <ion-checkbox color="secondary"></ion-checkbox>
+    <ion-checkbox color="danger"></ion-checkbox>
+    <ion-checkbox color="light"></ion-checkbox>
+    <ion-checkbox color="dark"></ion-checkbox>
+
+    <!-- Checkboxes in a List -->
+    <ion-list>
+      <ion-item>
+        <ion-label>Pepperoni</ion-label>
+        <ion-checkbox slot="end" value="pepperoni" checked></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Sausage</ion-label>
+        <ion-checkbox slot="end" value="sausage" disabled></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Mushrooms</ion-label>
+        <ion-checkbox slot="end" value="mushrooms"></ion-checkbox>
+      </ion-item>
+    </ion-list>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ checked 
+      - [false] Включён ли чекбокс?
+      - Атрибуты: 
+
+        ▪ checked
+               
+      - Тип: boolean  
+
+    ▪ disabled 
+      - [false] Отключить ли чекбокс (на него нельзя нажать)?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean   
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ name 
+      - Имя для чекбокса, которое отправится вместе с form data.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string
+
+    ▪ value 
+      - Значение чекбокса.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: string      
 
   ▪ События
+
+    ▪ ionBlur     | Возбуждается при потере фокуса чекбоксом
+    ▪ ionChange   | Возбуждается при переключении значения чекбокса
+    ▪ ionFocus    | Возбуждается при получении фокуса чекбоксом
+    ▪ ionStyle    | Возбуждается при изменении styles
 
 > ion-chip       
 
