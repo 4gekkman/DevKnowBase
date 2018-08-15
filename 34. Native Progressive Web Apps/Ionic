@@ -5410,9 +5410,29 @@
       ► ionCancel           | Возбуждается, когда выбор datetime был отменён
       ► ionStyle            | Возбуждается при изменение styles
 
-    # ion-fab               |
-    # ion-fab-button        |
-    # ion-fab-list          |
+    # ion-fab               | Контейнерный элемент для fab-кнопок
+
+      ▪ activated           | [false] Отобразить ли на FAB кнопках иконку close?
+      ▪ edge                | Показывать fab на краю header'а (если vertical == "top") или footer'а (если vertical == "bottom")
+      ▪ horizontal          | Горизонтальное позиционирование во viewport: "center", "start", "end"
+      ▪ vertical            | Вертикальное позиционирование  во viewport: "top", "center", "bottom"
+
+      • close()             | Закрыть активный FAB list
+
+    # ion-fab-button        | Floating Action Button (FAB) для основного действия на экране
+
+      ▪ activated           | [false] Отобразить ли на FAB кнопках иконку close?
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ href                | Содержит URL (или фрагмент), куда ведёт ссылка
+      ▪ mode                | В каком режиме (md или ios) отображать компонент
+      ▪ disabled            | [false] Отключить ли кнопку (на неё нельзя нажать)?
+      ▪ translucent         | [false] Включить ли полупрозрачность для компонента?
+      ▪ show                | Показывать ли FAB в FAB list'е?
+
+    # ion-fab-list          | Контейнер для N FAB'ов, которые появляются при клеке на главную FAB
+
+      ▪ activated           | [false] Отобразить ли на FAB кнопках иконку close?
+      ▪ side                | [false] Отобразить ли на FAB кнопках иконку close?
 
     # ion-footer            |
     # ion-header            |
@@ -8157,45 +8177,298 @@
 
 > ion-fab       
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Контейнерный элемент для fab-кнопок.
 
   ▪ Описание
 
+    Его требуется размещать с fixed position, чтобы он не
+    прокручивался скроллом вместе с контентом.
+
+    У fab должна быть одна главная fab button.
+
+    Fab может также содержать fab lists, которые содержат
+    доп.кнопки, которые показываются при нажатии на 
+    главную fab button.
+
+    Один и тот же fab-контейнер может содержать несколько
+    fab lists, с различными параметрами side (вроде, есть
+    4 варианта).
+
   ▪ Использование
+
+    <ion-content>
+      <!-- fab placed to the top end -->
+      <ion-fab vertical="top" horizontal="end" slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+      <!-- fab placed to the bottom end -->
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="arrow-dropleft"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+      <!-- fab placed to the top start -->
+      <ion-fab vertical="top" horizontal="start" slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="arrow-dropright"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+      <!-- fab placed to the bottom start -->
+      <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="arrow-dropup"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+      <!-- fab placed to the (vertical) center and start -->
+      <ion-fab vertical="center" horizontal="start" slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="share"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+      <!-- fab placed to the (vertical) center and end -->
+      <ion-fab vertical="center" horizontal="end" slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+      <!-- fab placed to the top and end and on the top edge of the content overlapping header -->
+      <ion-fab vertical="top" horizontal="end" edge slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="person"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+      <!-- fab placed to the bottom and start and on the bottom edge of the content overlapping footer with a list to the right -->
+      <ion-fab vertical="bottom" horizontal="start" edge slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="settings"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="end">
+          <ion-fab-button><ion-icon name="logo-vimeo"></ion-icon></ion-fab-button>
+        </ion-fab-list>
+      </ion-fab>
+
+      <!-- fab placed in the center of the content with a list on each side -->
+      <ion-fab vertical="center" horizontal="center" slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="share"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="top">
+          <ion-fab-button><ion-icon name="logo-vimeo"></ion-icon></ion-fab-button>
+        </ion-fab-list>
+        <ion-fab-list side="bottom">
+          <ion-fab-button><ion-icon name="logo-facebook"></ion-icon></ion-fab-button>
+        </ion-fab-list>
+        <ion-fab-list side="start">
+          <ion-fab-button><ion-icon name="logo-googleplus"></ion-icon></ion-fab-button>
+        </ion-fab-list>
+        <ion-fab-list side="end">
+          <ion-fab-button><ion-icon name="logo-twitter"></ion-icon></ion-fab-button>
+        </ion-fab-list>
+      </ion-fab>
+    </ion-content>
 
   ▪ Свойства
 
+    ▪ activated
+      - [false] Отобразить ли на FAB кнопках иконку close?
+      - Атрибуты: 
+
+        ▪ activated
+               
+      - Тип: boolean
+
+    ▪ edge
+      - Показывать fab на краю header'а (если vertical == "top") или footer'а (если vertical == "bottom")
+      - Атрибуты: 
+
+        ▪ edge
+               
+      - Тип: boolean
+
+    ▪ horizontal
+      - Горизонтальное позиционирование во viewport: "center", "start", "end"
+      - Атрибуты: 
+
+        ▪ horizontal
+               
+      - Тип: string
+
+    ▪ vertical
+      - Вертикальное позиционирование  во viewport: "top", "center", "bottom"
+      - Атрибуты: 
+
+        ▪ vertical
+               
+      - Тип: string
+
   ▪ Методы
 
-  ▪ События
+    ▪ close()   | Закрыть активный FAB list
 
 > ion-fab-button
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Floating Action Button (FAB) для основного действия на экране.
 
   ▪ Описание
 
+    На одном экране может не только одино, но и 
+    несколько FAB'ов, представляющих главные действия
+    на этом экране. Но, обычно, FAB один.
+
+    По умолчанию, FAB имеет круглую форму.
+
+    При нажатии на FAB, если с ним связан FAB list,
+    сбоку от неё появится список возможных действий.
+
+    Как следует из названия, FAB имеет fixed position,
+    и располагается над контентом. Это не достигается
+    только лишь <ion-fab-button>FAB</ion-fab-button>.
+    FAB'ы обязательно должны быть завёрнуты в 
+    <ion-fab>, чтобы получить position fixed и быть над
+    контентом.
+    Если FAB не завёрнута в <ion-fab>, то она будет
+    скроллиться вместе с контентом.
+
+    FAB может быть разных размеров и цветов.
+
   ▪ Использование
+
+    <ion-content>
+
+      <!-- Fixed Floating Action Button that does not scroll with the content -->
+      <ion-fab>
+        <ion-fab-button>Button</ion-fab-button>
+      </ion-fab>
+
+      <!-- Default Floating Action Button that scrolls with the content.-->
+      <ion-fab-button>Default</ion-fab-button>
+
+      <!-- Mini -->
+      <ion-fab-button mini>Mini</ion-fab-button>
+
+      <!-- Colors -->
+      <ion-fab-button color="primary">Primary</ion-fab-button>
+      <ion-fab-button color="secondary">Secondary</ion-fab-button>
+      <ion-fab-button color="danger">Danger</ion-fab-button>
+      <ion-fab-button color="light">Light</ion-fab-button>
+      <ion-fab-button color="dark">Dark</ion-fab-button>
+
+    </ion-content>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ activated
+      - [false] Отобразить ли на FAB кнопках иконку close?
+      - Атрибуты: 
 
-  ▪ События
+        ▪ activated
+               
+      - Тип: boolean
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения. 
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ href 
+      - Содержит URL (или фрагмент), куда ведёт ссылка.
+        Если это значение задано, anchor-тэг будет отрисован.
+      - Атрибуты: 
+
+        ▪ href
+               
+      - Тип: string
+
+    ▪ mode 
+      - В каком режиме (md или ios) отображать компонент.
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string   
+
+    ▪ disabled 
+      - [false] Отключить ли кнопку (на неё нельзя нажать)?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean   
+
+    ▪ translucent
+      - [false] Включить ли полупрозрачность для компонента?
+      - Атрибуты:
+
+        ▪ translucent
+
+      - Тип: boolean
+
+    ▪ show
+      - Показывать ли FAB в FAB list'е?
+      - Атрибуты:
+
+        ▪ show
+
+      - Тип: boolean      
 
 > ion-fab-list  
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Контейнер для N FAB'ов, которые появляются при клеке на главную FAB.
 
   ▪ Описание
 
+    Чтобы настроить, с какой стороны от главной кнопки
+    они должны появляться, используется свойства side:
+    "start", "end", "top", "bottom".
+
   ▪ Использование
+
+    <ion-fab vertical="bottom" horizontal="end">
+      <ion-fab-button>Share</ion-fab-button>
+
+      <ion-fab-list side="top">
+        <ion-fab-button>Facebook</ion-fab-button>
+        <ion-fab-button>Twitter</ion-fab-button>
+        <ion-fab-button>Youtube</ion-fab-button>
+      </ion-fab-list>
+
+      <ion-fab-list side="start">
+        <ion-fab-button>Vimeo</ion-fab-button>
+      </ion-fab-list>
+
+    </ion-fab>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ activated
+      - [false] Отобразить ли на FAB кнопках иконку close?
+      - Атрибуты: 
 
-  ▪ События
+        ▪ activated
+               
+      - Тип: boolean
+
+    ▪ side
+      - [false] Отобразить ли на FAB кнопках иконку close?
+      - Атрибуты: 
+
+        ▪ side
+               
+      - Тип: string
 
 > ion-footer   
 
