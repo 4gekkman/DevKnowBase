@@ -5474,7 +5474,48 @@
       ▪ loadingSpinner      | Анимированный SVG-спиннер, чтобы показывать во время подгрузки контента
       ▪ loadingText         | (опционально) Текст, чтобы показывать во время подгрузки
 
-    # ion-input             |
+    # ion-input             | Обёртка для элемента HTML-input с кастомной стилизацией и доп.функционалом.
+
+      ▪ accept              | Если type=="file", то в accept список принимаемых типов файлов; иначе игнорируется
+      ▪ autocapitalize      | [none] Приводить ли текст автоматически к верхнему регистру?
+      ▪ autocomplete        | [off] Разрешить ли браузерный автокомплит?
+      ▪ autocorrect         | [off] Разрешить ли автокоррекцию ввода?
+      ▪ autofocus           | [false] Дать ли input'у автофокус при загрузке страницы?
+      ▪ clearInput          | [false] Показывать ли иконку "очистить ввод"?
+      ▪ clearOnEdit         | [false] Включить ли очистку ввода после фокусировки при редактировании?
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ debounce            | [0] Установить значение в ms - сколько ждать перед возбуждением ionChange после каждого нажатия клавиши
+      ▪ disabled            | [false] Выключить ли пользователю возможность взаимодействовать с input'ом?
+      ▪ inputmode           | Подсказка браузеру, какую клавиатуру показывать
+      ▪ max                 | MAX значение, не меньше min
+      ▪ maxlength           | MAX число символов, которые пользователь может ввести
+      ▪ min                 | MAX значение, не больше max
+      ▪ minlength           | MIN число символов, которые пользователь может ввести
+      ▪ mode                | Если текущий режим отображения (ios или md) совпадает с указанной, элемент будет скрыт
+      ▪ multiple            | [false] Может ли пользователь ввести более 1-го значения?
+      ▪ name                | Имя для элемента, которое отправится, вместе с формой
+      ▪ pattern             | Регулярное выражение для проверки значения
+      ▪ placeholder         | Плейсхолдер
+      ▪ readonly            | [false] Сделать ли input read only?
+      ▪ required            | [false] Если true, пользователь должен обязательно заполнить input перед отправкой
+      ▪ results             | Нестандартный атрибут для Safary, значение полож.десятич.integer
+      ▪ size                | Стартовый размер элемента, "px" - если type=text,password, иначе в символах
+      ▪ spellcheck          | [false] Проверять ли грамматически написанное?
+      ▪ step                | Работает с min и max для установки min инкремента: "any" или любое полож.число с плавающей точкой
+      ▪ type                | Тип input'а: text, password, email, number, search, tel, url.
+      ▪ value               | Значение input'а
+
+      ► ionBlur             | Возбуждается, когда input теряет фокус
+      ► ionChange           | Возбуждается, когда значение изменилсь
+      ► ionFocus            | Возбуждается, когда input получает фокус
+      ► ionInputDidLoad     | Возбуждается при вводе с клавиатуры
+      ► ionInputDidUnload   | Возбуждается после создания input'а
+      ► ionStyle            | Возбуждается при изменении стилей
+
+    # ion-item              | Item может содержать текст, иконки, аватары, картинки, инпуты, и другие нативные/кастомные эл-ты
+
+      
+
     # ion-item-divider      |
     # ion-item-group        |
     # ion-item-option       |
@@ -8933,9 +8974,361 @@
 
 > ion-input       
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Обёртка для элемента HTML-input с кастомной стилизацией и доп.функционалом.
 
   ▪ Описание
+
+    Компонент принимает большую часть тех же параметров,
+    что и HTML-input, но работает прекрасно на desctop-
+    устройствах, и интегрирован с клавиатурой на
+    мобильных устройствах.
+
+    Обёртка предназначена лишь для input'ов со следующими type:
+    "text", "password", "email", "number", "search", "tel", "url".
+
+    Он поддерживает все стандартные события текстовых input'ов,
+    включая keyup, keydown, keypress и прочие.
+
+  ▪ Использование
+
+    <!-- Default Input -->
+    <ion-input></ion-input>
+
+    <!-- Input with value -->
+    <ion-input value="custom"></ion-input>
+
+    <!-- Input with placeholder -->
+    <ion-input placeholder="Enter Input"></ion-input>
+
+    <!-- Input with clear button when there is a value -->
+    <ion-input clear-input value="clear me"></ion-input>
+
+    <!-- Number type input -->
+    <ion-input type="number" value="333"></ion-input>
+
+    <!-- Disabled input -->
+    <ion-input value="Disabled" disabled></ion-input>
+
+    <!-- Readonly input -->
+    <ion-input value="Readonly" readonly></ion-input>
+
+    <!-- Inputs with labels -->
+    <ion-item>
+      <ion-label>Default Label</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Floating Label</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="fixed">Fixed Label</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Stacked Label</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+  ▪ Свойства
+
+    ▪ accept
+      - Если type=="file", то в accept список принимаемых типов файлов; иначе игнорируется
+        Принимает comma-separated list типов файлов.
+      - Атрибуты: 
+
+        ▪ accept
+               
+      - Тип: string
+
+    ▪ autocapitalize
+      - [none] Приводить ли текст автоматически к верхнему регистру?
+      - Атрибуты: 
+
+        ▪ autocapitalize
+               
+      - Тип: string     
+
+    ▪ autocomplete
+      - [off] Разрешить ли браузерный автокомплит?
+      - Атрибуты: 
+
+        ▪ autocomplete
+               
+      - Тип: string
+
+    ▪ autocorrect
+      - [off] Разрешить ли автокоррекцию ввода?
+      - Атрибуты: 
+
+        ▪ autocorrect
+               
+      - Тип: string
+
+    ▪ autofocus
+      - [false] Дать ли input'у автофокус при загрузке страницы?
+      - Атрибуты: 
+
+        ▪ autofocus
+               
+      - Тип: boolean
+
+    ▪ clearInput
+      - [false] Показывать ли иконку "очистить ввод"?
+      - Атрибуты: 
+
+        ▪ clear-input
+               
+      - Тип: boolean
+
+    ▪ clearOnEdit
+      - [false] Включить ли очистку ввода после фокусировки при редактировании?
+      - Атрибуты: 
+
+        ▪ clear-on-edit
+               
+      - Тип: boolean
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения. 
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ debounce
+      - [0] Установить значение в ms - сколько ждать перед возбуждением ionChange после каждого нажатия клавиши.
+      - Атрибуты: 
+
+        ▪ debounce
+               
+      - Тип: number
+
+    ▪ disabled
+      - [false] Выключить ли пользователю возможность взаимодействовать с input'ом?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ inputmode
+      - Подсказка браузеру, какую клавиатуру показывать.
+        Применяется, лишь если type равен "text", "password", 
+        "email", "url".
+        Возможные значения: "verbatim", "latin", "latin-name", 
+        "latin-prose", "full-width-latin", "kana", "katakana", 
+        "numeric", "tel", "email", "url".
+      - Атрибуты: 
+
+        ▪ inputmode
+               
+      - Тип: string
+
+    ▪ max
+      - MAX значение, не меньше min.
+      - Атрибуты: 
+
+        ▪ max
+               
+      - Тип: string
+
+    ▪ maxlength
+      - MAX число символов, которые пользователь может ввести.
+        Действует, только если type равен: text, email, search, 
+        password, tel, url.
+      - Атрибуты: 
+
+        ▪ maxlength
+               
+      - Тип: number
+
+    ▪ min
+      - MAX значение, не больше max.
+      - Атрибуты: 
+
+        ▪ min
+               
+      - Тип: string
+
+    ▪ minlength
+      - MIN число символов, которые пользователь может ввести.
+        Действует, только если type равен: text, email, search, 
+        password, tel, url.
+      - Атрибуты: 
+
+        ▪ minlength
+               
+      - Тип: number
+
+    ▪ mode 
+      - Если текущий режим отображения (ios или md) совпадает с указанной, элемент будет скрыт.
+        Принимает comma separated list.
+        Не путать платформу с mode (режимом отображения).
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ multiple
+      - [false] Может ли пользователь ввести более 1-го значения?
+        Действует, только если type равен: email, file.
+      - Атрибуты: 
+
+        ▪ multiple
+               
+      - Тип: boolean
+
+    ▪ name 
+      - Имя для элемента, которое отправится, вместе с формой.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string 
+
+    ▪ pattern
+      - Регулярное выражение для проверки значения.
+        Паттерн должен совпадать со всем значением, а не частью.
+        Используйте атрибут title, чтобы описать паттернд для пользователя.
+        Действует, если type равен "text", "search", "tel", "url", 
+        "email", "password".
+      - Атрибуты: 
+
+        ▪ pattern
+               
+      - Тип: string
+
+    ▪ placeholder
+      - Плейсхолдер.
+      - Атрибуты: 
+
+        ▪ placeholder
+               
+      - Тип: string
+
+    ▪ readonly
+      - [false] Сделать ли input read only?
+      - Атрибуты: 
+
+        ▪ readonly
+               
+      - Тип: boolean
+
+    ▪ required
+      - [false] Если true, пользователь должен обязательно заполнить input перед отправкой.
+      - Атрибуты: 
+
+        ▪ required
+               
+      - Тип: boolean
+
+    ▪ results
+      - Нестандартный атрибут для Safary, значение полож.десятич.integer.
+        Действует, только если type равен "search".
+      - Атрибуты: 
+
+        ▪ results
+               
+      - Тип: number
+
+    ▪ size
+      - Стартовый размер элемента, "px" - если type=text,password, иначе в символах.
+        Действует, только если type равен: "text", "search", "tel", 
+        "url", "email", "password".
+      - Атрибуты: 
+
+        ▪ size
+               
+      - Тип: number
+
+    ▪ spellcheck
+      - [false] Проверять ли грамматически написанное?
+      - Атрибуты: 
+
+        ▪ spellcheck
+               
+      - Тип: boolean
+
+    ▪ step
+      - Работает с min и max для установки min инкремента: "any" или любое полож.число с плавающей точкой.
+      - Атрибуты: 
+
+        ▪ step
+               
+      - Тип: string
+
+    ▪ type
+      - Тип input'а: text, password, email, number, search, tel, url.
+      - Атрибуты: 
+
+        ▪ type
+               
+      - Тип: string
+
+    ▪ value
+      - Значение input'а.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: string
+
+  ▪ События
+
+    ▪ ionBlur             | Возбуждается, когда input теряет фокус
+    ▪ ionChange           | Возбуждается, когда значение изменилсь
+    ▪ ionFocus            | Возбуждается, когда input получает фокус
+    ▪ ionInputDidLoad     | Возбуждается при вводе с клавиатуры
+    ▪ ionInputDidUnload   | Возбуждается после создания input'а
+    ▪ ionStyle            | Возбуждается при изменении стилей
+
+> ion-item
+
+  Item может содержать текст, иконки, аватары, картинки, инпуты, и другие нативные/кастомные эл-ты.
+
+  ▪ Описание
+
+    Обычно, item'ы размещаются списками. 
+
+    Item'ы можно свайпать, удалять, менять местами,
+    редактировать и так далее.
+
+    ▪ Detail Arrows в ios mode
+
+      По умолчанию, кликабельные item'ы будут отображать
+      иконку с правой стрелкой в ios mode. Чтобы спрятать
+      эту стрелку, установите свойство detail в false.
+
+      Чтобы показать эту стрелку на элементе, который не
+      отображает её по умолчанию, установите его
+      detail в true.
+
+    ▪ Позиционирование элементов
+
+      Item'ы использую именованные слоты для позиционирования
+      контента. Это позволяет писать сложные item'ы с простой,
+      легко понимаемой разметкой, не волнуясь по поводу
+      стилей и позиционирования элементов.
+
+      Ниже дана информация о слотах item'ов, и где они 
+      размещают элементы внутри item'а:
+
+        start   | Размещает слева от остального контента в LTR, и справа в RTL.
+        end     | Размещает справа от остального контента в LTR, и справа в RTL.
+        none    | Размещает внутри обёртки input.
+
+    ▪ Выравнивание текста
+
+      Item'ы делают left align тексту, и добавляют ellipsis,
+      если текст шире, чем item. Смотрите 
 
   ▪ Использование
 
