@@ -5514,18 +5514,72 @@
 
     # ion-item              | Item может содержать текст, иконки, аватары, картинки, инпуты, и другие нативные/кастомные эл-ты
 
-      
+      ▪ button              | [false] Сделать ли из item'а кнопку?
+      ▪ detail              | [false (true для ios с присут.св-вом href,onclick или button)] Включить ли иконку с правой стрелкой?
+      ▪ detailIcon          | [ios-arrow-forward] Какую иконку использовать, если detail == true?
+      ▪ disabled            | [false] Запретить ли пользователю взаимодействовать с item'ом?
+      ▪ lines               | Как отображать нижний border item'а?
+      ▪ routerDirection     | При использовании роутера, указать направление анимации при переходе на др.страницу через href
+      ▪ state               | Состояние???
+      ▪ type                | Тип кнопки: submit, reset, button
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ href                | Содержит URL (или фрагмент), куда ведёт ссылка
+      ▪ mode                | В каком режиме (md или ios) отображать alert
 
     # ion-item-divider      |
-    # ion-item-group        |
-    # ion-item-option       |
-    # ion-item-options      |
-    # ion-item-sliding      |
+
+      ▪ mode                | В каком режиме (md или ios) отображать alert
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+
+    # ion-item-group        | Контейнер для группировки похожих item'ов друг с другом
+    # ion-item-option       | Option-кнопка для ion-item-sliding
+
+      ▪ mode                | В каком режиме (md или ios) отображать alert
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ disabled            | Отключить ли item option?
+      ▪ href                | Содержит URL (или фрагмент), куда ведёт ссылка
+      ▪ expandable          | [false] Позволить ли option'у занять всю имеющуюся ширину?
+
+    # ion-item-options      | Контейнер для option buttons для ion-item-sliding
+
+      ▪ side                | [end] С какой стороны кнопки размещается слайд?
+      
+      • fireSwipeEvent()    | Возбудить событие ionSwipe
+      • isEndSide()         | ???
+      • width()             | Получить ширину
+
+      ► ionSwipe            | Возбуждается, когда кнопка полностью свайпнута
+
+    # ion-item-sliding      | Содержит item, который можно перетаскивать (drag), чтобы открыть option buttons
+
+      • close()             | Закрыть sliding item (прикрыть опции)
+      • closeOpened()       | Закрыть sliding item'ы в списке (прикрыть опции)
+      • getOpenAmount()     | Узнать, насколько px приоткрыт sliding item
+      • getSlidingRatio()   | Получить отношение открытости sliding item к ширине опций
+
+      ► ionDrag             | Возбуждается, когда позиция слайдинга меняется
     
-    # ion-label             |
-    # ion-list              |
-    # ion-list-header       |
-    # ion-loading           |
+    # ion-label             | Обёртка для использования с item, input, toggle и т.д.
+ 
+      ▪ mode                | В каком режиме (md или ios) отображать alert
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ position            | Настроить положение label'а в item'е: inline, fixed, stacked или floating
+
+    # ion-list              | Списки состоят из многих строк с item'ами с текстом, кнопками, иконками, переключателям и т.д.
+
+      ▪ inset               | [false] Включить ли margin для списка и круглыми углами.
+      ▪ lines               | Как показывать нижний border на всех item'ах
+
+      • closeSlidingItems() | Закрыть все открытые sliding items
+      • getOpenItem()       | Получить sliding item, которые сейчас открыт
+      • setOpenItem()       | Открыть sliding item
+
+    # ion-list-header       | Header-компонент для списка (list)
+
+      ▪ mode                | В каком режиме (md или ios) отображать alert
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+
+    # ion-loading           | Панель загрузки поверх контента, блокирующая интерфейс, и показывающая, что идёт какой-то процесс
 
     # ion-menu              |
     # ion-menu-button       |
@@ -9328,133 +9382,1037 @@
     ▪ Выравнивание текста
 
       Item'ы делают left align тексту, и добавляют ellipsis,
-      если текст шире, чем item. Смотрите 
+      если текст шире, чем item. Смотрите по ссылке ниже
+      атрибуты, которые можно добавить в <ion-item>, чтобы
+      трансформировать текст:
+
+        https://beta.ionicframework.com/docs/layout/css-utilities/
 
   ▪ Использование
 
+    БАЗОВОЕ ИСПОЛЬЗОВАНИЕ:
+
+      <!-- Default Item -->
+      <ion-item>
+        <ion-label>
+          Item
+        </ion-label>
+      </ion-item>
+
+      <!-- Item as a Button -->
+      <ion-item onclick="buttonClick()">
+        <ion-label>
+          Button Item
+        </ion-label>
+      </ion-item>
+
+      <!-- Item as an Anchor -->
+      <ion-item href="https://www.ionicframework.com">
+        <ion-label>
+          Anchor Item
+        </ion-label>
+      </ion-item>
+
+      <ion-item color="secondary">
+        <ion-label>
+          Secondary Color Item
+        </ion-label>
+      </ion-item>
+
+    DETAIL ARROW:
+
+      <ion-item detail>
+        <ion-label>
+          Standard Item with Detail Arrow
+        </ion-label>
+      </ion-item>
+
+      <ion-item onclick="buttonClick()">
+        <ion-label>
+          Button Item with Detail Arrow
+        </ion-label>
+      </ion-item>
+
+      <ion-item detail="false" href="https://www.ionicframework.com">
+        <ion-label>
+          Anchor Item with no Detail Arrow
+        </ion-label>
+      </ion-item>
+
+    СПИСОК ЭЛЕМЕНТОВ:
+
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            Item
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label>
+            No Lines Item
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label text-wrap>
+          Multiline text that should wrap when it is too long
+          to fit on one line in the item.
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label text-wrap>
+            <ion-text color="primary">
+              <h3>H3 Primary Title</h3>
+            </ion-text>
+            <p>Paragraph line 1</p>
+            <ion-text color="secondary">
+              <p>Paragraph line 2 secondary</p>
+            </ion-text>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="full">
+          <ion-label>
+            Item with Full Lines
+          </ion-label>
+        </ion-item>
+
+      </ion-list>
+
+    ▪ ITEM LINES
+       
+      <!-- Item Inset Lines -->
+      <ion-item lines="inset">
+        <ion-label>Item Lines Inset</ion-label>
+      </ion-item>
+
+      <!-- Item Full Lines -->
+      <ion-item lines="full">
+        <ion-label>Item Lines Full</ion-label>
+      </ion-item>
+
+      <!-- Item None Lines -->
+      <ion-item lines="none">
+        <ion-label>Item Lines None</ion-label>
+      </ion-item>
+
+      <!-- List Full Lines -->
+      <ion-list lines="full">
+        <ion-item>
+          <ion-label>Item</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Item</ion-label>
+        </ion-item>
+      </ion-list>
+
+      <!-- List Inset Lines -->
+      <ion-list lines="inset">
+        <ion-item>
+          <ion-label>Item</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Item</ion-label>
+        </ion-item>
+      </ion-list>
+
+      <!-- List No Lines -->
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>Item</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Item</ion-label>
+        </ion-item>
+      </ion-list>
+
+    ▪ MEDIA ITEMS
+
+      <ion-item onclick="testClick()">
+        <ion-avatar slot="start">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
+        </ion-avatar>
+        <ion-label>
+          Avatar Start, Button Item
+        </ion-label>
+      </ion-item>
+
+      <ion-item href="#">
+        <ion-label>
+          Thumbnail End, Anchor Item
+        </ion-label>
+        <ion-thumbnail slot="end">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
+        </ion-thumbnail>
+      </ion-item>
+
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>H2 Title Text</h2>
+          <p>Button on right</p>
+        </ion-label>
+        <ion-button fill="outline" slot="end">View</ion-button>
+      </ion-item>
+
+      <ion-item onclick="testClick()">
+        <ion-thumbnail slot="start">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
+        </ion-thumbnail>
+        <ion-label>
+          <h3>H3 Title Text</h3>
+          <p>Icon on right</p>
+        </ion-label>
+        <ion-icon name="close-circle" slot="end"></ion-icon>
+      </ion-item>
+
+    ▪ КНОПКИ В ITEM'ах
+
+      <ion-item>
+        <ion-button slot="start">
+          Start
+        </ion-button>
+        <ion-label>Button Start/End</ion-label>
+        <ion-button slot="end">
+          End
+        </ion-button>
+      </ion-item>
+
+      <ion-item>
+        <ion-button slot="start">
+          Start Icon
+          <ion-icon name="home" slot="end"></ion-icon>
+        </ion-button>
+        <ion-label>Buttons with Icons</ion-label>
+        <ion-button slot="end">
+          <ion-icon name="star" slot="end"></ion-icon>
+          End Icon
+        </ion-button>
+      </ion-item>
+
+      <ion-item>
+        <ion-button slot="start">
+          <ion-icon slot="icon-only" name="navigate"></ion-icon>
+        </ion-button>
+        <ion-label>Icon only Buttons</ion-label>
+        <ion-button slot="end">
+          <ion-icon slot="icon-only" name="star"></ion-icon>
+        </ion-button>
+      </ion-item>    
+
+    ▪ ИКОНКИ В ITEM'АХ
+
+      <ion-item>
+        <ion-label>
+          Icon End
+        </ion-label>
+        <ion-icon name="information-circle" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          Large Icon End
+        </ion-label>
+        <ion-icon name="information-circle" size="large" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          Small Icon End
+        </ion-label>
+        <ion-icon name="information-circle" size="small" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="star" slot="start"></ion-icon>
+        <ion-label>
+          Icon Start
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          Two Icons End
+        </ion-label>
+        <ion-icon name="checkmark-circle" slot="end"></ion-icon>
+        <ion-icon name="shuffle" slot="end"></ion-icon>
+      </ion-item>
+
+    ▪ INPUT'Ы В ITEM'АХ
+
+      <ion-item>
+        <ion-label position="floating">Datetime</ion-label>
+        <ion-datetime></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Select</ion-label>
+        <ion-select>
+          <ion-select-option value="">No Game Console</ion-select-option>
+          <ion-select-option value="nes">NES</ion-select-option>
+          <ion-select-option value="n64" selected>Nintendo64</ion-select-option>
+          <ion-select-option value="ps">PlayStation</ion-select-option>
+          <ion-select-option value="genesis">Sega Genesis</ion-select-option>
+          <ion-select-option value="saturn">Sega Saturn</ion-select-option>
+          <ion-select-option value="snes">SNES</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Toggle</ion-label>
+        <ion-toggle slot="end"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Floating Input</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Input (placeholder)</ion-label>
+        <ion-input placeholder="Placeholder"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Checkbox</ion-label>
+        <ion-checkbox slot="start"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Range</ion-label>
+        <ion-range></ion-range>
+      </ion-item>    
+ 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ button
+      - [false] Сделать ли из item'а кнопку?
+      - Атрибуты: 
 
-  ▪ События
+        ▪ button
+               
+      - Тип: boolean
+
+    ▪ detail
+      - [false (true для ios с присут.св-вом href,onclick или button)] Включить ли иконку с правой стрелкой?
+      - Атрибуты: 
+
+        ▪ detail
+               
+      - Тип: boolean
+
+    ▪ detailIcon
+      - [ios-arrow-forward] Какую иконку использовать, если detail == true?
+      - Атрибуты: 
+
+        ▪ detail-icon
+               
+      - Тип: string
+
+    ▪ disabled 
+      - [false] Запретить ли пользователю взаимодействовать с item'ом?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean   
+
+    ▪ lines
+      - Как отображать нижний border item'а?
+      - Атрибуты: 
+
+        ▪ lines
+               
+      - Тип: string
+
+    ▪ routerDirection 
+      - При использовании роутера, указать направление анимации при переходе на др.страницу через href.
+      - Атрибуты: 
+
+        ▪ router-direction
+               
+      - Тип: string   
+
+    ▪ state
+      - Состояние???
+      - Атрибуты: 
+
+        ▪ state
+               
+      - Тип: string
+
+    ▪ type
+      - Тип кнопки: submit, reset, button.
+        Используется, лишь если св-ва onclick или button присутствуют.
+      - Атрибуты: 
+
+        ▪ state
+               
+      - Тип: string      
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ href 
+      - Содержит URL (или фрагмент), куда ведёт ссылка.
+        Если это значение задано, anchor-тэг будет отрисован.
+      - Атрибуты: 
+
+        ▪ href
+               
+      - Тип: string
+
+    ▪ mode 
+      - В каком режиме (md или ios) отображать alert.
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
 
 > ion-item-divider
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
+  Блочный элемент для отделения item'ов друг от друга в списке.
 
   ▪ Использование
 
+    <ion-item-divider>
+      <ion-label>
+        Basic Item Divider
+      </ion-label>
+    </ion-item-divider>
+
+    <ion-item-divider color="secondary">
+      <ion-label>
+        Secondary Item Divider
+      </ion-label>
+    </ion-item-divider>
+
+    <!-- Item Dividers in a List -->
+    <ion-list>
+      <ion-item-divider>
+        <ion-label>
+          Section A
+        </ion-label>
+      </ion-item-divider>
+
+      <ion-item><ion-label>A1</ion-label></ion-item>
+      <ion-item><ion-label>A2</ion-label></ion-item>
+      <ion-item><ion-label>A3</ion-label></ion-item>
+      <ion-item><ion-label>A4</ion-label></ion-item>
+      <ion-item><ion-label>A5</ion-label></ion-item>
+
+      <ion-item-divider>
+        <ion-label>
+          Section B
+        </ion-label>
+      </ion-item-divider>
+
+      <ion-item><ion-label>B1</ion-label></ion-item>
+      <ion-item><ion-label>B2</ion-label></ion-item>
+      <ion-item><ion-label>B3</ion-label></ion-item>
+      <ion-item><ion-label>B4</ion-label></ion-item>
+      <ion-item><ion-label>B5</ion-label></ion-item>
+    </ion-list>
+
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - В каком режиме (md или ios) отображать alert.
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
 
 > ion-item-group  
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Контейнер для группировки похожих item'ов друг с другом.
 
   ▪ Описание
 
+    Он может содержать в том чесле item dividers.
+
   ▪ Использование
 
-  ▪ Свойства
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>A</ion-label>
+      </ion-item-divider>
 
-  ▪ Методы
+      <ion-item>
+        <ion-label>Angola</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Argentina</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Armenia</ion-label>
+      </ion-item>
+    </ion-item-group>
 
-  ▪ События
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>B</ion-label>
+      </ion-item-divider>
+
+      <ion-item>
+        <ion-label>Bangladesh</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Belarus</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Belgium</ion-label>
+      </ion-item>
+    </ion-item-group>
+
+
+    <!-- They can also be used to group sliding items -->
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>
+          Fruits
+        </ion-label>
+      </ion-item-divider>
+
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>
+            <h3>Grapes</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option>
+            Favorite
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>
+            <h3>Apples</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option>
+            Favorite
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-item-group>
+
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>
+          Vegetables
+        </ion-label>
+      </ion-item-divider>
+
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>
+            <h3>Carrots</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option>
+            Favorite
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>
+            <h3>Celery</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option>
+            Favorite
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-item-group>
 
 > ion-item-option 
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Option-кнопка для ion-item-sliding.
 
   ▪ Описание
 
-  ▪ Использование
+    Должна размещаться внутри <ion-item-options>.
+
+    Вы можете комбинировать событие ionSwite и 
+    директиву expandable для создания full swipe
+    action для item'а.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ mode 
+      - В каком режиме (md или ios) отображать alert.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ disabled 
+      - [false] Отключить ли item option?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ href 
+      - Содержит URL (или фрагмент), куда ведёт ссылка.
+        Если это значение задано, anchor-тэг будет отрисован.
+      - Атрибуты: 
+
+        ▪ href
+               
+      - Тип: string
+
+    ▪ expandable 
+      - [false] Позволить ли option'у занять всю имеющуюся ширину?
+      - Атрибуты: 
+
+        ▪ href
+               
+      - Тип: string         
 
 > ion-item-options
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Контейнер для option buttons для ion-item-sliding.
 
   ▪ Описание
 
-  ▪ Использование
+    Эти кнопки должны размещаться в слоте start или end.
+
+    Вы можете скомбинировать событие ionSwipe с директивой
+    expandable для создания full swipe action для item'а.
+
+    ▪ Side description
+
+      ▪ start   
+
+        Позиция
+          Слева от контента в LTR, и справа в RTL.
+
+        Направление свайпа
+          Слева-направо в LTR, и наоборот в RTL.
+
+      ▪ end     
+
+        Позиция
+          Справа от контента в LTR, и справа в RTL.
+
+        Направление свайпа
+          Справа-налево в LTR, и наоборот в RTL.      
 
   ▪ Свойства
 
+    ▪ side 
+      - [end] С какой стороны кнопки размещается слайд?
+        Если у вас много ion-item-options, side надо указать для каждой.
+      - Атрибуты: 
+
+        ▪ href
+               
+      - Тип: string  
+
   ▪ Методы
 
+    fireSwipeEvent()  | Возбудить событие ionSwipe
+    isEndSide()       | ???
+    width()           | Получить ширину
+
   ▪ События
+
+    ionSwipe    | Возбуждается, когда кнопка полностью свайпнута.
 
 > ion-item-sliding
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Содержит item, который можно перетаскивать (drag), чтобы открыть option buttons.
 
   ▪ Описание
 
+    Требует наличия дочернего компонента item.
+
+    Все опции, которые требуется открыть, должны
+    размещаться в элементе item options.
+
+    ▪ Направление свайпа
+
+      По умолчанию, кнопки размещаются на стороне (side)
+      end. Это означает, что опции открываются, когда
+      пользователь свайпает от end к start, т.е. 
+      справа-налево в LTR, и наоборот в RTL.
+
+      Чтобы изменить всё наоборот, надо для элемента
+      ion-item-options изменить значение свойства side
+      на "start".
+
+    ▪ Layout для опций
+
+      По умолчанию, если иконка размещена вместе с текстом
+      в item option, то он будет отображать иконку поверх
+      текста. 
+
+      Но слот иконки можно изменить на любой из следующих,
+      чтобы позиционировать её в опции:
+
+        start         | Слева от контента в LTR, наоборот в RTL
+        top           | Сверху от текста
+        icon-only     | Иконка, это единственный контекст кнопки
+        bottom        | Снизу от текста
+        end           | Справа от контента в LTR, наоборот в RTL
+
+    ▪ Полностью раскрываемые опции
+
+      Опции можно раскрыть так, чтобы они занимали всю
+      ширину item'а, если вы досвайпаете до определенного
+      момента. Это можно комбинировать с событием ionSwipe,
+      чтобы вызывать методы на классе.
+
   ▪ Использование
+
+    <ion-list>
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>Item</ion-label>
+        </ion-item>
+        <ion-item-options side="start">
+          <ion-item-option onClick="favorite(item)">Favorite</ion-item-option>
+          <ion-item-option color="danger" onClick="share(item)">Share</ion-item-option>
+        </ion-item-options>
+
+        <ion-item-options side="end">
+          <ion-item-option onClick="unread(item)">Unread</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
 
   ▪ Свойства
 
   ▪ Методы
 
+    ▪ close()           | Закрыть sliding item (прикрыть опции).
+    ▪ closeOpened()     | Закрыть sliding item'ы в списке (прикрыть опции).
+    ▪ getOpenAmount()   | Узнать, насколько px приоткрыт sliding item.
+    ▪ getSlidingRatio() | Получить отношение открытости sliding item к ширине опций.
+                          - Если оно +, то опции на правой стороне открыты.
+                          - Если оно -, то опции на левой стороне открыты.
+                          - Если абсолютное значение > 1, то sliding item раскрыт более, чем на ширину опций.
+
   ▪ События
+
+    ▪ ionDrag   | Возбуждается, когда позиция слайдинга меняется
 
 > ion-label      
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Обёртка для использования с item, input, toggle и т.д.
 
   ▪ Описание
 
+    Положение label'а внутри item'а может быть
+    inline, fixed, stacked или floating.
+
   ▪ Использование
+
+    <!-- Default Label -->
+    <ion-label>Label</ion-label>
+
+    <!-- Label Colors -->
+    <ion-label color="primary">Primary Label</ion-label>
+    <ion-label color="secondary">Secondary Label</ion-label>
+    <ion-label color="danger">Danger Label</ion-label>
+    <ion-label color="light">Light Label</ion-label>
+    <ion-label color="dark">Dark Label</ion-label>
+
+    <!-- Item Labels -->
+    <ion-item>
+      <ion-label>Default Item</ion-label>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <ion-label>
+        Multi-line text that should wrap when it is too long
+        to fit on one line in the item.
+      </ion-label>
+    </ion-item>
+
+    <!-- Input Labels -->
+    <ion-item>
+      <ion-label>Default Input</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="fixed">Fixed</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Floating</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Stacked</ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Toggle</ion-label>
+      <ion-toggle slot="end" checked></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-checkbox slot="start" checked></ion-checkbox>
+      <ion-label>Checkbox</ion-label>
+    </ion-item>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ mode 
+      - В каком режиме (md или ios) отображать alert.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ position 
+      - Настроить положение label'а в item'е: inline, fixed, stacked или floating
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string      
 
 > ion-list       
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Списки состоят из многих строк с item'ами с текстом, кнопками, иконками, переключателям и т.д.
 
   ▪ Описание
 
+    Обычно в списки группируют похожие item'ы с похожим
+    контентом, таким как картинки и текст.
+
+    Списки поддерживают несколько взаимодействий, включая
+    свайпинг item'ов для открытия опций, перетаскивание
+    для изменения парядка item'ов в списке, и их удаление.
+
   ▪ Использование
+
+    <!-- List of Text Items -->
+    <ion-list>
+      <ion-item>
+        <ion-label>Pokémon Yellow</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Mega Man X</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>The Legend of Zelda</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Pac-Man</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Super Mario World</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <!-- List of Input Items -->
+    <ion-list>
+      <ion-item>
+        <ion-label>Input</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Toggle</ion-label>
+        <ion-toggle slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>Radio</ion-label>
+        <ion-radio slot="end"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Checkbox</ion-label>
+        <ion-checkbox slot="start"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+
+    <!-- List of Sliding Items -->
+    <ion-list>
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>Item</ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option onClick="unread(item)">Unread</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>Item</ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option onClick="unread(item)">Unread</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
 
   ▪ Свойства
 
+    ▪ inset 
+      - [false] Включить ли margin для списка и круглыми углами.
+      - Атрибуты: 
+
+        ▪ inset
+               
+      - Тип: boolean
+
+    ▪ lines 
+      - Как показывать нижний border на всех item'ах.
+      - Атрибуты: 
+
+        ▪ lines
+               
+      - Тип: string       
+
   ▪ Методы
 
-  ▪ События
+    ▪ closeSlidingItems()   | Закрыть все открытые sliding items
+    ▪ getOpenItem()         | Получить sliding item, которые сейчас открыт
+    ▪ setOpenItem()         | Открыть sliding item
 
 > ion-list-header
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Header-компонент для списка (list).
 
   ▪ Описание
+
+    В отличие от ItemDivider, ListHeaders стилизованы так, 
+    чтобы быть отдельно от остальных элементов списка.
 
   ▪ Использование
 
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Items</ion-label>
+      </ion-list-header>
+      <ion-item>Item 1</ion-item>
+      <ion-item>Item 2</ion-item>
+      <ion-item>Item 3</ion-item>
+      <ion-item>Item 4</ion-item>
+      <ion-item>Item 5</ion-item>
+    </ion-list>
+
   ▪ Свойства
 
-  ▪ Методы
+    ▪ mode 
+      - В каком режиме (md или ios) отображать alert.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
 
 > ion-loading    
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Панель загрузки поверх контента, блокирующая интерфейс, и показывающая, что идёт какой-то процесс.
 
   ▪ Описание
+
+    Индикатор загрузки возникает поверх контента приложения,
+    и может быть выключен, чтобы пользователь
+    мог продолжить взаимодействие с приложением.
+
+    Он включает опциональный фон, который может быть
+    выключен установкой свойства showBackdrop в false
+    при создании компонента.
+
+    ▪ Создание
+
+      Индикаторы загрузки можно создать с помощью
+      Loading Controller. Их легко кастомизировать,
+      передавая методу create Loading Controller'а 
+      конфиг с параметрами.
+
+      Имя спиннера необходимо передавать в свойстве
+      с ключом spinner.
+
+      Любой опциональный html может быть передан
+      в свойстве с ключом content.
+
+      Если значение в spinner не передано, индикатор
+      загрузки будет использовать стандартной для
+      текущей платформы спиннер.
+
+    ▪ Выключение
+
+      Индикатор загрузки может 
 
   ▪ Использование
 
