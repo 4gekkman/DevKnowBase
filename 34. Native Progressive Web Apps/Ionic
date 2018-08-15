@@ -5434,13 +5434,45 @@
       ▪ activated           | [false] Отобразить ли на FAB кнопках иконку close?
       ▪ side                | [false] Отобразить ли на FAB кнопках иконку close?
 
-    # ion-footer            |
-    # ion-header            |
-    # ion-hide-when         |
-    # ion-img               |
+    # ion-footer            | Один из трёх корневых компонентов страницы, находящийся в нижней части
+
+      ▪ mode                | В каком режиме (md или ios) отображать компонент
+      ▪ translucent         | [false] Включить ли полупрозрачность для компонента?
+
+    # ion-header            | Один из трёх корневых компонентов страницы, находящийся в верхней части
+
+      ▪ mode                | В каком режиме (md или ios) отображать компонент
+      ▪ translucent         | [false] Включить ли полупрозрачность для компонента?
+
+    # ion-hide-when         | Скрывает себя и свой контент, если условие равно true
+
+      ▪ mediaQuery          | Если текущий media query совпадает с этим значением, элемент будет скрыт
+      ▪ mode                | Если текущий режим отображения (ios или md) совпадает с указанной, элемент будет скрыт
+      ▪ or                  | Если false, все условия д.б. true для скрытия эл-та; если true - хотя бы одно
+      ▪ orientation         | Если текущая ориентация совпадает с указанной, элемент будет скрыт
+      ▪ platform            | Если текущая платформа совпадает с указанной, элемент будет скрыт
+      ▪ size                | Если текущая ширина экрана (xs,sm,md,lg,xl) совпадает с указанной, элемент будет скрыт
+
+    # ion-img               | Лениво подгрузит картинку, когда она окажется во viewport
+
+      ▪ alt                 | Альтернативный текст для описания изображения
+      ▪ src                 | URL изображения, обязателен к заполнению
 
     # ion-infinite-scroll   |
-    # ion-infinite-scroll-content  |
+
+      ▪ disabled            | Отключить бесконечный скролл (скрыть scrollbar, выключить обработчики)
+      ▪ position            | [bottom] Положение элемента infinite scroll: top, bottom
+      ▪ threshold           | [15%] Расстояние скролла от top/bottom страницы, на котором будут попытки подгрузить контент
+
+      • complete()          | Его на экземпляре inf.scr. надо вызвать в конце handler'а события ioninfinite
+      • waitFor()           | Вместо complete, можно передать промис, и когда он разрешится, inf.scr. посчитает загрузку завершённой
+
+      ► ionInfinite         | Срабатывает, когда скролл достигает расстояния threshold от top/bottom (в завис.от значения position)
+
+    # ion-infinite-scroll-content  | Дочерний компонент для демонстрации контента по умолчанию для infinite scroll
+
+      ▪ loadingSpinner      | Анимированный SVG-спиннер, чтобы показывать во время подгрузки контента
+      ▪ loadingText         | (опционально) Текст, чтобы показывать во время подгрузки
 
     # ion-input             |
     # ion-item-divider      |
@@ -8472,87 +8504,432 @@
 
 > ion-footer   
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Один из трёх корневых компонентов страницы, находящийся в нижней части.
 
   ▪ Описание
 
+    Footer может быть обёрткой для ion-toolbar, что позволяет
+    убедиться в том, что content-зона имеет верные размеры.
+
   ▪ Использование
+
+    <ion-content></ion-content>
+
+    <ion-footer>
+      <ion-toolbar>
+        <ion-title>Footer</ion-title>
+      </ion-toolbar>
+    </ion-footer>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ mode 
+      - В каком режиме (md или ios) отображать компонент.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ mode
+               
+      - Тип: string   
+
+    ▪ translucent
+      - [false] Включить ли полупрозрачность для компонента?
+      - Атрибуты:
+
+        ▪ translucent
+
+      - Тип: boolean
 
 > ion-header   
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Один из трёх корневых компонентов страницы, находящийся в верхней части
 
   ▪ Описание
 
+    Чаще всего в header размещают компонент toolbar.
+
   ▪ Использование
+
+    <ion-header>
+      <ion-navbar>
+        <ion-title>Page1</ion-title>
+      </ion-navbar>
+
+      <ion-toolbar>
+        <ion-title>Subheader</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content></ion-content>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ mode 
+      - В каком режиме (md или ios) отображать компонент.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ mode
+               
+      - Тип: string   
+
+    ▪ translucent
+      - [false] Включить ли полупрозрачность для компонента?
+      - Атрибуты:
+
+        ▪ translucent
+
+      - Тип: boolean
 
 > ion-hide-when
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
+  Скрывает себя и свой контент, если условие равно true.
 
   ▪ Использование
 
+    <ion-content padding>
+
+      <h2>Mode Tests</h2>
+      <ion-hide-when mode="md, ios">
+        <div>Hides on MD, iOS</div>
+      </ion-hide-when>
+
+      <ion-hide-when mode="md">
+        <div>Hides on MD only</div>
+      </ion-hide-when>
+
+      <ion-hide-when mode="ios">
+        <div>Hides on iOS only</div>
+      </ion-hide-when>
+
+      <h2>Orientation Tests</h2>
+      <ion-hide-when orientation="portrait">
+        <div>Hides on portrait orientation</div>
+      </ion-hide-when>
+
+      <ion-hide-when orientation="landscape">
+        <div>Hides on landscape orientation</div>
+      </ion-hide-when>
+
+      <h2>Platform Tests</h2>
+
+      <ion-hide-when platform="android,ios">
+        <div>Hides on Android and iOS</div>
+      </ion-hide-when>
+
+      <ion-hide-when platform="ios">
+        <div>Only hide on iOS</div>
+      </ion-hide-when>
+
+      <ion-hide-when platform="android">
+        <div>Only hide on Android</div>
+      </ion-hide-when>
+
+      <ion-hide-when platform="ipad">
+        <div>Only hide on ipad</div>
+      </ion-hide-when>
+
+      <ion-hide-when platform="phablet">
+        <div>Only hide on phablet</div>
+      </ion-hide-when>
+
+      <ion-hide-when platform="iphone">
+        <div>Only hide on phone</div>
+      </ion-hide-when>
+
+      <h2>Size Tests</h2>
+      <ion-hide-when size="xs">
+        <div>Only hide on xs</div>
+      </ion-hide-when>
+
+      <ion-hide-when size="sm">
+        <div>Only hide on sm</div>
+      </ion-hide-when>
+
+      <ion-hide-when size="md">
+        <div>Only hide on md</div>
+      </ion-hide-when>
+
+      <ion-hide-when size="lg">
+        <div>Only hide on lg</div>
+      </ion-hide-when>
+
+      <ion-hide-when size="xl">
+        <div>Only hide on xl</div>
+      </ion-hide-when>
+
+      <ion-hide-when size="xs, m">
+        <div>Only hide on XS or m</div>
+      </ion-hide-when>
+
+    </ion-content>
+
   ▪ Свойства
 
-  ▪ Методы
+    ▪ mediaQuery
+      - Если текущий media query совпадает с этим значением, элемент будет скрыт.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ media-query
+               
+      - Тип: string
+
+    ▪ mode 
+      - Если текущий режим отображения (ios или md) совпадает с указанной, элемент будет скрыт.
+        Принимает comma separated list.
+        Не путать платформу с mode (режимом отображения).
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ or
+      - Если false, все условия д.б. true для скрытия эл-та; если true - хотя бы одно.
+      - Атрибуты: 
+
+        ▪ or
+               
+      - Тип: boolean
+
+    ▪ orientation
+      - Если текущая ориентация совпадает с указанной, элемент будет скрыт.
+      - Атрибуты: 
+
+        ▪ orientation
+               
+      - Тип: string
+
+    ▪ platform
+      - Если текущая платформа совпадает с указанной, элемент будет скрыт.
+        Принимает comma separated list.
+        Не путать платформу с mode (режимом отображения).
+      - Атрибуты: 
+
+        ▪ platform
+               
+      - Тип: string
+
+    ▪ size
+      - Если текущая ширина экрана (xs,sm,md,lg,xl) совпадает с указанной, элемент будет скрыт.
+      - Атрибуты: 
+
+        ▪ size
+               
+      - Тип: string
 
 > ion-img      
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Лениво подгрузит картинку, когда она окажется во viewport.
 
   ▪ Описание
 
+    Это особенно полезно на страницах с длинными списками
+    картинок, поскольку картинки подгружаются лишь тогда,
+    когда они фактически попадают во viewport.
+
+    Компонент использует Intersection Observer 
+    (https://caniuse.com/#feat=intersectionobserver),
+    который поддерживается в большинстве современных
+    браузерах. А если не поддерживается, тогда вместо него 
+    компонент начинает пользовать старым добрым setTimeout.
+
   ▪ Использование
+
+    *Примечание: пример для Angular (другого не было в доках)
+
+    <ion-list>
+      <ion-item *ngFor="let item of items">
+        <ion-thumbnail slot="start">
+          <ion-img [src]="item.src"></ion-img>
+        </ion-thumbnail>
+        <ion-label>{{item.text}}</ion-label>
+      </ion-item>
+    </ion-list>  
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ alt
+      - Альтернативный текст для описания изображения.
+        Пользователи увидят его, если URL битый, если
+        неверный формат у картинки, или если изображение
+        ещё не скачалось.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ alt
+               
+      - Тип: string
+
+    ▪ src
+      - URL изображения, обязателен к заполнению.
+      - Атрибуты: 
+
+        ▪ src
+               
+      - Тип: string      
 
 > ion-infinite-scroll
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Организация бесконечной проктурки, вызывает callback на дистанции скролла X от верха/низа страницы.
 
   ▪ Описание
 
+    Выражение, назначенное событию ionInfinite, вызывается,
+    когда скролл достигает указанной дистанции (threshold).
+
+    Когда выражение закончит свою работу, необходимо вызывать
+    метод complete() на экземпляре infinit scroll.
+
+    ▪ Infinite Scroll Content
+
+      Компонент ion-infinite-scroll имеет логику для организации
+      бесконечного скролла. Ему необходим дочерний компонент
+      для демонстрации контента. 
+
+      Ionic использует для этого ion-infinite-scroll-content 
+      по умолчанию. Этот компонент отображает бесконечный
+      скроллбар и изменяет свой внешний вид в зависимости
+      от состояния infinite scroll. 
+
+      При подгрузке, он отображате спиннер, внешний вид 
+      которого соответствует режиму отображения плтформы.
+
+      Однако, спиннер по умолчанию, как и текст для него, 
+      можно изменить в свойствах компонента 
+      ion-infinite-scroll-content.
+
+    ▪ Custom Content
+
+      Отделение компонента ion-infinite-scroll от 
+      ion-infinite-scroll-content позволяет разработчикам
+      создавать свой собственный компонент для контента,
+      если они хотят. Этот контент может содержать что угодно,
+      начиная от SVG-элементов, и кончая уникальными
+      CSS-анимациями.
+
   ▪ Использование
+
+    HTML:
+
+      <ion-content>
+        <ion-button onclick="toggleInfiniteScroll()" expand="block">
+          Toggle Infinite Scroll
+        </ion-button>
+
+        <ion-list></ion-list>
+
+        <ion-infinite-scroll threshold="100px" id="infinite-scroll">
+          <ion-infinite-scroll-content
+            loading-spinner="bubbles"
+            loading-text="Loading more data...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
+
+    JS:
+
+      const infiniteScroll = document.getElementById('infinite-scroll');
+
+      infiniteScroll.addEventListener('ionInfinite', function(event) {
+        setTimeout(function() {
+          console.log('Done');
+          event.target.complete();
+
+          // App logic to determine if all data is loaded
+          // and disable the infinite scroll
+          if (data.length == 1000) {
+            event.target.disabled = true;
+          }
+        }, 500);
+      });
+
+      function toggleInfiniteScroll() {
+        infiniteScroll.disabled = !infiniteScroll.disabled;
+      }          
 
   ▪ Свойства
 
+    ▪ disabled
+      - Отключить бесконечный скролл (скрыть scrollbar, выключить обработчики).
+        Это полезно, когда известно, что новые данные уже не подгрузить,
+        и позволяет остановить попытки сделать это.
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ position
+      - [bottom] Положение элемента infinite scroll: top, bottom
+      - Атрибуты: 
+
+        ▪ position
+               
+      - Тип: boolean
+
+    ▪ threshold
+      - [15%] Расстояние скролла от top/bottom страницы, на котором будут попытки подгрузить контент.
+        Будет возбуждаться событие ionInfinite, и выполняться обработчик.
+        Например: 10%, 100px
+      - Атрибуты: 
+
+        ▪ threshold
+               
+      - Тип: boolean            
+
   ▪ Методы
 
+    ▪ complete() 
+
+      Его на экземпляре inf.scr. надо вызвать в конце handler'а события ioninfinite.
+      Это уберёт спиннер подгрузки, и сообщит inf.scroll'у, что подгрузка
+      завершена.
+
+    ▪ waitFor()   | Вместо complete, можно передать промис, и когда он разрешится, inf.scr. посчитает загрузку завершённой.
+
   ▪ События
+
+    ▪ ionInfinite   | Срабатывает, когда скролл достигает расстояния threshold от top/bottom (в завис.от значения position)
 
 > ion-infinite-scroll-content
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Дочерний компонент для демонстрации контента по умолчанию для infinite scroll.
 
   ▪ Описание
 
+    Этот компонент отображает бесконечный
+    скроллбар и изменяет свой внешний вид в зависимости
+    от состояния infinite scroll. 
+
+    При подгрузке, он отображате спиннер, внешний вид 
+    которого соответствует режиму отображения плтформы.
+
   ▪ Использование
+
+    <ion-content>
+      <ion-infinite-scroll>
+        <ion-infinite-scroll-content
+          loading-spinner="bubbles"
+          loading-text="Loading more data…">
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-content>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ loadingSpinner
+      - Анимированный SVG-спиннер, чтобы показывать во время подгрузки контента.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ loading-spinner
+               
+      - Тип: string
+
+    ▪ loadingText
+      - (опционально) Текст, чтобы показывать во время подгрузки.
+      - Атрибуты: 
+
+        ▪ loading-text
+               
+      - Тип: string
 
 > ion-input       
 
