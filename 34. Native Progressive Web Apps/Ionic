@@ -5581,13 +5581,100 @@
 
     # ion-loading           | Панель загрузки поверх контента, блокирующая интерфейс, и показывающая, что идёт какой-то процесс
 
-    # ion-menu              |
-    # ion-menu-button       |
-    # ion-menu-toggle       |
+      ▪ content                 | Опциональный текст для показа в индикаторе загрузки
+      ▪ cssClass                | Доп.классы с кастомным CSS, через пробел
+      ▪ dismissOnPageChange     | [false] Выключить индикатор загрузки при смене страницы
+      ▪ duration                | Задать кол-во ms после создания для автоматического выключения
+      ▪ enableBackdropDismiss   | [false] Выключить индикатор загрузки при клике по фону
+      ▪ enterAnimation          | Анимация появления
+      ▪ keyboardClose           | Блурить ли input'ы при загрузке, и скрывать ли клавиатуру
+      ▪ leaveAnimation          | Анимация закрытия
+      ▪ overlayId               | Уникальный ID экземпляра (для внутреннего использования)
+      ▪ showBackdrop            | [true] Показывать ли фон позади индикатора загрузки?
+      ▪ spinner                 | Название спиннера: lines / lines-small / dots / bubbles / circles / crescent.
+      ▪ translucent             | [false] Сделать ли индикатор загрузки полупрозрачным?
+      ▪ willAnimate             | [true] Включить ли анимацию индикатора загрузки?
 
-    # ion-modal             |
-    # ion-modal-controller  |
-    # ion-nav               |
+      • dismiss()               | Выключить индикатор загрузки
+      • onDidDismiss()          | Получить промис, который резолвится после выключения индикатора загрузки
+      • onWillDismiss()         | Получить промис, который резолвится перед выключением индикатора загрузки
+      • present()               | Включить индикатор загрузки после того, как он был создан
+
+      ► ionLoadingDidDismiss    | Emitted after the loading has dismissed
+      ► ionLoadingDidLoad       | Emitted after the loading has loaded
+      ► ionLoadingDidPresent    | Emitted after the loading has presented
+      ► ionLoadingDidUnload     | Emitted after the loading has unloaded
+      ► ionLoadingWillDismiss   | Emitted before the loading has dismissed
+      ► ionLoadingWillPresent   | Emitted before the loading has presented
+
+    # ion-menu              | Навигационное меню, которое слайдится с края экрана
+
+      ▪ contentId           | ID content'а, которое должно использовать меню
+      ▪ disabled            | [false] Выключено ли меню?
+      ▪ maxEdgeStart        | Максимальный размер свайпа, при привышении которого меню не вылезет
+      ▪ menuId              | ID для меню
+      ▪ side                | [start] На какой стороне экрана надо разместить меню
+      ▪ swipeEnabled        | [true] Включить доставание меню свайпом?
+      ▪ type                | Режим отображения меню. Доступные опции: "overlay", "reveal", "push"
+
+      • close()             | Закрыть меню
+      • getWidth()          | Получить ширину меню
+      • isActive()          | Активно ли меню?
+      • isOpen()            | Раскрыто ли меню?
+      • open()              | Раскрыть меню?
+      • setOpen()           | ???
+      • toggle()            | Переключить меню
+
+      ► ionClose            | Возбуждается, когда меню закрыто
+      ► ionMenuChange       | Возбуждается, когда состояние меню меняется
+      ► ionOpen             | Возбуждается, когда меню открыто
+
+    # ion-menu-button       | Автосоздание кнопки-иконки для закрытия/открытия меню на странице
+
+      ▪ mode                | В каком режиме (md или ios) отображать alert
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ autoHide            | Автоматически прятать кнопку меню, если соотв.меню не активно
+      ▪ menu                | Опциональное св-во для связывания с меню по menuId, м.б.: left, right
+
+    # ion-menu-toggle       | Переключатель состояниям меню (открыто/закрыто)
+
+      ▪ menu                | Опциональное св-во для связывания с меню по menuId, м.б.: start, end
+      ▪ autoHide            | [true] Автоматически прятать контент, когда соотв.меню не активно
+
+    # ion-modal             | Диалог поверх контента (полноэкранный), который должен быть завершён для продолжения работы с приложением
+
+      ▪ component             | Какой компонент отображать внутри модалки
+      ▪ componentProps        | Какие данные передать в компонент в модалки
+      ▪ cssClass              | Доп.классы с кастомным CSS, через пробел
+      ▪ delegate              |
+      ▪ enableBackdropDismiss | [false] Выключить модалку при клике по фону
+      ▪ enterAnimation        | Анимация появления
+      ▪ keyboardClose         | Блурить ли input'ы при загрузке, и скрывать ли клавиатуру
+      ▪ leaveAnimation        | Анимация закрытия
+      ▪ overlayId             | Уникальный ID экземпляра (для внутреннего использования)
+      ▪ showBackdrop          | [true] Показывать ли фон позади модалки?
+      ▪ willAnimate           | [true] Включить ли анимацию модалки?
+
+      • dismiss()           | Удалить модалку
+      • onDidDismiss()      | Возвращает промис, который резолвится после закрытия модалки; принимает callback
+      • onWillDismiss()     | Возвращает промис, который резолвится перед закрытием модалки; принимает callback
+      • present()           | Показать модалку после того, как она была создана
+
+      ► ionModalDidDismiss  | Emitted after the modal has dismissed.
+      ► ionModalDidLoad     | Emitted after the modal has loaded.
+      ► ionModalDidPresent  | Emitted after the modal has presented.
+      ► ionModalDidUnload   | Emitted after the modal has unloaded.
+      ► ionModalWillDismiss | Emitted before the modal has dismissed.
+      ► ionModalWillPresent | Emitted before the modal has presented.
+
+    # ion-nav               | Отдельный компонент для загрузки произвольных компонентов и добавления в отдельный стек
+
+      ▪ animated            | Должен ли nav анимировать компоненты, или нет?
+      ▪ delegate            | 
+      ▪ root                | Корневой компонент, куда грузить Nav
+      ▪ rootParams          | Параметры для передачи root-компоненту
+      ▪ swipeBackEnabled    | Включить ли swipe-to-go-back?
+
     # ion-nav-pop           |
     # ion-nav-push          |
     # ion-nav-set-root      |
@@ -5654,8 +5741,38 @@
 
       • create()                    | Создать экземпляр анимации
 
-    # ion-loading-controller        | 
+    # ion-loading-controller        | Используется для контроля над компонентом loading
+
+      • create()                    | Создать экран загрузки, передав конфиг с опциями
+      • dismiss()                   | Уничтожить экран загрузки
+      • getTop()                    | Получить самый недавний экран загрузки
+
     # ion-menu-controller           | 
+
+      ▪ _register()                 |
+      ▪ _setActiveMenu()            |
+      ▪ _setOpen()                  |
+      ▪ _unregister()               |
+      ▪ close()                     | Закрыть либо указанное меню, либо все открытые
+      ▪ createAnimation()           |
+      ▪ enable()                    | Включить меню (и выключить все прочие на этой side)
+      ▪ get()                       | Получить указанное меню, или первое попавшееся, или включенное на указанной side; вернёт null если не найдено
+      ▪ getMenus()                  | Получить массив всех меню
+      ▪ getOpen()                   | Получить открытое меню, иначе вернёт null
+      ▪ isAnimating()               | Вернёт true, если сейчас работает анимация любого из меню
+      ▪ isEnabled()                 | Вернёт true, если указанное меню включено
+      ▪ isOpen()                    | Вернёт true, либо если указаннное меню открыто, либо если любое меню открыто
+      ▪ open()                      | Открыть меню
+      ▪ registerAnimation()         |
+      ▪ swipeEnable()               | Вкл/Выкл возможность открывать/закрывать меню свайпом
+      ▪ toggle()                    | Переключить меню, если открыто - закрыть, и наоборот
+
+    # ion-modal-controller          | Программно контролирует компоненты modal
+
+      ▪ create()                    | Создать модалку, передав конфиг с опциями
+      ▪ dismiss()                   | Удалить модалку
+      ▪ getTop()                    | Получить последнюю открытую модалку
+
     # ion-picker-controller         | 
     # ion-popover-controller        | 
     # ion-refresher-content         | 
@@ -6194,25 +6311,9 @@
         ▪ enter-animation
                
       - Тип: AnimationBuilder
-        
-    ▪ header 
-      - Заголовок для Alert.
-      - Атрибуты: 
-
-        ▪ header
-               
-      - Тип: string
-                
-    ▪ inputs 
-      - Массив input'ов, которые показать в alert.
-      - Атрибуты: 
-
-        ▪ inputs
-               
-      - Тип: AlertInput[]
                 
     ▪ keyboardClose 
-      - Должен ли Alert закрыть клавиатуру.
+      - Включить ли блур input'ов при загрузки и скрытие клавиатуры?
       - Атрибуты: 
 
         ▪ keyboard-close
@@ -10412,99 +10513,620 @@
 
     ▪ Выключение
 
-      Индикатор загрузки может 
+      Индикатор загрузки может быть выключен автоматически
+      через определённое кол-во ms после создания, переданное
+      через параметр duration.
+
+      По умолчани, индикатор загрузки будет продолжать
+      отображаться даже, если страница будет переключена
+      на другую. Но это можно изменить, установив 
+      dismissOnPageChange в true.
+
+      Чтобы выключить индикатор загрузки после создания, 
+      вызовите метод dismiss() на экземпляре loading.
+
+      Можно вызвать функцию onDidDismiss, она назначит 
+      обработчик события выключения индикатора загрузки,
+      и позволит выполнить какие-то завершающие действия.
 
   ▪ Использование
 
+    async function presentLoading() {
+      const loadingController = document.querySelector('ion-loading-controller');
+      await loadingController.componentOnReady();
+
+      const loading = await loadingController.create({
+        content: 'Hellooo',
+        duration: 2000
+      });
+      return await loading.present();
+    }
+
+    async function presentLoadingWithOptions() {
+      const loadingController = document.querySelector('ion-loading-controller');
+      await loadingController.componentOnReady();
+
+      const loading = await loadingController.create({
+        spinner: 'hide',
+        duration: 5000,
+        content: 'Please wait...',
+        translucent: true,
+        cssClass: 'custom-class custom-loading'
+      });
+      return await loading.present();
+    }
+
   ▪ Свойства
+
+    ▪ content
+      - Опциональный текст для показа в индикаторе загрузки.
+      - Атрибуты: 
+
+        ▪ content
+               
+      - Тип: string
+
+    ▪ cssClass
+      - Доп.классы с кастомным CSS, через пробел.
+      - Атрибуты: 
+
+        ▪ css-class
+               
+      - Тип: string
+
+    ▪ dismissOnPageChange
+      - [false] Выключить индикатор загрузки при смене страницы.
+      - Атрибуты: 
+
+        ▪ dismiss-on-page-change
+               
+      - Тип: boolean
+
+    ▪ duration
+      - Задать кол-во ms после создания для автоматического выключения.
+      - Атрибуты: 
+
+        ▪ duration
+               
+      - Тип: number
+
+    ▪ enableBackdropDismiss
+      - [false] Выключить индикатор загрузки при клике по фону.
+      - Атрибуты: 
+
+        ▪ enable-backdrop-dismiss
+               
+      - Тип: boolean
+
+    ▪ enterAnimation
+      - Анимация появления.
+      - Атрибуты: 
+
+        ▪ enter-animation
+               
+      - Тип: AnimationBuilder
+
+    ▪ keyboardClose
+      - Блурить ли input'ы при загрузке, и скрывать ли клавиатуру
+      - Атрибуты: 
+
+        ▪ keyboard-close
+               
+      - Тип: boolean
+
+    ▪ leaveAnimation
+      - Анимация закрытия.
+      - Атрибуты:
+
+        ▪ leave-animation
+
+      - Тип: AnimationBuilder
+
+    ▪ overlayId
+      - Уникальный ID экземпляра (для внутреннего использования).
+      - Атрибуты:
+
+        ▪ overlay-id
+
+      - Тип: number
+
+    ▪ showBackdrop
+      - [true] Показывать ли фон позади индикатора загрузки?
+      - Атрибуты: 
+
+        ▪ show-backdrop
+               
+      - Тип: boolean
+
+    ▪ spinner
+      - Название спиннера: lines / lines-small / dots / bubbles / circles / crescent.
+      - Атрибуты: 
+
+        ▪ spinner
+               
+      - Тип: string
+
+    ▪ translucent
+      - [false] Сделать ли индикатор загрузки полупрозрачным?
+      - Атрибуты: 
+
+        ▪ translucent
+               
+      - Тип: boolean
+
+    ▪ willAnimate
+      - [true] Включить ли анимацию индикатора загрузки?
+      - Атрибуты: 
+
+        ▪ will-animate
+               
+      - Тип: boolean
 
   ▪ Методы
 
+    ▪ dismiss()       | Выключить индикатор загрузки
+    ▪ onDidDismiss()  | Получить промис, который резолвится после выключения индикатора загрузки
+    ▪ onWillDismiss() | Получить промис, который резолвится перед выключением индикатора загрузки
+    ▪ present()       | Включить индикатор загрузки после того, как он был создан
+
   ▪ События
+
+    ▪ ionLoadingDidDismiss    | Emitted after the loading has dismissed.
+    ▪ ionLoadingDidLoad       | Emitted after the loading has loaded.
+    ▪ ionLoadingDidPresent    | Emitted after the loading has presented.
+    ▪ ionLoadingDidUnload     | Emitted after the loading has unloaded.
+    ▪ ionLoadingWillDismiss   | Emitted before the loading has dismissed.
+    ▪ ionLoadingWillPresent   | Emitted before the loading has presented.
 
 > ion-menu       
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Навигационное меню, которое слайдится с края экрана.
 
   ▪ Описание
 
+    По умолчанию, меню выезжает слева. Но это можно
+    изменить.
+
+    Меню будет отображатсья по-разному, в зависиости
+    от режима отображения (mode - ios, md). Но для 
+    каждого меню режим отображения можно задать и вручную.
+
+    Элемент меню должен лежать рядом с корневым элементом
+    контента, на том же уровне.
+
+    Можно добавить любое кол-во меню.
+    Меню можно контролировать программно с помощью
+    MenuController.
+
   ▪ Использование
+
+    <ion-app>
+      <ion-menu side="start">
+        <ion-header>
+          <ion-toolbar color="secondary">
+            <ion-title>Left Menu</ion-title>
+          </ion-toolbar>
+        </ion-header>
+      </ion-menu>
+
+      <ion-menu side="end">
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Hola</ion-title>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content padding>
+          hola macho
+        </ion-content>
+      </ion-menu>
+
+      <div class="ion-page" main>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Menu - Basic</ion-title>
+          </ion-toolbar>
+        </ion-header>
+      </div>
+
+    </ion-app>
+    <ion-menu-controller></ion-menu-controller>
 
   ▪ Свойства
 
+    ▪ contentId
+      - ID content'а, которое должно использовать меню.
+      - Атрибуты: 
+
+        ▪ content-id
+               
+      - Тип: string
+
+    ▪ disabled
+      - [false] Выключено ли меню?
+      - Атрибуты: 
+
+        ▪ max-edge-start
+               
+      - Тип: number
+
+    ▪ maxEdgeStart
+      - Максимальный размер свайпа, при привышении которого меню не вылезет.
+      - Атрибуты: 
+
+        ▪ max-edge-start
+               
+      - Тип: number
+
+    ▪ menuId
+      - ID для меню.
+      - Атрибуты: 
+
+        ▪ menu-id
+               
+      - Тип: string
+
+    ▪ side
+      - [start] На какой стороне экрана надо разместить меню.
+      - Атрибуты: 
+
+        ▪ side
+               
+      - Тип: string
+
+    ▪ swipeEnabled
+      - [true] Включить доставание меню свайпом?
+      - Атрибуты: 
+
+        ▪ swipe-enabled
+               
+      - Тип: boolean
+
+    ▪ type
+      - Режим отображения меню. Доступные опции: "overlay", "reveal", "push".
+      - Атрибуты: 
+
+        ▪ type
+               
+      - Тип: string
+
   ▪ Методы
 
+    ▪ close()     | Закрыть меню
+    ▪ getWidth()  | Получить ширину меню
+    ▪ isActive()  | Активно ли меню?
+    ▪ isOpen()    | Раскрыто ли меню?
+    ▪ open()      | Раскрыть меню?
+    ▪ setOpen()   | ???
+    ▪ toggle()    | Переключить меню
+
   ▪ События
+
+    ▪ ionClose        | Возбуждается, когда меню закрыто
+    ▪ ionMenuChange   | Возбуждается, когда состояние меню меняется
+    ▪ ionOpen         | Возбуждается, когда меню открыто
 
 > ion-menu-button
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Автосоздание кнопки-иконки для закрытия/открытия меню на странице.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ mode 
+      - В каком режиме (md или ios) отображать alert.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ autoHide
+      - Автоматически прятать кнопку меню, если соотв.меню не активно.
+      - Атрибуты: 
+
+        ▪ auto-hide
+               
+      - Тип: boolean
+
+    ▪ menu
+      - Опциональное св-во для связывания с меню по menuId, м.б.: left, right
+        Используется, чтобы найти правильное меню для переключения.
+      - Атрибуты: 
+
+        ▪ menu
+               
+      - Тип: string
 
 > ion-menu-toggle
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Переключатель состояниям меню (открыто/закрыто)
 
   ▪ Описание
 
-  ▪ Использование
+    По умолчанию, видим только тогда, когда выбранное
+    меню активно. 
+
+    А меню считается активным, когда оно может быть
+    открыто и закрыто.
+
+    Когда меню disabled, или представлено в качестве
+    split-pane, меню помечается, как неактивное,
+    и ion-menu-toggle прячет сам себя.
+
+    В случае, если требуется оставлять ion-menu-toggle
+    видимым всегда, можно установить свойство autoHide
+    в false.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ menu
+      - Опциональное св-во для связывания с меню по menuId, м.б.: start, end
+        Используется, чтобы найти правильное меню для переключения.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ menu
+               
+      - Тип: string
+
+    ▪ autoHide
+      - [true] Автоматически прятать контент, когда соотв.меню не активно.
+      - Атрибуты: 
+
+        ▪ menu
+               
+      - Тип: string      
 
 > ion-modal           
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Диалог поверх контента (полноэкранный), который должен быть завершён для продолжения работы с приложением.
 
   ▪ Описание
 
-  ▪ Использование
+    Бывает полезен во многих случаях. Например, как 
+    select-компонент, когда есть много опций, из которых
+    надо выбирать, или при фильтрации элементов списка,
+    и во многих других случаях.
 
-  ▪ Свойства
+    ▪ Создание
 
-  ▪ Методы
-
-  ▪ События
-
-> ion-modal-controller
-
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
+      Модальные окна могут создаваться с помощью
+      Modal Controller. Их можно кастомизировать
+      передавая конфиг с опциями в метод create
+      данного контроллера.
 
   ▪ Использование
 
+    async function presentModal() {
+      // initialize controller
+      const modalController = document.querySelector('ion-modal-controller');
+      await modalController.componentOnReady();
+
+      // create component to open
+      const element = document.createElement('div');
+      element.innerHTML = `
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Super Modal</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <h1>Content of doom</h1>
+        <div>Here's some more content</div>
+        <ion-button class="dismiss">Dismiss Modal</ion-button>
+      </ion-content>
+      `;
+
+      // listen for close event
+      const button = element.querySelector('ion-button');
+      button.addEventListener('click', () => {
+        modalController.dismiss();
+      });
+
+      // present the modal
+      const modalElement = await modalController.create({
+        component: element
+      });
+      modalElement.present();
+    }
+
   ▪ Свойства
+
+    ▪ component
+      - Какой компонент отображать внутри модалки.
+      - Атрибуты: 
+
+        ▪ component
+               
+      - Тип: string
+
+    ▪ componentProps
+      - Какие данные передать в компонент в модалки.
+      - Атрибуты: 
+
+        ▪ component-props
+               
+      - Тип: ComponentProps
+
+    ▪ cssClass
+      - Доп.классы с кастомным CSS, через пробел.
+      - Атрибуты: 
+
+        ▪ css-class
+               
+      - Тип: string
+
+    ▪ delegate
+      - 
+      - Атрибуты: 
+
+        ▪ delegate
+               
+      - Тип: FrameworkDelegate
+
+    ▪ enableBackdropDismiss
+      - [false] Выключить модалку при клике по фону.
+      - Атрибуты: 
+
+        ▪ enable-backdrop-dismiss
+               
+      - Тип: boolean
+
+    ▪ enterAnimation
+      - Анимация появления.
+      - Атрибуты: 
+
+        ▪ enter-animation
+               
+      - Тип: AnimationBuilder
+
+    ▪ keyboardClose
+      - Блурить ли input'ы при загрузке, и скрывать ли клавиатуру
+      - Атрибуты: 
+
+        ▪ keyboard-close
+               
+      - Тип: boolean
+
+    ▪ leaveAnimation
+      - Анимация закрытия.
+      - Атрибуты:
+
+        ▪ leave-animation
+
+      - Тип: AnimationBuilder
+
+    ▪ overlayId
+      - Уникальный ID экземпляра (для внутреннего использования).
+      - Атрибуты:
+
+        ▪ overlay-id
+
+      - Тип: number
+
+    ▪ showBackdrop
+      - [true] Показывать ли фон позади модалки?
+      - Атрибуты: 
+
+        ▪ show-backdrop
+               
+      - Тип: boolean
+
+    ▪ willAnimate
+      - [true] Включить ли анимацию модалки?
+      - Атрибуты: 
+
+        ▪ will-animate
+               
+      - Тип: boolean
 
   ▪ Методы
 
+    • dismiss()         | Удалить модалку
+    • onDidDismiss()    | Возвращает промис, который резолвится после закрытия модалки; принимает callback
+    • onWillDismiss()   | Возвращает промис, который резолвится перед закрытием модалки; принимает callback
+    • present()         | Показать модалку после того, как она была создана
+
   ▪ События
+
+    ▪ ionModalDidDismiss   | Emitted after the modal has dismissed.
+    ▪ ionModalDidLoad      | Emitted after the modal has loaded.
+    ▪ ionModalDidPresent   | Emitted after the modal has presented.
+    ▪ ionModalDidUnload    | Emitted after the modal has unloaded.
+    ▪ ionModalWillDismiss  | Emitted before the modal has dismissed.
+    ▪ ionModalWillPresent  | Emitted before the modal has presented.
 
 > ion-nav             
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Отдельный компонент для загрузки произвольных компонентов и добавления в отдельный стек.
 
   ▪ Описание
 
-  ▪ Использование
+    В отличие от RouterOutlet, Nav не связан с конкретным
+    роутером. При загрузке компонента Nav, и добавления
+    какого-либо компонента в стек, это никак не изменит
+    роутеры приложения.
+
+    Это полезно, например, когда у вас есть модалка, 
+    для которой требуется сделать отдельную навигацию,
+    не связанную с основной навигацией приложения.
 
   ▪ Свойства
 
+    ▪ animated
+      - Должен ли nav анимировать компоненты, или нет?
+      - Атрибуты: 
+
+        ▪ animated
+               
+      - Тип: boolean
+
+    ▪ delegate
+      - 
+      - Атрибуты: 
+
+        ▪ delegate
+               
+      - Тип: FrameworkDelegate
+
+    ▪ root
+      - Корневой компонент, куда грузить Nav.
+      - Атрибуты: 
+
+        ▪ root
+               
+      - Тип: string
+
+    ▪ rootParams
+      - Параметры для передачи root-компоненту.
+      - Атрибуты: 
+
+        ▪ root-params
+               
+      - Тип: ComponentProps
+
+    ▪ swipeBackEnabled
+      - Включить ли swipe-to-go-back?
+      - Атрибуты: 
+
+        ▪ swipe-back-enabled
+               
+      - Тип: boolean
+
   ▪ Методы
 
+    ▪ canGoBack()     | 
+    ▪ getActive()     | 
+    ▪ getByIndex()    | 
+    ▪ getLength()     | 
+    ▪ getPrevious()   | 
+    ▪ getRouteId()    | 
+    ▪ insert()        | 
+    ▪ insertPages()   | 
+    ▪ isAnimating()   | 
+    ▪ pop()           | 
+    ▪ popTo()         | 
+    ▪ popToRoot()     | 
+    ▪ push()          | 
+    ▪ removeIndex()   | 
+    ▪ setPages()      | 
+    ▪ setRoot()       | 
+    ▪ setRouteId()    | 
+
   ▪ События
+
+    ▪ ionNavDidChange   | Event fired when the nav has changed components
+    ▪ ionNavWillChange  | Event fired when the nav will components
+    ▪ ionNavWillLoad    | Event fired when Nav will load a component
 
 > ion-nav-pop         
 
@@ -11177,6 +11799,82 @@
   ▪ Методы
 
     ▪ create()  | Создать экземпляр анимации
+
+> ion-loading-controller 
+
+  Используется для контроля над компонентом loading.
+
+  ▪ Описание
+
+    Компоненты loading могут быть созданы и уничтожены
+    с помощью loading controller'а.
+
+  ▪ Использование
+
+    async function presentLoading() {
+      const loadingController = document.querySelector('ion-loading-controller');
+      await loadingController.componentOnReady();
+
+      const loadingElement = await loadingController.create({
+        content: 'Please wait...',
+        spinner: 'crescent',
+        duration: 2000
+      });
+      return await loadingElement.present();
+    }
+
+  ▪ Методы
+
+    ▪ create()  | Создать экран загрузки, передав конфиг с опциями
+    ▪ dismiss() | Уничтожить экран загрузки
+    ▪ getTop()  | Получить самый недавний экран загрузки
+
+> ion-menu-controller
+
+  Используется для контроля над Menu.
+
+  ▪ Описание
+
+    Его методы могут быть использованы для отображения меню,
+    включения меню, переключения меню, и так далее.
+
+    Контроллен может получить ссылку на меню по его side,
+    id, либо он возьмёт первое по списку меню.
+
+  ▪ Методы
+
+    ▪ _register()         | 
+    ▪ _setActiveMenu()    | 
+    ▪ _setOpen()          | 
+    ▪ _unregister()       | 
+    ▪ close()             | Закрыть либо указанное меню, либо все открытые   
+    ▪ createAnimation()   | 
+    ▪ enable()            | Включить меню (и выключить все прочие на этой side)
+    ▪ get()               | Получить указанное меню, или первое попавшееся, или включенное на указанной side; вернёт null если не найдено
+    ▪ getMenus()          | Получить массив всех меню
+    ▪ getOpen()           | Получить открытое меню, иначе вернёт null
+    ▪ isAnimating()       | Вернёт true, если сейчас работает анимация любого из меню
+    ▪ isEnabled()         | Вернёт true, если указанное меню включено
+    ▪ isOpen()            | Вернёт true, либо если указаннное меню открыто, либо если любое меню открыто
+    ▪ open()              | Открыть меню
+    ▪ registerAnimation() | 
+    ▪ swipeEnable()       | Вкл/Выкл возможность открывать/закрывать меню свайпом
+    ▪ toggle()            | Переключить меню, если открыто - закрыть, и наоборот
+
+> ion-menu-controller
+
+  Программно контролирует компоненты modal.
+
+  ▪ Описание
+
+    Позволяет создавать и удалять модалки.
+
+  ▪ Методы
+
+    ▪ create()    | Создать модалку, передав конфиг с опциями
+    ▪ dismiss()   | Удалить модалку
+    ▪ getTop()    | Получить последнюю открытую модалку
+    
 
 
 
