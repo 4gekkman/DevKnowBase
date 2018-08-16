@@ -5675,6 +5675,28 @@
       ▪ rootParams          | Параметры для передачи root-компоненту
       ▪ swipeBackEnabled    | Включить ли swipe-to-go-back?
 
+      • canGoBack()         | Можно ли в текущем view ещё пойти назад? (
+      • getActive()         | Получить активный view
+      • getByIndex()        | Получить view по индексу
+      • getLength()         | Вернуть длину навигационного стека
+      • getPrevious()       | Получить предыдущее view
+      • getRouteId()        | 
+      • insert()            | Вставить компонент в nav-стек, указав инде
+      • insertPages()       | Вставить массив компонентов в nav-стек, ук
+      • isAnimating()       | Действует ли сейчас какая-либо анимация на
+      • pop()               | Перейти назад из текущего компонента, можн
+      • popTo()             | Перейти к указанному индексу в nav-стеке
+      • popToRoot()         | Перейти назад к корню навигационного стека
+      • push()              | Добавить новый компонент в текущий нав.сте
+      • removeIndex()       | Удалить страницу из нав.стека по указанном
+      • setPages()          | Установить views текущего нав-стека, и пер
+      • setRoot()           | Установить root для текущего нав.стека
+      • setRouteId()        | 
+
+      ► ionNavDidChange     | Event fired when the nav has changed components  
+      ► ionNavWillChange    | Event fired when the nav will components  
+      ► ionNavWillLoad      | Event fired when Nav will load a component  
+
     # ion-nav-pop           |
     # ion-nav-push          |
     # ion-nav-set-root      |
@@ -11104,22 +11126,22 @@
 
   ▪ Методы
 
-    ▪ canGoBack()     | 
-    ▪ getActive()     | 
-    ▪ getByIndex()    | 
-    ▪ getLength()     | 
-    ▪ getPrevious()   | 
+    ▪ canGoBack()     | Можно ли в текущем view ещё пойти назад? (true/false)
+    ▪ getActive()     | Получить активный view
+    ▪ getByIndex()    | Получить view по индексу
+    ▪ getLength()     | Вернуть длину навигационного стека
+    ▪ getPrevious()   | Получить предыдущее view
     ▪ getRouteId()    | 
-    ▪ insert()        | 
-    ▪ insertPages()   | 
-    ▪ isAnimating()   | 
-    ▪ pop()           | 
-    ▪ popTo()         | 
-    ▪ popToRoot()     | 
-    ▪ push()          | 
-    ▪ removeIndex()   | 
-    ▪ setPages()      | 
-    ▪ setRoot()       | 
+    ▪ insert()        | Вставить компонент в nav-стек, указав индекс (добавить в конкретное место стека)
+    ▪ insertPages()   | Вставить массив компонентов в nav-стек, указав индекс (добавить в конкретное место стека)
+    ▪ isAnimating()   | Действует ли сейчас какая-либо анимация навигации?
+    ▪ pop()           | Перейти назад из текущего компонента, можно объектом передать доп.опции, доступные через NavParams
+    ▪ popTo()         | Перейти к указанному индексу в nav-стеке
+    ▪ popToRoot()     | Перейти назад к корню навигационного стека, вне зависимости, как это далеко
+    ▪ push()          | Добавить новый компонент в текущий нав.стек, можно объектом передать доп.опции, доступные через NavParams
+    ▪ removeIndex()   | Удалить страницу из нав.стека по указанному индексу
+    ▪ setPages()      | Установить views текущего нав-стека, и перейти к последнему view, по умолч.анимации отключены, но их можно включить, передав опции нав.контроллеру, можно объектом передать доп.опции, доступные через NavParams
+    ▪ setRoot()       | Установить root для текущего нав.стека
     ▪ setRouteId()    | 
 
   ▪ События
