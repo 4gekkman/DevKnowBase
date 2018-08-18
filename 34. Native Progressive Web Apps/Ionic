@@ -5697,10 +5697,22 @@
       ► ionNavWillChange    | Event fired when the nav will components  
       ► ionNavWillLoad      | Event fired when Nav will load a component  
 
-    # ion-nav-pop           |
-    # ion-nav-push          |
-    # ion-nav-set-root      |
-    # ion-note              |
+    # ion-nav-pop           | Компонент для перемещения назад в навигации
+    # ion-nav-push          | Компонент для перемещения в указанный компонент в навигации
+
+      ▪ component           | Компонент, в который требуется перейти
+      ▪ componentProps      | Параметры для передачи root-компоненту
+
+    # ion-nav-set-root      | Элемент, позволяющий установить root для текущего навигационного стека
+
+      ▪ component           | Компонент, который требуется сделать корневым для текущего навигационного стека
+      ▪ componentProps      | Параметры для передачи компоненту
+
+    # ion-note              | Текстовые элементы, часто используемые, как подзаголовки с более подробной информацией
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
     # ion-picker            |
     # ion-picker-column     |
     # ion-popover           |
@@ -11152,73 +11164,231 @@
 
 > ion-nav-pop         
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Компонент для перемещения назад в навигации.
 
   ▪ Описание
 
-  ▪ Использование
-
-  ▪ Свойства
-
-  ▪ Методы
-
-  ▪ События
+    Это элемент из NavController.pop().
 
 > ion-nav-push        
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Компонент для перемещения в указанный компонент в навигации.
 
   ▪ Описание
 
-  ▪ Использование
+    Это элемент из NavController.push().
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ component
+      - Компонент, в который требуется перейти.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ component
+               
+      - Тип: string
+
+    ▪ componentProps
+      - Параметры для передачи root-компоненту.
+      - Атрибуты: 
+
+        ▪ component-props
+               
+      - Тип: ComponentProps      
 
 > ion-nav-set-root    
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Элемент, позволяющий установить root для текущего навигационного стека.
 
   ▪ Описание
 
-  ▪ Использование
+    Это элемент, делающий вызов NavController.setRoot().
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ component
+      - Компонент, который требуется сделать корневым для текущего навигационного стека.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ component
+               
+      - Тип: string
+
+    ▪ componentProps
+      - Параметры для передачи компоненту.
+      - Атрибуты: 
+
+        ▪ component-props
+               
+      - Тип: ComponentProps    
 
 > ion-note            
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Текстовые элементы, часто используемые, как подзаголовки с более подробной информацией.
 
   ▪ Описание
 
+    По умолчанию настроены быть серого цвета.
+
   ▪ Использование
+
+    <!-- Default Note -->
+    <ion-note>Default Note</ion-note>
+
+    <!-- Note Colors -->
+    <ion-note color="primary">Primary Note</ion-note>
+    <ion-note color="secondary">Secondary Note</ion-note>
+    <ion-note color="danger">Danger Note</ion-note>
+    <ion-note color="light">Light Note</ion-note>
+    <ion-note color="dark">Dark Note</ion-note>
+
+    <!-- Notes in a List -->
+    <ion-list>
+      <ion-item>
+        <ion-label>Note (End)</ion-label>
+        <ion-note slot="end">On</ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-note slot="start">Off</ion-note>
+        <ion-label>Note (Start)</ion-label>
+      </ion-item>
+    </ion-list>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string   
 
 > ion-picker          
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Picker данных, имеет ряд кнопок, и столбцы (барабанного типа) со значениями.
 
   ▪ Описание
 
-  ▪ Использование
+    Появляется в нижней части viewport.
 
   ▪ Свойства
 
+    ▪ buttons
+      - Массив кнопок для отображения в верхней части picker'а.
+      - Атрибуты: 
+
+        ▪ buttons
+               
+      - Тип: PickerButton[]
+
+    ▪ columns
+      - Массив колонок для отображения в picker'е.
+      - Атрибуты: 
+
+        ▪ columns
+               
+      - Тип: PickerColumn[]
+
+    ▪ cssClass
+      - Доп.классы с кастомным CSS, через пробел.
+      - Атрибуты: 
+
+        ▪ css-class
+               
+      - Тип: string
+
+    ▪ duration
+      - Через какое кол-во ms picker автоматически исчезнет?
+      - Атрибуты: 
+
+        ▪ duration
+               
+      - Тип: number
+
+    ▪ enableBackdropDismiss
+      - [true] Выключить picker при клике по фону.
+      - Атрибуты: 
+
+        ▪ enable-backdrop-dismiss
+               
+      - Тип: boolean
+
+    ▪ enterAnimation
+      - Анимация появления.
+      - Атрибуты: 
+
+        ▪ enter-animation
+               
+      - Тип: AnimationBuilder
+
+    ▪ keyboardClose
+      - [true] Позволить ли клавиатуре закрывать picker?
+      - Атрибуты: 
+
+        ▪ keyboard-close
+               
+      - Тип: boolean
+
+    ▪ leaveAnimation
+      - Анимация закрытия.
+      - Атрибуты:
+
+        ▪ leave-animation
+
+      - Тип: AnimationBuilder
+
+    ▪ overlayId
+      - Уникальный ID экземпляра (для внутреннего использования).
+      - Атрибуты:
+
+        ▪ overlay-id
+
+      - Тип: number
+
+    ▪ showBackdrop
+      - [true] Показывать ли фон позади picker'а?
+      - Атрибуты: 
+
+        ▪ show-backdrop
+               
+      - Тип: boolean
+
+    ▪ willAnimate
+      - [true] Включить ли анимацию picker'а?
+      - Атрибуты: 
+
+        ▪ will-animate
+               
+      - Тип: boolean
+
   ▪ Методы
 
+    ▪ dismiss()         | Выключить picker
+    ▪ getColumn()       | Получить колонку по имени
+    ▪ onDidDismiss()    | Возвращает промис, который резолвится, когда picker уже выключен. Принимает callback.
+    ▪ onWillDismiss()   | Возвращает промис, который резолвится, непосредственно перед выключением picker'а. Принимает callback.
+    ▪ present()         | Показать picker после того, как он был создан.
+
   ▪ События
+
+    ▪ ionPickerDidDismiss   | Emitted after the picker has dismissed
+    ▪ ionPickerDidLoad      | 
+    ▪ ionPickerDidPresent   | 
+    ▪ ionPickerDidUnload    | 
+    ▪ ionPickerWillDismiss  | 
+    ▪ ionPickerWillPresent  | 
 
 > ion-picker-column   
 
@@ -11907,7 +12077,7 @@
 
 --------------------------------------
 
->
+> 
 
 
 Это про командную строку.
