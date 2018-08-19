@@ -5713,13 +5713,112 @@
       ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
       ▪ mode                | Какие стили использовать, "ios" или "md"
 
-    # ion-picker            |
-    # ion-picker-column     |
-    # ion-popover           |
+    # ion-picker            | Picker данных, имеет ряд кнопок, и столбцы (барабанного типа) со значениями
+
+      ▪ buttons               | Массив кнопок для отображения в верхней части picker'а
+      ▪ columns               | Массив колонок для отображения в picker'е
+      ▪ cssClass              | Доп.классы с кастомным CSS, через пробел
+      ▪ duration              | Через какое кол-во ms picker автоматически исчезнет?
+      ▪ enableBackdropDismiss | [true] Выключить picker при клике по фону
+      ▪ enterAnimation        | Анимация появления
+      ▪ keyboardClose         | [true] Позволить ли клавиатуре закрывать picker?
+      ▪ leaveAnimation        | Анимация закрытия
+      ▪ overlayId             | Уникальный ID экземпляра (для внутреннего использования)
+      ▪ showBackdrop          | [true] Показывать ли фон позади picker'а?
+
+      • dismiss()             | Выключить picker
+      • getColumn()           | Получить колонку по имени
+      • onDidDismiss()        | Возвращает промис, который резолвится, когда picker уже выключен. Принимает callback.
+      • onWillDismiss()       | Возвращает промис, который резолвится, непосредственно перед выключением picker'а. Принимает callback.
+      • present()             | Показать picker после того, как он был создан.
+
+      ► ionPickerDidDismiss   | Emitted after the picker has dismissed
+      ► ionPickerDidLoad      | Emitted after the picker has loaded
+      ► ionPickerDidPresent   | Emitted after the picker has presented
+      ► ionPickerDidUnload    | Emitted after the picker has unloaded
+      ► ionPickerWillDismiss  | Emitted before the picker has dismissed
+      ► ionPickerWillPresent  | Emitted before the picker has presented
+
+    # ion-picker-column     | Компонент-колонка для picker'а
+
+      ▪ col                 | Колонка
+      ► ionChange           | Возбуждается, когда выбранная опция изменяется.
+
+    # ion-popover           | Продвинутый tooltip с диалоговым поверх контента текущей страницы
     
-    # ion-radio             |
-    # ion-radio-group       |
-    # ion-range             |
+      ▪ color                   | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ component               | Какой компонент отобразить внутри popover'а?
+      ▪ componentProps          | Какие данные передать в компонент в popover?
+      ▪ cssClass                | Доп.классы с кастомным CSS, через пробел.
+      ▪ delegate                | ???
+      ▪ enableBackdropDismiss   | [true] Выключить picker при клике по фону
+      ▪ enterAnimation          | Анимация появления
+      ▪ event                   | Какое событие передать в анимацию popover'а?
+      ▪ keyboardClose           | [true] Позволить ли клавиатуре закрывать popover?
+      ▪ leaveAnimation          | Анимация закрытия
+      ▪ mode                    | Какие стили использовать, "ios" или "md"
+      ▪ overlayId               | Уникальный ID экземпляра (для внутреннего использования)
+      ▪ showBackdrop            | [true] Показывать ли фон позади popover'а?
+      ▪ translucent             | [false] Сделать ли popover полупрозрачным?
+      ▪ willAnimate             | [true] Включить ли анимацию popover'а?
+    
+      • dismiss()               | Удалить popover
+      • onDidDismiss()          | Возвращает промис, который резолвится, когда popover уже выключен. Принимает callback.
+      • onWillDismiss()         | Возвращает промис, который резолвится, непосредственно перед выключением popover'а. Принимает callback.
+      • present()               | Показать popover, когда он был уже создан.
+
+      ► ionPopoverDidDismiss    | Emitted after the popover has dismissed
+      ► ionPopoverDidLoad       | Emitted after the popover has loaded
+      ► ionPopoverDidPresent    | Emitted after the popover has presented
+      ► ionPopoverDidUnload     | Emitted after the popover has unloaded
+      ► ionPopoverWillDismiss   | Emitted before the popover has dismissed
+      ► ionPopoverWillPresent   | Emitted before the popover has presented
+    
+    # ion-radio             | Компонент radio-кнопка, может использоваться отдельно или в группых оных
+
+      ▪ checked             | [false] Выбрана ли radio-кнопка?
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ disabled            | [false] Выключена ли radio-кнопка?
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ name                | Имя для элемента, которое отправится, вместе с формой
+      ▪ value               | Значение radio-кнопки
+
+      ► ionBlur             | Emitted when the radio button loses focus
+      ► ionFocus            | Emitted when the radio button has focus
+      ► ionRadioDidLoad     | Emitted when the radio loads
+      ► ionRadioDidUnload   | Emitted when the radio unloads
+      ► ionSelect           | Emitted when the radio button is selected
+      ► ionStyle            | Emitted when the styles change
+
+    # ion-radio-group       | Группа radio-кнопок
+
+      ▪ allowEmptySelection | ???
+      ▪ disabled            | [false] Отключить ли группу radio-кнопок?
+      ▪ name                | Имя для элемента, которое отправится, вместе с формой
+      ▪ value               | Значение группы radio-кнопок
+
+      ► ionChange           | Emitted when the value has changed
+
+    # ion-range             | Слайдер для выбора значения из диапазона
+
+      ▪ color
+      ▪ debounce
+      ▪ disabled
+      ▪ dualKnobs
+      ▪ max
+      ▪ min
+      ▪ mode
+      ▪ name
+      ▪ pin
+      ▪ snaps
+      ▪ step
+      ▪ 
+
+      ► ionBlur     | Emitted when the range loses focus
+      ► ionChange   | Emitted when the value property has change
+      ► ionFocus    | Emitted when the range has focus
+      ► ionStyle    | Emitted when the styles change
+
     # ion-range-knob        |
     # ion-refresher         |
     # ion-reorder           |
@@ -5783,32 +5882,42 @@
 
     # ion-menu-controller           | 
 
-      ▪ _register()                 |
-      ▪ _setActiveMenu()            |
-      ▪ _setOpen()                  |
-      ▪ _unregister()               |
-      ▪ close()                     | Закрыть либо указанное меню, либо все открытые
-      ▪ createAnimation()           |
-      ▪ enable()                    | Включить меню (и выключить все прочие на этой side)
-      ▪ get()                       | Получить указанное меню, или первое попавшееся, или включенное на указанной side; вернёт null если не найдено
-      ▪ getMenus()                  | Получить массив всех меню
-      ▪ getOpen()                   | Получить открытое меню, иначе вернёт null
-      ▪ isAnimating()               | Вернёт true, если сейчас работает анимация любого из меню
-      ▪ isEnabled()                 | Вернёт true, если указанное меню включено
-      ▪ isOpen()                    | Вернёт true, либо если указаннное меню открыто, либо если любое меню открыто
-      ▪ open()                      | Открыть меню
-      ▪ registerAnimation()         |
-      ▪ swipeEnable()               | Вкл/Выкл возможность открывать/закрывать меню свайпом
-      ▪ toggle()                    | Переключить меню, если открыто - закрыть, и наоборот
+      • _register()                 |
+      • _setActiveMenu()            |
+      • _setOpen()                  |
+      • _unregister()               |
+      • close()                     | Закрыть либо указанное меню, либо все открытые
+      • createAnimation()           |
+      • enable()                    | Включить меню (и выключить все прочие на этой side)
+      • get()                       | Получить указанное меню, или первое попавшееся, или включенное на указанной side; вернёт null если не найдено
+      • getMenus()                  | Получить массив всех меню
+      • getOpen()                   | Получить открытое меню, иначе вернёт null
+      • isAnimating()               | Вернёт true, если сейчас работает анимация любого из меню
+      • isEnabled()                 | Вернёт true, если указанное меню включено
+      • isOpen()                    | Вернёт true, либо если указаннное меню открыто, либо если любое меню открыто
+      • open()                      | Открыть меню
+      • registerAnimation()         |
+      • swipeEnable()               | Вкл/Выкл возможность открывать/закрывать меню свайпом
+      • toggle()                    | Переключить меню, если открыто - закрыть, и наоборот
 
     # ion-modal-controller          | Программно контролирует компоненты modal
 
-      ▪ create()                    | Создать модалку, передав конфиг с опциями
-      ▪ dismiss()                   | Удалить модалку
-      ▪ getTop()                    | Получить последнюю открытую модалку
+      • create()                    | Создать модалку, передав конфиг с опциями
+      • dismiss()                   | Удалить модалку
+      • getTop()                    | Получить последнюю открытую модалку
 
-    # ion-picker-controller         | 
-    # ion-popover-controller        | 
+    # ion-picker-controller         | Программно контролирует компонент picker
+
+      • create()                    | Создать picker
+      • dismiss()                   | Закрыть picker
+      • getTop()                    | Получить последний созданный picker
+
+    # ion-popover-controller        | Программно контролирует компонент popover
+
+      • create()                    | Создать popover
+      • dismiss()                   | Закрыть popover
+      • getTop()                    | Получить последний созданный popover
+
     # ion-refresher-content         | 
     # ion-toast-controller          | 
 
@@ -11384,81 +11493,559 @@
   ▪ События
 
     ▪ ionPickerDidDismiss   | Emitted after the picker has dismissed
-    ▪ ionPickerDidLoad      | 
-    ▪ ionPickerDidPresent   | 
-    ▪ ionPickerDidUnload    | 
-    ▪ ionPickerWillDismiss  | 
-    ▪ ionPickerWillPresent  | 
+    ▪ ionPickerDidLoad      | Emitted after the picker has loaded
+    ▪ ionPickerDidPresent   | Emitted after the picker has presented
+    ▪ ionPickerDidUnload    | Emitted after the picker has unloaded
+    ▪ ionPickerWillDismiss  | Emitted before the picker has dismissed
+    ▪ ionPickerWillPresent  | Emitted before the picker has presented
 
 > ion-picker-column   
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Компонент-колонка для picker'а.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ col
+      - Колонка.
+      - Атрибуты: 
+
+        ▪ col
+               
+      - Тип: PickerColumn
 
   ▪ События
+
+    ▪ ionChange   | Возбуждается, когда выбранная опция изменяется.
 
 > ion-popover         
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Продвинутый tooltip с диалоговым поверх контента текущей страницы.
 
   ▪ Описание
 
+    Можно использовать для чего угодно. Но обычно используется
+    для действий, не умещающихся в навигационный bar.
+
+    ▪ Creating
+
+      Создать popover можно с помощью Popover Controller'а.
+      Кастомизировать его можно, передавая методу create
+      контроллера конфиг с опциями.
+
+    ▪ Presenting
+
+      Чтобы представить popover, вызовите метод present
+      на экземпляре popover'а.
+
+      Чтобы позиционировать popover относительно кликнутого
+      элемента, событие click требуется передать в опциях
+      методу present. Если событие не передано, popover
+      будет позиционирован по центру viewport'а.
+
   ▪ Использование
+
+    async function presentPopover(ev) {
+      const popoverController = document.querySelector('ion-popover-controller');
+      await popoverController.componentOnReady();
+
+      const popover = await popoverController.create({
+        component: 'popover-example-page',
+        translucent: true
+        event,
+      });
+      return await popover.present();
+    }
 
   ▪ Свойства
 
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ component
+      - Какой компонент отобразить внутри popover'а?
+      - Атрибуты: 
+
+        ▪ component
+               
+      - Тип: string
+
+    ▪ componentProps
+      - Какие данные передать в компонент в popover?
+      - Атрибуты: 
+
+        ▪ component-props
+               
+      - Тип: ComponentProps
+
+    ▪ cssClass
+      - Доп.классы с кастомным CSS, через пробел.
+      - Атрибуты: 
+
+        ▪ css-class
+               
+      - Тип: string
+
+    ▪ delegate
+      - ???
+      - Атрибуты: 
+
+        ▪ delegate
+               
+      - Тип: FrameworkDelegate
+
+    ▪ enableBackdropDismiss
+      - [true] Выключить picker при клике по фону.
+      - Атрибуты: 
+
+        ▪ enable-backdrop-dismiss
+               
+      - Тип: boolean
+
+    ▪ enterAnimation
+      - Анимация появления.
+      - Атрибуты: 
+
+        ▪ enter-animation
+               
+      - Тип: AnimationBuilder
+
+    ▪ event
+      - Какое событие передать в анимацию popover'а?
+      - Атрибуты: 
+
+        ▪ event
+               
+      - Тип: any
+
+    ▪ keyboardClose
+      - [true] Позволить ли клавиатуре закрывать popover?
+      - Атрибуты: 
+
+        ▪ keyboard-close
+               
+      - Тип: boolean
+
+    ▪ leaveAnimation
+      - Анимация закрытия.
+      - Атрибуты:
+
+        ▪ leave-animation
+
+      - Тип: AnimationBuilder
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string   
+
+    ▪ overlayId
+      - Уникальный ID экземпляра (для внутреннего использования).
+      - Атрибуты:
+
+        ▪ overlay-id
+
+      - Тип: number
+
+    ▪ showBackdrop
+      - [true] Показывать ли фон позади popover'а?
+      - Атрибуты: 
+
+        ▪ show-backdrop
+               
+      - Тип: boolean
+
+    ▪ translucent
+      - [false] Сделать ли popover полупрозрачным?
+      - Атрибуты: 
+
+        ▪ translucent
+               
+      - Тип: boolean
+
+    ▪ willAnimate
+      - [true] Включить ли анимацию popover'а?
+      - Атрибуты: 
+
+        ▪ will-animate
+               
+      - Тип: boolean
+
   ▪ Методы
 
+    ▪ dismiss()         | Удалить popover
+    ▪ onDidDismiss()    | Возвращает промис, который резолвится, когда popover уже выключен. Принимает callback.
+    ▪ onWillDismiss()   | Возвращает промис, который резолвится, непосредственно перед выключением popover'а. Принимает callback.
+    ▪ present()         | Показать popover, когда он был уже создан.
+
   ▪ События
+
+    ▪ ionPopoverDidDismiss    | Emitted after the popover has dismissed
+    ▪ ionPopoverDidLoad       | Emitted after the popover has loaded
+    ▪ ionPopoverDidPresent    | Emitted after the popover has presented
+    ▪ ionPopoverDidUnload     | Emitted after the popover has unloaded
+    ▪ ionPopoverWillDismiss   | Emitted before the popover has dismissed
+    ▪ ionPopoverWillPresent   | Emitted before the popover has presented
 
 > ion-radio         
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Компонент radio-кнопка, может использоваться отдельно или в группых оных.
 
   ▪ Описание
 
+    Нажатие на radio-кнопку выберет оную.
+    Также, выбрать radio-кнопку можно программно с 
+    помощью свойства checked.
+
+    ▪ Группировка radio-кнопок
+
+      Чтобы сгруппировать несколько radio-кнопок, можно
+      использовать ion-radio-group.
+
+      Когда radio-кнопки находятся внутри группы, только
+      одна radio-кнопка в группе может быть выбрана в 
+      любой момент времени.
+
+      Нажатие на любую радио-кнопку приведёт к её выбору,
+      и отмене выбора всех остальных в группе.
+
+      Если же кликнутая radio-кнопка не в группе, тогда
+      её выбор НЕ приведёт к отмене выбора оных в любой
+      из групп.
+
   ▪ Использование
+
+    <ion-list>
+      <ion-radio-group>
+        <ion-list-header>
+          <ion-label>Name</ion-label>
+        </ion-list-header>
+
+        <ion-item>
+          <ion-label>Biff</ion-label>
+          <ion-radio slot="start" value="biff" checked></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Griff</ion-label>
+          <ion-radio slot="start" value="griff"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Buford</ion-label>
+          <ion-radio slot="start" value="buford"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ checked
+      - [false] Выбрана ли radio-кнопка?
+      - Атрибуты: 
+
+        ▪ checked
+               
+      - Тип: boolean
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ disabled
+      - [false] Выключена ли radio-кнопка?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: number
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string  
+
+    ▪ name 
+      - Имя для элемента, которое отправится, вместе с формой.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string 
+
+    ▪ value
+      - Значение radio-кнопки.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: string
 
   ▪ События
+
+    ▪ ionBlur             | Emitted when the radio button loses focus
+    ▪ ionFocus            | Emitted when the radio button has focus
+    ▪ ionRadioDidLoad     | Emitted when the radio loads
+    ▪ ionRadioDidUnload   | Emitted when the radio unloads
+    ▪ ionSelect           | Emitted when the radio button is selected
+    ▪ ionStyle            | Emitted when the styles change
 
 > ion-radio-group   
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Группа radio-кнопок.
 
   ▪ Описание
 
+    Позволяет пользователью выбрать лишь одну radio-кнопку
+    из всей группы.
+
+    Выбор одной radio-кнопки в группе приводит к отмене
+    выбора всех остальных оных в группе.
+
   ▪ Использование
+
+    <ion-list>
+      <ion-radio-group>
+        <ion-list-header>
+          Auto Manufacturers
+        </ion-list-header>
+
+        <ion-item>
+          <ion-label>Cord</ion-label>
+          <ion-radio value="cord"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Duesenberg</ion-label>
+          <ion-radio value="duesenberg"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Hudson</ion-label>
+          <ion-radio value="hudson"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Packard</ion-label>
+          <ion-radio value="packard"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Studebaker</ion-label>
+          <ion-radio value="studebaker"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ allowEmptySelection
+      - ???
+      - Атрибуты: 
+
+        ▪ allow-empty-selection
+               
+      - Тип: boolean
+
+    ▪ disabled 
+      - [false] Отключить ли группу radio-кнопок?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ name 
+      - Имя для элемента, которое отправится, вместе с формой.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string 
+
+    ▪ value
+      - Значение группы radio-кнопок.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: string
 
   ▪ События
+
+    ▪ ionChange     | Emitted when the value has changed.
 
 > ion-range         
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Слайдер для выбора значения из диапазона.
 
   ▪ Описание
 
+    По умолчанию, в слайдере 1 движок.
+    Но можно сделать и два.
+
+    ▪ Range Labels
+
+      Labels можно размещать на любой стороне диапазона,
+      добавляя slot="start" или slot="end" в элемент.
+
+      Элемент не обязан быть ion-label'ом, можно в эти
+      слоты вставлять любые элементы.
+
   ▪ Использование
+
+    <ion-list>
+      <ion-item>
+        <ion-range color="danger" pin="true"></ion-range>
+      </ion-item>
+
+      <ion-item>
+        <ion-range min="-200" max="200" color="secondary">
+          <ion-label slot="start">-200</ion-label>
+          <ion-label slot="end">200</ion-label>
+        </ion-range>
+      </ion-item>
+
+     <ion-item>
+       <ion-range min="20" max="80" step="2">
+         <ion-icon size="small" slot="start" name="sunny"></ion-icon>
+         <ion-icon slot="end" name="sunny"></ion-icon>
+       </ion-range>
+     </ion-item>
+
+      <ion-item>
+        <ion-range min="1000" max="2000" step="100" snaps="true" color="secondary"></ion-range>
+      </ion-item>
+
+      <ion-item>
+        <ion-range dual-knobs="true" min="21" max="72" step="3" snaps="true"></ion-range>
+      </ion-item>
+    </ion-list>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ debounce
+      - [0] Установить значение в ms - сколько ждать перед возбуждением ionChange после изменения значения range.
+      - Атрибуты: 
+
+        ▪ debounce
+               
+      - Тип: number
+
+    ▪ disabled
+      - [false] Выключен ли компонент?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: number
+
+    ▪ dualKnobs
+      - [false] Включить ли режим с двумя движками (по умолчанию один)?
+      - Атрибуты: 
+
+        ▪ dual-knobs
+               
+      - Тип: boolean
+
+    ▪ max
+      - [100] MAX int значение диапазона.
+      - Атрибуты: 
+
+        ▪ max
+               
+      - Тип: number
+
+    ▪ min
+      - [0] MIN int значение диапазона.
+      - Атрибуты: 
+
+        ▪ min
+               
+      - Тип: number
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string 
+
+    ▪ name 
+      - Имя для элемента, которое отправится, вместе с формой.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string 
+
+    ▪ pin
+      - [false] Показывать int-значение на движке при нажатии.
+      - Атрибуты: 
+
+        ▪ pin
+               
+      - Тип: boolean
+
+    ▪ snaps
+      - [false] Включить ли разметку диапазона равноудалёнными отметками?
+      - Атрибуты: 
+
+        ▪ snaps
+               
+      - Тип: boolean
+
+    ▪ step
+      - [1] Specifies the value granularity
+      - Атрибуты: 
+
+        ▪ step
+               
+      - Тип: number
+
+    ▪ value
+      - Значение диапазона.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: number
 
   ▪ События
+
+    ▪ ionBlur     | Emitted when the range loses focus.
+    ▪ ionChange   | Emitted when the value property has changed.
+    ▪ ionFocus    | Emitted when the range has focus.
+    ▪ ionStyle    | Emitted when the styles change.
 
 > ion-range-knob    
 
@@ -12067,8 +12654,43 @@
     ▪ dismiss()   | Удалить модалку
     ▪ getTop()    | Получить последнюю открытую модалку
     
+> ion-picker-controller
 
+  Программно контролирует компонент picker.
 
+  ▪ Методы
+
+    ▪ create()    | Создать picker
+    ▪ dismiss()   | Закрыть picker
+    ▪ getTop()    | Получить последний созданный picker
+
+> ion-popover-controller
+
+  Программно контролирует компонент popover.
+
+  ▪ Описание
+
+    Позволяет создавать и удалять popover'ы.
+
+  ▪ Использование
+
+    async function presentPopover() {
+      const popoverController = document.querySelector('ion-popover-controller');
+      await popoverController.componentOnReady();
+
+      const popoverElement = await popoverController.create({
+        component: 'profile-page',
+        event: event
+      });
+      return await popoverElement.present();
+    }
+  
+    ▪ create()    | Создать popover
+    ▪ dismiss()   | Закрыть popover
+    ▪ getTop()    | Получить последний созданный popover
+
+  
+  
 
 А11. Ionic CLI (справочник)
 --------------------------------------
