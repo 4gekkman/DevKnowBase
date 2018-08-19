@@ -5801,27 +5801,63 @@
 
     # ion-range             | Слайдер для выбора значения из диапазона
 
-      ▪ color
-      ▪ debounce
-      ▪ disabled
-      ▪ dualKnobs
-      ▪ max
-      ▪ min
-      ▪ mode
-      ▪ name
-      ▪ pin
-      ▪ snaps
-      ▪ step
-      ▪ 
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ debounce            | [0] Установить значение в ms - сколько ждать перед возбуждением ionChange после изменения значения range
+      ▪ disabled            | [false] Выключен ли компонент?
+      ▪ dualKnobs           | [false] Включить ли режим с двумя движками (по умолчанию один)?
+      ▪ max                 | [100] MAX int значение диапазона
+      ▪ min                 | [0] MIN int значение диапазона
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ name                | Имя для элемента, которое отправится, вместе с формой
+      ▪ pin                 | [false] Показывать int-значение на движке при нажатии
+      ▪ snaps               | [false] Включить ли разметку диапазона равноудалёнными отметками?
+      ▪ step                | [1] Specifies the value granularity
+      ▪ value               | Значение диапазона
 
-      ► ionBlur     | Emitted when the range loses focus
-      ► ionChange   | Emitted when the value property has change
-      ► ionFocus    | Emitted when the range has focus
-      ► ionStyle    | Emitted when the styles change
+      ► ionBlur             | Emitted when the range loses focus
+      ► ionChange           | Emitted when the value property has change
+      ► ionFocus            | Emitted when the range has focus
+      ► ionStyle            | Emitted when the styles change
 
-    # ion-range-knob        |
-    # ion-refresher         |
-    # ion-reorder           |
+    # ion-range-knob        | Внутренний компонент для range
+
+      ▪ disabled            | ???
+      ▪ knob                | ???
+      ▪ labelId             | ???
+      ▪ max                 | ???
+      ▪ min                 | ???
+      ▪ pin                 | ???
+      ▪ pressed             | ???
+      ▪ ratio               | ???
+      ▪ value               | ???
+
+      ► ionDecrease         | Возбуждается при уменьшении
+      ► ionIncrease         | Возбуждается при увеличении
+
+    # ion-refresher         | Функционал "потяни вниз для обновления", для компонента content
+
+      ▪ closeDuration       | [280ms] Время, требующееся refresher'у для закрытия.
+      ▪ disabled            | [false] Отключить и скрыть refresher?
+      ▪ pullMax             | [pullMin + 60] MAX дистанция pull'а вниз до перехода в состояние refreshing
+      ▪ pullMin             | [60] MIN дистанция pull'а вниз до перехода в состояние refreshing
+      ▪ snapbackDuration    | [280ms] Время, требующееся refresher'у для возвращения обратно в состояние refreshing
+
+      • cancel()            | Изменить состояние refresher'а с refreching на canceling
+      • complete()          | Изменить состояние refresher'а с refreching на completing 
+      • getProgress()       | Число, показывающее, как далеко пользователь уже до'pull'ил вниз (0 - недостаточно, 1 - достаточно для обновления)
+
+      ► ionPull             | Возбуждается, пока пользователь тянет контент вниз.
+      ► ionRefresh          | Возбуждается, когда пользователь достаточно дотянул вниз, отпускает контент, и начинается обновление.
+      ► ionStart            | Возбуждается, когда пользователь начинает тянуть контент вниз.
+
+    # ion-refresher-content | ion-refresher-content
+
+      ▪ pullingIcon         | Статическая иконка для отображения, когда вы начинаете тянуть вниз
+      ▪ pullingText         | Текст для отображения, когда вы начинаете тянуть вниз
+      ▪ refreshingSpinner   | Анимированный SVG-спиннер, показывающий, что идёт обновление контента
+      ▪ refreshingText      | Текст для отображения во время обновления контента
+
+    # ion-reorder           | 
     # ion-reorder-group     |
     # ion-ripple-effect     |
     # ion-route             |
@@ -5918,7 +5954,6 @@
       • dismiss()                   | Закрыть popover
       • getTop()                    | Получить последний созданный popover
 
-    # ion-refresher-content         | 
     # ion-toast-controller          | 
 
 --------------------------------------
@@ -12025,7 +12060,7 @@
       - Тип: boolean
 
     ▪ step
-      - [1] Specifies the value granularity
+      - [1] Specifies the value granularity.
       - Атрибуты: 
 
         ▪ step
@@ -12049,31 +12084,219 @@
 
 > ion-range-knob    
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Внутренний компонент для range.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ disabled
+      - ???
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: number
+
+    ▪ knob
+      - ???
+      - Атрибуты: 
+
+        ▪ knob
+               
+      - Тип: string
+
+    ▪ labelId
+      - ???
+      - Атрибуты: 
+
+        ▪ label-id
+               
+      - Тип: string
+
+    ▪ max
+      - ???
+      - Атрибуты: 
+
+        ▪ max
+               
+      - Тип: number
+
+    ▪ min
+      - ???
+      - Атрибуты: 
+
+        ▪ min
+               
+      - Тип: number
+
+    ▪ pin
+      - ???
+      - Атрибуты: 
+
+        ▪ pin
+               
+      - Тип: boolean
+
+    ▪ pressed
+      - ???
+      - Атрибуты: 
+
+        ▪ pressed
+               
+      - Тип: boolean
+
+    ▪ ratio
+      - ???
+      - Атрибуты: 
+
+        ▪ ratio
+               
+      - Тип: number
+
+    ▪ value
+      - ???
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: number
 
   ▪ События
+
+    ▪ ionDecrease     | Возбуждается при уменьшении
+    ▪ ionIncrease     | Возбуждается при увеличении
 
 > ion-refresher     
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Функционал "потяни вниз для обновления", для компонента content.
 
   ▪ Описание
 
+    Паттерн pull-to-refresh позволяет пользователю потянуть
+    вниз свайпом контент, что приведёт к вызову заданного
+    обработчика и его обновлению.
+
+    По завершению асинхронной операции обновления контента,
+    необходимо вызвать метод complete() на экземпляре
+    refresher'а.
+
   ▪ Использование
+
+    <!-- Default Refresher -->
+    <ion-content>
+      <ion-refresher slot="fixed">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+    </ion-content>
+
+    <!-- Custom Refresher Content -->
+    <ion-content>
+      <ion-refresher slot="fixed">
+        <ion-refresher-content
+          pulling-icon="arrow-dropdown"
+          pulling-text="Pull to refresh"
+          refreshing-spinner="circles"
+          refreshing-text="Refreshing...">
+        </ion-refresher-content>
+      </ion-refresher>
+    </ion-content>
 
   ▪ Свойства
 
+    ▪ closeDuration
+      - [280ms] Время, требующееся refresher'у для закрытия.
+      - Атрибуты: 
+
+        ▪ close-duration
+               
+      - Тип: string
+
+    ▪ disabled
+      - [false] Отключить и скрыть refresher?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ pullMax
+      - [pullMin + 60] MAX дистанция pull'а вниз до перехода в состояние refreshing.
+      - Атрибуты: 
+
+        ▪ pull-max
+               
+      - Тип: number
+
+    ▪ pullMin
+      - [60] MIN дистанция pull'а вниз до перехода в состояние refreshing.
+      - Атрибуты: 
+
+        ▪ pull-min
+               
+      - Тип: number
+
+    ▪ snapbackDuration
+      - [280ms] Время, требующееся refresher'у для возвращения обратно в состояние refreshing.
+      - Атрибуты: 
+
+        ▪ snapback-duration
+               
+      - Тип: string
+
   ▪ Методы
 
+    ▪ cancel()        | Изменить состояние refresher'а с refreching на canceling
+    ▪ complete()      | Изменить состояние refresher'а с refreching на completing 
+    ▪ getProgress()   | Число, показывающее, как далеко пользователь уже до'pull'ил вниз (0 - недостаточно, 1 - достаточно для обновления)
+
   ▪ События
+
+    ▪ ionPull         | Возбуждается, пока пользователь тянет контент вниз.
+    ▪ ionRefresh      | Возбуждается, когда пользователь достаточно дотянул вниз, отпускает контент, и начинается обновление.
+    ▪ ionStart        | Возбуждается, когда пользователь начинает тянуть контент вниз.
+
+> ion-refresher-content
+
+  Текст, иконка и спиннер для отображения во время обновления контента refresher'ом.
+
+  ▪ Описание
+
+    По умолчанию, Ionic подставляет pulling icon и refreshing
+    spinner по умолчанию для текущей платформы. Однако, это,
+    и текст - можно кастомизировать.
+
+  ▪ Свойства
+
+    ▪ pullingIcon
+      - Статическая иконка для отображения, когда вы начинаете тянуть вниз.
+      - Атрибуты: 
+
+        ▪ pulling-icon
+               
+      - Тип: string
+
+    ▪ pullingText
+      - Текст для отображения, когда вы начинаете тянуть вниз.
+      - Атрибуты: 
+
+        ▪ pulling-text
+               
+      - Тип: string
+
+    ▪ refreshingSpinner
+      - Анимированный SVG-спиннер, показывающий, что идёт обновление контента.
+      - Атрибуты: 
+
+        ▪ refreshing-spinner
+               
+      - Тип: string
+
+    ▪ refreshingText
+      - Текст для отображения во время обновления контента.
+      - Атрибуты: 
+
+        ▪ refreshing-text
+               
+      - Тип: string
 
 > ion-reorder       
 
