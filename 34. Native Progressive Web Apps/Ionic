@@ -5857,14 +5857,61 @@
       ▪ refreshingSpinner   | Анимированный SVG-спиннер, показывающий, что идёт обновление контента
       ▪ refreshingText      | Текст для отображения во время обновления контента
 
-    # ion-reorder           | 
-    # ion-reorder-group     |
-    # ion-ripple-effect     |
-    # ion-route             |
-    # ion-route-redirect    |
-    # ion-router            |
-    # ion-router-outlet     |
-    # ion-scroll            |
+    # ion-reorder           | Компонент, позволяющий сделать item перетаскиваемым в списке item'ов
+    # ion-reorder-group     | Компонент-обёртка для item'ов с компонентами ion-reorder
+
+      ▪ disabled            | [true] Скрыть ли интерфейс drag and drop?
+
+    # ion-ripple-effect     | Добавляет в md эффект расходящихся кругов от клика/тапа (ripple effect)
+
+      ▪ parent              | Родительский элемент?
+      ▪ tapClick            | Ripple-эффкт будет слушать все клики и анимировать их
+
+      • addRipple()         | Добавить ripple-эффект родительскому элементу
+
+    # ion-route             | Router может отрисовывать компоненты в зависимости от URI браузера.
+
+      ▪ component           | Имя компонента для загрузки в навигационную розетку (ion-tabs, ion-nav), когда URI совпадает с роутом
+      ▪ componentProps      | Объект со свойствами, которые надо передать компоненту, который будет отрисован
+      ▪ url                 | URI, который если совпадёт с браузерным, то этот роут применится и отрисует компонент
+
+      ► ionRouteDataChanged | Используется внутренне ion-router'ом чтобы узнавать, когда роут изменился
+
+    # ion-route-redirect    | Роут для редиректа, должен быть ребёнком ion-router
+
+      ▪ from                | URI, с которого надо переадресовывать
+      ▪ to                  | URI, на который надо переадресовывать
+
+      ► ionRouteRedirectChanged   | Внутренее событие, которое возбуждается, когда любое значение этого правила добавляется/удаляется в/из DOM, или любое из его публичных св-в меняется.
+
+    # ion-router            | Управление роутингом в vanilla JS проектах
+
+      ▪ root                | [/] Корневой патч для URI
+      ▪ from                | [true] Включить ли хэш-режим для URI (надо выключить)
+
+      • navChanged()        | ???
+      • printDebug()        | ???
+      • push()              | Перейти на указанный URL
+
+      ► ionRouteDidChange   | Emitted when the route had changed
+      ► ionRouteWillChange  | Event emitted when the route is about to change
+
+    # ion-router-outlet     | Используется для роутинга в Angular-приложениях
+    # ion-scroll            | Низкоуровневый компонент для произвольных областей прокрутки
+
+      ▪ forceOverscroll     |
+      ▪ mode                |
+      ▪ scrollEvents        |
+
+      • scrollByPoint()     | Scroll by a specified X/Y distance in the component
+      • scrollToBottom()    | Scroll to the bottom of the component
+      • scrollToPoint()     | Scroll to a specified X/Y location in the component
+      • scrollToTop()       | Scroll to the top of the component
+
+      ► ionScroll           | Emitted while scrolling. This event is disabled by default. Look at the property: scrollEven
+      ► ionScrollEnd        | Emitted when the scroll has ended.
+      ► ionScrollStart      | Emitted when the scroll has started.
+
     # ion-searchbar         |
     # ion-segment           |
     # ion-segment-button    |
@@ -12300,115 +12347,434 @@
 
 > ion-reorder       
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Компонент, позволяющий сделать item перетаскиваемым в списке item'ов.
 
   ▪ Описание
 
+    Его можно использовать внутри ion-reorder-group
+    для обеспечения визуального интерфейса drag and drop.
+
   ▪ Использование
 
-  ▪ Свойства
+    <ion-content>
+      <ion-list>
+        <ion-reorder-group>
 
-  ▪ Методы
+          <ion-item>
+            <ion-label>
+              Item 1
+            </ion-label>
+            <ion-reorder slot="end"></ion-reorder>
+          </ion-item>
 
-  ▪ События
+          <ion-item>
+            <ion-label>
+              Item 2
+            </ion-label>
+            <ion-reorder slot="end"></ion-reorder>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Item 3 (default ion-reorder slot="start")
+            </ion-label>
+            <ion-reorder slot="start"></ion-reorder>
+          </ion-item>
+
+          <ion-item color="secondary">
+            <ion-label>
+              Item 4 (default ion-reorder slot="start")
+            </ion-label>
+            <ion-reorder slot="start"></ion-reorder>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Item 5 (custom ion-reorder)
+            </ion-label>
+            <ion-reorder slot="end">
+              <ion-icon name="pizza"></ion-icon>
+            </ion-reorder>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Item 6 (custom ion-reorder)
+            </ion-label>
+            <ion-reorder slot="end">
+              <ion-icon name="pizza"></ion-icon>
+            </ion-reorder>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Item 7 (custom ion-reorder slot="start")
+            </ion-label>
+            <ion-reorder slot="start">
+              <ion-icon name="pizza"></ion-icon>
+            </ion-reorder>
+          </ion-item>
+
+          <ion-reorder>
+            <ion-item>
+              <ion-label>
+                Item 8 (the whole item can be dragged)
+              </ion-label>
+              </ion-item>
+          </ion-reorder>
+
+          <ion-reorder>
+            <ion-item>
+              <ion-label>
+                Item 9 (the whole item can be dragged)
+              </ion-label>
+              </ion-item>
+          </ion-reorder>
+
+          <ion-reorder>
+            <ion-item>
+              <ion-label>
+                Item 10 (the whole item can be dragged)
+              </ion-label>
+              </ion-item>
+          </ion-reorder>
+
+        </ion-reorder-group>
+      </ion-list>
+    </ion-content>
 
 > ion-reorder-group 
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Компонент-обёртка для item'ов с компонентами ion-reorder.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ disabled
+      - [true] Скрыть ли интерфейс drag and drop?
+      - Атрибуты: 
 
-  ▪ События
+        ▪ disabled
+               
+      - Тип: boolean
 
 > ion-ripple-effect 
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Добавляет в md эффект расходящихся кругов от клика/тапа (ripple effect).
 
   ▪ Описание
 
+    Этот компонент можно добавить не только в кнопку,
+    но и в любой компонент.
+
   ▪ Использование
+
+    <div>
+      <ion-ripple-effect></ion-ripple-effect>
+      A plain div with a ripple effect
+    </div>
+
+    <button>
+      <ion-ripple-effect></ion-ripple-effect>
+      Button
+    </button>
 
   ▪ Свойства
 
+    ▪ parent
+      - Родительский элемент?
+      - Атрибуты: 
+
+        ▪ parent
+               
+      - Тип: string
+
+    ▪ tapClick
+      - Ripple-эффкт будет слушать все клики и анимировать их.
+      - Атрибуты: 
+
+        ▪ tap-click
+               
+      - Тип: boolean
+
   ▪ Методы
 
-  ▪ События
+    ▪ addRipple()     | Добавить ripple-эффект родительскому элементу
 
 > ion-route         
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Router может отрисовывать компоненты в зависимости от URI браузера.
 
   ▪ Описание
 
-  ▪ Использование
+    Надо использовать только в vanilla JS проекта, а не 
+    в Angular-версии Ionic. В последней, используйте
+    ion-router-outlet и Angular-роутер.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ component
+      - Имя компонента для загрузки в навигационную розетку (ion-tabs, ion-nav), когда URI совпадает с роутом.
+        Значение этого свойства не всегда является тегом (tagname)
+        компонента, который требуется загрузить, в ion-tabs вместо
+        этого нужно подставлять имя ion-tab'а, который надо выбрать.
+      - Атрибуты: 
+
+        ▪ component
+               
+      - Тип: string
+
+    ▪ componentProps
+      - Объект со свойствами, которые надо передать компоненту, который будет отрисован.
+      - Атрибуты: 
+
+        ▪ component-props
+               
+      - Тип: {[key: string]: any}
+
+    ▪ url
+      - URI, который если совпадёт с браузерным, то этот роут применится и отрисует компонент.
+        Принимает такие же пути, как expressjs, т.е. можно в URI
+        указывать параметры в стиле /foo/:bar, доступ к которым
+        можно получать во входящих props в компоненте.
+      - Атрибуты: 
+
+        ▪ url
+               
+      - Тип: string            
 
   ▪ События
+
+    ▪ ionRouteDataChanged   | Используется внутренне ion-router'ом чтобы узнавать, когда роут изменился.
 
 > ion-route-redirect
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Роут для редиректа, должен быть ребёнком ion-router.
 
   ▪ Описание
 
+    Надо использовать только в vanilla JS проекта, а не 
+    в Angular-версии Ionic. В последней, используйте
+    ion-router-outlet и Angular-роутер.
+
+    Чтобы редирект произошёл, from должен полностью
+    совпадать с выбранным URL.
+
+    ▪ Redirect evaluation
+
+      Можно определить произвольное число redirect-роутов
+      в ion-router, но только один из них может совпасть.
+
+      Кроме того, redirect-роут никогда не будет переадресовывать
+      на другой redirect-роут, иначе это может привести к бесконечной
+      зацикленной петле.
+
+      Допустим, у нас есть 2 redirect-роута:
+
+        <ion-router>
+          <ion-route-redirect from="/admin" to="/login"/>
+          <ion-route-redirect from="/login" to="/admin"/>
+        </ion-router>      
+
+      Пользователь переходит в /admin, и будет переадресован
+      в /login, и там остановится. Он НЕ будет переадресован
+      в /admin обратно.
+
   ▪ Использование
+
+    ▪ Simple path
+
+      <ion-route-redirect from="/admin" to="/login">
+
+      Этот роут применится (выполнит редирект), когда
+      пользователь перейдёт в URI = /admin, но не 
+      применится, если он перейдёт в /admin/posts
+
+      А чтобы роут применялся в любому подсегменту admin,
+      нужно использовать звёздочку *
+
+      <ion-route-redirect from="/admin/*" to="/login">  
+
+    ▪ Redirect all routes to login
+
+      Redirect-роуты могут работать, как guards, поскольку
+      они предотвращают для пользователей доступ в те зоны,
+      в которые им не следует заходить, основываясь, например,
+      на том, аутентифицирован пользователь, или нет.
+
+      TSX:
+
+        {!this.isLoggedIn &&
+          <ion-route-redirect from="*" to="/login"/> }
+
+      Роутер может быть добавлен или удалён динамически, 
+      чтобы перенаправлять или защищать какие-то роуты
+      от посторонних.
+
+      Другой вариант, это изменять значение для to, 
+      можно поставить to равным null или undefined,
+      и отключить тем самым переадресацию.
+
+      TSX:
+
+        <ion-route-redirect from="*" to={this.isLoggedin ? undefined : '/login'}/>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ from
+      - URI, с которого надо переадресовывать.
+      - Атрибуты: 
+
+        ▪ from
+               
+      - Тип: string
+
+    ▪ to
+      - URI, на который надо переадресовывать.
+      - Атрибуты: 
+
+        ▪ to
+               
+      - Тип: string
 
   ▪ События
+
+    ▪ ionRouteRedirectChanged   | Внутренее событие, которое возбуждается, когда любое значение этого правила добавляется/удаляется в/из DOM, или любое из его публичных св-в меняется.
 
 > ion-router        
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Управление роутингом в vanilla JS проектах.
 
   ▪ Описание
 
+    Для Angular-проектов, используйте ion-router-outlet и
+    роутер от Angular.
+
+    В оном приложении должен быть только один компонент 
+    ion-router компонент. Он контролирует все взаимодействия
+    с историей браузера и собирает обновления через систему
+    событий.
+
+    ion-router лишь координирует URL для навигационных
+    розеток Ionic'а: ion-nav and ion-tabs.
+
+    То есть, ion-router никогда не трогает DOM, не показывает
+    компоненты, и не возбуждает никаких lifecycle-событий,
+    он лишь говорит ion-nav'у и ion-tab'у что и когда 
+    показывать, основываясь на текущем URL (URI).
+
+    Чтобы настроить эту взаимосвязь между компонентами и 
+    URL'ами, ion-router использует декларативный синтаксис
+    JSX/HTML для определения дерева роутов.
+
   ▪ Использование
+
+    <ion-router>
+      <ion-route component="page-tabs">
+        <ion-route url="/schedule" component="tab-schedule">
+          <ion-route component="page-schedule"></ion-route>
+          <ion-route url="/session/:sessionId" component="page-session"></ion-route>
+        </ion-route>
+
+        <ion-route url="/speakers" component="tab-speaker">
+          <ion-route component="page-speaker-list"></ion-route>
+          <ion-route url="/session/:sessionId" component="page-session"></ion-route>
+          <ion-route url="/:speakerId" component="page-speaker-detail"></ion-route>
+        </ion-route>
+
+        <ion-route url="/map" component="page-map"></ion-route>
+        <ion-route url="/about" component="page-about"></ion-route>
+      </ion-route>
+
+      <ion-route url="/tutorial" component="page-tutorial"></ion-route>
+      <ion-route url="/login" component="page-login"></ion-route>
+      <ion-route url="/account" component="page-account"></ion-route>
+      <ion-route url="/signup" component="page-signup"></ion-route>
+      <ion-route url="/support" component="page-support"></ion-route>
+    </ion-router>
 
   ▪ Свойства
 
+    ▪ root
+      - [/] Корневой патч для URI.
+      - Атрибуты: 
+
+        ▪ root
+               
+      - Тип: string
+
+    ▪ from
+      - [true] Включить ли хэш-режим для URI (надо выключить).
+        Хэш-режим: /index.html#/path/to/page
+        НЕ-хэш-режим: /path/to/page (лучше для SEO и пользователей)
+      - Атрибуты: 
+
+        ▪ use-hash
+               
+      - Тип: boolean      
+
   ▪ Методы
 
+    ▪ navChanged()    | ???
+    ▪ printDebug()    | ???
+    ▪ push()          | Перейти на указанный URL.
+
   ▪ События
+
+    ▪ ionRouteDidChange     | Emitted when the route had changed
+    ▪ ionRouteWillChange    | Event emitted when the route is about to change
 
 > ion-router-outlet 
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
-
-  ▪ Свойства
-
-  ▪ Методы
-
-  ▪ События
+  Используется для роутинга в Angular-приложениях.
 
 > ion-scroll        
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Низкоуровневый компонент для произвольных областей прокрутки.
 
   ▪ Описание
 
-  ▪ Использование
+    Используется внутренне компонентом content.
 
   ▪ Свойства
 
+    ▪ forceOverscroll
+      - [false] Вкл. bounce-эффект, если контент не вызывает overflow scroll.
+        Если контент достигает границ ionScroll, ничего не меняется.
+        Никак не влияет на системный bounce в iOS (это уровень OS).
+      - Атрибуты: 
+
+        ▪ force-overscroll
+               
+      - Тип: boolean
+
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ scrollEvents
+      - [false] Возбуждать ли события при скролле?
+      - Атрибуты: 
+
+        ▪ scroll-events
+               
+      - Тип: boolean     
+
   ▪ Методы
 
+    ▪ scrollByPoint()     | Scroll by a specified X/Y distance in the component
+    ▪ scrollToBottom()    | Scroll to the bottom of the component
+    ▪ scrollToPoint()     | Scroll to a specified X/Y location in the component
+    ▪ scrollToTop()       | Scroll to the top of the component
+
   ▪ События
+
+    ▪ ionScroll       | Emitted while scrolling. This event is disabled by default. Look at the property: scrollEvents
+    ▪ ionScrollEnd    | Emitted when the scroll has ended.
+    ▪ ionScrollStart  | Emitted when the scroll has started.
 
 > ion-searchbar     
 
