@@ -5899,9 +5899,9 @@
     # ion-router-outlet     | Используется для роутинга в Angular-приложениях
     # ion-scroll            | Низкоуровневый компонент для произвольных областей прокрутки
 
-      ▪ forceOverscroll     |
-      ▪ mode                |
-      ▪ scrollEvents        |
+      ▪ forceOverscroll     | [false] Вкл. bounce-эффект, если контент не вызывает overflow scroll
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ scrollEvents        | [false] Возбуждать ли события при скролле?
 
       • scrollByPoint()     | Scroll by a specified X/Y distance in the component
       • scrollToBottom()    | Scroll to the bottom of the component
@@ -5956,10 +5956,50 @@
 
       ► ionSelect           | Emitted when the segment button is clicked
 
-    # ion-select            |
-    # ion-select-option     |
-    # ion-select-popover    |
-    # ion-show-when         |
+    # ion-select            | Элемент для выбора 1 или более опций, похожий на select из HTML
+
+      ▪ cancelText          | ['cancel'] Текст для кнопки "cancel"
+      ▪ disabled            | [false] Выключить ли select?
+      ▪ interface           | [alert] Какой интерфейс использовать для select? (alert, action-sheet, popover)
+      ▪ interfaceOptions    | Любые опции, которые могут принять интерфейсы alert, action-sheet, popover
+      ▪ multiple            | [false] Разрешить ли select'у принимать >1 значения?
+      ▪ name                | Имя для элемента, которое отправится, вместе с формой
+      ▪ okText              | ['ok'] Текст для кнопки 'ok'
+      ▪ placeholder         | Текст для отображения, когда select пуст
+      ▪ selectedText        | Какой текст отображать вместо value выбранной опции
+      ▪ value               | Значение select'а
+
+      ► ionBlur             | Emitted when the select loses focus
+      ► ionCancel           | Emitted when the selection is cancelled
+      ► ionChange           | Emitted when the value has changed
+      ► ionFocus            | Emitted when the select has focus
+      ► ionStyle            | Emitted when the styles change
+
+    # ion-select-option     | Компонент-опция для select, должен быть его дочерним эл-том
+
+      ▪ disabled            | [false] Отключить ли возможность выбрать эту опцию?
+      ▪ selected            | [false] Если true, опция выбрана.
+      ▪ value               | Текстовое значение опции
+
+      ► ionSelectOptionDidLoad    | Emitted when the select option loads.
+      ► ionSelectOptionDidUnload  | Emitted when the select option unloads.
+
+    # ion-select-popover    | Внутренний компонент для создания интерфейса popover, из компонента select
+
+      ▪ header              | Текст для header для popover
+      ▪ subHeader           | Текст для subheader для popover
+      ▪ message             | Текст для body для popover
+      ▪ options             | Массив опций для popover
+
+    # ion-show-when         | Компонент, показывающий свой контент, когда query становется true
+
+      ▪ mediaQuery          | Если указанный медиа-запрос совпадает с value, контент будет показан
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ or                  | Если false, все условия д.б. true для скрытия эл-та; если true - хотя бы одно
+      ▪ orientation         | Если текущая ориентация совпадает с указанной, контент будет показан
+      ▪ platforms           | Если текущая платформа совпадает с указанной, элемент будет скрыт
+      ▪ size                | Если текущая ширина экрана совпадает с указанной, контент будет показан (xs,sm,md,lg,xl)
+
     # ion-skeleton-text     |
     # ion-slide             |
     # ion-slides            |
@@ -13248,55 +13288,437 @@
 
 > ion-select        
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Элемент для выбора 1 или более опций, похожий на select из HTML.
 
   ▪ Описание
 
+    Select следует использовать с элементами <ion-select-option>,
+    которые должны являться детьми select'а. Если у option нет
+    заданного value, то её текст будет использоваться в качестве
+    value.
+
+    Если же value задано для <ion-select>, то select-option
+    будет выбрано на основе этого value. В противном случае,
+    можно использовать атрибут selected на <ion-select-option>.
+
+    ▪ Interfaces
+
+      По умолчанию, select использует AlertController API 
+      для открытия окошка alert с опциями. 
+
+      Но можно это изменить, и использовать ActionSheetController
+      API или PopoverControllerAPI, передавая action-sheet или
+      popover, соответственно, в свойстве interface. Каждый из
+      этих 3-х интерфейсов имеет свои преимущества и недостатки.
+
+    ▪ Single selection
+
+      По умолчанию, select позволяет пользователям выбирать
+      только одну опцию. 
+
+      Alert интерфейс предстаёт перед пользователями с 
+      опциями, стилизованными под radio-кнопки.
+
+      Значением для value компонента select становится значение
+      value выбранной опции.
+
+    ▪ Multiple selection
+
+      Добавив select'у атрибут multiple, можно дать пользователям
+      возможность выбирать сразу несколько опций. 
+
+      В этом случае, alert интерфейс предстаёт перед пользователями
+      с опциями, стилизованными под чекбоксы.
+
+      Значением для value компонента select становится массив
+      value всех выбранных опций.
+
+      *Примечание:
+
+        Интерфейсы action-sheet и popover не поддерживают
+        multiple selection.
+
+    ▪ Select buttons
+
+      По умолчанию, у alert есть 2 кнопки: "cancel" и "ok".
+      Текст любой из них можно изменять с помощью атрибутов
+      cancelText и okText.
+
+      У интерфейсов action-sheet и popover не будет кнопки
+      "ok". Вместо этого, нажатие на любую из опций будет
+      автоматически выбирать её и закрывать окошко.
+
+      Кроме того, у интерфейса popover нет кнопки 
+      "cancel", а нажатие на фон будет закрывать окошко.
+
+    ▪ Interface options
+
+      Поскольку select использует интерфейсы alert, action
+      sheet и popover, опции можно передавать в эти компоненты
+      через свойство interfaceOptions.
+
+      Так можно передавать кастомные header, subheader, css class,
+      и так далее.
+
   ▪ Использование
+
+    SINGLE SELECTION
+
+      <ion-list>
+        <ion-list-header>Single Selection</ion-list-header>
+
+        <ion-item>
+          <ion-label>Gender</ion-label>
+          <ion-select placeholder="Select One">
+            <ion-select-option value="f">Female</ion-select-option>
+            <ion-select-option value="m">Male</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Hair Color</ion-label>
+          <ion-select value="brown" ok-text="Okay" cancel-text="Dismiss">
+            <ion-select-option value="brown">Brown</ion-select-option>
+            <ion-select-option value="blonde">Blonde</ion-select-option>
+            <ion-select-option value="black">Black</ion-select-option>
+            <ion-select-option value="red">Red</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+      MULTIPLE SELECTION
+
+        <ion-list>
+          <ion-list-header>Multiple Selection</ion-list-header>
+
+          <ion-item>
+            <ion-label>Toppings</ion-label>
+            <ion-select multiple="true" cancel-text="Nah" ok-text="Okay!">
+              <ion-select-option value="bacon">Bacon</ion-select-option>
+              <ion-select-option value="olives">Black Olives</ion-select-option>
+              <ion-select-option value="xcheese">Extra Cheese</ion-select-option>
+              <ion-select-option value="peppers">Green Peppers</ion-select-option>
+              <ion-select-option value="mushrooms">Mushrooms</ion-select-option>
+              <ion-select-option value="onions">Onions</ion-select-option>
+              <ion-select-option value="pepperoni">Pepperoni</ion-select-option>
+              <ion-select-option value="pineapple">Pineapple</ion-select-option>
+              <ion-select-option value="sausage">Sausage</ion-select-option>
+              <ion-select-option value="Spinach">Spinach</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Pets</ion-label>
+            <ion-select multiple="true">
+              <ion-select-option value="bird" selected>Bird</ion-select-option>
+              <ion-select-option value="cat">Cat</ion-select-option>
+              <ion-select-option value="dog" selected>Dog</ion-select-option>
+              <ion-select-option value="honeybadger">Honey Badger</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+
+      INTERFACE OPTIONS
+
+        HTML
+
+          <ion-list>
+            <ion-list-header>Interface Options</ion-list-header>
+
+            <ion-item>
+              <ion-label>Alert</ion-label>
+              <ion-select id="customAlertSelect" interface="alert" multiple="true" placeholder="Select One">
+                <ion-select-option value="bacon">Bacon</ion-select-option>
+                <ion-select-option value="olives">Black Olives</ion-select-option>
+                <ion-select-option value="xcheese">Extra Cheese</ion-select-option>
+                <ion-select-option value="peppers">Green Peppers</ion-select-option>
+                <ion-select-option value="mushrooms">Mushrooms</ion-select-option>
+                <ion-select-option value="onions">Onions</ion-select-option>
+                <ion-select-option value="pepperoni">Pepperoni</ion-select-option>
+                <ion-select-option value="pineapple">Pineapple</ion-select-option>
+                <ion-select-option value="sausage">Sausage</ion-select-option>
+                <ion-select-option value="Spinach">Spinach</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Popover</ion-label>
+              <ion-select id="customPopoverSelect" interface="popover" placeholder="Select One">
+                <ion-select-option value="brown">Brown</ion-select-option>
+                <ion-select-option value="blonde">Blonde</ion-select-option>
+                <ion-select-option value="black">Black</ion-select-option>
+                <ion-select-option value="red">Red</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Action Sheet</ion-label>
+              <ion-select id="customActionSheetSelect" interface="action-sheet" placeholder="Select One">
+                <ion-select-option value="red">Red</ion-select-option>
+                <ion-select-option value="purple">Purple</ion-select-option>
+                <ion-select-option value="yellow">Yellow</ion-select-option>
+                <ion-select-option value="orange">Orange</ion-select-option>
+                <ion-select-option value="green">Green</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+          </ion-list>          
+
+        JS
+
+          var customAlertSelect = document.getElementById('customAlertSelect');
+          var customAlertOptions = {
+            header: 'Pizza Toppings',
+            subHeader: 'Select your toppings',
+            message: '$1.00 per topping',
+            translucent: true
+          };
+          customAlertSelect.interfaceOptions = customAlertOptions;
+
+          var customPopoverSelect = document.getElementById('customPopoverSelect');
+          var customPopoverOptions = {
+            header: 'Hair Color',
+            subHeader: 'Select your hair color',
+            message: 'Only select your dominant hair color'
+          };
+          customPopoverSelect.interfaceOptions = customPopoverOptions;
+
+          var customActionSheetSelect = document.getElementById('customActionSheetSelect');
+          var customActionSheetOptions = {
+            header: 'Colors',
+            subHeader: 'Select your favorite color'
+          };
+          customActionSheetSelect.interfaceOptions = customActionSheetOptions;        
+
+    </ion-list>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ cancelText
+      - ['cancel'] Текст для кнопки "cancel".
+      - Атрибуты: 
+
+        ▪ cancel-text
+               
+      - Тип: string
+
+    ▪ disabled
+      - [false] Выключить ли select?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ interface
+      - [alert] Какой интерфейс использовать для select? (alert, action-sheet, popover)
+      - Атрибуты: 
+
+        ▪ interface
+               
+      - Тип: string
+
+    ▪ interfaceOptions
+      - Любые опции, которые могут принять интерфейсы alert, action-sheet, popover.
+        Подробнее, см.описания контроллеров этих интерфейсов.
+      - Атрибуты: 
+
+        ▪ interface-options
+               
+      - Тип: any
+
+    ▪ multiple
+      - [false] Разрешить ли select'у принимать >1 значения?
+      - Атрибуты: 
+
+        ▪ multiple
+               
+      - Тип: boolean
+
+    ▪ name 
+      - Имя для элемента, которое отправится, вместе с формой.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string 
+
+    ▪ okText
+      - ['ok'] Текст для кнопки 'ok'.
+      - Атрибуты: 
+
+        ▪ ok-text
+               
+      - Тип: string
+
+    ▪ placeholder
+      - Текст для отображения, когда select пуст.
+      - Атрибуты: 
+
+        ▪ placeholder
+               
+      - Тип: string
+
+    ▪ selectedText
+      - Какой текст отображать вместо value выбранной опции.
+      - Атрибуты: 
+
+        ▪ selected-text
+               
+      - Тип: string
+
+    ▪ value
+      - Значение select'а.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: any
 
   ▪ События
+
+    ▪ ionBlur     | Emitted when the select loses focus.
+    ▪ ionCancel   | Emitted when the selection is cancelled.
+    ▪ ionChange   | Emitted when the value has changed.
+    ▪ ionFocus    | Emitted when the select has focus.
+    ▪ ionStyle    | Emitted when the styles change.
 
 > ion-select-option 
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Компонент-опция для select, должен быть его дочерним эл-том.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ disabled
+      - [false] Отключить ли возможность выбрать эту опцию?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ selected
+      - [false] Если true, опция выбрана.
+      - Атрибуты: 
+
+        ▪ selected
+               
+      - Тип: boolean
+
+    ▪ value
+      - Текстовое значение опции.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: string
 
   ▪ События
+
+    ▪ ionSelectOptionDidLoad    | Emitted when the select option loads.
+    ▪ ionSelectOptionDidUnload  | Emitted when the select option unloads.
 
 > ion-select-popover
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Внутренний компонент для создания интерфейса popover, из компонента select.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ header
+      - Текст для header для popover.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ header
+               
+      - Тип: string
+
+    ▪ subHeader
+      - Текст для subheader для popover.
+      - Атрибуты: 
+
+        ▪ sub-header
+               
+      - Тип: string
+
+    ▪ message
+      - Текст для body для popover.
+      - Атрибуты: 
+
+        ▪ message
+               
+      - Тип: string
+
+    ▪ options
+      - Массив опций для popover.
+      - Атрибуты: 
+
+        ▪ options
+               
+      - Тип: SelectPopoverOption[]      
 
 > ion-show-when     
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Компонент, показывающий свой контент, когда query становется true
 
   ▪ Описание
 
-  ▪ Использование
+    Может отслеживать:
+
+    ▪ Изменение платформы
+    ▪ Изменение mode,
+    ▪ CSS media queries
+    ▪ Ореинтацию устройства.
 
   ▪ Свойства
+
+    ▪ mediaQuery
+      - Если указанный медиа-запрос совпадает с value, контент будет показан.
+      - Атрибуты: 
+
+        ▪ media-query
+               
+      - Тип: string
+
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ or
+      - Если false, все условия д.б. true для скрытия эл-та; если true - хотя бы одно.
+      - Атрибуты: 
+
+        ▪ or
+               
+      - Тип: boolean
+
+    ▪ orientation
+      - Если текущая ориентация совпадает с указанной, контент будет показан.
+      - Атрибуты: 
+
+        ▪ orientation
+               
+      - Тип: string
+
+    ▪ platform
+      - Если текущая платформа совпадает с указанной, элемент будет скрыт.
+        Принимает comma separated list.
+        Не путать платформу с mode (режимом отображения).
+      - Атрибуты: 
+
+        ▪ platform
+               
+      - Тип: string
+
+    ▪ size
+      - Если текущая ширина экрана совпадает с указанной, контент будет показан (xs,sm,md,lg,xl).
+      - Атрибуты: 
+
+        ▪ size
+               
+      - Тип: number
 
   ▪ Методы
 
