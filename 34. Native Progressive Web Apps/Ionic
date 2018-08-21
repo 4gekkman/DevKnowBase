@@ -5912,9 +5912,50 @@
       ► ionScrollEnd        | Emitted when the scroll has ended.
       ► ionScrollStart      | Emitted when the scroll has started.
 
-    # ion-searchbar         |
-    # ion-segment           |
-    # ion-segment-button    |
+    # ion-searchbar         | Текстовое поле в toolbar/content для поиска по коллекции
+
+      ▪ animated            | [false] Включить ли анимацию?
+      ▪ autocomplete        | [off] Разрешить ли автокомплит? (on, off)
+      ▪ autocorrect         | [off] Разрешить ли автокоррекцию ввода? (on, off)
+      ▪ cancelButtonIcon    | [md-arrow-back] Установить иконку для кнопки "cancel" (только для md mode)
+      ▪ cancelButtonText    | ['cancel'] Установить текст для кнопки "cancel" (только ios)
+      ▪ clearIcon           | [close-circle (ios), close (md)]Установить иконку для кнопки "clear"
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ debounce            | [250] Установить значение в ms - сколько ждать перед возбуждением ionChange после каждого нажатия клавиши
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ placeholder         | Плейсхолдер
+      ▪ searchIcon          | [search] Установить search-иконку
+      ▪ showCancelButton    | [falce] Показывать ли кнопку "cancel"
+      ▪ spellcheck          | [false] Включить ли проверку орфографии?
+      ▪ type                | [search] Тип input'а: text, password, email, number, search, tel, url
+      ▪ value               | Значение searchbar'а
+
+      ► ionBlur             | Emitted when the input loses focus.
+      ► ionCancel           | Emitted when the cancel button is clicked.
+      ► ionChange           | Emitted when the value has changed.
+      ► ionClear            | Emitted when the clear input button is clicked.
+      ► ionFocus            | Emitted when the input has focus.
+      ► ionInput            | Emitted when a keyboard input ocurred.
+
+    # ion-segment           | Сегментный горизонтальный блок кнопок
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ disabled            | [false] Выключить ли segment-блок кнопок?
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ value               | Значение компонента
+
+      ► ionChange           | Emitted when the value property has changed
+
+    # ion-segment-button    | Кнопка для размещения внутри компонента segment
+
+      ▪ checked             | [false] Выбрана ли кнопка?
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ disabled            | [false] Выключить ли segment-кнопку?
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ value               | Значение компонента
+
+      ► ionSelect           | Emitted when the segment button is clicked
+
     # ion-select            |
     # ion-select-option     |
     # ion-select-popover    |
@@ -12778,45 +12819,432 @@
 
 > ion-searchbar     
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Текстовое поле в toolbar/content для поиска по коллекции.
 
   ▪ Описание
 
+    Для поиска по list'ам следует использовать searchbar,
+    а не input. 
+
+    У searchbar есть кнопка "clear", которая очищает 
+    ввод, при этом сохраняя фокус на searchbar'е.
+
+    Можно включить кнопку "cancel", она тоже очищает
+    ввод, но фокус теряется.
+
   ▪ Использование
+
+    <!-- Default Searchbar -->
+    <ion-searchbar></ion-searchbar>
+
+    <!-- Searchbar with danger color -->
+    <ion-searchbar color="danger"></ion-searchbar>
+
+    <!-- Searchbar with value -->
+    <ion-searchbar value="Ionic"></ion-searchbar>
+
+    <!-- Searchbar with telephone type -->
+    <ion-searchbar type="tel"></ion-searchbar>
+
+    <!-- Searchbar with a cancel button and custom cancel button text -->
+    <ion-searchbar show-cancel-button cancel-button-text="Custom Cancel"></ion-searchbar>
+
+    <!-- Searchbar with a custom debounce -->
+    <ion-searchbar debounce="500"></ion-searchbar>
+
+    <!-- Animated Searchbar -->
+    <ion-searchbar animated></ion-searchbar>
+
+    <!-- Searchbar with a placeholder -->
+    <ion-searchbar placeholder="Filter Schedules"></ion-searchbar>
+
+    <!-- Searchbar in a Toolbar -->
+    <ion-toolbar>
+      <ion-searchbar></ion-searchbar>
+    </ion-toolbar>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ animated
+      - [false] Включить ли анимацию?
+      - Атрибуты: 
+
+        ▪ animated
+               
+      - Тип: boolean
+
+    ▪ autocomplete
+      - [off] Разрешить ли автокомплит? (on, off)
+      - Атрибуты: 
+
+        ▪ autocomplete
+               
+      - Тип: string
+
+    ▪ autocorrect
+      - [off] Разрешить ли автокоррекцию ввода? (on, off)
+      - Атрибуты: 
+
+        ▪ autocorrect
+               
+      - Тип: string
+
+    ▪ cancelButtonIcon
+      - [md-arrow-back] Установить иконку для кнопки "cancel" (только для md mode).
+      - Атрибуты: 
+
+        ▪ cancel-button-icon
+               
+      - Тип: string
+
+    ▪ cancelButtonText
+      - ['cancel'] Установить текст для кнопки "cancel" (только ios).
+      - Атрибуты: 
+
+        ▪ cancel-button-text
+               
+      - Тип: string
+
+    ▪ clearIcon
+      - [close-circle (ios), close (md)]Установить иконку для кнопки "clear".
+      - Атрибуты: 
+
+        ▪ clear-icon
+               
+      - Тип: string
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ debounce
+      - [250] Установить значение в ms - сколько ждать перед возбуждением ionChange после каждого нажатия клавиши.
+      - Атрибуты: 
+
+        ▪ debounce
+               
+      - Тип: number 
+
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ placeholder
+      - Плейсхолдер.
+      - Атрибуты: 
+
+        ▪ placeholder
+               
+      - Тип: string 
+
+    ▪ searchIcon
+      - [search] Установить search-иконку.
+      - Атрибуты: 
+
+        ▪ search-icon
+               
+      - Тип: string
+
+    ▪ showCancelButton
+      - [false] Показывать ли кнопку "cancel".
+      - Атрибуты: 
+
+        ▪ show-cancel-button
+               
+      - Тип: boolean
+
+    ▪ spellcheck
+      - [false] Включить ли проверку орфографии?
+      - Атрибуты: 
+
+        ▪ spellcheck
+               
+      - Тип: boolean
+
+    ▪ type
+      - [search] Тип input'а: text, password, email, number, search, tel, url.
+      - Атрибуты: 
+
+        ▪ type
+               
+      - Тип: string
+
+    ▪ value
+      - Значение searchbar'а.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: string
 
   ▪ События
+
+    ▪ ionBlur     | Emitted when the input loses focus.
+    ▪ ionCancel   | Emitted when the cancel button is clicked.
+    ▪ ionChange   | Emitted when the value has changed.
+    ▪ ionClear    | Emitted when the clear input button is clicked.
+    ▪ ionFocus    | Emitted when the input has focus.
+    ▪ ionInput    | Emitted when a keyboard input ocurred.
 
 > ion-segment       
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Сегментный горизонтальный блок кнопок.
 
   ▪ Описание
 
+    Отображает группу связанных друг с другом кнопок,
+    известную, как segmented controls, в горизонтальной
+    плоскости.
+
+    Segment можно отображать как в toolbar, так и к 
+    главном content.
+
+    Принцип работы у них, как у TABов. Когда выбираешь
+    одну кнопку в сегменте, другие развыделяются.
+
+    Сегменты полезны для переключения между различными
+    представлениями внутри контента. А TAB'ы, в свою очередь, 
+    используют для переключения между разными страницами.
+
   ▪ Использование
 
+    HTML:
+
+      <!-- Default Segment -->
+      <ion-segment>
+        <ion-segment-button value="friends">
+          Friends
+        </ion-segment-button>
+        <ion-segment-button value="enemies">
+          Enemies
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- Disabled Segment -->
+      <ion-segment disabled>
+        <ion-segment-button value="sunny" checked>
+          Sunny
+        </ion-segment-button>
+        <ion-segment-button value="rainy">
+          Rainy
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- Segment with anchors -->
+      <ion-segment>
+        <ion-segment-button href="#dogs" value="dogs">
+          Dogs
+        </ion-segment-button>
+        <ion-segment-button href="#cats" value="cats">
+          Cats
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- Segment with secondary color -->
+      <ion-segment color="secondary">
+        <ion-segment-button value="standard">
+          Standard
+        </ion-segment-button>
+        <ion-segment-button value="hybrid">
+          Hybrid
+        </ion-segment-button>
+        <ion-segment-button value="sat">
+          Satellite
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- Segment in a toolbar -->
+      <ion-toolbar>
+        <ion-segment>
+          <ion-segment-button value="camera">
+            <ion-icon name="camera"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="bookmark">
+            <ion-icon name="bookmark"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-toolbar>    
+
+    JS:
+
+      // Listen for ionChange on all segments
+      const segments = document.querySelectorAll('ion-segment')
+      for (let i = 0; i < segments.length; i++) {
+        segments[i].addEventListener('ionChange', (ev) => {
+          console.log('Segment changed', ev);
+        })
+      }
+ 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ disabled
+      - [false] Выключить ли segment-блок кнопок?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ value
+      - Значение компонента.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: string
 
   ▪ События
+
+    ▪ ionChange     | Emitted when the value property has changed
 
 > ion-segment-button
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Кнопка для размещения внутри компонента segment.
 
   ▪ Описание
 
+    Segment-кнопку можно всключить по умолчанию с помощью
+    атрибута checked, или установив значение для value
+    компонента segment, равным значению value segment-кнопки.
+
+    Лишь одна segment-кнопка в рамках одного segment
+    может быть включена в один и тот же момент времени.
+
   ▪ Использование
+
+    HTML:
+
+      <!-- Segment buttons with text -->
+      <ion-segment>
+        <ion-segment-button>
+          Friends
+        </ion-segment-button>
+        <ion-segment-button>
+          Enemies
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- Segment buttons with the first checked and the last disabled -->
+      <ion-segment>
+        <ion-segment-button checked>
+          Paid
+        </ion-segment-button>
+        <ion-segment-button>
+          Free
+        </ion-segment-button>
+        <ion-segment-button disabled>
+          Top
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- Segment buttons with values and icons -->
+      <ion-segment>
+        <ion-segment-button value="camera">
+          <ion-icon name="camera"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="bookmark">
+          <ion-icon name="bookmark"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- Segment with a value that checks the last button -->
+      <ion-segment value="shared">
+        <ion-segment-button value="bookmarks">
+          Bookmarks
+        </ion-segment-button>
+        <ion-segment-button value="reading">
+          Reading List
+        </ion-segment-button>
+        <ion-segment-button value="shared">
+          Shared Links
+        </ion-segment-button>
+      </ion-segment>    
+
+    JS: 
+
+      // Listen for ionClick on all segment buttons
+      const segmentButtons = document.querySelectorAll('ion-segment-button')
+      for (let i = 0; i < segmentButtons.length; i++) {
+        segmentButtons[i].addEventListener('ionSelect', (ev) => {
+          console.log('Segment button clicked', ev);
+        })
+      }
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ checked
+      - [false] Выбрана ли кнопка?
+      - Атрибуты: 
+
+        ▪ checked
+               
+      - Тип: boolean
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ disabled
+      - [false] Выключить ли segment-кнопку?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ value
+      - Значение компонента.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: string
 
   ▪ События
+
+    ▪ ionSelect     | Emitted when the segment button is clicked.
 
 > ion-select        
 
