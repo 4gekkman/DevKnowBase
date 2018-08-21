@@ -6000,16 +6000,144 @@
       ▪ platforms           | Если текущая платформа совпадает с указанной, элемент будет скрыт
       ▪ size                | Если текущая ширина экрана совпадает с указанной, контент будет показан (xs,sm,md,lg,xl)
 
-    # ion-skeleton-text     |
-    # ion-slide             |
-    # ion-slides            |
-    # ion-spinner           |
-    # ion-split-pane        |
+    # ion-skeleton-text     | Компонент для отрисовки плейсхолдеров (серых прямоугольников) вместо контента
 
-    # ion-tab               |
-    # ion-tab-button        |
-    # ion-tabbar            |
-    # ion-tabs              |
+      ▪ width               | [100%] Ширина для элемента
+
+    # ion-slide             | Slide, это дочерний компонент для Slides
+    # ion-slides            | Слайдер с любым кол-вом слайдов, слайды можно менять свайпом/драгом
+
+      ▪ options             | Опции для передачи экземпляра swiper'а
+      ▪ pager               | [false] Показывать ли пагинацию?
+      ▪ scrollbar           | [false] Показывать ли скроллбар?
+
+      • getActiveIndex()    | Получить индекс активного слайда
+      • getPreviousIndex()  | Получить индекс предыдущего слайда
+      • isBeginning()       | Являетяс ли текущий слайд первым?
+      • isEnd()             | Является ли текущий слайд последним?
+      • length()            | Получить общее кол-во слайдов
+      • lockSwipes()        | Блок./Разблок. возможность менять слайды
+      • lockSwipeToNext()   | Блок./Разблок. возможность переключать на следующий слайд.
+      • lockSwipeToPrev()   | Блок./Разблок. возможность переключать на предыдущий слайд.
+      • slideNext()         | Перейти к следующему слайду
+      • slidePrev()         | Перейти к предыдущему слайду
+      • slideTo()           | Перейти к указанному слайду (по индексу)
+      • startAutoplay()     | Начать автопроигрывание слайдов
+      • stopAutoplay()      | Остановить автопроигрывание слайдов
+      • update()            | Обновить слайдер (надо при добавлении/удалении слайдов на лету)
+
+      ► ionSlideDidChange       | Emitted after the active slide has changed.
+      ► ionSlideDoubleTap       | Emitted when the user double taps on the slide's container.
+      ► ionSlideDrag            | Emitted when the slider is actively being moved.
+      ► ionSlideNextEnd         | Emitted when the next slide has ended.
+      ► ionSlideNextStart       | Emitted when the next slide has started.
+      ► ionSlidePrevEnd         | Emitted when the previous slide has ended.
+      ► ionSlidePrevStart       | Emitted when the previous slide has started.
+      ► ionSlideReachEnd        | Emitted when the slider is at the last slide.
+      ► ionSlideReachStart      | Emitted when the slider is at its initial position.
+      ► ionSlidesDidLoad        | Emitted after Swiper initialization
+      ► ionSlideTap             | Emitted when the user taps/clicks on the slide's container.
+      ► ionSlideTouchEnd        | Emitted when the user releases the touch.
+      ► ionSlideTouchStart      | Emitted when the user first touches the slider.
+      ► ionSlideTransitionEnd   | Emitted when the slide transition has ended.
+      ► ionSlideTransitionStart | Emitted when the slide transition has started.
+      ► ionSlideWillChange      | Emitted before the active slide has changed.
+
+    # ion-spinner           | Предоставляет набор анимированных SVG-спиннеров
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ duration            | Длительность анимации спиннера (значение по умолчанию зависит от конкретного спиннера)
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ name                | Имя спиннера, который следует использовать ("lines", "lines-small", "dots", "bubbles", "circles", "crescent")
+      ▪ paused              | [false] Поставить ли на паузу анимацию сипннера? 
+
+    # ion-split-pane        | Компонент, позволяющий создавать multi-view layout
+
+      ▪ disabled            | [false] Выключить ли split pane (будет скрыт)?
+      ▪ when                | Когда показывать split pane? (css media-query expr / shortcut expr. / boolean)
+
+      • isPane()            | ???
+      • isVisible()         | Returns if the split pane is toggled or not
+
+      ► ionChange           | Emitted when the split pane is visible.
+      ► ionSplitPaneVisible | Expression to be called when the split-pane visibility has changed
+
+    # ion-tab               | Компонент tab, дочерний компонент компонента tabs
+
+      ▪ active              | Является ли данный таб активным?
+      ▪ badge               | Badge для таба
+      ▪ badgeColor          | Цвет badge'а для таба
+      ▪ btnId               | hidden
+      ▪ component           | Компонент для отображения внутри таба
+      ▪ delegate            | hidden
+      ▪ disabled            | [false] Выключить ли возможность взаимодействия с табом?
+      ▪ href                | Содержит URL (или фрагмент), куда ведёт ссылка
+      ▪ icon                | Иконка для таба
+      ▪ label               | Label для таба
+      ▪ name                | Имя для таба
+      ▪ selected            | [false] Если true, таб будет выбран
+      ▪ show                | [true] Если true, таб видим
+      ▪ tabsHideOnSubPages  | [false] Если true, на дочерних страницах табы скрыты
+
+      • getTabId()          | Получить ID таба
+      • setActive()         | Установить активный компонент для таба
+
+      ► ionSelect           | Emitted when the current tab is selected.
+      ► ionTabMutated       | Emitted when the tab props mutates. Used internally.
+
+    # ion-tab-button        | Внутренний компонент для tab'ов
+
+      ▪ badge               | Badge для таба
+      ▪ badgeColor          | Цвет badge'а для таба
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ disabled            | [false] Выключить ли возможность взаимодействия с табом?
+      ▪ href                | Содержит URL (или фрагмент), куда ведёт ссылка
+      ▪ icon                | Иконка для таба
+      ▪ label               | Label для таба
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ selected            | [false] Если true, таб будет выбран
+
+    # ion-tabbar            | Внутренний компонент для tab'ов
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ highlight           | Если true, выделить выбранный таб нижним подчёркиванием
+      ▪ layout              | Layout для text/icon таббара: "icon-top", "icon-start", "icon-end", "icon-bottom", "icon-hide", "label-hide"
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ placement           | Позиция tabbar относительно контента: "top", "bottom"
+      ▪ scrollable          | Если true, и кол-во табов велико, и overflow по горизонтали, можно будет их прокручивать
+      ▪ selectedTab         | Компонент выбранного таба
+      ▪ tabs                | Табы для рендера
+      ▪ translucent         | [false] Сделать ли tabbar полупрозрачным?
+
+      ► ionTabbarClick      | Emitted when the tab bar is clicked
+
+    # ion-tabs              | Табы, навигационный высшего уровня
+
+      ▪ color
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+      ▪ 
+
+      • getRouteId()        | Получить ID роута
+      • getSelected()       | Получить выбранный таб
+      • getTab()            | Получить таб по указанному индексу
+      • select()            | Выбрать таб по индексу или экземпляру
+      • setRouteId()        | Установить ID роута
+
+      ► ionChange           | Emitted when the tab changes.
+      ► ionNavDidChange     | Emitted when the navigation has finished transitioning to a new component.
+      ► ionNavWillChange    | Emitted when the navigation is about to transition to a new component.
+      ► ionNavWillLoad      | Emitted when the navigation will load a component.
 
     # ion-text              |
     # ion-textarea          |
@@ -10421,7 +10549,7 @@
       - [false] Позволить ли option'у занять всю имеющуюся ширину?
       - Атрибуты: 
 
-        ▪ href
+        ▪ expandable
                
       - Тип: string         
 
@@ -10461,7 +10589,7 @@
         Если у вас много ion-item-options, side надо указать для каждой.
       - Атрибуты: 
 
-        ▪ href
+        ▪ side
                
       - Тип: string  
 
@@ -13720,135 +13848,732 @@
                
       - Тип: number
 
-  ▪ Методы
-
-  ▪ События
-
 > ion-skeleton-text 
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Компонент для отрисовки плейсхолдеров (серых прямоугольников) вместо контента.
 
   ▪ Описание
 
-  ▪ Использование
+    Эти плейсхолдеры показывают, что тут должен быть контент,
+    но он загружается.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ width
+      - [100%] Ширина для элемента.
+      - Атрибуты: 
 
-  ▪ События
+        ▪ size
+               
+      - Тип: number
 
 > ion-slide         
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Slide, это дочерний компонент для Slides.
 
   ▪ Описание
 
-  ▪ Использование
-
-  ▪ Свойства
-
-  ▪ Методы
-
-  ▪ События
+    Шаблон должен быть написан, как <ion-slide>.
+    Любой контент slide'а должен быть в этом компоненте.
+    Slide должен использоваться только вместе со slides.
 
 > ion-slides        
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Слайдер с любым кол-вом слайдов, слайды можно менять свайпом/драгом.
 
   ▪ Описание
 
+    Взять из swiper.js - наиболее современного слайдера,
+    походящего для мобильных устройств:
+
+      http://www.idangero.us/swiper/
+
   ▪ Использование
+
+    HTML:
+
+     <ion-slides pager="true">
+
+        <ion-slide>
+          <h1>Slide 1</h1>
+        </ion-slide>
+
+        <ion-slide>
+          <h1>Slide 2</h1>
+        </ion-slide>
+
+        <ion-slide>
+          <h1>Slide 3</h1>
+        </ion-slide>
+      </ion-slides>    
+
+    JS:
+
+      var slides = document.querySelector('ion-slides');
+      slides.options = {
+        effect: 'flip'
+      }    
 
   ▪ Свойства
 
+    ▪ options
+      - Опции для передачи экземпляра swiper'а.
+        См. http://idangero.us/swiper/api/
+      - Атрибуты: 
+
+        ▪ options
+               
+      - Тип: any
+
+    ▪ pager
+      - [false] Показывать ли пагинацию?
+      - Атрибуты: 
+
+        ▪ pager
+               
+      - Тип: boolean
+
+    ▪ scrollbar
+      - [false] Показывать ли скроллбар?
+      - Атрибуты: 
+
+        ▪ scrollbar
+               
+      - Тип: boolean
+
   ▪ Методы
 
+    ▪ getActiveIndex()      | Получить индекс активного слайда
+    ▪ getPreviousIndex()    | Получить индекс предыдущего слайда
+    ▪ isBeginning()         | Являетяс ли текущий слайд первым?
+    ▪ isEnd()               | Является ли текущий слайд последним?
+    ▪ length()              | Получить общее кол-во слайдов
+    ▪ lockSwipes()          | Блок./Разблок. возможность менять слайды
+    ▪ lockSwipeToNext()     | Блок./Разблок. возможность переключать на следующий слайд.
+    ▪ lockSwipeToPrev()     | Блок./Разблок. возможность переключать на предыдущий слайд.
+    ▪ slideNext()           | Перейти к следующему слайду
+    ▪ slidePrev()           | Перейти к предыдущему слайду
+    ▪ slideTo()             | Перейти к указанному слайду (по индексу)
+    ▪ startAutoplay()       | Начать автопроигрывание слайдов
+    ▪ stopAutoplay()        | Остановить автопроигрывание слайдов
+    ▪ update()              | Обновить слайдер (надо при добавлении/удалении слайдов на лету)
+
   ▪ События
+
+    ▪ ionSlideDidChange        | Emitted after the active slide has changed.
+    ▪ ionSlideDoubleTap        | Emitted when the user double taps on the slide's container.
+    ▪ ionSlideDrag             | Emitted when the slider is actively being moved.
+    ▪ ionSlideNextEnd          | Emitted when the next slide has ended.
+    ▪ ionSlideNextStart        | Emitted when the next slide has started.
+    ▪ ionSlidePrevEnd          | Emitted when the previous slide has ended.
+    ▪ ionSlidePrevStart        | Emitted when the previous slide has started.
+    ▪ ionSlideReachEnd         | Emitted when the slider is at the last slide.
+    ▪ ionSlideReachStart       | Emitted when the slider is at its initial position.
+    ▪ ionSlidesDidLoad         | Emitted after Swiper initialization
+    ▪ ionSlideTap              | Emitted when the user taps/clicks on the slide's container.
+    ▪ ionSlideTouchEnd         | Emitted when the user releases the touch.
+    ▪ ionSlideTouchStart       | Emitted when the user first touches the slider.
+    ▪ ionSlideTransitionEnd    | Emitted when the slide transition has ended.
+    ▪ ionSlideTransitionStart  | Emitted when the slide transition has started.
+    ▪ ionSlideWillChange       | Emitted before the active slide has changed.
 
 > ion-spinner       
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Предоставляет набор анимированных SVG-спиннеров.
 
   ▪ Описание
 
+    Спиннеры в приложении визуально показывают, что 
+    происходит загрузка контента, или иной процесс,
+    и пользователю надо подождать.
+
+    Спиннер по умолчанию зависит от платформы. Для
+    ios это "lines", а для android это "crescent".
+
+    Если платформа не ios и android, также по умолчанию
+    используется спиннер "crescent".
+
+    Если значение свойства name задано, тогда указанный
+    в этом значении спиннер будет использоваться вместо
+    спиннера по умолчанию.
+
   ▪ Использование
+
+    <!-- Default Spinner -->
+    <ion-spinner></ion-spinner>
+
+    <!-- Lines -->
+    <ion-spinner name="lines"></ion-spinner>
+
+    <!-- Lines Small -->
+    <ion-spinner name="lines-small"></ion-spinner>
+
+    <!-- Dots -->
+    <ion-spinner name="dots"></ion-spinner>
+
+    <!-- Bubbles -->
+    <ion-spinner name="bubbles"></ion-spinner>
+
+    <!-- Circles -->
+    <ion-spinner name="circles"></ion-spinner>
+
+    <!-- Crescent -->
+    <ion-spinner name="crescent"></ion-spinner>
+
+    <!-- Paused Default Spinner -->
+    <ion-spinner paused></ion-spinner>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+ 
+    ▪ duration
+      - Длительность анимации спиннера (значение по умолчанию зависит от конкретного спиннера)
+      - Атрибуты: 
+
+        ▪ duration
+               
+      - Тип: number
+ 
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+ 
+    ▪ name
+      - Имя спиннера, который следует использовать ("lines", "lines-small", "dots", "bubbles", "circles", "crescent").
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string
+ 
+    ▪ paused
+      - [false] Поставить ли на паузу анимацию сипннера?
+      - Атрибуты: 
+
+        ▪ paused
+               
+      - Тип: boolean
 
 > ion-split-pane    
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Позволяет создавать multi-view layout, полезно для отображения в браузерах, на планшетах.
 
   ▪ Описание
 
+    Компонент, позволяющий создавать multi-view layout.
+
+    SplitPane позволяет отображать различные UI-элементы,
+    такие как menu, как прибавки к viewport.
+
+    Если размер экрана ниже определённого размера, 
+    SplitPane свернётся, и меню станет опять скрытым.
+
+    Это особенно полезно при создании приложения, которое
+    должно будет работать в браузере, или на планшетах.
+
+    ▪ Установка брейкпоинтов
+
+      По умолчанию, SplitPane разворачивается, когда экран
+      шире, чем 768px. Если вы хотите это изменить, то
+      используйте свойство when. Оно может принимать любой
+      валидный media-запрос, поскольку он использует
+      matchMedia() под капотом.
+
+      SplitPane предоставляет несколько предопределённых
+      media-запросов:
+
+      ▪ xs    (min-width: 0px)        Show the split-pane when the min-width is 0px (meaning, always)
+      ▪ sm    (min-width: 576px)      Show the split-pane when the min-width is 576px
+      ▪ md    (min-width: 768px)      Show the split-pane when the min-width is 768px (default break point)
+      ▪ lg    (min-width: 992px)      Show the split-pane when the min-width is 992px
+      ▪ xl    (min-width: 1200px)     Show the split-pane when the min-width is 1200px
+
+      Пример:
+
+        <!-- could be "xs", "sm", "md", "lg", or "xl" -->
+        <ion-split-pane when="lg"></ion-split-pane>
+
+      Вы также можете передавать boolean-значения, которые
+      раскроют SplitPane, когда значение или выражение
+      станет равно true.
+
   ▪ Использование
+
+    <ion-split-pane>
+      <!--  our side menu  -->
+      <ion-menu>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Menu</ion-title>
+          </ion-toolbar>
+        </ion-header>
+      </ion-menu>
+
+      <!-- the main content -->
+      <ion-content main>
+        <h1>Hello</h1>
+      </ion-content>
+    </ion-split-pane>
 
   ▪ Свойства
 
+    ▪ disabled
+      - [false] Выключить ли split pane (будет скрыт)?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ when
+      - Когда показывать split pane? (css media-query expr / shortcut expr. / boolean)
+      - Атрибуты: 
+
+        ▪ when
+               
+      - Тип: any
+
   ▪ Методы
 
+    ▪ isPane()        | ???
+    ▪ isVisible()     | Returns if the split pane is toggled or not
+
   ▪ События
+
+    ▪ ionChange             | Emitted when the split pane is visible.
+    ▪ ionSplitPaneVisible   | Expression to be called when the split-pane visibility has changed
 
 > ion-tab       
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Компонент tab, дочерний компонент компонента tabs.
 
   ▪ Описание
 
-  ▪ Использование
+    Каждый tab содержит отдельный навигационный стек 
+    (обладает отдельной навигацией), и является его
+    корневым уровнем.
 
   ▪ Свойства
 
+    ▪ active
+      - Является ли данный таб активным?
+      - Атрибуты: 
+
+        ▪ active
+               
+      - Тип: boolean
+
+    ▪ badge
+      - Badge для таба.
+      - Атрибуты: 
+
+        ▪ badge
+               
+      - Тип: string
+
+    ▪ badgeColor
+      - Цвет badge'а для таба.
+      - Атрибуты: 
+
+        ▪ badge-color
+               
+      - Тип: string
+
+    ▪ btnId
+      - Hidden.
+      - Атрибуты: 
+
+        ▪ btn-id
+               
+      - Тип: string
+
+    ▪ component
+      - Компонент для отображения внутри таба.
+      - Атрибуты: 
+
+        ▪ component
+               
+      - Тип: string
+
+    ▪ delegate
+      - hidden
+      - Атрибуты: 
+
+        ▪ delegate
+               
+      - Тип: FrameworkDelegate
+
+    ▪ disabled
+      - [false] Выключить ли возможность взаимодействия с табом?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ href 
+      - Содержит URL (или фрагмент), куда ведёт ссылка.
+        Если это значение задано, anchor-тэг будет отрисован.
+      - Атрибуты: 
+
+        ▪ href
+               
+      - Тип: string
+
+    ▪ icon
+      - Иконка для таба.
+      - Атрибуты: 
+
+        ▪ icon
+               
+      - Тип: string
+
+    ▪ label
+      - Label для таба.
+      - Атрибуты: 
+
+        ▪ label
+               
+      - Тип: string
+
+    ▪ name
+      - Имя для таба.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string
+
+    ▪ selected
+      - [false] Если true, таб будет выбран.
+      - Атрибуты: 
+
+        ▪ selected
+               
+      - Тип: boolean
+
+    ▪ show
+      - [true] Если true, таб видим.
+      - Атрибуты: 
+
+        ▪ show
+               
+      - Тип: boolean
+
+    ▪ tabsHideOnSubPages
+      - [false] Если true, на дочерних страницах табы скрыты.
+      - Атрибуты: 
+
+        ▪ tabs-hide-on-sub-pages
+               
+      - Тип: boolean
+
   ▪ Методы
+    
+    ▪ getTabId()      | Получить ID таба
+    ▪ setActive()     | Установить активный компонент для таба
 
   ▪ События
+
+    ▪ ionSelect       | Emitted when the current tab is selected.
+    ▪ ionTabMutated   | Emitted when the tab props mutates. Used internally.
 
 > ion-tab-button
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
+  Внутренний компонент для tab'ов.
 
   ▪ Использование
 
-  ▪ Свойства
+    ▪ badge
+      - Badge для таба.
+      - Атрибуты: 
 
-  ▪ Методы
+        ▪ badge
+               
+      - Тип: string
 
-  ▪ События
+    ▪ badgeColor
+      - Цвет badge'а для таба.
+      - Атрибуты: 
+
+        ▪ badge-color
+               
+      - Тип: string
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ disabled
+      - [false] Выключить ли возможность взаимодействия с табом?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ href 
+      - Содержит URL (или фрагмент), куда ведёт ссылка.
+        Если это значение задано, anchor-тэг будет отрисован.
+      - Атрибуты: 
+
+        ▪ href
+               
+      - Тип: string
+
+    ▪ icon
+      - Иконка для таба.
+      - Атрибуты: 
+
+        ▪ icon
+               
+      - Тип: string
+
+    ▪ label
+      - Label для таба.
+      - Атрибуты: 
+
+        ▪ label
+               
+      - Тип: string
+
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ selected
+      - [false] Если true, таб будет выбран.
+      - Атрибуты: 
+
+        ▪ selected
+               
+      - Тип: boolean
 
 > ion-tabbar    
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
-
-  ▪ Использование
+  Внутренний компонент для tab'ов.
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ highlight
+      - Если true, выделить выбранный таб нижним подчёркиванием.
+      - Атрибуты: 
+
+        ▪ highlight
+               
+      - Тип: boolean
+
+    ▪ layout
+      - Layout для text/icon таббара: "icon-top", "icon-start", "icon-end", "icon-bottom", "icon-hide", "label-hide".
+      - Атрибуты: 
+
+        ▪ layout
+               
+      - Тип: string
+
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ placement
+      - Позиция tabbar относительно контента: "top", "bottom"
+      - Атрибуты: 
+
+        ▪ placement
+               
+      - Тип: string
+
+    ▪ scrollable
+      - Если true, и кол-во табов велико, и overflow по горизонтали, можно будет их прокручивать.
+      - Атрибуты: 
+
+        ▪ scrollable
+               
+      - Тип: boolean
+
+    ▪ selectedTab
+      - Компонент выбранного таба.
+      - Атрибуты: 
+
+        ▪ selected-tab
+               
+      - Тип: HTMLIonTabElement
+
+    ▪ tabs
+      - Табы для рендера.
+      - Атрибуты: 
+
+        ▪ tabs
+               
+      - Тип: HTMLIonTabElement[]
+
+    ▪ translucent
+      - [false] Сделать ли tabbar полупрозрачным?
+      - Атрибуты: 
+
+        ▪ translucent
+               
+      - Тип: boolean
 
   ▪ События
+
+    ▪ ionTabbarClick    | Emitted when the tab bar is clicked
 
 > ion-tabs      
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Табы, навигационный высшего уровня.
 
   ▪ Описание
 
+    Tabs, это навигационный компонент высшего уровня, 
+    позволяющий группировать много табов.
+
+    Каждый tab содержит отдельный навигационный стек 
+    (обладает отдельной навигацией), и является его
+    корневым уровнем.  
+
   ▪ Использование
+
+    <ion-tabs>
+      <ion-tab label="schedule" icon="calendar" name="tab-schedule">
+        <ion-nav></ion-nav>
+      </ion-tab>
+      <ion-tab label="speakers" icon="contacts" name="tab-speaker">
+        <ion-nav></ion-nav>
+      </ion-tab>
+      <ion-tab label="map" icon="map" component="page-map"></ion-tab>
+      <ion-tab label="about" icon="information-circle" component="page-about"></ion-tab>
+    </ion-tabs>
 
   ▪ Свойства
 
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ name
+      - Уникальное имя для tabs'ов.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string
+
+    ▪ scrollable
+      - Если true, и кол-во табов велико, и overflow по горизонтали, можно будет их прокручивать.
+      - Атрибуты: 
+
+        ▪ scrollable
+               
+      - Тип: boolean
+
+    ▪ tabbarHidden
+      - [false] Скрыть ли tabbar?
+      - Атрибуты: 
+
+        ▪ tabbar-hidden
+               
+      - Тип: boolean
+
+    ▪ tabbarHighlight
+      - Если true, выделить выбранный таб нижним подчёркиванием.
+      - Атрибуты: 
+
+        ▪ tabbar-highlight
+               
+      - Тип: boolean
+
+    ▪ tabbarLayout
+      - Layout для text/icon таббара: "icon-top", "icon-start", "icon-end", "icon-bottom", "icon-hide", "label-hide".
+      - Атрибуты: 
+
+        ▪ tabbar-layout
+               
+      - Тип: string
+
+    ▪ tabbarPlacement
+      - Позиция tabbar относительно контента: "top", "bottom"
+      - Атрибуты: 
+
+        ▪ tabbar-placement
+               
+      - Тип: string
+
+    ▪ translucent
+      - [false] Сделать ли табы полупрозрачными?
+        Чтобы скроллить контент за табами, требуется
+        установить атрибут fullscreen для content.
+      - Атрибуты: 
+
+        ▪ translucent
+               
+      - Тип: boolean
+
+    ▪ useRouter
+      - Если true, tabs будут использовать router, и selectTab не будет ничего делать.
+      - Атрибуты: 
+
+        ▪ use-router
+               
+      - Тип: boolean
+
   ▪ Методы
 
+    ▪ getRouteId()        | Получить ID роута
+    ▪ getSelected()       | Получить выбранный таб
+    ▪ getTab()            | Получить таб по указанному индексу
+    ▪ select()            | Выбрать таб по индексу или экземпляру
+    ▪ setRouteId()        | Установить ID роута
+
   ▪ События
+
+    ▪ ionChange           | Emitted when the tab changes.
+    ▪ ionNavDidChange     | Emitted when the navigation has finished transitioning to a new component.
+    ▪ ionNavWillChange    | Emitted when the navigation is about to transition to a new component.
+    ▪ ionNavWillLoad      | Emitted when the navigation will load a component.
 
 > ion-text          
 
