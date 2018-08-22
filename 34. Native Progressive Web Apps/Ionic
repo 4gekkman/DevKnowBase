@@ -16275,56 +16275,58 @@
   
   # Команды Ionic CLI
 
-    ▪ build                 | Собрать проект и подготовить приложение для всех платформ
+    ▪ build                 | Собрать web assets и подготовить приложение для всех платформ
                            
     ▪ capacitor add         | Добавить новую нативную платформу в ваш Capacitor-проект
-    ▪ capacitor copy        | 
-    ▪ capacitor open        | 
-    ▪ capacitor run         | 
-    ▪ capacitor sync        | 
-    ▪ capacitor update      | 
+    ▪ capacitor copy        | Скопировать web assets на нативные платформы Capacitor'а
+    ▪ capacitor open        | Открыть проект для указанной нативной платформы в соответствующей IDE
+    ▪ capacitor run         | Выполнить build, copy, open указанной платформы
+    ▪ capacitor sync        | Выполнить copy, update для всех, или указанных платформ
+    ▪ capacitor update      | Для всех или указанных платформ, обновить все зависимости нативных проектов, и установить/обновить Capacitor/Cordova плагины
                              
-    ▪ config get            | 
-    ▪ config set            | 
-    ▪ config unset          | 
+    ▪ config get            | Получить значения свойств из конфига проекта, или глобального (--global)
+    ▪ config set            | Установить значения свойств в конфиге проекта, или глобальном (--global)
+    ▪ config unset          | Удалить указанные свойства из конфига проекта, или глобального (--global)
                              
-    ▪ cordova build         | 
-    ▪ cordova compile       | 
-    ▪ cordova emulate       | 
-    ▪ cordova platform      | 
-    ▪ cordova plugin        | 
-    ▪ cordova prepare       | 
-    ▪ cordova requirements  | 
-    ▪ cordova resources     | 
-    ▪ cordova run           | 
+    ▪ cordova build         | Выполнить prepare, compile
+    ▪ cordova compile       | Скомпилировать код для указанной нативной платформы
+    ▪ cordova emulate       | Эмулировать Ionic-проект на симуляторе/эмуляторе
+    ▪ cordova platform      | Операции с платформами: add, remove, update, ls, check, save.
+    ▪ cordova plugin        | Операции с плагинами: add, remove, ls, save
+    ▪ cordova prepare       | Скопировать web assets на нативные платформы Cordov'ы
+    ▪ cordova requirements  | Вывести требования для работы с платформами
+    ▪ cordova resources     | Автоматически создать ресурсы для иконки и splash screen
+    ▪ cordova run           | Запустить Ionic-проект на подключенном устройстве
                              
-    ▪ docs                  | 
+    ▪ docs                  | Открыть доки на оф.сайте Ionic в браузере
                              
-    ▪ doctor check          | 
-    ▪ doctor list           | 
-    ▪ doctor treat          | 
+    ▪ doctor check          | Проверить, всё ли в порядке с вашим Ionic-проектом
+    ▪ doctor list           | Вывести все проблемы с вашим проектом, и их идентификаторы
+    ▪ doctor treat          | Попробовать автоматически исправить имеющиеся в проекте проблемы
                              
-    ▪ generate              | 
-    ▪ git remote            | 
-    ▪ info                  | 
-    ▪ integrations disable  | 
-    ▪ integrations enable   | 
-    ▪ integrations list     | 
-    ▪ link                  | 
-    ▪ login                 | 
-    ▪ logout                | 
-    ▪ serve                 | 
-    ▪ signup                | 
+    ▪ generate              | Генератор ресурсов Ionic-проекта (pages, components, directives, services, etc.)
+    ▪ git remote            | Add/Update Ionic Pro git remote в ваш локальный Ionic-проект
+    ▪ info                  | Вывести информацию о проекте, системе и среде разработки
+    
+    ▪ integrations disable  | Выключить интеграцию с cordova, capacitor
+    ▪ integrations enable   | Добавить и включить интеграцию с cordova, capacitor
+    ▪ integrations list     | Вывести лист доступных и активных интеграций вашего приложения
+    
+    ▪ link                  | Подключить локальные приложения к Ionic Pro
+    ▪ login                 | Залогиниться в Ionic Pro
+    ▪ logout                | Разлогиниться из Ionic Pro
+    ▪ serve                 | Запустить локальный dev-сервер для dev/testing
+    ▪ signup                | Создать аккаунт в Ionic Pro
                              
-    ▪ ssh add               | 
-    ▪ ssh delete            | 
-    ▪ ssh generate          | 
-    ▪ ssh list              | 
-    ▪ ssh setup             | 
-    ▪ ssh use               | 
+    ▪ ssh add               | Добавить Ionic'у ssh public key
+    ▪ ssh delete            | Удалить у Ionic'а ssh public key
+    ▪ ssh generate          | Сгенерировать private + public SSH-ключи
+    ▪ ssh list              | Вывести список публичных SSH-ключей, добавленных в Ionic
+    ▪ ssh setup             | Запустить wizard для настройки SSH-ключей для Ionic Pro
+    ▪ ssh use               | Указать, какой из добавленных публичных SSH-ключей использовать
                              
-    ▪ ssl generate          | 
-    ▪ start                 | 
+    ▪ ssl generate          | Сгенерировать SSL-ключ и сертификат
+    ▪ start                 | Создать новый Ionic-проект
   
 --------------------------------------
 
