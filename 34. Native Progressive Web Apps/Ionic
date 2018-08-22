@@ -6113,20 +6113,15 @@
 
     # ion-tabs              | Табы, навигационный высшего уровня
 
-      ▪ color
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
-      ▪ 
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ name                | Уникальное имя для tabs'ов
+      ▪ scrollable          | Если true, и кол-во табов велико, и overflow по горизонтали, можно будет их прокручивать
+      ▪ tabbarHidden        | [false] Скрыть ли tabbar?
+      ▪ tabbarHighlight     | Если true, выделить выбранный таб нижним подчёркиванием
+      ▪ tabbarLayout        | Layout для text/icon таббара: "icon-top", "icon-start", "icon-end", "icon-bottom", "icon-hide", "label-hide"
+      ▪ tabbarPlacement     | Позиция tabbar относительно контента: "top", "bottom"
+      ▪ translucent         | [false] Сделать ли табы полупрозрачными?
+      ▪ useRouter           | Если true, tabs будут использовать router, и selectTab не будет ничего делать
 
       • getRouteId()        | Получить ID роута
       • getSelected()       | Получить выбранный таб
@@ -6139,14 +6134,92 @@
       ► ionNavWillChange    | Emitted when the navigation is about to transition to a new component.
       ► ionNavWillLoad      | Emitted when the navigation will load a component.
 
-    # ion-text              |
-    # ion-textarea          |
-    # ion-thumbnail         |
-    # ion-title             |
-    # ion-toast             |
-    # ion-toggle            |
-    # ion-toolbar           |
-    # ion-virtual-scroll    |
+    # ion-text              | Используется для для стилизации цвета текста любого элемента
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
+    # ion-textarea          | Аналог textarea из html, многострочное поле для ввода текста
+
+      ▪ autocapitalize      | [none] Приводить ли текст автоматически к верхнему регистру?
+      ▪ autocomplete        | [off] Разрешить ли автокомплит? (on, off)
+      ▪ autofocus           | [false] Дать ли элементу автофокус при загрузке страницы?
+      ▪ clearOnEdit         | [false] Включить ли очистку ввода после фокусировки при редактировании?
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ cols                | Видимая ширина textarea, измеряемая в среднех ширинах символов
+      ▪ debounce            | [0] Установить значение в ms - сколько ждать перед возбуждением ionChange после изменения значения range
+      ▪ disabled            | [false] Выключить ли возможность взаимодействия с элементом?
+      ▪ maxlength           | MAX число символов, которые пользователь может ввести
+      ▪ minlength           | MIN число символов, которые пользователь может ввести
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ name                | Имя для элемента, которое отправится, вместе с формой
+      ▪ placeholder         | Плейсхолдер
+      ▪ readonly            | [false] Сделать ли textarea read only?
+      ▪ required            | [false] Если true, пользователь должен обязательно заполнить textarea перед отправкой
+      ▪ rows                | Кол-во видимых текстовых строк в textarea
+      ▪ spellcheck          | [false] Включить ли проверку орфографии?
+      ▪ value               | Значение textarea
+      ▪ wrap                | Как элемент оборачивает текст: "hard", "soft", "off"
+
+      ► ionBlur             | Emitted when the input loses focus.
+      ► ionChange           | Emitted when the input value has changed.
+      ► ionFocus            | Emitted when the input has focus.
+      ► ionInput            | Emitted when a keyboard input ocurred.
+      ► ionStyle            | Emitted when the styles change.
+
+    # ion-thumbnail         | Квадратный компонент, обычно оборачивающий картинку или иконку.
+    # ion-title             | Устанавливает title для toolbar
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+
+    # ion-toast             | Тосты, элементы для нотификации пользователя
+
+      ▪ closeButtonText     | Текст для отображение на кнопке "close"
+      ▪ cssClass            | Доп.классы с кастомным CSS, через пробел
+      ▪ duration            | [отключено, будет ждать dismiss()] Через сколько ms автоматически закрывать тост?
+      ▪ enterAnimation      | Анимация появления
+      ▪ keyboardClose       | [true] Позволить ли клавиатуре закрывать toast?
+      ▪ leaveAnimation      | Анимация закрытия
+      ▪ message             | Какое сообщение показать в тосте?
+      ▪ overlayId           | Уникальный ID экземпляра (для внутреннего использования)
+      ▪ position            | Положение тоста на экране: top, middle, bottom
+      ▪ showCloseButton     | [false] Показывать ли кнопку "close"?
+      ▪ translucent         | [false] Сделать ли toast полупрозрачным?
+      ▪ willAnimate         | [true] Включить ли анимацию toast'а?
+
+      • dismiss()           | Удалить тост
+      • onDidDismiss()      | Возвращает промис, который резолвится, когда toast уже выключен. Принимает callback.
+      • onWillDismiss()     | Возвращает промис, который резолвится, непосредственно перед выключением toast'а. Принимает callback.
+      • present()           | Показать popover, когда он был уже создан.
+
+      ► ionToastDidDismiss  | Emitted after the toast has dismissed.
+      ► ionToastDidLoad     | Emitted after the toast has loaded.
+      ► ionToastDidPresent  | Emitted after the toast has presented.
+      ► ionToastDidUnload   | Emitted after the toast has unloaded.
+      ► ionToastWillDismiss | Emitted before the toast has dismissed.
+      ► ionToastWillPresent | Emitted before the toast has presented.
+
+    # ion-toggle            | Переключатель вкл./выкл. для одной опции
+
+      ▪ checked             | [false] Включен ли переключатель?
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ disabled            | [false] Отключить ли возможность взаимодействия с переключателем?
+      ▪ mode                | Какие стили использовать, "ios" или "md"
+      ▪ name                | Имя для элемента, которое отправится, вместе с формой
+      ▪ value               | Значение элемента
+
+      ► ionBlur             | Emitted when the toggle loses focus.
+      ► ionChange           | Emitted when the value property has changed.
+      ► ionFocus            | Emitted when the toggle has focus.
+      ► ionStyle            | Emitted when the styles change.
+
+    # ion-toolbar           | Тулбар (панель инструментов)
+
+      ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
+      ▪ mode                | Какие стили использовать, "ios" или "md" 
+
+    # ion-virtual-scroll    | 
 
   Programmatic API
 
@@ -6210,7 +6283,11 @@
       • dismiss()                   | Закрыть popover
       • getTop()                    | Получить последний созданный popover
 
-    # ion-toast-controller          | 
+    # ion-toast-controller          | Компонент для создания и управления тостами
+
+      • create()                    | Создать тост.
+      • dismiss()                   | Удалить тост.
+      • getTop()                    | Получить последний открытый тост.
 
 --------------------------------------
 
@@ -14577,107 +14654,928 @@
 
 > ion-text          
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Используется для для стилизации цвета текста любого элемента.
 
   ▪ Описание
 
+    Элемент <ion-text> должен оборачивать целевой элемент
+    для изменения цвета текста этого элемента.
+
   ▪ Использование
+
+    <ion-text color="secondary">
+      <h1>H1: The quick brown fox jumps over the lazy dog</h1>
+    </ion-text>
+
+    <ion-text color="primary">
+      <h2>H2: The quick brown fox jumps over the lazy dog</h2>
+    </ion-text>
+
+    <ion-text color="light">
+      <h3>H3: The quick brown fox jumps over the lazy dog</h3>
+    </ion-text>
+
+    <ion-text color="danger">
+      <h4 >H4: The quick brown fox jumps over the lazy dog</h4>
+    </ion-text>
+
+    <ion-text color="dark">
+      <h5>H5: The quick brown fox jumps over the lazy dog</h5>
+    </ion-text>
+
+    <p>
+      I saw a werewolf with a Chinese menu in his hand.
+      Walking through the <ion-text color="danger"><sub>streets</sub></ion-text> of Soho in the rain.
+      He <ion-text color="primary"><i>was</i></ion-text> looking for a place called Lee Ho Fook's.
+      Gonna get a <ion-text color="secondary"><a>big dish of beef chow mein.</a></ion-text>
+      <ion-text color="danger"><ion-icon name="cut"></ion-icon></ion-text>
+    </p>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
 
 > ion-textarea      
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Аналог textarea из html, многострочное поле для ввода текста.
 
   ▪ Описание
 
+    Нативный элемент textarea отрисовывается внутри
+    компонента. Пользовательский интерфейс и интерактивность
+    компонента textarea улучшены благодаря контролю над
+    нативной textarea.
+
+    В отличие от нативного элемента textarea, оная от
+    Ionic не поддерживает загрузку value из внутреннего
+    контента. Так что, value должно быть задано через
+    атрибут value.
+
+    Компонент textarea принимает нативные атрибуты
+    textarea в дополнение к оным от Ionic.
+    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea
+
   ▪ Использование
+
+    <!-- Default textarea -->
+    <ion-textarea></ion-textarea>
+
+    <!-- Textarea in an item with a placeholder -->
+    <ion-item>
+      <ion-textarea placeholder="Enter more information here..."></ion-textarea>
+    </ion-item>
+
+    <!-- Textarea in an item with a floating label -->
+    <ion-item>
+      <ion-label position="floating">Description</ion-label>
+      <ion-textarea></ion-textarea>
+    </ion-item>
+
+    <!-- Disabled and readonly textarea in an item with a stacked label -->
+    <ion-item>
+      <ion-label position="stacked">Summary</ion-label>
+      <ion-textarea
+        disabled
+        readonly
+        value="Ionic enables developers to build performant, high-quality mobile apps.">
+      </ion-textarea>
+    </ion-item>
+
+    <!-- Textarea that clears the value on edit -->
+    <ion-item>
+      <ion-label>Comment</ion-label>
+      <ion-textarea clear-on-edit="true"></ion-textarea>
+    </ion-item>
+
+    <!-- Textarea with custom number of rows and cols -->
+    <ion-item>
+      <ion-label>Notes</ion-label>
+      <ion-textarea rows="6" cols="20" placeholder="Enter any notes here..."></ion-textarea>
+    </ion-item>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ autocapitalize
+      - [none] Приводить ли текст автоматически к верхнему регистру?
+      - Атрибуты: 
+
+        ▪ autocapitalize
+               
+      - Тип: string  
+
+    ▪ autocomplete
+      - [off] Разрешить ли автокомплит? (on, off)
+      - Атрибуты: 
+
+        ▪ autocomplete
+               
+      - Тип: string
+
+    ▪ autofocus
+      - [false] Дать ли элементу автофокус при загрузке страницы?
+      - Атрибуты: 
+
+        ▪ autofocus
+               
+      - Тип: boolean
+
+    ▪ clearOnEdit
+      - [false] Включить ли очистку ввода после фокусировки при редактировании?
+      - Атрибуты: 
+
+        ▪ clear-on-edit
+               
+      - Тип: boolean
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ cols
+      - Видимая ширина textarea, измеряемая в среднех ширинах символов.
+      - Атрибуты: 
+
+        ▪ cols
+               
+      - Тип: number
+
+    ▪ debounce
+      - [0] Установить значение в ms - сколько ждать перед возбуждением ionChange после изменения значения range.
+      - Атрибуты: 
+
+        ▪ debounce
+               
+      - Тип: number
+
+    ▪ disabled
+      - [false] Выключить ли возможность взаимодействия с элементом?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ maxlength
+      - MAX число символов, которые пользователь может ввести.
+        Действует, только если type равен: text, email, search, 
+        password, tel, url.
+      - Атрибуты: 
+
+        ▪ maxlength
+               
+      - Тип: number
+
+    ▪ minlength
+      - MIN число символов, которые пользователь может ввести.
+        Действует, только если type равен: text, email, search, 
+        password, tel, url.
+      - Атрибуты: 
+
+        ▪ minlength
+               
+      - Тип: number
+
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
+
+    ▪ name 
+      - Имя для элемента, которое отправится, вместе с формой.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string 
+
+    ▪ placeholder
+      - Плейсхолдер.
+      - Атрибуты: 
+
+        ▪ placeholder
+               
+      - Тип: string 
+
+    ▪ readonly
+      - [false] Сделать ли textarea read only?
+      - Атрибуты: 
+
+        ▪ readonly
+               
+      - Тип: boolean
+
+    ▪ required
+      - [false] Если true, пользователь должен обязательно заполнить textarea перед отправкой.
+      - Атрибуты: 
+
+        ▪ required
+               
+      - Тип: boolean
+
+    ▪ rows
+      - Кол-во видимых текстовых строк в textarea.
+      - Атрибуты: 
+
+        ▪ rows
+               
+      - Тип: number
+
+    ▪ spellcheck
+      - [false] Включить ли проверку орфографии?
+      - Атрибуты: 
+
+        ▪ spellcheck
+               
+      - Тип: boolean
+
+    ▪ value
+      - Значение textarea.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: string
+
+    ▪ wrap
+      - Как элемент оборачивает текст: "hard", "soft", "off".
+      - Атрибуты: 
+
+        ▪ wrap
+               
+      - Тип: string
 
   ▪ События
+
+    ▪ ionBlur     | Emitted when the input loses focus.
+    ▪ ionChange   | Emitted when the input value has changed.
+    ▪ ionFocus    | Emitted when the input has focus.
+    ▪ ionInput    | Emitted when a keyboard input ocurred.
+    ▪ ionStyle    | Emitted when the styles change.
 
 > ion-thumbnail     
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Квадратный компонент, обычно оборачивающий картинку или иконку.
 
   ▪ Описание
 
+    Их можно использовать, например, для отображения
+    превьюшек больших изображений.
+
+    Thumbnails можно использовать как отдельно, так и 
+    внутри других элементов. Если разместить их внутри
+    <ion-item>, то thumbnail изменит свой размер, чтобы
+    входить в родительский элемент.
+
+    Чтобы позиционировать thumbnail на левой или правой
+    стороне item'а, установите slot в start или end,
+    соответственно.
+
   ▪ Использование
 
-  ▪ Свойства
+    <ion-thumbnail>
+      <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+    </ion-thumbnail>
 
-  ▪ Методы
-
-  ▪ События
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-thumbnail>
+      <ion-label>Item Thumbnail</ion-label>
+    </ion-item>
 
 > ion-title         
 
-  Не-fullscreen модалка с текстом и элементами формы
-
-  ▪ Описание
+  Устанавливает title для toolbar.
 
   ▪ Использование
 
+    <ion-header>
+
+      <ion-toolbar>
+        <ion-title>Settings</ion-title>
+      </ion-toolbar>
+
+    </ion-header>
+
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+      
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
 
 > ion-toast         
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Тосты, элементы для нотификации пользователя.
 
   ▪ Описание
 
+    Их можно использовать, например, чтобы сообщить 
+    пользователю о результатах операции, или отобразить
+    системное сообщение.
+
+    Тосты возникают поверх контента приложения, 
+    как-нибудь так, чтобы ничего не загораживать,
+    не блокируют интерфейс, и, обычно, сами исчезают 
+    через несколько секунд.
+
+    ▪ Создание
+
+      Все опции для тостов должны передаваться методу
+      create. 
+
+      Сообщение для отображения должно передаваться
+      свойству message. 
+
+      Опция showCloseButton может быть установлена в true
+      для отображения кнопки "close" на тосте.
+
+    ▪ Позиционирование
+
+      Тосты можно размещать в top, middle и bottom 
+      частях viewport'а.
+
+      Если это явно не указано в настройках, тост
+      по умолчанию будет появляться в bottom.
+
+    ▪ Удаление
+
+      Тост может удаляться автоматически через определённое
+      кол-во ms после его появления. Это определяется в 
+      свойстве duration.
+
+      Также, если кнопка "close" присутствует, с её помощью
+      можно закрыть тост.
+
+      Кроме того, тост можно закрыть программно методом
+      dismiss().
+
   ▪ Использование
+
+    async function presentToast() {
+      const toastController = document.querySelector('ion-toast-controller');
+      await toastController.componentOnReady();
+
+      const toast = await toastController.create({
+        message: 'Your settings have been saved.',
+        duration: 2000
+      });
+      return await toast.present();
+    }
+
+    async function presentToastWithOptions() {
+      const toastController = document.querySelector('ion-toast-controller');
+      await toastController.componentOnReady();
+
+      const toast = await toastController.create({
+        message: 'Click to Close',
+        showCloseButton: true,
+        position: 'top',
+        closeButtonText: 'Done'
+      });
+      return await toast.present();
+    }
 
   ▪ Свойства
 
+    ▪ closeButtonText
+      - Текст для отображение на кнопке "close".
+      - Атрибуты: 
+
+        ▪ close-button-text
+               
+      - Тип: string
+
+    ▪ cssClass
+      - Доп.классы с кастомным CSS, через пробел.
+      - Атрибуты: 
+
+        ▪ css-class
+               
+      - Тип: string
+
+    ▪ duration
+      - [отключено, будет ждать dismiss()] Через сколько ms автоматически закрывать тост?
+      - Атрибуты: 
+
+        ▪ duration
+               
+      - Тип: number
+
+    ▪ enterAnimation
+      - Анимация появления.
+      - Атрибуты: 
+
+        ▪ enter-animation
+               
+      - Тип: AnimationBuilder
+
+    ▪ keyboardClose
+      - [true] Позволить ли клавиатуре закрывать toast?
+      - Атрибуты: 
+
+        ▪ keyboard-close
+               
+      - Тип: boolean
+
+    ▪ leaveAnimation
+      - Анимация закрытия.
+      - Атрибуты:
+
+        ▪ leave-animation
+
+      - Тип: AnimationBuilder
+
+    ▪ message
+      - Какое сообщение показать в тосте?
+      - Атрибуты: 
+
+        ▪ message
+               
+      - Тип: string
+
+    ▪ overlayId
+      - Уникальный ID экземпляра (для внутреннего использования).
+      - Атрибуты:
+
+        ▪ overlay-id
+
+      - Тип: number
+
+    ▪ position
+      - Положение тоста на экране: top, middle, bottom.
+      - Атрибуты: 
+
+        ▪ position
+               
+      - Тип: string
+
+    ▪ showCloseButton
+      - [false] Показывать ли кнопку "close"?
+      - Атрибуты: 
+
+        ▪ show-close-button
+               
+      - Тип: boolean
+
+    ▪ translucent
+      - [false] Сделать ли toast полупрозрачным?
+      - Атрибуты: 
+
+        ▪ translucent
+               
+      - Тип: boolean
+
+    ▪ willAnimate
+      - [true] Включить ли анимацию toast'а?
+      - Атрибуты: 
+
+        ▪ will-animate
+               
+      - Тип: boolean
+
   ▪ Методы
 
+    ▪ dismiss()               | Удалить тост
+    ▪ onDidDismiss()          | Возвращает промис, который резолвится, когда toast уже выключен. Принимает callback.
+    ▪ onWillDismiss()         | Возвращает промис, который резолвится, непосредственно перед выключением toast'а. Принимает callback.
+    ▪ present()               | Показать popover, когда он был уже создан.
+
   ▪ События
+
+    ▪ ionToastDidDismiss      | Emitted after the toast has dismissed.
+    ▪ ionToastDidLoad         | Emitted after the toast has loaded.
+    ▪ ionToastDidPresent      | Emitted after the toast has presented.
+    ▪ ionToastDidUnload       | Emitted after the toast has unloaded.
+    ▪ ionToastWillDismiss     | Emitted before the toast has dismissed.
+    ▪ ionToastWillPresent     | Emitted before the toast has presented.
 
 > ion-toggle        
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Переключатель вкл./выкл. для одной опции.
 
   ▪ Описание
 
+    Изменять состояние переключателя можно как 
+    нажатием/кликом по нему, так и свайпом/перетаскиванием.
+
+    Также, переключать его можно программно с помощью
+    свойства checked.
+
   ▪ Использование
+
+    <!-- Default Toggle -->
+    <ion-toggle></ion-toggle>
+
+    <!-- Disabled Toggle -->
+    <ion-toggle disabled></ion-toggle>
+
+    <!-- Checked Toggle -->
+    <ion-toggle checked></ion-toggle>
+
+    <!-- Toggle Colors -->
+    <ion-toggle color="primary"></ion-toggle>
+    <ion-toggle color="secondary"></ion-toggle>
+    <ion-toggle color="danger"></ion-toggle>
+    <ion-toggle color="light"></ion-toggle>
+    <ion-toggle color="dark"></ion-toggle>
+
+    <!-- Toggles in a List -->
+    <ion-list>
+      <ion-item>
+        <ion-label>Pepperoni</ion-label>
+        <ion-toggle slot="end" value="pepperoni" checked></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Sausage</ion-label>
+        <ion-toggle slot="end" value="sausage" disabled></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Mushrooms</ion-label>
+        <ion-toggle slot="end" value="mushrooms"></ion-toggle>
+      </ion-item>
+    </ion-list>
 
   ▪ Свойства
 
-  ▪ Методы
+    ▪ checked
+      - [false] Включен ли переключатель?
+      - Атрибуты: 
+
+        ▪ checked
+               
+      - Тип: boolean
+
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
+
+        ▪ color
+               
+      - Тип: string
+
+    ▪ disabled 
+      - [false] Отключить ли возможность взаимодействия с переключателем?
+      - Атрибуты: 
+
+        ▪ disabled
+               
+      - Тип: boolean
+
+    ▪ mode 
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string 
+
+    ▪ name 
+      - Имя для элемента, которое отправится, вместе с формой.
+      - Атрибуты: 
+
+        ▪ name
+               
+      - Тип: string 
+
+    ▪ value
+      - Значение элемента.
+      - Атрибуты: 
+
+        ▪ value
+               
+      - Тип: string
 
   ▪ События
+
+    ▪ ionBlur           | Emitted when the toggle loses focus.
+    ▪ ionChange         | Emitted when the value property has changed.
+    ▪ ionFocus          | Emitted when the toggle has focus.
+    ▪ ionStyle          | Emitted when the styles change.
 
 > ion-toolbar       
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Тулбар (панель инструментов).
 
   ▪ Описание
+
+    Тулбары можно размещать над и под контентом.
+    Можно создавать много тулбаров.
+
+    Когда тулбар помещается в <ion-header>, он появится
+    над контентом с позиционированием fixed.
+
+    Когда тулбар помещается в <ion-footer>, он появится
+    под контентом с позиционированием fixed.
+
+    Если у content задано свойство fullscreen, то он
+    будет скроллиться под тулбаром в header или footer.
+
+    Когда тулбар размещается в <ion-content>, то тулбар
+    будет скролиться вместе с контентом.
+
+    ▪ Кнопки
+
+      Помещаемые в тулбар кнопки должны размещаться 
+      внутри элемента <ion-buttons>. Сам же оный может
+      быть размещён внутри тулбара с помощью именованного
+      слота. Ниже описаные имеющиеся варианты:
+
+      ▪ secondary     Слева от контента в ios-mode, и сразу справа в android-mode
+      ▪ primary       Справа от контента в ios-mode, и далеко справа в android-mode
+      ▪ start         Слева от контента в LTR, и справа в RTL
+      ▪ end           Справа от контента в LTR, и слева в RTL
+
+    ▪ Границы
+
+      В md-mode, <ion-header> получит box-shadow снизу,
+      а <ion-footer> получит оный сверху.
+
+      В ios-mode, <ion-header> получит border снизу,
+      а <ion-footer> получит оный сверху.
+
+      Как box-shadow, так и border (одновременно), 
+      могут быть удалены с помощью атрибута no-border
+      на элементе.
 
   ▪ Использование
 
+    <ion-toolbar>
+      <ion-title>Title Only</ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title>Back Button</ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-buttons slot="secondary">
+        <ion-button>
+          <ion-icon slot="icon-only" name="contact"></ion-icon>
+        </ion-button>
+        <ion-button>
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="primary">
+        <ion-button color="secondary">
+          <ion-icon slot="icon-only" name="more"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Default Buttons</ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-buttons slot="secondary">
+        <ion-button fill="solid">
+          <ion-icon slot="start" name="contact"></ion-icon>
+          Contact
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Solid Buttons</ion-title>
+      <ion-buttons slot="primary">
+        <ion-button fill="solid" color="secondary">
+          Help
+          <ion-icon slot="end" name="help-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-buttons slot="secondary">
+        <ion-button fill="outline">
+          <ion-icon slot="start" name="star"></ion-icon>
+          Star
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Outline Buttons</ion-title>
+      <ion-buttons slot="primary">
+        <ion-button color="danger" fill="outline">
+          Edit
+          <ion-icon slot="end" name="create"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-buttons slot="secondary">
+        <ion-button>
+          Account
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="primary">
+        <ion-button color="danger">
+          Edit
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Text Only Buttons</ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button auto-hide="false"></ion-menu-button>
+      </ion-buttons>
+      <ion-buttons slot="secondary">
+        <ion-button>
+          <ion-icon slot="icon-only" name="star"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Left side menu toggle</ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-buttons slot="primary">
+        <ion-button onclick="clickedStar()">
+          <ion-icon slot="icon-only" name="star"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Right side menu toggle</ion-title>
+      <ion-buttons slot="end">
+        <ion-menu-button auto-hide="false"></ion-menu-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-buttons slot="primary">
+        <ion-button onclick="clickedSearch()">
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-searchbar placeholder="Search Favorites"></ion-searchbar>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-segment>
+        <ion-segment-button value="all" checked>
+          All
+        </ion-segment-button>
+        <ion-segment-button value="favorites">
+          Favorites
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+
+    <ion-toolbar color="secondary">
+      <ion-buttons slot="secondary">
+        <ion-button>
+          <ion-icon slot="icon-only" name="contact"></ion-icon>
+        </ion-button>
+        <ion-button>
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="primary">
+        <ion-button color="primary">
+          <ion-icon slot="icon-only" name="more"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Secondary Toolbar</ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar color="dark">
+      <ion-buttons slot="secondary">
+        <ion-button>
+          <ion-icon slot="icon-only" name="contact"></ion-icon>
+        </ion-button>
+        <ion-button>
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="primary">
+        <ion-button color="danger">
+          <ion-icon slot="icon-only" name="more"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Dark Toolbar</ion-title>
+    </ion-toolbar>
+
   ▪ Свойства
 
-  ▪ Методы
+    ▪ color 
+      - Какой использовать цвет из палитры цветов вашего приложения.
+        Опции по умолчанию: "primary", "secondary", "tertiary", 
+        "success", "warning", "danger", "light", "medium", "dark".
+      - Атрибуты: 
 
-  ▪ События
+        ▪ color
+               
+      - Тип: string
+      
+    ▪ mode
+      - Какие стили использовать, "ios" или "md".
+      - Атрибуты: 
+
+        ▪ mode
+               
+      - Тип: string
 
 > ion-virtual-scroll
 
-  Не-fullscreen модалка с текстом и элементами формы
+  Отображает виртуальный "бесконечный" список с функции подгрузки контента при приближении к его краю.
 
   ▪ Описание
+
+    Массив элементов списка передаётся компоненту
+    virtual scroll. Для каждого элемента создаётся
+    шаблон в виде ячейки, которая может содержать
+    items, headers и footers.
+
+    Из соображений производительности, не каждая запись
+    в списке отрисовывается сразу; вместо того, сначала
+    отрисовывается необходимый для заполнения viewport
+    набор записей, а остальные отрисовываются по мере
+    прокрутки.
+
+    ▪ Основы
+
+      Массив записей надо передавать свойству virtualScroll.
+      Шаблон элемента со свойством *virtualItem обязателен.
+      Свойства virtualScroll и *virtualItem могут быть добавлены
+      любому элементу.
+
+      <ion-list [virtualScroll]="items">
+        <ion-item *virtualItem="let item">
+          {{ item }}
+        </ion-item>
+      </ion-list>      
+
+    ▪ Section Headers and Footers
+
+      Header и footer для секции не обязательны.
+      Их можно динамически создать определёнными
+      разработчиком функциями.
+
+      Например, большой список контактов обычно имеет
+      разделитель после каждой буквы алфавита.
+      Разработчики делают так, чтобы их собственная
+      функция вызывалась для каждой записи. Логика 
+      этой функции должна определять, создавать
+      ли шаблон для секции, и какие данные в него
+      передавать. В случае, если шаблон не должен
+      быть создан, кастомная функция должна возвращать
+      null.
+
+      <ion-list [virtualScroll]="items" [headerFn]="myHeaderFn">
+        <ion-item-divider *virtualHeader="let header">
+          Header: {% raw %}{{ header }}{% endraw %}
+        </ion-item-divider>
+        <ion-item *virtualItem="let item">
+          Item: {% raw %}{{ item }}{% endraw %}
+        </ion-item>
+      </ion-list>
+
+      Ниже пример кастомной функции, которая вызывается
+      для каждой записи. В неё передаются индивидуальная
+      запись, индекс этой записи, и весь массив записей.
+
+      В этом примере, после каждой 20-й записи, вставляется
+      header. Так что, между 19 и 20, 39 и 40, и так далее,
+      создаётся <ion-item-divider> и 
 
   ▪ Использование
 
@@ -14853,7 +15751,15 @@
     ▪ dismiss()   | Закрыть popover
     ▪ getTop()    | Получить последний созданный popover
 
-  
+> ion-toast-controller
+
+  Компонент для создания и управления тостами.
+
+  ▪ Методы
+
+    ▪ create()    | Создать тост.
+    ▪ dismiss()   | Удалить тост.
+    ▪ getTop()    | Получить последний открытый тост.
   
 
 А11. Ionic CLI (справочник)
