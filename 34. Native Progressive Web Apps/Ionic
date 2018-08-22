@@ -16275,9 +16275,9 @@
   
   # Команды Ionic CLI
 
-    ▪ build                 | 
+    ▪ build                 | Собрать проект и подготовить приложение для всех платформ
                            
-    ▪ capacitor add         | 
+    ▪ capacitor add         | Добавить новую нативную платформу в ваш Capacitor-проект
     ▪ capacitor copy        | 
     ▪ capacitor open        | 
     ▪ capacitor run         | 
