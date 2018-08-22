@@ -5154,14 +5154,219 @@
 А10. Ionic API (справочник)
 --------------------------------------
 
-  ▪   свойство
-  •   метод
-  ►   событие
-  Ⓐ  атрибут
+  Component API (кратко, с логической группировкой)
+  -------------------------------------------------
 
-  Component API
+    G1. Ключевые высокоуровневые компоненты
+    G2. CSS сетка
+    G3. Меню 
+    G4. Навигация, роутинг
+    G5. Табы
+    G6. Тулбар
+    G7. Условный рендеринг
+    G8. Карточки
+    G9. Списки
+    G10. Прокрутка
+    G11. Картинки
+    G12. Получение данных (data pickers)
+    G13. Обновление, ожидание загрузки
+    G14. Слайдер
+    G15. Элементы формы
+    G16. Переключатели
+    G17. Модалки
+    G18. FAB-кнопки
+    
+    Gm. Прочие компоненты
+    Gn. Контроллеры
 
+  -------
+
+  G1. Ключевые высокоуровневые компоненты
+
+    # ion-app               | Элемент-контейнер для Ionic-приложения
+    # ion-content           | Главная зона для контента, со скроллом
+    # ion-footer            | Один из трёх корневых компонентов страницы, находящийся в нижней части
+    # ion-header            | Один из трёх корневых компонентов страницы, находящийся в верхней части
+    # ion-split-pane        | Компонент, позволяющий создавать multi-view layout
+
+  G2. CSS сетка
+
+      # ion-grid              | CSS-сетка для создания layout'ов
+      # ion-col               | Column-компонент для размещения внутри grid, внутри row
+      # ion-row               | Row-компонент для размещения внутри grid
+
+  G3. Меню      
+      
+    # ion-menu              | Навигационное меню, которое слайдится с края экрана
+    # ion-menu-button       | Автосоздание кнопки-иконки для закрытия/открытия меню на странице
+    # ion-menu-toggle       | Переключатель состояниям меню (открыто/закрыто)
+
+  G4. Навигация, роутинг
+
+    # ion-nav               | Отдельный компонент для загрузки произвольных компонентов и добавления в отдельный стек
+    # ion-nav-pop           | Компонент для перемещения назад в навигации
+    # ion-nav-push          | Компонент для перемещения в указанный компонент в навигации
+    # ion-nav-set-root      | Элемент, позволяющий установить root для текущего навигационного стека
+
+    # ion-anchor            | Используется для перехода к указанной ссылке
+    # ion-back-button       | Кнопка "назад" для перехода на 1 шаг назад по истории приложения
+
+    # ion-router            | Управление роутингом в vanilla JS проектах
+    # ion-router-outlet     | Используется для роутинга в Angular-приложениях
+    # ion-route             | Router может отрисовывать компоненты в зависимости от URI браузера.
+    # ion-route-redirect    | Роут для редиректа, должен быть ребёнком ion-router
+
+  G5. Табы
+
+    # ion-tabs              | Табы, навигационный высшего уровня  
+      # ion-tab             | Компонент tab, дочерний компонент компонента tabs
+      # ion-tab-button      | Внутренний компонент для tab'ов
+      # ion-tabbar          | Внутренний компонент для tab'ов  
+
+  G6. Тулбар
+    
+    # ion-toolbar           | Тулбар (панель инструментов)
+      # ion-title           | Устанавливает title для toolbar      
+    
+    # ion-searchbar         | Текстовое поле в toolbar/content для поиска по коллекции
+
+  G7. Условный рендеринг
+
+    # ion-hide-when         | Скрывает себя и свой контент, если условие равно true
+    # ion-show-when         | Компонент, показывающий свой контент, когда query становется true
+
+  G8. Карточки
+
+    # ion-card              | Карточки, стандартный элемент UI для размещения контента
+    # ion-card-content      | Дочерний для ion-card компонент для контента
+    # ion-card-header       | Дочерний для ion-card компонент для header'а
+    # ion-card-subtitle     | Дочерний для ion-card компонент для подзаголовка
+    # ion-card-title        | Дочерний для ion-card компонент для заголовка   
+
+  G9. Списки
+
+    # ion-list              | Списки состоят из многих строк с item'ами с текстом, кнопками, иконками, переключателям и т.д.
+      # ion-list-header     | Header-компонент для списка (list)
+
+    # ion-item-group        | Контейнер для группировки похожих item'ов друг с другом
+      # ion-item              | Item может содержать текст, иконки, аватары, картинки, инпуты, и другие нативные/кастомные эл-ты
+      # ion-item-divider      | Блочный элемент для отделения item'ов друг от друга в списке
+      
+    # ion-item-sliding      | Содержит item, который можно перетаскивать (drag), чтобы открыть option buttons
+      # ion-item-options    | Контейнер для option buttons для ion-item-sliding
+        # ion-item-option   | Option-кнопка для ion-item-sliding
+
+    # ion-reorder-group     | Компонент-обёртка для item'ов с компонентами ion-reorder
+      # ion-reorder         | Компонент, позволяющий сделать item перетаскиваемым в списке item'ов
+
+    # ion-chip              | Сложные сущности в небольших блоках, как контакт
+      # ion-chip-button     | Inset-кнопка, которая размещается внутри chip
+      # ion-chip-icon       | Иконка, которая размещается внутри chip
+
+    # ion-badge             | Inline-block элемент, который обычно возникает рядом с другим элементом
+
+  G10. Прокрутка
+
+    # ion-virtual-scroll              | Отображает виртуальный "бесконечный" список с функции подгрузки контента при приближении к его краю
+    # ion-scroll                      | Низкоуровневый компонент для произвольных областей прокрутки
+    # ion-infinite-scroll             | Организация бесконечной проктурки, вызывает callback на дистанции скролла X от верха/низа страницы
+      # ion-infinite-scroll-content   | Дочерний компонент для демонстрации контента по умолчанию для infinite scroll
+
+  G11. Картинки      
+
+    # ion-avatar            | Круговой компонент, оборачивающий изображение или иконку
+    # ion-img               | Лениво подгрузит картинку, когда она окажется во viewport
+    # ion-thumbnail         | Квадратный компонент, обычно оборачивающий картинку или иконку
+
+  G12. Получение данных (data pickers)
+
+    # ion-datetime          | Datetime-picker, который вылазит снизу экрана
+    # ion-picker            | Picker данных, имеет ряд кнопок, и столбцы (барабанного типа) со значениями
+    # ion-picker-column     | Компонент-колонка для picker'а
+
+  G13. Обновление, ожидание загрузки
+
+    # ion-refresher           | Функционал "потяни вниз для обновления", для компонента content
+      # ion-refresher-content | Текст, иконка и спиннер для отображения во время обновления контента refresher'ом
+
+    # ion-loading           | Панель загрузки поверх контента, блокирующая интерфейс, и показывающая, что идёт какой-то процесс
+    # ion-spinner           | Предоставляет набор анимированных SVG-спиннеров
+    # ion-skeleton-text     | Компонент для отрисовки плейсхолдеров (серых прямоугольников) вместо контента
+
+  G14. Слайдер
+
+    # ion-slides            | Слайдер с любым кол-вом слайдов, слайды можно менять свайпом/драгом
+      # ion-slide           | Slide, это дочерний компонент для Slides
+
+  G15. Элементы формы
+
+    # ion-input             | Обёртка для элемента HTML-input с кастомной стилизацией и доп.функционалом.
+    # ion-buttons           | Компонент-контейнер для элементов button
+      # ion-button          | Кликабельный элемент "кнопка"
+
+    # ion-textarea          | Аналог textarea из html, многострочное поле для ввода текста
+    # ion-checkbox          | Компонент-чекбокс
+
+    # ion-radio-group       | Группа radio-кнопок
+      # ion-radio           | Компонент radio-кнопка, может использоваться отдельно или в группых оных
+    
+    # ion-range             | Слайдер для выбора значения из диапазона
+      # ion-range-knob      | Внутренний компонент для range
+
+    # ion-select            | Элемент для выбора 1 или более опций, похожий на select из HTML
+      # ion-select-option   | Компонент-опция для select, должен быть его дочерним эл-том
+      # ion-select-popover  | Внутренний компонент для создания интерфейса popover, из компонента select
+
+  G16. Переключатели
+
+    # ion-toggle            | Переключатель вкл./выкл. для одной опции
+    # ion-segment           | Сегментный горизонтальный блок кнопок
+      # ion-segment-button    | Кнопка для размещения внутри компонента segment
+
+  G17. Модалки
+
+    # ion-alert             | Не-fullscreen модалка с текстом и элементами формы
     # ion-action-sheet      | Fullscreen-модалка о списком действий поверх контента
+    # ion-popover           | Продвинутый tooltip с диалоговым поверх контента текущей страницы
+    # ion-modal             | Диалог поверх контента (полноэкранный), который должен быть завершён для продолжения работы с приложением
+
+    # ion-backdrop          | Fullscreen-компонент, перекрывающий другие компоненты
+
+  G18. FAB-кнопки
+
+    # ion-fab               | Контейнерный элемент для fab-кнопок
+    # ion-fab-button        | Floating Action Button (FAB) для основного действия на экране
+    # ion-fab-list          | Контейнер для N FAB'ов, которые появляются при клеке на главную FAB
+
+  Gm. Прочие компоненты
+
+    # ion-label             | Обёртка для использования с item, input, toggle и т.д.
+    # ion-note              | Текстовые элементы, часто используемые, как подзаголовки с более подробной информацией
+    # ion-ripple-effect     | Добавляет в md эффект расходящихся кругов от клика/тапа (ripple effect)
+    # ion-text              | Используется для для стилизации цвета текста любого элемента
+    # ion-toast             | Тосты, элементы для нотификации пользователя
+
+  Gn. Контроллеры
+
+    # ion-action-sheet-controller   | Программный контроль над компонентом action sheet
+    # ion-alert-controller          | Программный контроль над компонентом alert
+    # ion-animation-controller      | Используется для создания экземпляра анимации
+    # ion-loading-controller        | Используется для контроля над компонентом loading
+    # ion-menu-controller           | Используется для контроля над Menu
+    # ion-modal-controller          | Программно контролирует компоненты modal
+    # ion-picker-controller         | Программно контролирует компонент picker
+    # ion-popover-controller        | Программно контролирует компонент popover
+    # ion-toast-controller          | Компонент для создания и управления тостами
+
+  Component API (развёрнуто, в алфавитном порядке)
+  ------------------------------------------------
+
+    ▪   свойство
+    •   метод
+    ►   событие 
+    Ⓐ  атрибут
+
+    # ion-action-sheet        | Fullscreen-модалка о списком действий поверх контента
       
       ▪ buttons               | Массив кнопок для Action Sheet
       ▪ cssClass              | Какие доп.классы применить. Если их > 1, надо разделять пробелами
@@ -5458,7 +5663,7 @@
       ▪ alt                 | Альтернативный текст для описания изображения
       ▪ src                 | URL изображения, обязателен к заполнению
 
-    # ion-infinite-scroll   |
+    # ion-infinite-scroll   | Организация бесконечной проктурки, вызывает callback на дистанции скролла X от верха/низа страницы
 
       ▪ disabled            | Отключить бесконечный скролл (скрыть scrollbar, выключить обработчики)
       ▪ position            | [bottom] Положение элемента infinite scroll: top, bottom
@@ -5526,7 +5731,7 @@
       ▪ href                | Содержит URL (или фрагмент), куда ведёт ссылка
       ▪ mode                | В каком режиме (md или ios) отображать alert
 
-    # ion-item-divider      |
+    # ion-item-divider      | Блочный элемент для отделения item'ов друг от друга в списке
 
       ▪ mode                | В каком режиме (md или ios) отображать alert
       ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
@@ -5850,7 +6055,7 @@
       ► ionRefresh          | Возбуждается, когда пользователь достаточно дотянул вниз, отпускает контент, и начинается обновление.
       ► ionStart            | Возбуждается, когда пользователь начинает тянуть контент вниз.
 
-    # ion-refresher-content | ion-refresher-content
+    # ion-refresher-content | Текст, иконка и спиннер для отображения во время обновления контента refresher'ом
 
       ▪ pullingIcon         | Статическая иконка для отображения, когда вы начинаете тянуть вниз
       ▪ pullingText         | Текст для отображения, когда вы начинаете тянуть вниз
@@ -6219,7 +6424,24 @@
       ▪ color               | Какой использовать цвет из палитры цветов вашего приложения
       ▪ mode                | Какие стили использовать, "ios" или "md" 
 
-    # ion-virtual-scroll    | 
+    # ion-virtual-scroll    | Отображает виртуальный "бесконечный" список с функции подгрузки контента при приближении к его краю
+
+      ▪ approxFooterHeight  | [100%] Примерная ширина каждой ячейки шаблона футера (px, %)
+      ▪ approxHeaderHeight  | [40px] Примерная высота каждой ячейки шаблона футера (px)
+      ▪ approxItemHeight    | [45px] Примерная высота каждого виртуального item'а (px)
+      ▪ domRender           | ???
+      ▪ footerFn            | Функция для срабатывания для каждого футера каждого виртуального эл-та списка
+      ▪ headerFn            | Функция для срабатывания для каждого хедера каждого виртуального эл-та списка
+      ▪ itemHeight          | ???
+      ▪ items               | Массив элементов для virtual scroll
+      ▪ nodeRender          | ???
+      ▪ renderFooter        | ???
+      ▪ renderHeader        | ???
+      ▪ renderItem          | ???
+
+      • markDirty()         | ???
+      • markDirtyTail()     | ???
+      • positionForItem()   | ???
 
   Programmatic API
 
@@ -6245,7 +6467,7 @@
       • dismiss()                   | Уничтожить экран загрузки
       • getTop()                    | Получить самый недавний экран загрузки
 
-    # ion-menu-controller           | 
+    # ion-menu-controller           | Используется для контроля над Menu
 
       • _register()                 |
       • _setActiveMenu()            |
@@ -15575,17 +15797,289 @@
 
       В этом примере, после каждой 20-й записи, вставляется
       header. Так что, между 19 и 20, 39 и 40, и так далее,
-      создаётся <ion-item-divider> и 
+      создаётся <ion-item-divider> и данные в шаблон идут
+      из возвращаемого функцией значения.
 
-  ▪ Использование
+    ▪ Approximate Widths and Heights
+
+      Если высота item'ов в virtual scroll не близка к 
+      значению по умолчанию 40px, очень важно задать
+      значение для свойства approxItemHeight. Прям точное
+      до пикселя значение задавать не обязательно, но без
+      достаточно точного значения virtual scroll может
+      не отрисоваться правильно.
+
+      Примерные ширина и высота каждого шаблона используются
+      для определения, как много ячеек надо создать, и 
+      помогают рассчитать высоту прокручиваемой области.
+      
+      Имейте в виду, что реальная высота отрисовываемых ячеек
+      берётся из CSS приложения, тогда как приблизительная
+      используется лишь для вычисления стартовых измерений.
+
+      Также важно знать, что значения по умолчанию для 
+      item в Ionic могут немного отличаться от платформы
+      к платформе, что является нормой.
+
+    ▪ Images Within Virtual Scroll
+
+      HTTP-запросы, декодирование и отрисовывание картинок,
+      другие тяжёлые или долгие операции, могут вызвать
+      подвисание во время прокрутки.
+
+      Чтобы улучшить контроль над всеми этими, связанными
+      с картинками негативными явлениями, в Ionic есть
+      <ion-img>, который знает, когда надо, а когда не надо
+      делать запрос, отрисовывать картинки, и который 
+      загружает только те картинки, которые видны во
+      viewport после прокрутки.
+
+      Также очень важно убедиться, что размеры картинок
+      заданы жёстко, чтобы после загрузки картинки не
+      меняли свои размеры, и не портили всё вокруг.
+
+      Для virtual scroll, обычные эффекты <img> не 
+      годятся. Разработчики Ionic рекомендуют вместо
+      обычного <img> использовать компонент <ion-img>,
+      потому что когда <img> добавляется в DOM, он 
+      сразу делает HTTP-запрос и качает картинку.
+      Кроме того, <img> отрисовывается когда захочет, 
+      что может заставить пользователя ждать во время
+      прокрутки. В отличие от <img>, <ion-img> регулируется
+      содержащимся в нём <ion-content>, и не отрисовывает
+      изображения во время быстрой прокрутки.
+    
+      <ion-list [virtualScroll]="items">
+        <ion-item *virtualItem="let item">
+          <ion-avatar item-start>
+            <ion-img [src]="item.avatarUrl"></ion-img>
+          </ion-avatar>
+         {% raw %} {{ item.firstName }} {{ item.lastName }}{% endraw %}
+        </ion-item>
+      </ion-list>
+  
+    ▪ Custom Components
+
+      Если для virtual scroll планируется использовать
+      кастомный компонент, лучше всего завернуть его
+      в старый добрый <div>, это должно помочь ему
+      отрисовываться правильно, поскольку внутренее
+      содержимое кастомных компонентов может отличаться,
+      а если он завёрнут в <div>, это позволяет убедиться,
+      что все размеры будут посчитаны правильно.
+  
+      <ion-list [virtualScroll]="items">
+        <div *virtualItem="let item">
+          <my-custom-item [item]="item">
+            {% raw %} {{ item }}{% endraw %}
+          </my-custom-item>
+        </div>
+      </ion-list>
+  
+    ▪ Virtual Scroll Performance Tips
+  
+      ▪ iOS Cordova WKWebView
+
+        При деплое на iOS через Cordova, настоятельно
+        рекомендуется использовать плагин WKWebView,
+        чтобы получить преимущества от более шустрого
+        webview.
+
+        Дополнительно, WKWebView более эффективен 
+        при прокрутке, чем UIWebView.
+
+      ▪ Lock in element dimensions and locations
+
+        Очень важно, чтобы каждый элемент внутри каждого
+        виртуального элемента списка не менял динамически
+        свои размеры или положение.
+
+        Лучший способ этого добиться, для каждого элемента
+        внутри каждого виртуального элемента списка задать
+        fix размеры с помощью css.
+
+      ▪ Use ion-img for images
+
+        Когда вставляете картинки в virtual scroll,
+        используйте <ion-img> вместо стандартного <img>.
+
+      ▪ Set Approximate Widths and Heights
+
+        Задайте приблизительные размеры для item'ов.
+        Это позволит системе быстрее рассыитывать
+        первоначальные размеры для virtual scroll.
+
+      ▪ Changing dataset should use virtualTrackBy
+
+        ID элементов могут меняться, в то время, как
+        данные оставаются теми же.
+
+      ▪ Efficient headers and footer functions
+
+        Каждый virtual item должен быть очень эффективен,
+        и не тратить ресурсы впустую. 
+
+        Самый верный способ убить производительность, 
+        это производить операции с DOM в header- и
+        footer-функциях. Эти функции вызываются для
+        каждой записи в массиве, поэтому, делайте
+        их лёгкими.
+  
+  ▪ Использование (angular)
+
+    HTML:
+
+      <ion-content>
+        <ion-virtual-scroll [items]="items" approxItemHeight="320px">
+          <ion-card virtualItem="let item; let itemBounds = bounds;">
+            <div>
+              <img [src]="item.imgSrc" [height]="item.imgHeight" [alt]="item.name">
+            </div>
+          <ion-card-header>
+            <ion-card-title>{{ item.name }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>{{ item.content }}</ion-card-content>
+          </ion-card>
+        </ion-virtual-scroll>
+      </ion-content>    
+
+    TYPESCRIPT:
+
+      export class VirtualScrollPageComponent {
+        items: any[] = [];
+
+        constructor() {
+          for (let i = 0; i < 1000; i++) {
+            this.items.push({
+              name: i + ' - ' + images[rotateImg],
+              imgSrc: getImgSrc(),
+              avatarSrc: getImgSrc(),
+              imgHeight: Math.floor(Math.random()50 + 150), 
+              content: lorem.substring(0, Math.random() (lorem.length - 100) + 100) 
+            }); 
+            rotateImg++; 
+            if (rotateImg === images.length) { 
+              rotateImg = 0; 
+            } 
+          } 
+        } 
+      } 
+      const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`; 
+      const images = [ 'bandit', 'batmobile', 'blues-brothers', 'bueller', 'delorean', 'eleanor', 'general-lee', 'ghostbusters', 'knight-rider', 'mirth-mobile' ]; 
+      function getImgSrc() { 
+        const src = `https://dummyimage.com/600x400/${Math.round( Math.random() 99999 )}/fff.png`; 
+        rotateImg++; 
+        if (rotateImg === images.length) { 
+          rotateImg = 0; 
+        } 
+        return src; 
+      } 
+      let rotateImg = 0;     
 
   ▪ Свойства
 
+    ▪ approxFooterHeight
+      - [100%] Примерная ширина каждой ячейки шаблона футера (px, %).
+      - Атрибуты: 
+
+        ▪ approx-footer-height
+               
+      - Тип: number
+
+    ▪ approxHeaderHeight
+      - [40px] Примерная высота каждой ячейки шаблона футера (px).
+      - Атрибуты: 
+
+        ▪ approx-header-height
+               
+      - Тип: number
+
+    ▪ approxItemHeight
+      - [45px] Примерная высота каждого виртуального item'а (px).
+      - Атрибуты: 
+
+        ▪ approx-item-height
+               
+      - Тип: number
+
+    ▪ domRender
+      - ???
+      - Атрибуты: 
+
+        ▪ dom-render
+               
+      - Тип: DomRenderFn
+
+    ▪ footerFn
+      - Функция для срабатывания для каждого футера каждого виртуального эл-та списка.
+      - Атрибуты: 
+
+        ▪ footer-fn
+               
+      - Тип: HeaderFn
+
+    ▪ headerFn
+      - Функция для срабатывания для каждого хедера каждого виртуального эл-та списка.
+      - Атрибуты: 
+
+        ▪ header-fn
+               
+      - Тип: HeaderFn
+
+    ▪ itemHeight
+      - ???
+      - Атрибуты: 
+
+        ▪ item-height
+               
+      - Тип: ItemHeightFn
+
+    ▪ items
+      - Массив элементов для virtual scroll.
+        При изменении items, весь virtual scroll перерисовывается.
+      - Атрибуты: 
+
+        ▪ items
+               
+      - Тип: any[]
+
+    ▪ nodeRender
+      - ???
+      - Атрибуты: 
+
+        ▪ node-render
+               
+      - Тип: ItemRenderFn
+
+    ▪ renderFooter
+      - ???
+      - Атрибуты: 
+
+        ▪ render-footer
+               
+      - Тип: (item: any, index: number) => JSX.Element
+
+    ▪ renderHeader
+      - ???
+      - Атрибуты: 
+
+        ▪ render-header
+               
+      - Тип: (item: any, index: number) => JSX.Element
+
+    ▪ renderItem
+      - renderHeader
+      - Атрибуты: 
+
+        ▪ render-header
+               
+      - Тип: (item: any, index: number) => JSX.Element
+
   ▪ Методы
 
-  ▪ События
-
-  
+    ▪ markDirty()           | ???
+    ▪ markDirtyTail()       | ???
+    ▪ positionForItem()     | ???
   
 > ion-action-sheet-controller 
 
@@ -15765,14 +16259,22 @@
 А11. Ionic CLI (справочник)
 --------------------------------------
 
-  #
+  # Обзор Ionic CLI
+
+    ▪ Конфиги
+    ▪ Переменные среды
+    ▪ Флаги
+    ▪ Использование proxy
+    ▪ Продвинутая настройка
+
 
 --------------------------------------
 
-> 
+> Обзор Ionic CLI
+
+  
 
 
-Это про командную строку.
 
 
 А12. Ionic Native (справочник)
