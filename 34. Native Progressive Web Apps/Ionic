@@ -16264,17 +16264,211 @@
     ▪ Конфиги
     ▪ Переменные среды
     ▪ Флаги
+      ▪ --help            | Не запускать команду, а посмотреть справку про неё
+      ▪ --verbose         | Показывать все сообщения из лога в целях отладки
+      ▪ --quiet           | Показывать только WARN/ERROR сообщени из лога
+      ▪ --no-interactive  | Выключить интерактивность (надо при выполнении из кода)
+      ▪ --confirm         | Включить авто-подтверждение всех confirmation prompts
+
     ▪ Использование proxy
     ▪ Продвинутая настройка
+  
+  # Команды Ionic CLI
 
-
+    ▪ build                 | 
+                           
+    ▪ capacitor add         | 
+    ▪ capacitor copy        | 
+    ▪ capacitor open        | 
+    ▪ capacitor run         | 
+    ▪ capacitor sync        | 
+    ▪ capacitor update      | 
+                             
+    ▪ config get            | 
+    ▪ config set            | 
+    ▪ config unset          | 
+                             
+    ▪ cordova build         | 
+    ▪ cordova compile       | 
+    ▪ cordova emulate       | 
+    ▪ cordova platform      | 
+    ▪ cordova plugin        | 
+    ▪ cordova prepare       | 
+    ▪ cordova requirements  | 
+    ▪ cordova resources     | 
+    ▪ cordova run           | 
+                             
+    ▪ docs                  | 
+                             
+    ▪ doctor check          | 
+    ▪ doctor list           | 
+    ▪ doctor treat          | 
+                             
+    ▪ generate              | 
+    ▪ git remote            | 
+    ▪ info                  | 
+    ▪ integrations disable  | 
+    ▪ integrations enable   | 
+    ▪ integrations list     | 
+    ▪ link                  | 
+    ▪ login                 | 
+    ▪ logout                | 
+    ▪ serve                 | 
+    ▪ signup                | 
+                             
+    ▪ ssh add               | 
+    ▪ ssh delete            | 
+    ▪ ssh generate          | 
+    ▪ ssh list              | 
+    ▪ ssh setup             | 
+    ▪ ssh use               | 
+                             
+    ▪ ssl generate          | 
+    ▪ start                 | 
+  
 --------------------------------------
 
 > Обзор Ionic CLI
 
-  
+  • Конфиги
 
+    ▪ Глобальный конфиг
 
+      Глобальный CLI-конфиг (в т.ч. аутентификация)
+      лежит в:
+
+        ~/.ionic/config.json
+
+    ▪ Конфиг Ionic-проекта
+
+      Конфиг Ionic-проекта лежит в папке с проектом,
+      в файле:
+
+        ionic.config.json
+
+    ▪ Получение и изменение значений через CLI
+
+      В CLI есть команды как для установки значений для
+      свойств в конфигах, так и вывода их значений.
+      См.справки команд: 
+
+        ionic config set --help
+        ionic config get --help
+
+  • Переменные среды
+
+    CLI отслеживает наличие следующих переменных
+    среды:
+
+    ▪ IONIC_CONFIG_DIRECTORY
+
+      Папка, в которой лежит глобальный CLI-конфиг.
+      По умолчанию: ~/.ionic
+
+    ▪ IONIC_HTTP_PROXY
+
+      В эту переменную можно вписать URL прокси-сервера
+      для проксирования через него всех CLI-запросов.
+
+    ▪ IONIC_TOKEN
+
+      В эту переменную можно вписать токен, который затем
+      будет автоматически использоваться для доступа
+      к API Ionic Pro.
+
+  • Флаги
+
+    CLI-флаги являются глобальными опциями, которые
+    меняют поведение CLI-команд.
+
+    ▪ --help            | Не запускать команду, а посмотреть справку про неё
+    ▪ --verbose         | Показывать все сообщения из лога в целях отладки
+    ▪ --quiet           | Показывать только WARN/ERROR сообщени из лога
+    ▪ --no-interactive  | Выключить интерактивность (надо при выполнении из кода)
+    ▪ --confirm         | Включить авто-подтверждение всех confirmation prompts
+
+  • Использование proxy
+
+    В Ionic CLI есть встроенная поддержка прокси. 
+    Настроить его можно через глобальный конфиг, 
+    или переменную среды.
+
+    ▪ Настройка через конфиг
+
+      ionic config set -g proxy http://proxy.example.com:8888
+
+    ▪ Настройка через переменную среды
+
+      export HTTP_PROXY="http://proxy.example.com:8888" # also used by npm
+      export HTTPS_PROXY="https://proxy.example.com:8888" # also used by npm
+      export IONIC_HTTP_PROXY="http://proxy.example.com:8888"
+
+    ▪ Настройка прочих CLI для работы через прокси
+
+      npm config set proxy http://proxy.company.com:8888
+      git config --global http.proxy http://proxy.example.com:8888  
+        
+    ▪ Настройка SSL
+
+      ionic config set -g ssl.cafile /path/to/cafile # file path to your CA root certificate
+      ionic config set -g ssl.certfile /path/to/certfile # file path to a client certificate
+      ionic config set -g ssl.keyfile /path/to/keyfile # file path to a client key file
+
+      Записи cafile, certfile, keyfile - можно вручную
+      отредактировать, как массивы строк в 
+      ~/.ionic/config.json, чтобы включить много файлов.
+
+  • Продвинутая настройка
+
+    ▪ Автоматическое применение опций к командам
+
+      Можно записать опции для применения к командам
+      (которые обычно применяются вкомандной строке
+      путём добавления по шаблона --opt=value) в 
+      переменные среды.
+
+      Имя таких переменных среды следует определённому
+      шаблону: 
+
+        IONIC_CMDOPTS_<имя команды>_<имя опции>
+
+      Например:
+
+        IONIC_CMDOPTS_SERVE_OPEN=0
+
+      В имени команды надо заменять все пробелы нижними
+      подчёркиваниями.
+
+      В имени опции надо заменять все дефисы нижними
+      подчёркиваниями.
+
+      Итоговое имя переменной среды должно быть полностью
+      в верхнем регистре.
+
+      В качестве boolean-значений можно использовать 0 и 1.
+      В boolean-флагах вроде --no-open обрезайте --no- часть,
+      поскольку, значение false можно передать через = 0:
+
+        IONIC_CMDOPTS_SERVE_OPEN=0
+
+      Например, опции для команды 
+
+        ionic cordova run ios -lc --livereload-port=1234 --address=localhost
+
+      Можно было бы запихнуть в переменные среды так:
+
+        export IONIC_CMDOPTS_CORDOVA_RUN_LIVERELOAD=1
+        export IONIC_CMDOPTS_CORDOVA_RUN_CONSOLELOGS=1
+        export IONIC_CMDOPTS_CORDOVA_RUN_LIVERELOAD_PORT=1234
+        export IONIC_CMDOPTS_CORDOVA_RUN_ADDRESS=localhost
+
+> Команды Ionic CLI
+
+  См.подробные описания команд либо в официальной 
+  документации, либо используй в командной строке
+  флаг --help для интересующей тебя команды.
+
+    https://beta.ionicframework.com/docs/cli/build
 
 
 А12. Ionic Native (справочник)
