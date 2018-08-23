@@ -1,0 +1,404 @@
+////=================================================////
+////                                                 ////
+////                      Devops                     ////
+////                                                 ////
+////=================================================////
+////                      ////
+////         Ссылки       ////
+////                      ////
+////======================////
+
+
+
+
+////==================================================////
+////                         ////
+////        Оглавление       ////
+////                         ////
+////=========================////
+
+  
+  А1. Настройка ВМ Vagrant Ubuntu 16.04
+  А2. Подключение диска ВМ к windows в виде тома
+  А3. Подготовка каталога проекта в ВМ к разработке
+
+
+
+
+////==================================================////
+////                         ////
+////        Содержание       ////
+////                         ////
+////=========================////
+
+
+А1. Настройка ВМ Vagrant Ubuntu 16.04
+-------------------------------------
+Подоглавление:
+
+  # Постановка задачи
+  # Пошаговая инструкция
+  # Советы по настройке
+  # Образцы файлов
+
+    ▪ Образец Vagrantfile
+    ▪ Образец bootstrap.sh
+    ▪ Образец .gitignore
+    ▪ Образец README.md
+
+--------------------------------------
+
+> Постановка задачи
+
+  Требуется настроить пригодную для разработки проекта
+  виртуальную машину с помощью vagrant на ubuntu 16.04,
+  с установленными docker и docker compose.
+
+> Пошаговая инструкция
+
+  1. Создать папку проекта
+
+    Например: C:\WebDev\projects\manveloff\cleaning
+
+  2. В этой папке создать папку vagrant
+  3. В vagrant создать файлы по образцам:
+
+    ▪ Vagrantfile
+    ▪ bootstrap.sh
+    ▪ .gitignore
+    ▪ README.md
+
+  4. Актуализировать данные в Vagrantfile
+
+    ▪ config.vm.synced_folder
+
+      Вписать сюда актуальные пути.
+
+    ▪ config.ssh.username, config.ssh.password
+
+      Сюда вписать 'vagrant' как для пароля,
+      так и для логина (потом, когда включим
+      пользователя root, надо будет сменить).
+
+  5. Создать, запустить и войти в виртуальную машину
+
+    cd "C:\WebDev\projects\manveloff\cleaning\vagrant"
+    vagrant up
+    vagrant ssh
+
+  6. Разрешить логиниться пользователю root через ssh
+
+    Открыть конфиг:
+      sudo nano /etc/ssh/sshd_config
+
+      Изменить значение PermitRootLogin на yes:
+        PermitRootLogin yes
+
+      Добавить в конце строку:
+        AllowUsers root
+
+    Закрыть и сохранить конфиг.
+
+  7. Включить пользователя root
+
+    Выполните эту команду и задайте пароль 'root' для root:
+      sudo passwd root
+
+    Затем выполните эту команду, чтобы разблокировать root-аккаунт:
+      sudo passwd -u root 
+
+  8. Остановить виртуальную машину
+
+    cd "C:\WebDev\projects\manveloff\cleaning\vagrant"
+    vagrant halt
+
+  9. Актуализировать данные в Vagrantfile
+
+    ▪ config.ssh.username, config.ssh.password
+
+      Сюда вписать 'root' как для пароля,
+      так и для логина (потом, когда включим
+      пользователя root, надо будет сменить).
+
+  10. Снова запустить VM и убедиться, что вы вошли, как root
+    
+    cd "C:\WebDev\projects\manveloff\cleaning\vagrant"
+    vagrant root
+
+  11. Сделать так, чтобы при vagrant ssh не спрашивался пароль
+
+    По умолчанию, даже учитывая, что у вас в Vagrantfile
+    указан пароль root, команда vagrant ssh продолжает
+    запрашивать пароль при входе, что напрягает.
+
+    Сделаем, чтобы она не запрашивала. Для этого заменим
+    первым файлом второй:
+
+      первый  C:\Users\<user>\.vagrant.d\insecure_private_key
+      второй  C:\WebDev\projects\manveloff\cleaning\vagrant\.vagrant\machines\default\virtualbox\private_key
+
+    После чего vagrant ssh перестанет спрашивать пароль.  
+
+> Образцы файлов
+
+  • Образец Vagrantfile
+
+    #################################################
+    ##                                             ##
+    ##   Vagrantfile for VM creating via Vagrant   ##
+    ##                                             ##
+    #################################################
+    ## Table of contents ##
+    #######################
+    #
+    # 1. Configure folders to share via NFS
+    # 2. Other settings, you can don't touch them
+    #   2.1. The base image (box)
+    #   2.2. Configuring of initializers
+    #   2.3. Configuring of NAT-network (guest<>host<>world)
+    #   2.4. Configuring of host-only-network (guest<>host)
+    #   2.5. Disable the check for updates box
+    #   2.6. Set limits on virtual machine
+    #   2.7. Configure the timeout for the virtual machine (1000 seconds default)
+    #   2.n. Message after vagrant up
+    #
+    Vagrant.configure(2) do |config|
+      
+      ###########################################
+      ## 1. Configure folders to share via NFS ##
+      ###########################################  
+      config.vm.synced_folder "c:/webdev/projects/manveloff/cleaning/vagrant", "/manveloff/cleaning/env/vagrant"
+
+      #################################################
+      ## 2. Other settings, you can don't touch them ##
+      #################################################    
+        
+        ###############################
+        ## 2.1. The base image (box) ##
+        ###############################
+        config.vm.box = "bento/ubuntu-16.04"
+        config.ssh.username = 'root'
+        config.ssh.password = 'root'
+        
+        ######################################
+        ## 2.2. Configuring of initializers ##
+        ######################################          
+        
+          ## 2.2.1. Running only in the 1st vagrant up ##
+          ###############################################    
+          config.vm.provision :shell, path: "bootstrap.sh"
+            
+          ## 2.2.2. Running every vagrant up ##
+          ##################################### 
+          # config.vm.provision "shell", inline: "sudo service docker start", run: "always"
+            
+        ##########################################################
+        ## 2.3. Configuring of NAT-network (guest<>host<>world) ##
+        ##########################################################
+        config.vm.network :forwarded_port, guest: 80, host: 80
+        config.vm.network :forwarded_port, guest: 443, host: 443
+        config.vm.network :forwarded_port, guest: 25, host: 25
+        config.vm.network :forwarded_port, guest: 587, host: 587
+        config.vm.network :forwarded_port, guest: 465, host: 465
+        config.vm.network :forwarded_port, guest: 993, host: 993
+        config.vm.network :forwarded_port, guest: 143, host: 143
+        config.vm.network :forwarded_port, guest: 110, host: 110
+        config.vm.network :forwarded_port, guest: 995, host: 995
+        # config.vm.network :forwarded_port, guest: 9050, host: 9050
+        # config.vm.network :forwarded_port, guest: 9150, host: 9150
+        
+        config.vm.network :forwarded_port, guest: 3306, host: 3306
+        config.vm.network :forwarded_port, guest: 6001, host: 6001
+        config.vm.network :forwarded_port, guest: 3000, host: 3000
+        config.vm.network :forwarded_port, guest: 3001, host: 3001
+        config.vm.network :forwarded_port, guest: 3002, host: 3002
+        config.vm.network :forwarded_port, guest: 8000, host: 8000
+        
+        #########################################################
+        ## 2.4. Configuring of host-only-network (guest<>host) ##
+        #########################################################     
+        config.vm.network "private_network", ip: "10.10.10.10", adapter: 2
+        
+        ############################################
+        ## 2.5. Disable the check for updates box ##
+        ############################################    
+        config.vm.box_check_update = false
+
+        ########################################
+        ## 2.6. Set limits on virtual machine ##
+        ########################################    
+        config.vm.provider "virtualbox" do |v|
+          
+          ## 2.6.1. VM name ##
+          ####################   
+          v.name = "default"
+          
+          ## 2.6.2. Memory ##
+          ###################   
+          v.memory = 8192
+          
+          ## 2.6.3. cpu ##
+          ################    
+          v.cpus = 2
+          
+          ## 2.6.4. Enable vagrant GUI (for debugging) ##
+          ###############################################
+          # v.gui = true
+          
+        end  
+        
+        ###############################################################################
+        ## 2.7. Configure the timeout for the virtual machine (1000 seconds default) ##
+        ###############################################################################   
+        config.vm.boot_timeout = 1000
+        
+        #####################################
+        ## 2.n. Сообщение после vagrant up ##
+        #####################################
+        config.vm.post_up_message = "Virtual machine is ready to work!"
+      
+    end
+
+  • Образец bootstrap.sh
+
+    #!/usr/bin/env bash
+
+    # Установить git
+    sudo apt-get update && sudo apt-get install -y \
+
+      git \
+      jq
+
+    # Установить docker
+    curl -sSL https://get.docker.com/ | sh
+
+    # Установить docker-compose
+    curl -L https://github.com/docker/compose/releases/download/1.17.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+
+    # Настроить PS1 prompt
+    sed -i -e '$aPS1='\''\\s->\\W\\$ '\' /home/vagrant/.bashrc
+
+    # Создать группу docker и добавить в неё пользователя vagrant
+    sudo usermod -aG docker vagrant
+
+  • Образец .gitignore
+
+    .vagrant
+
+  • Образец README.md
+
+    # Vagrant box, ubuntu 16.04, docker and docker compose
+    ---
+    ## Оглавление
+
+      - [Ссылки](#link1)
+      - [Описание](#link2)
+
+    ---
+
+    ## Ссылки <a id="link1"></a>
+    ```
+
+      > Address
+          https://gitlab.manveloff.ru/general/vagrant.git
+
+          
+    ```
+    ## Описание <a id="link2"></a>
+    ```
+
+      Общее описание
+      - Это box для vagrant для локальной разработки проектов под брендом manveloff.
+      - Cодержит Ubuntu 16.04 и установленные docker и docker compose.
+      - Работает как на Windows, так и на MacOS.
+      
+      Настройка проброса папок
+      - В box необходимо пробрасывать папку с проектом с машины-хоста, её надо настроить.
+      - Это делается в файле Vagrantfile, в разделе "1. Configure folders to share via NFS".
+      
+    ```  
+
+А2. Подключение диска ВМ к windows в виде тома
+-------------------------------------
+
+  # Постановка задачи
+  # Пошаговая инструкция
+
+-------------------------------------
+
+> Постановка задачи
+
+  После каждого запуска ВМ, чтобы разработка с хост-машины
+  была возможна, необходимо монтировать файловую систему
+  виртуальной машины с ubuntu на windows в виде нового
+  тома Z:
+
+> Пошаговая инструкция
+
+  1. Скачать и установить программу SFTP Net Drive.
+  2. Настроить в ней новый профиль:
+
+    server:     127.0.0.1:2222
+    username:   root
+    password:   root
+
+  3. Зайти в advanced
+
+    Выбрать вкладку drive.
+    Там для "Root folder on the Server" выбрать 
+    "Specified folder", и указать "/". Нажать OK.
+
+  4. Нажать connect
+
+    Должно произойти подключение, и новый том откроется
+    в проводнике в новом окне.
+
+
+А3. Подготовка каталога проекта в ВМ к разработке
+-------------------------------------
+
+  # Постановка задачи
+  # Пошаговая инструкция
+
+-------------------------------------
+
+> Постановка задачи
+
+  Необходимо подготовить каталог проекта, его структуру,
+  в файловой структуре ВМ.
+
+> Пошаговая инструкция
+
+  1. Запустите ВМ и смонтируйте её ФС на хост.
+  2. Подготовьте в любом месте смонтированной ФС папку для проекта:
+
+    Например: /manveloff/cleaning
+
+  3. Создайте файловую структуру проекта в этой папке:
+  
+    docs/
+    env/
+      docker/
+        app/
+        mysql/
+        redis/
+        nodejs/
+      vagrant/
+    other/
+      production/
+        backups/
+        data/
+        dumps/
+        https/
+        logs/
+        secrets/
+        storage/
+      workbench/
+    project/
+  
+  
+
+
+
+
