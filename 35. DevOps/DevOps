@@ -22,6 +22,7 @@
   А2. Подключение диска ВМ к windows в виде тома
   А3. Подготовка каталога проекта в ВМ к разработке
   А4. Настроить терминальный доступ к docker registry на gitlab
+  А5. Установка моего стартового Laravel-проекта
 
 
 
@@ -91,8 +92,8 @@
     Открыть конфиг:
       sudo nano /etc/ssh/sshd_config
 
-      Изменить значение PermitRootLogin на yes:
-        PermitRootLogin yes
+    Изменить значение PermitRootLogin на yes:
+      PermitRootLogin yes
 
     Закрыть и сохранить конфиг.
 
@@ -407,6 +408,84 @@
   .bashrc для root.
 
 > Пошаговая инструкция
+
+  1. Сначала надо создать personal access token
+
+    Идём в settings профиля.
+    Там в Access Tokens.
+    Создаём новый токен с одним scope'ом: "read_registry".
+    Записываем его в project/other/secrets/docker/credentials.json, 
+    т.к. потом доступа к нему не будет.
+
+  2. Добавляем строку входа в /root/.bashrc
+
+    Запускаем ВМ.
+    Редактируем .bashrc:
+
+      sudo nano /root/.bashrc
+
+    В конце добавляем строки:
+
+      # Login to the GitLab Docker registry
+      docker login <адрес>:<порт> -u <login> -p <personal access token>
+
+    Адрес и порт можно посмотреть, открыв проект на gitlab, 
+    и там зайдя в Registry.
+
+    Логин используйте тот же, для которого создавался 
+    personal access token.
+
+
+А5. Установка моего стартового Laravel-проекта
+-------------------------------------
+
+  # Постановка задачи
+  # Пошаговая инструкция
+
+-------------------------------------
+
+> Постановка задачи
+
+  Чаще всего новый проект стартуют не с нуля, а используют
+  либо какую-то заготовку под стартовый проект, либо 
+  просто клонируют предыдущий проект, и настраивают
+  его под новый.
+
+  Я разрабатываю Laravel-проекты, и после клонирования
+  такого-проекта требуется выполнить кое-какие действия.
+
+> Пошаговая инструкция
+
+  1. Перейти в каталог проекта.
+  2. Установить composer-зависимости
+
+    composer install
+
+  3. Установить npm зависимости
+
+    npm install
+
+  4. Собрать фронтенд для dev
+
+    npm run development
+
+  5. Изменить права для папки storage
+
+    sudo chmod -R 777 storage
+
+  6. Создать папку other/logs/security
+
+    sudo mkdir other/logs/security
+    sudo chmod -R 777 other/logs
+
+  7. Создать и заселить базу данных
+
+    artisan migrate:refresh --seed --force
+    artisan vendor:publish --tag=extensions --force
+
+
+
+
 
 
 
