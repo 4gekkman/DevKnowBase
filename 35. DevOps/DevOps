@@ -94,18 +94,15 @@
       Изменить значение PermitRootLogin на yes:
         PermitRootLogin yes
 
-      Добавить в конце строку:
-        AllowUsers root
-
     Закрыть и сохранить конфиг.
 
   7. Включить пользователя root
 
-    Выполните эту команду и задайте пароль 'root' для root:
-      sudo passwd root
-
     Затем выполните эту команду, чтобы разблокировать root-аккаунт:
       sudo passwd -u root 
+
+    Выполните эту команду и задайте пароль 'root' для root:
+      sudo passwd root      
 
   8. Остановить виртуальную машину
 
@@ -120,12 +117,7 @@
       так и для логина (потом, когда включим
       пользователя root, надо будет сменить).
 
-  10. Снова запустить VM и убедиться, что вы вошли, как root
-    
-    cd "C:\WebDev\projects\manveloff\cleaning\vagrant"
-    vagrant root
-
-  11. Сделать так, чтобы при vagrant ssh не спрашивался пароль
+  10. Сделать так, чтобы при vagrant ssh не спрашивался пароль
 
     По умолчанию, даже учитывая, что у вас в Vagrantfile
     указан пароль root, команда vagrant ssh продолжает
@@ -138,6 +130,11 @@
       второй  C:\WebDev\projects\manveloff\cleaning\vagrant\.vagrant\machines\default\virtualbox\private_key
 
     После чего vagrant ssh перестанет спрашивать пароль.  
+
+  11. Снова запустить VM и убедиться, что вы вошли, как root
+    
+    cd "C:\WebDev\projects\manveloff\cleaning\vagrant"
+    vagrant root
 
 > Образцы файлов
 
@@ -229,19 +226,15 @@
         ########################################    
         config.vm.provider "virtualbox" do |v|
           
-          ## 2.6.1. VM name ##
-          ####################   
-          v.name = "default"
-          
-          ## 2.6.2. Memory ##
+          ## 2.6.1. Memory ##
           ###################   
           v.memory = 8192
           
-          ## 2.6.3. cpu ##
+          ## 2.6.2. cpu ##
           ################    
           v.cpus = 2
           
-          ## 2.6.4. Enable vagrant GUI (for debugging) ##
+          ## 2.6.3. Enable vagrant GUI (for debugging) ##
           ###############################################
           # v.gui = true
           
