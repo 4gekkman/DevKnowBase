@@ -24,7 +24,9 @@
   А4. Настроить терминальный доступ к docker registry на gitlab
   А5. Установка моего стартового Laravel-проекта
   А6. Настройка SSH-подключения только через ключи к VDS-серверу
-  А7. Установка, настройка GitLab EE
+  А7. Связать домен с сервером, настроить поддомен, сделать переадресацию
+  А8. Установка, настройка GitLab EE
+  
 
 
 ////==================================================////
@@ -569,7 +571,163 @@
       назнаичть не putty-версию.
 
 
-А7. Установка, настройка GitLab EE
+А7. Связать домен с сервером, настроить поддомен, сделать переадресацию
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+  # Пошаговые инструкции
+
+    • Создание поддомена
+    • Привязка домена к хостингу
+    • Переадресация с одного домена на другой
+
+--------------------------------------
+
+> Ссылки
+
+  • Как привязать домен к хостингу?
+      https://www.reg.ru/support/hosting-i-servery/sajty-i-domeny/kak-nastroit-dns/kak-privyazat-domen-k-hostingu
+
+  • Как привязать домен к стороннему хостингу?
+      https://www.reg.ru/support/domains/dns_servery_i_nastroika_zony/DNS-servery/kak-privyazat-domen-k-storonnemu-hostingu
+
+  • Как создать поддомен?
+      https://www.reg.ru/support/hosting-i-servery/sajty-i-domeny/kak-dobavit-novy-domen-poddomen-psevdonim/kak-dobavit-poddomen
+
+  • Что такое «Ресурсные записи DNS»
+      https://www.reg.ru/support/domains/dns_servery_i_nastroika_zony/Nastroika-zony/chto-takoe-resursnye-zapisi-dns
+
+> Введение
+
+  В любом новом проекте вам понадобится связать домен
+  с IP-адресом сервера. Также, часто требуется создать
+  поддомен.
+
+> Ситуация-пример для рассмотрения в этой главе
+
+  • Есть такие домены и поддомены
+
+    manveloff.com
+    manveloff.ru
+    cleaning.manveloff.ru
+    gitlab.manveloff.ru
+
+  • Что надо сделать
+
+    1. Переадресацию 301 с .com на .ru
+
+      Чтобы с manveloff.com и любых поддоменов запрос
+      переадресовывался на manveloff.ru и соответствующий
+      поддомен.
+
+      Примеры:
+
+        manveloff.com           -->  manveloff.ru
+        gitlab.manveloff.com    -->  gitlab.manveloff.ru
+        cleaning.manveloff.com  -->  cleaning.manveloff.ru
+        abcde.manveloff.com     -->  abcde.manveloff.ru
+
+    2. Переадресации c www. на без www.
+    3. Связать gitlab.manveloff.ru с gitlab-сервером.
+    4. Связать cleaning.manveloff.ru с клининговым сервером.
+    5. Связать manveloff.ru с тем же клининговым сервером.
+
+      Идея состоит в том, чтобы просто-напросто в роутинге
+      Laravel прописать разные роуты для доменов manveloff.ru,
+      и cleaning.manveloff.ru.
+
+      Если домен manveloff.ru, то используется набор роутов
+      для моего личного сайта.
+
+      Если домен cleaning.manveloff.ru, то используется набор
+      роутов для клинингового агрегатора.
+
+> Пошаговые инструкции
+
+  1. Используем бесплатные DNS-сервера регистратора домена
+
+    Выполняем следующее для каждого домена 
+    (manveloff.com, manveloff.ru).
+
+    Заходим на сайт регистратора домена, в панель управления.
+
+    Там заходим в раздел "DNS-серверы", и устанавливаем
+    для домена бесплатные DNS-серверы регистратора.
+
+  2. Настраиваем ресурсные записи DNS
+
+    Заходим на сайт регистратора домена, в панель управления.
+    Открываем "Управление зоной".
+
+    • Для домена manveloff.com 
+    
+      КЛАСС   ПОДДОМЕН    ДОМЕН           ЗНАЧЕНИЕ
+      --------------------------------------------
+      NS      @           manveloff.com   ns1.reg.ru.
+      NS      @           manveloff.com   ns2.reg.ru.
+      CNAME   www         manveloff.com   manveloff.ru
+      CNAME   gitlab      manveloff.com   gitlab.manveloff.ru
+      CNAME   cleaning    manveloff.com   cleaning.manveloff.ru
+      CNAME   *           manveloff.com   cleaning.manveloff.ru
+    
+    • Для домена manveloff.ru
+
+      КЛАСС   ПОДДОМЕН    ДОМЕН           ЗНАЧЕНИЕ
+      --------------------------------------------
+      NS      @           manveloff.ru    ns1.reg.ru.
+      NS      @           manveloff.ru    ns2.reg.ru.
+      CNAME   www         manveloff.ru    manveloff.ru
+      CNAME   *           manveloff.ru    cleaning.manveloff.ru
+      A       @           manveloff.ru    <ip клинингового сервера>
+      A       gitlab      manveloff.ru    <ip сервера с гитлабом>
+      A       cleaning    manveloff.ru    <ip клинингового сервера>
+
+  • Создание поддомена
+
+
+
+  • Привязка домена к хостингу
+
+    1. Используем бесплатные DNS-сервера регистратора домена
+
+      Заходим на сайт регистратора домена, в панель управления.
+
+      Там заходим в раздел "DNS-серверы", и устанавливаем
+      для домена бесплатные DNS-серверы регистратора.
+
+    2. Настраиваем домен
+
+      Заходим на сайт регистратора домена, в панель управления.
+      Открываем "Управление зоной".
+
+      • Добавляем записи "A"
+
+
+
+
+    1. Привязать DNS-сервера хостинг-провайдера у регистратора домена
+
+      Надо зайли в личный кабинет хостинг-провайдера, где у 
+      вас куплен домен, и там посмотреть адреса его DNS-
+      серверов.
+
+      Затем взять эти адреса, открыть личный кабинет регистратора
+      вашего домена, и вписать их туда.
+
+    2. 
+
+  • Переадресация с одного домена на другой
+
+
+
+
+
+
+
+
+А8. Установка, настройка GitLab EE
 --------------------------------------
 Подоглавление:
 
@@ -590,6 +748,7 @@
 > Ссылки
 
   • Официальная инструкция по устаноке GitLab Omnibus
+      https://about.gitlab.com/installation/#ubuntu
 
 > Введение
 
@@ -613,9 +772,18 @@
     curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.deb.sh | sudo bash
 
     В следующей строке замените <domain> на домен, где будет
-    лежать ваш gitlab. Например, 
+    лежать ваш gitlab. Например, "gitlab.example.com"
 
     sudo EXTERNAL_URL="http://<domain>" apt-get install gitlab-ee
 
-  3. 
+  3. Установите пароль для администратора
+
+    Откройте установленный GitLab в браузере, 
+    так как это будет первое посещение,
+    он попросит установить пароль для администратора.
+
+  4. Войдите в GitLab, как администратор
+
+    Используя логин root и установленный для него пароль.
+
 
