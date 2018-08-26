@@ -36,8 +36,8 @@
   Темы для глав:
 
     Автоматическое обновление сертификата certbot
-    Настройка runner'ов
     Настройка docker registry
+    Настройка runner'ов
     Сборка и залив docker-образов в gitlab docker-registry
     Обновление gitlab до новой версии
 
