@@ -35,6 +35,7 @@
 
   Темы для глав:
 
+    Автоматическое обновление сертификата certbot
     Настройка runner'ов
     Настройка docker registry
     Сборка и залив docker-образов в gitlab docker-registry
@@ -1099,25 +1100,76 @@
     См.главу А8.
 
   2. Подключитесь к серверу с GitLab через ssh.
-  3. Откройте и отредактируйте файл /etc/gitlab/gitlab.rb:
+  3. Устанавливаем certbot
+
+    sudo apt-get update
+    sudo apt-get install software-properties-common
+    sudo add-apt-repository ppa:certbot/certbot
+    sudo apt-get update
+    sudo apt-get install certbot
+
+  4. Готовим папку для сертификатов
+
+    sudo mkdir -p /var/www/letsencrypt
+
+  5. Прописываем custom_gitlab_server_config в конфиг GitLab
 
     Открываем:
 
       sudo nano /etc/gitlab/gitlab.rb
 
-    Редактируем:
+    Редактируем (заменим <gitlab-домен> на оный):
+
+      nginx['custom_gitlab_server_config'] = "location ^~ /.well-known { root /var/www/letsencrypt; }"
+  
+    Выполняем:
+
+      sudo gitlab-ctl reconfigure
+
+  6. Запрашиваем сертификат
+
+    Внимание! После нескольких неудачных запросов,
+    certbot банит вас на неделю. Так что, перед тем, 
+    как выполнять реальный запросы, сначала потренируйтесь.
+
+    Выполняем следующую команду. На вопрос отвечаем 
+    "сохранить файлы", пункт 2. Не забываем подставить
+    вместо <домен с gitlab> оный:
+
+    ▪ Тренировка (с --test-cert и --dry-run)
+
+      sudo certbot certonly --test-cert --dry-run --webroot-path=/var/www/letsencrypt -d <домен с gitlab>
+
+    ▪ Реальный запрос (без --test-cert и --dry-run)
+
+      sudo certbot certonly --webroot-path=/var/www/letsencrypt -d <домен с gitlab>
+
+  7. Прописываем сертификаты и http->https переадресацию в конфиг GitLab
+
+    Открываем:
+
+      sudo nano /etc/gitlab/gitlab.rb
+
+    Редактируем (заменим <gitlab-домен> на оный):
 
       external_url 'https://<домен с gitlab, например, gitlab.bubbles.pro>'
-      nginx['custom_gitlab_server_config'] = "location ^~ /.well-known { root /var/www/letsencrypt; }"
       nginx['redirect_http_to_https'] = true
-      nginx['ssl_certificate'] = "/etc/letsencrypt/live/gitlab.bubbles.pro/fullchain.pem"
-      nginx['ssl_certificate_key'] = "/etc/letsencrypt/live/gitlab.bubbles.pro/privkey.pem"
+      nginx['ssl_certificate'] = "/etc/letsencrypt/live/<gitlab-домен>/fullchain.pem"
+      nginx['ssl_certificate_key'] = "/etc/letsencrypt/live/<gitlab-домен>/privkey.pem"
+  
+    Выполняем:
 
-    Добавляем:
+      sudo gitlab-ctl reconfigure
 
-      nginx['redirect_http_to_https'] = true
+  8. Проверяем, что GitLab заработал через HTTPS, и переадресация работает
 
-  4. Создаём и подключаем к gitlab новый ssl-сертификат с помощью certbot
+    Открываем в браузере:
+
+      http://<ваш GitLab-домен>
+
+    Вы должны попасть сюда, и GitLab должен открыться:
+
+      https://<ваш GitLab-домен>
 
 
 
