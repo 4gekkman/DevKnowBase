@@ -33,13 +33,11 @@
   А13. Настройка HTTPS на GitLab
   А14. Настройка Docker Container Registry
   А15. Подготовка, сборка и загрузка Docker-образов в DCR
-
+  А16. Настройка CI/CD и runner'ов для проекта
 
   Темы для глав:
 
-    Настройка docker registry
     Настройка runner'ов
-    Сборка и залив docker-образов в gitlab docker-registry
     Обновление gitlab до новой версии
 
 
@@ -1294,6 +1292,199 @@
 
       docker push gitlab.bubbles.pro:4567/bubbles/mvp/redis
 
+  4. Если вы стартовали новый проект из другого, перепропишите образы
+
+    Часто мы начинаем новый проект, просто скопировав
+    старый. Если это так, не забудьте перепрописать
+    в docker compose новые образы.
 
 
+А16. Настройка CI/CD и runner'ов для проекта
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+  # Пошаговая инструкция
+
+--------------------------------------
+
+> Ссылки
+
+  • Регистрация runner'ов в GitLab
+      https://docs.gitlab.com/runner/register/index.html#gnu-linux
+
+> Введение
+
+  Концепция CI (Continious Integration) / CD (Continious Delivery)
+  позволяет реализовать "конвейер" по немедленному тестированию
+  и доставке только что закомиченного кода в основную
+  кодовую базу.
+
+  GitLab из коробки поддерживает CI/CD, но только его 
+  нужно настроить.
+
+  В этой главе описано, как работает CI/CD в GitLab,
+  и как его настроить, в том числе настроить так называемые
+  runner'ы.
+
+> Как работает CI/CD на GitLab
+
+  • Что мы имеем
+    - GitLab на отдельном VPS, установленный через Docker.
+    - Приватный git-репозиторий с кодом нашего проекта на GitLab.
+    - Файл .gitlab-ci.yml в git-репозитории в корне проекта.
+    - Dev-сервер на отдельном VPS, к которому есть доступ.
+    - Runner'ы с shell-исполнителем на dev-сервере, подключенные к Gitlab.
+    - Конфиг для runner'ов config.toml на dev-сервере.
+
+  • Что происходит
+    - Кто-то делает push в git-репозиторий.
+    - В GitLab добавляется новая job.
+    - Срабатывает runner, подключенный к GitLab. Что он делает:
+      
+      1. Подтягивает на dev-сервер свежий код из git-репозитория на GitLab.
+      2. В bash выполняет команды из файла .gitLab-ci.yml в корне проекта.  
+    
+    - В .gitlab-ci.yml может быть прописано от 1 и более стадий (stages). 
+      А каждая стадия может содержать набор команд для выполнения в bash.
+      Примеры стадий: 
+      
+      - test    | тут прогоняются всякие тесты 
+      - deploy  | тут выполняется деплой-скрипт
+
+    - Результаты (плохие или хорошие) возвращаются на GitLab,
+      где их и можно наблюдать в разделе CI / CD.
+  
+  • Runner'ы
+    - Их может быть несколько.
+    - Для каждой стадии через environments можно указать свой runner.
+
+> Пошаговая инструкция
+
+  1. Подключаемся через SSH к серверу, где мы хотим поднять runner
+
+    Runner'ы нам надо поднимать на тех серверах, где у нас
+    будут выполняться различные версии проекта - test,
+    dev, prod и т.д.
+
+    Причём, для каждой такой среды следует поднять свой
+    отдельный runner.
+
+  2. Подготовить конфиг для runner'ов
+    - Создать файл /etc/gitlab-runner/config.toml, если его ещё нет.
+    - Посмотреть значение url и token для конфига здесь, в разделе specific runners:
+
+      https://<ваш gitlab домен>/<группа>/<проект>/settings/ci_cd
+
+    - Вот пример реального конфига на два runner'а
+
+      concurrent = 4
+      check_interval = 0
+
+      [[runners]]
+        name = "dev-runner"
+        url = "https://<ваш gitlab домен>"
+        token = "<токен>"
+        executor = "shell"
+        shell = "bash"
+        [runners.cache]
+
+      [[runners]]
+        name = "test-runner"
+        url = "https://<ваш gitlab домен>"
+        token = "<токен>"
+        executor = "shell"
+        shell = "bash"
+        [runners.cache]    
+
+  3. Установить пакет для runner'ов через apt
+
+    Именно через apt, а не через, например, Docker,
+    потому что в оф.образе runner'а прописано запускаться 
+    от имени пользователя gitlab-runner, а не root. 
+    В результате, почти ничего из команд в jobs не может 
+    выполниться без ввода пароля. Изменить это никак нельзя, 
+    кроме как созданием своего docker образа. Но проще 
+    тогда устанавливать runner из apt, а не через docker.
+
+    Выполняем команды:
+
+      # Добавить оф.репозиторий gitlab
+      sudo curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
+
+      # Установить последнюю версию gitlab runner через apt
+      sudo apt-get install gitlab-runner
+
+  4. Зарегистрировать runner'ы в GitLab
+    - Подробнее об этом здесь:
+      https://docs.gitlab.com/runner/register/index.html#gnu-linux
+    - Перед регистрацией надо запустить runner (см.шаг №3).
+    - Введите команду и начните регистрацию:
+    
+      sudo gitlab-runner register
+
+    - В процесе отвечайте на вопросы, подставляя нужные данные:
+
+      # Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )
+        - Ввести URL с gitlab
+        - https://<ваш gitlab домен>
+
+      # Please enter the gitlab-ci token for this runner
+        - Ввести токен из пункта 2.
+
+      # Please enter the gitlab-ci description for this runner
+        "test-runner" или "dev-runner" или "prod-runner" и т.д.
+
+      # Please enter the gitlab-ci tags for this runner (comma separated):
+        <пусто>
+
+      # Whether to run untagged jobs [true/false]:  
+        true  
+
+      # Whether to lock Runner to current project [true/false]:  
+        true  
+
+      # Please enter the executor: ssh, docker+machine, docker-ssh+machine, kubernetes, docker, parallels, virtualbox, docker-ssh, shell:  
+        shell
+
+  5. Дать пользователю gitlab-runner право выполнять sudo без пароля
+    - Выполняем: 'sudo visudo'
+    - В !!!КОНЕЦ ФАЙЛА!!! дописываем: 
+
+      gitlab-runner    ALL=NOPASSWD: ALL
+    
+    - Сохраняем, выходим.
+
+  6. Добавить пользователя gitlab-runner в группу docker
+
+    Чтобы он имел доступ к докеру.
+    И заодно проверить, сработало ли.
+
+      sudo usermod -aG docker gitlab-runner
+      sudo -u gitlab-runner -H docker info
+
+  7. Пересобрать runner, чтобы он работал от имени root
+
+    Иначе у него будут проблемы с удалением созданных 
+    другими пользователями файлов. Для этого:
+
+      cd /home/gitlab-runner              // Пройти в папку /home/gitlab-runner
+      sudo rm -rf builds                  // Удалить папку builds
+      sudo gitlab-runner uninstall        // Удалить сервис
+      sudo gitlab-runner install -u root  // Установить сервис от имени root
+      sudo gitlab-runner start            // Запустить сервис
+
+    При следующем запуске runner'а будет создана папка 
+    /home/gitlab-runner/builds
+
+  8. Проверить, что runner связан с GitLab и работает
+
+    Залогинтесь в GitLab под своим аккаунтом.
+    Войдите в проект.
+    Перейдите в: 
+
+      Settings -> CI/CD -> Specific Runners -> Runners activated for this project
+
+    Должен быть виден подключенный runner с зелёным маркером.
 
