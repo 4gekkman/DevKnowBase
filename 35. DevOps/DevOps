@@ -429,7 +429,8 @@
 
     Идём в settings профиля.
     Там в Access Tokens.
-    Создаём новый токен с одним scope'ом: "read_registry".
+    Создаём новый токен с 2-мя scope'ами: "read_repository", "read_registry".
+    Второй может быть недоступен, пока не настроен docker registry.
     Записываем его в project/other/secrets/docker/credentials.json, 
     т.к. потом доступа к нему не будет.
 
@@ -1371,34 +1372,7 @@
     Причём, для каждой такой среды следует поднять свой
     отдельный runner.
 
-  2. Подготовить конфиг для runner'ов
-    - Создать файл /etc/gitlab-runner/config.toml, если его ещё нет.
-    - Посмотреть значение url и token для конфига здесь, в разделе specific runners:
-
-      https://<ваш gitlab домен>/<группа>/<проект>/settings/ci_cd
-
-    - Вот пример реального конфига на два runner'а
-
-      concurrent = 4
-      check_interval = 0
-
-      [[runners]]
-        name = "dev-runner"
-        url = "https://<ваш gitlab домен>"
-        token = "<токен>"
-        executor = "shell"
-        shell = "bash"
-        [runners.cache]
-
-      [[runners]]
-        name = "test-runner"
-        url = "https://<ваш gitlab домен>"
-        token = "<токен>"
-        executor = "shell"
-        shell = "bash"
-        [runners.cache]    
-
-  3. Установить пакет для runner'ов через apt
+  2. Установить пакет для runner'ов через apt
 
     Именно через apt, а не через, например, Docker,
     потому что в оф.образе runner'а прописано запускаться 
@@ -1416,39 +1390,7 @@
       # Установить последнюю версию gitlab runner через apt
       sudo apt-get install gitlab-runner
 
-  4. Зарегистрировать runner'ы в GitLab
-    - Подробнее об этом здесь:
-      https://docs.gitlab.com/runner/register/index.html#gnu-linux
-    - Перед регистрацией надо запустить runner (см.шаг №3).
-    - Введите команду и начните регистрацию:
-    
-      sudo gitlab-runner register
-
-    - В процесе отвечайте на вопросы, подставляя нужные данные:
-
-      # Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )
-        - Ввести URL с gitlab
-        - https://<ваш gitlab домен>
-
-      # Please enter the gitlab-ci token for this runner
-        - Ввести токен из пункта 2.
-
-      # Please enter the gitlab-ci description for this runner
-        "test-runner" или "dev-runner" или "prod-runner" и т.д.
-
-      # Please enter the gitlab-ci tags for this runner (comma separated):
-        <пусто>
-
-      # Whether to run untagged jobs [true/false]:  
-        true  
-
-      # Whether to lock Runner to current project [true/false]:  
-        true  
-
-      # Please enter the executor: ssh, docker+machine, docker-ssh+machine, kubernetes, docker, parallels, virtualbox, docker-ssh, shell:  
-        shell
-
-  5. Дать пользователю gitlab-runner право выполнять sudo без пароля
+  3. Дать пользователю gitlab-runner право выполнять sudo без пароля
     - Выполняем: 'sudo visudo'
     - В !!!КОНЕЦ ФАЙЛА!!! дописываем: 
 
@@ -1456,15 +1398,50 @@
     
     - Сохраняем, выходим.
 
-  6. Добавить пользователя gitlab-runner в группу docker
+  4. Зарегистрировать runner'ы в GitLab
+    - Введите команду и начните регистрацию раннера:
+    
+        sudo gitlab-runner register
 
-    Чтобы он имел доступ к докеру.
-    И заодно проверить, сработало ли.
+        В процесе отвечайте на вопросы, подставляя нужные данные:
 
-      sudo usermod -aG docker gitlab-runner
-      sudo -u gitlab-runner -H docker info
+        # Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )
+          - Ввести URL с gitlab
+          - https://<ваш gitlab домен>
 
-  7. Пересобрать runner, чтобы он работал от имени root
+        # Please enter the gitlab-ci token for this runner
+          - Ввести токен из пункта 2.
+
+        # Please enter the gitlab-ci description for this runner
+          "test-runner" или "dev-runner" или "prod-runner" и т.д.
+
+        # Please enter the gitlab-ci tags for this runner (comma separated):
+          <пусто>
+
+        # Whether to run untagged jobs [true/false]:  
+          true  
+
+        # Whether to lock Runner to current project [true/false]:  
+          true  
+
+        # Please enter the executor: ssh, docker+machine, docker-ssh+machine, kubernetes, docker, parallels, virtualbox, docker-ssh, shell:  
+          shell
+
+    - Либо, можно одной командой:
+
+      sudo gitlab-runner register \
+        --description "test-runner" \
+        --tag-list "test" \
+        --non-interactive \
+        --url "https://<ваш gitlab домен>" \
+        --registration-token "<токен>" \
+        --executor "shell" \
+        --shell "bash" \
+        --locked="true" \
+
+    - Не забудьте, что зарегистрировать нужно каждый runner.
+
+  5. Пересобрать runner, чтобы он работал от имени root
 
     Иначе у него будут проблемы с удалением созданных 
     другими пользователями файлов. Для этого:
@@ -1478,7 +1455,29 @@
     При следующем запуске runner'а будет создана папка 
     /home/gitlab-runner/builds
 
-  8. Проверить, что runner связан с GitLab и работает
+  6. Не забудьте добавить на сервера с runner'ами docker
+
+    # Установить git и jq
+    sudo apt-get update && sudo apt-get install -y git jq
+
+    # Установить docker
+    curl -sSL https://get.docker.com/ | sh
+
+    # Установить docker-compose
+    curl -L https://github.com/docker/compose/releases/download/1.17.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+
+    # Создать группу docker и добавить в неё пользователя root
+    sudo usermod -aG docker root
+
+  7. Перезагрузите сервер
+
+    Это может понадобиться, чтобы у runner'а появился
+    доступ к docker'у.
+
+    reboot
+
+  8. Убедитесь, что runner связан с GitLab и работает
 
     Залогинтесь в GitLab под своим аккаунтом.
     Войдите в проект.
@@ -1487,4 +1486,11 @@
       Settings -> CI/CD -> Specific Runners -> Runners activated for this project
 
     Должен быть виден подключенный runner с зелёным маркером.
+
+  9. Протестируйте работоспособность CI/CD на практике
+
+    Сделайте push и посмотрите, сработает ли runner
+    в разделе CI/CD в GitLab вашего проекта.
+
+
 
