@@ -877,7 +877,7 @@
 
     Затем можно установить Ionic CLI глобально:
 
-      sudo npm install -g @ionic/core
+      sudo npm install -g ionic/core
 
   • Создание Ionic-приложения из шаблонов
 
