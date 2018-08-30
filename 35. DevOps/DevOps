@@ -34,6 +34,7 @@
   А14. Настройка Docker Container Registry
   А15. Подготовка, сборка и загрузка Docker-образов в DCR
   А16. Настройка CI/CD и runner'ов для проекта
+  А17. Настройка HTTPS на prod-сервере с автообновлением
 
 
 ////==================================================////
@@ -729,6 +730,9 @@
   • Официальная инструкция от Ihor по настройке IPv6 на Ubuntu
       https://wiki.ihor.ru/linux:debian:как_добавить_ip-адрес
 
+  • Разжёвывание на wiki.archlinux.org
+      https://wiki.archlinux.org/index.php/Certbot_(Русский)
+
 > Введение
 
   В главе А7 мы, помимо всего прочего, связали ваши 
@@ -761,12 +765,6 @@
             netmask 64
             gateway <шлюз>
             dns-nameservers 2001:4860:4860::8888 2001:4860:4860::8844  
-
-    iface ens3 inet6 static
-            address 2a02:f680:1:1100::830c
-            netmask 64
-            gateway 2a02:f680:1:1100::1
-            dns-nameservers 2001:4860:4860::8888 2001:4860:4860::8844
 
   5. Перезагрузите сервер
 
@@ -1486,7 +1484,138 @@
     в разделе CI/CD в GitLab вашего проекта.
 
 
+А17. Настройка HTTPS на prod-сервере с автообновлением
+--------------------------------------
+Подоглавление:
 
+  # Введение
+  # Пошаговая инструкция
+
+--------------------------------------
+
+> Введение
+
+  В целях безопасности следует настроить HTTPS для
+  GitLab. В этой главе описано, как это сделать.
+  
+> Пошаговая инструкция
+  
+  1. Убедитесь, что IPv6 для вашего домена/сервера настроен
+
+    См.главу А8.
+
+  2. Подключитесь к серверу через ssh.
+  3. Устанавливаем certbot
+
+    sudo apt-get update
+    sudo apt-get install software-properties-common
+    sudo add-apt-repository ppa:certbot/certbot
+    sudo apt-get update
+    sudo apt-get install certbot
+
+  4. Готовим папку для сертификатов
+
+    sudo mkdir -p /var/www/letsencrypt
+
+  5. В конфиге nginx добавляем примерно такой вот блок
+
+    Его смысл состоит в том, чтобы при получении
+    сертификата удалённый сервер certbot'а всегда мог
+    по 80-му порту получить доступ к URI: ".well-known",
+    где лежит файл для проверки.
+
+    Это необходимо добавить, потому что чаще всего у 
+    нас сайт работает через https на 443-м порту,
+    а с 80-го мы переадресуем. Так вот, до переадресации
+    надо, чтобы срабатывал этот блок.
+
+    server {
+      
+      listen *:80;
+      root        <path_to_the_project>/project/public;
+      index       index.php;  
+      
+      location ^~ /.well-known {
+        allow all;
+        auth_basic off;
+        alias /var/lib/letsencrypt/.well-known/;
+        default_type "text/plain";
+        try_files $uri =404;
+      }  
+      
+    }  
+
+    *Примачание:
+
+      Будьте внимательны с default_server в listen,
+      лучше уберите его, чтобы все servers выполнялись
+      в том порядке, в котором они идут.
+
+  6. Пробрасываем .well-known в public в docker-compose для prod
+
+    Чаще всего у нас nginx работает в docker-контейнере.
+    Однако, папка .well-known лежит на сервере-хосте для
+    этого контейнера по адресу 
+
+      /var/lib/letsencrypt/.well-known
+
+    Но чтобы удалённый сервер certbot'а мог её запросить,
+    надо положить её в public проекта, который находится
+    в контейнере. Для этого, в файле docker-compose.yml
+    требуется пробросить туда эту папку в volumes:
+
+    volumes:
+      ...
+      /var/lib/letsencrypt/.well-known:<path_to_the_project>/project/public/.well-known
+      ...
+
+  7. Запрашиваем сертификат
+
+    Внимание! После нескольких неудачных запросов,
+    certbot банит вас на неделю. Так что, перед тем, 
+    как выполнять реальный запросы, сначала потренируйтесь.
+
+    Выполняем следующую команду. На вопрос отвечаем 
+    "сохранить файлы", пункт 2. Не забываем подставить
+    вместо <домен> оный:
+
+    ▪ Тренировка (с --test-cert и --dry-run)
+
+      sudo certbot certonly --test-cert --dry-run --webroot-path=/var/www/letsencrypt -d <домен>
+
+    ▪ Реальный запрос (без --test-cert и --dry-run)
+
+      sudo certbot certonly --webroot-path=/var/www/letsencrypt -d <домен>
+
+  8. Прописывае сертификаты в nginx-конфиг для production
+
+    listen *:443 ssl;  # вместо listen *:80;
+
+    ssl_certificate     /etc/letsencrypt/live/<домен>/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/<домен>/privkey.pem;    
+
+  9. Организуем в nginx-конфиге переадресацию 80 -> 443 порт
+
+    Этот блок требуется установить ПОСЛЕ блока из 
+    пункта №5, обеспечивающего доступ к .well-known
+    через 80-й порт.
+
+    server {
+      listen 80;
+      server_name _;
+      return 301 https://$host$request_uri;
+    }  
+
+  10. Настройка автообновления
+
+    При установке Certbot на Ubuntu 16.04 и старше,
+    автоматически создаётся файл:
+
+      /etc/cron.d/certbot
+
+    По идее, это и есть автоматическое обновление
+    сертификатов. То есть, что-то дополнительно
+    делать вроде как не надо (но это не точно).
 
 
 
