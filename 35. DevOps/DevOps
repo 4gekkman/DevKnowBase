@@ -34,7 +34,8 @@
   А14. Настройка Docker Container Registry
   А15. Подготовка, сборка и загрузка Docker-образов в DCR
   А16. Настройка CI/CD и runner'ов для проекта
-  А17. Настройка HTTPS на prod-сервере с автообновлением
+  А17. Настройка IPV6 для docker-контейнеров
+  А18. Настройка HTTPS на prod-сервере с автообновлением
 
 
 ////==================================================////
@@ -1485,7 +1486,259 @@
     в разделе CI/CD в GitLab вашего проекта.
 
 
-А17. Настройка HTTPS на prod-сервере с автообновлением
+А17. Настройка IPV6 для docker-контейнеров
+--------------------------------------
+Подоглавление:
+
+  # Ссылки
+  # Введение
+  # Пошаговая инструкция
+  # Примечания
+
+    ▪ Редактирование /etc/docker/daemon.json не работает для docker-compose
+    ▪ ipv6nat срабатывает только с ULA ipv6 адресами
+    ▪ Как обновить docker-compose
+    ▪ Как проверить, включен ли у контейнеров ipv6
+
+--------------------------------------
+
+> Ссылки
+
+  • Docker-образ robbertkl/docker-ipv6nat
+      https://github.com/robbertkl/docker-ipv6nat#usage
+
+  • Пример использования docker-ipv6nat с docker-compose
+      https://palant.de/2018/01/05/getting-published-docker-container-ports-to-work-with-ipv6
+
+  • Пример IPV6 ULA
+      http://biplane.com.au/blog/?p=12
+
+  • Разъяснения по доступным вариантам работы ipv6+docker на habr
+      https://habr.com/post/334418/
+
+  • Статья "IPv6 with Docker" из официальной документации Docker
+      https://docs.docker.com/v17.09/engine/userguide/networking/default_network/ipv6/
+  
+  • Оф.доки про то, что enable_ipv6 доступен только в docker-compose.yml 2.*
+      https://docs.docker.com/compose/compose-file/#ipv4_address-ipv6_address
+  
+> Введение
+
+  По умолчанию, ipv6 в docker-контейнерах отключен.
+  Однако, он может понадобиться для работы разных сервисов.
+  Одним из них является certbot для получения и автоматического
+  обновления HTTPS-сертификатов, который работает исключительно
+  через ipv6.
+
+  В этой главе описан лучший способ, как включить ipv6 
+  для контейнеров на настоящий момент (сентябрь 2018).
+
+> Предыстория
+
+  Docker создавали вообще без особого учёта существования ipv6, 
+  и только лишь потом прилепили. В итоге, использовать 
+  ipv6 с докером было невозможно по различным причинам, 
+  описанным по ссылке выше.
+  
+  Особенно, если провайдер выдаёт тебе не подсеть ipv6 адресов, 
+  а только пару-тройку, как это делает ihor, где мы хостимся.
+
+  В итоге, люди из сообщества поднапряглись, и создали 
+  специальный контейнер, который организует NAT для одного 
+  ipv6-адреса, настраивает ip6tables, пробрасывает указанные 
+  порты для всех контейнеров, и вообще делает всё тоже самое, 
+  что и докер для ipv4.
+  
+> Пошаговая инструкция
+
+  1. Обновить docker и docker-compose
+
+    Рекомендуется обновиться до docker >= 18.* 
+    и docker-compose >= 1.22.
+
+    Здесь вообще главный вопрос в том, чтобы образ
+    ipv6nat правильно работал с установленными у 
+    вас версиями.
+
+    Как выполнить обновления, см.в примечаниях.
+
+  2. Внести изменения в docker-compose.yml проекта
+
+    • Поставить версию 2.*, вместо 3
+
+      Дело в том, что docker-compose.yml v3.* не 
+      поддерживает ipv6 и enable_ipv6 по той причине, 
+      что эта версия заточена под кластеры. Поэтому,
+      чтобы использовать ipv6, необходимо использовать
+      версию 2.*. Эти версии поддерживаются параллельно.
+
+    • Определить в docker-compose.yml default-сеть с IPV6 ULA
+
+      Обратите внимание, что ipv6 subnet обязательно должна
+      использовать диапазон ipv6-адресов ULA (см.ссылку в
+      ссылках). Например такой, как в коде ниже.
+
+      Надо добавить этот код в docker-compose.yml
+
+        default:
+          driver: bridge
+          enable_ipv6: true
+          ipam:
+            config:
+              - subnet: 172.20.0.0/16
+              - subnet: fd00::/48  
+
+    • Подключить в docker-compose.yml контейнер ipv6nat
+
+      Этот контейнер настраивает ip6tables, в том числе,
+      пробрасывает порты, и в итоге делает так, чтобы
+      наши контейнеры с местными ipv6-адресами из подсети
+      ULA, были доступны извне по нашему единственному
+      глобальному ipv6 адресу, который нам выдал хостер.
+
+      Надо добавить этот код в docker-compose.yml
+
+      services:  
+
+        ipv6nat:
+          container_name: ipv6nat
+          restart: always
+          image: robbertkl/ipv6nat
+          privileged: true
+          network_mode: host
+          volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /lib/modules:/lib/modules:ro  
+  
+  3. Протестировать, заработал ли ipv6 в контейнерах
+
+    • Запустить проект и его контейнеры
+
+      Сначала запустите проект с помощью docker-compose,
+      вместе с ipv6nat.
+
+    • Убедиться, что ip6tables была заселена
+
+      Выполните эту команду и убедитесь, что ip6tables
+      основательно заселена сервисом ipv6nat относящимися 
+      к docker вещами.
+
+        ip6tables -nL
+
+    • Протестировать доступность контейнера по ipv6
+
+      Подключитесь к работающему контейнеру по ssh,
+      для этого сначала узнайте имена всех работающих
+      контейнеров:
+
+        docker ps
+
+      затем выполните команду для подключения:
+
+        docker exec -it <имя контейнера> bash
+
+      Чтобы протестировать доступность вашего домена по ipv6,
+      используйте linux-утилиту ping6. Установите её прямо
+      в контейнер:
+
+        apt-get install -y iputils-ping
+
+      Проверьте, пингуются ли соседние контейнеры:
+
+        ping6 <имя сервиса соседнего контейнера>
+        ping6 mysql     | пример
+
+      Проверьте, может ли контейнер общаться с внешним
+      виром по ipv6, пропинговав google:
+
+        ping6 ipv6.google.com
+
+    • Добавление АААА записи с ipv6 для домена
+
+      Если вы хотите, чтобы ваш сервис был доступен через
+      домен, не забудьте у регистратора домена в управлении
+      зоной прописать AAAA запись с ipv6, который вам выдал
+      ваш хостер.
+ 
+> Примечания
+
+  • Редактирование /etc/docker/daemon.json не работает для docker-compose
+
+    В интернете можно встретить такой совет для включения
+    ipv6 для docker-контейнеров. Мол, требуется, чтобы
+    при запуске docker-демону передавались такие параметры
+    (либо через аргументы, либо через конфиг):
+
+      sudo nano /etc/docker/daemon.json
+
+        {
+          "ipv6": true,
+          "fixed-cidr-v6": "fd00::/48"
+        }
+
+      sudo systemctl restart docker
+
+    Однако, как уже было заспойлерено в сабже, это не работает
+    для docker-compose, для которого надо всё это прописывать
+    отдельно в networks.
+  
+  • ipv6nat срабатывает только с ULA ipv6 адресами
+
+    Сабж. Он триггерится только на ipv6 ULA-адреса,
+    если прописать другие, он не будет редактировать
+    ip6tables.
+
+  • Как обновить docker-compose
+
+    # Посмотреть последнюю версию
+    https://docs.docker.com/compose/install/#master-builds
+    
+    # Удалить
+    sudo rm /usr/local/bin/docker-compose
+
+    # Установить
+    sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    docker-compose --version  
+
+  • Как проверить, включен ли у контейнеров ipv6
+      
+    # Посмотреть все сети
+    docker network ls
+
+    # Проверить конкретную сеть
+    docker network inspect prod_default
+    
+    EnableIPv6
+    Containers -> <контейнер> -> IPv6Address
+
+    "EnableIPv6": true,
+    "IPAM": {
+        "Driver": "default",
+        "Options": null,
+        "Config": [
+            {
+                "Subnet": "172.20.0.0/16",
+                "Gateway": "172.20.0.1"
+            },
+            {
+                "Subnet": "2001:db8:1::/64"
+            }
+        ]
+
+
+    "Containers": {
+        "05348c7745908e416ee828f229da82c62450d9899a7aaa1641dcca22e673a2a2": {
+            "Name": "prod_nginx_1",
+            "EndpointID": "14f6e9ad8edb51d5a2812cd3871139291d2486cac7db755ef628520603be67aa",
+            "MacAddress": "02:42:ac:14:00:05",
+            "IPv4Address": "172.20.0.5/16",
+            "IPv6Address": "2001:db8:1::5/64"
+        },
+        },
+
+
+А18. Настройка HTTPS на prod-сервере с автообновлением
 --------------------------------------
 Подоглавление:
 
@@ -1505,8 +1758,12 @@
 
     См.главу А8.
 
-  2. Подключитесь к серверу через ssh.
-  3. Устанавливаем certbot
+  2. Убедитесь, что IPv6 для ваших docker-контейнеров настроен
+
+    См.главу А17.
+
+  3. Подключитесь к серверу через ssh.
+  4. Устанавливаем certbot
 
     sudo apt-get update
     sudo apt-get install software-properties-common
@@ -1514,11 +1771,11 @@
     sudo apt-get update
     sudo apt-get install certbot
 
-  4. Готовим папку для сертификатов
+  5. Готовим папку для сертификатов
 
     sudo mkdir -p /var/www/letsencrypt
 
-  5. В конфиге nginx добавляем примерно такой вот блок
+  6. В конфиге nginx добавляем примерно такой вот блок
 
     Его смысл состоит в том, чтобы при получении
     сертификата удалённый сервер certbot'а всегда мог
@@ -1530,19 +1787,20 @@
     а с 80-го мы переадресуем. Так вот, до переадресации
     надо, чтобы срабатывал этот блок.
 
-    server {
-      
-      listen *:80;
-      root <path_to_the_project>/project/public;
-      
-      location ^~ /.well-known {
-        allow all;
-        auth_basic off;
-        default_type "text/plain";
-        try_files $uri =404;
-      }  
-      
-    }  
+      server {
+        
+        listen *:80;
+        listen [::]:80; 
+        root /var/lib/letsencrypt;
+        
+        location ^~ /.well-known {
+          allow all;
+          auth_basic off;
+          default_type "text/plain";
+          try_files $uri =404;
+        }  
+        
+      } 
 
     *Примачание:
 
@@ -1550,7 +1808,7 @@
       лучше уберите его, чтобы все servers выполнялись
       в том порядке, в котором они идут.
 
-  6. Пробрасываем .well-known в public в docker-compose для prod
+  7. Пробрасываем /var/lib/letsencrypt в контейнер в docker-compose для prod
 
     Чаще всего у нас nginx работает в docker-контейнере.
     Однако, папка .well-known лежит на сервере-хосте для
@@ -1559,16 +1817,16 @@
       /var/lib/letsencrypt/.well-known
 
     Но чтобы удалённый сервер certbot'а мог её запросить,
-    надо положить её в public проекта, который находится
-    в контейнере. Для этого, в файле docker-compose.yml
-    требуется пробросить туда эту папку в volumes:
+    надо пробросить её в контейнер. Для этого, в файле 
+    docker-compose.yml требуется пробросить туда эту папку 
+    в volumes:
 
     volumes:
       ...
-      /var/lib/letsencrypt/.well-known:<path_to_the_project>/project/public/.well-known
+      /var/lib/letsencrypt:/var/lib/letsencrypt
       ...
 
-  7. Запрашиваем сертификат
+  8. Запрашиваем сертификат
 
     Внимание! После нескольких неудачных запросов,
     certbot банит вас на неделю. Так что, перед тем, 
@@ -1581,20 +1839,20 @@
 
     ▪ Тренировка (с --test-cert и --dry-run)
 
-      sudo certbot certonly --test-cert --dry-run --webroot-path=/var/www/letsencrypt -d <домен1> -d <домен2>
+      sudo certbot certonly --test-cert --dry-run --webroot-path=/var/lib/letsencrypt -d <домен1> -d <домен2>
 
     ▪ Реальный запрос (без --test-cert и --dry-run)
 
-      sudo certbot certonly --webroot-path=/var/www/letsencrypt -d <домен1> -d <домен2>
+      sudo certbot certonly --webroot-path=/var/lib/letsencrypt -d <домен1> -d <домен2>
 
-  8. Прописывае сертификаты в nginx-конфиг для production
+  9. Прописывае сертификаты в nginx-конфиг для production
 
     listen *:443 ssl;  # вместо listen *:80;
 
     ssl_certificate     /etc/letsencrypt/live/<домен>/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/<домен>/privkey.pem;    
 
-  9. Организуем в nginx-конфиге переадресацию 80 -> 443 порт
+  10. Организуем в nginx-конфиге переадресацию 80 -> 443 порт
 
     Этот блок требуется установить ПОСЛЕ блока из 
     пункта №5, обеспечивающего доступ к .well-known
@@ -1606,7 +1864,21 @@
       return 301 https://$host$request_uri;
     }  
 
-  10. Настройка автообновления
+  11. Пробросить /etc/letsencrypt/live в контейнер в docker-compose
+
+    В этой папке будут лежать готовые сертификаты, и они 
+    должны быть доступны внутри контейнера, чтобы nginx
+    мог их подцепить.
+
+    Для этого, в файле docker-compose.yml требуется пробросить 
+    эту папку в volumes:
+
+    volumes:
+      ...
+      /etc/letsencrypt/live:/etc/letsencrypt/live
+      ... 
+
+  12. Настройка автообновления
 
     При установке Certbot на Ubuntu 16.04 и старше,
     автоматически создаётся файл:
@@ -1619,107 +1891,8 @@
 
 
 
-Проверка сети и контейнеров на поддержку ipv6
-  
-  # Посмотреть все сети
-  docker network ls
-
-  # Проверить конкретную сеть
-  docker network inspect prod_default
-  
-  EnableIPv6
-  Containers -> <контейнер> -> IPv6Address
-
-
-
-Это НЕ РАБОТАЕТ для docker-compose
-  /etc/docker/daemon.json
-  {
-    "ipv6": true,
-    "fixed-cidr-v6": <ваш ipv6 от хоста>
-  }
-
-sudo systemctl restart docker
-
-
-{
-  "ipv6": true,
-  "fixed-cidr-v6": "2001:db8:1::/64"
-}
-
-
-    Чтобы протестировать доступность вашего домена по ipv6,
-    используйте linux-утилиту ping6. Установите её на
-    свою ВМ, например:
-
-      apt-get install -y iputils-ping
-
-    Проверьте, пингуются ли соседние контейнеры
-
-      ping6 mysql
-
-    Проверьте работоспособность утилиты на google:
-
-      ping6 ipv6.google.com
-
-    и проверьте, есть ли пинг по ipv6 с вашим GitLab-доменом:
-
-      ping6 http://<ваш GitLab-домен>
-
-
-Требуется последний docker-compose, и версия не 3, а 2.*
-  Потому что версия 3 не поддерживает ipv6
-
-  # Посмотреть последнюю версию
-  https://docs.docker.com/compose/install/#master-builds
-  
-  # Удалить
-  sudo rm /usr/local/bin/docker-compose
-
-  # Установить
-  sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-  sudo chmod +x /usr/local/bin/docker-compose
-  docker-compose --version
 
 
 
 
-
-ip6tables -nL
-
-
-
-
-
-apt-get install -y net-tools
-
-
-
-
-
-
-
-"EnableIPv6": true,
-"IPAM": {
-    "Driver": "default",
-    "Options": null,
-    "Config": [
-        {
-            "Subnet": "172.20.0.0/16",
-            "Gateway": "172.20.0.1"
-        },
-        {
-            "Subnet": "2001:db8:1::/64"
-        }
-    ]
-
-
-"Containers": {
-    "05348c7745908e416ee828f229da82c62450d9899a7aaa1641dcca22e673a2a2": {
-        "Name": "prod_nginx_1",
-        "EndpointID": "14f6e9ad8edb51d5a2812cd3871139291d2486cac7db755ef628520603be67aa",
-        "MacAddress": "02:42:ac:14:00:05",
-        "IPv4Address": "172.20.0.5/16",
-        "IPv6Address": "2001:db8:1::5/64"
-    },
 
