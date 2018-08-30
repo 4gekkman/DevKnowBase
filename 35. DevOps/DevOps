@@ -1580,13 +1580,15 @@
 
       Надо добавить этот код в docker-compose.yml
 
-        default:
-          driver: bridge
-          enable_ipv6: true
-          ipam:
-            config:
-              - subnet: 172.20.0.0/16
-              - subnet: fd00::/48  
+        networks:
+
+          default:
+            driver: bridge
+            enable_ipv6: true
+            ipam:
+              config:
+                - subnet: 172.20.0.0/16
+                - subnet: fd00::/48  
 
     • Подключить в docker-compose.yml контейнер ipv6nat
 
@@ -1598,17 +1600,17 @@
 
       Надо добавить этот код в docker-compose.yml
 
-      services:  
+        services:  
 
-        ipv6nat:
-          container_name: ipv6nat
-          restart: always
-          image: robbertkl/ipv6nat
-          privileged: true
-          network_mode: host
-          volumes:
-            - /var/run/docker.sock:/var/run/docker.sock:ro
-            - /lib/modules:/lib/modules:ro  
+          ipv6nat:
+            container_name: ipv6nat
+            restart: always
+            image: robbertkl/ipv6nat
+            privileged: true
+            network_mode: host
+            volumes:
+              - /var/run/docker.sock:/var/run/docker.sock:ro
+              - /lib/modules:/lib/modules:ro  
   
   3. Протестировать, заработал ли ipv6 в контейнерах
 
@@ -1864,7 +1866,7 @@
       return 301 https://$host$request_uri;
     }  
 
-  11. Пробросить /etc/letsencrypt/live в контейнер в docker-compose
+  11. Пробросить /etc/letsencrypt в контейнер в docker-compose
 
     В этой папке будут лежать готовые сертификаты, и они 
     должны быть доступны внутри контейнера, чтобы nginx
@@ -1875,7 +1877,7 @@
 
     volumes:
       ...
-      /etc/letsencrypt/live:/etc/letsencrypt/live
+      /etc/letsencrypt:/etc/letsencrypt
       ... 
 
   12. Настройка автообновления
