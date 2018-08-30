@@ -1532,13 +1532,11 @@
     server {
       
       listen *:80;
-      root        <path_to_the_project>/project/public;
-      index       index.php;  
+      root <path_to_the_project>/project/public;
       
       location ^~ /.well-known {
         allow all;
         auth_basic off;
-        alias /var/lib/letsencrypt/.well-known/;
         default_type "text/plain";
         try_files $uri =404;
       }  
@@ -1577,15 +1575,16 @@
 
     Выполняем следующую команду. На вопрос отвечаем 
     "сохранить файлы", пункт 2. Не забываем подставить
-    вместо <домен> оный:
+    вместо <домен#> оные (если у вас домен и поддомены,
+    надо все добавить, в стиле: -d <домен1> -d <домен2> ...):
 
     ▪ Тренировка (с --test-cert и --dry-run)
 
-      sudo certbot certonly --test-cert --dry-run --webroot-path=/var/www/letsencrypt -d <домен>
+      sudo certbot certonly --test-cert --dry-run --webroot-path=/var/www/letsencrypt -d <домен1> -d <домен2>
 
     ▪ Реальный запрос (без --test-cert и --dry-run)
 
-      sudo certbot certonly --webroot-path=/var/www/letsencrypt -d <домен>
+      sudo certbot certonly --webroot-path=/var/www/letsencrypt -d <домен1> -d <домен2>
 
   8. Прописывае сертификаты в nginx-конфиг для production
 
