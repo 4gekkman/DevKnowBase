@@ -693,6 +693,7 @@
       A       gitlab      manveloff.ru    <ip сервера с гитлабом>
       AAAA    gitlab      manveloff.ru    <ipv6 сервера с гитлабом>
       A       cleaning    manveloff.ru    <ip клинингового сервера>
+      AAAA    cleaning    manveloff.ru    <ip клинингового сервера>
 
 > Примечания
 
@@ -1616,5 +1617,27 @@
     сертификатов. То есть, что-то дополнительно
     делать вроде как не надо (но это не точно).
 
+
+
+Проверка сети и контейнеров на поддержку ipv6
+  docker network inspect prod_default
+  EnableIPv6
+  Containers -> <контейнер> -> IPv6Address
+
+
+
+/etc/docker/daemon.json
+{
+  "ipv6": true,
+  "fixed-cidr-v6": <ваш ipv6 от хоста>
+}
+
+sudo systemctl restart docker
+
+
+{
+  "ipv6": true,
+  "fixed-cidr-v6": "2a02:f680:1:1100::830c/80"
+}
 
 
