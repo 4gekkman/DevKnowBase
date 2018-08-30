@@ -1620,24 +1620,106 @@
 
 
 Проверка сети и контейнеров на поддержку ipv6
+  
+  # Посмотреть все сети
+  docker network ls
+
+  # Проверить конкретную сеть
   docker network inspect prod_default
+  
   EnableIPv6
   Containers -> <контейнер> -> IPv6Address
 
 
 
-/etc/docker/daemon.json
-{
-  "ipv6": true,
-  "fixed-cidr-v6": <ваш ipv6 от хоста>
-}
+Это НЕ РАБОТАЕТ для docker-compose
+  /etc/docker/daemon.json
+  {
+    "ipv6": true,
+    "fixed-cidr-v6": <ваш ipv6 от хоста>
+  }
 
 sudo systemctl restart docker
 
 
 {
   "ipv6": true,
-  "fixed-cidr-v6": "2a02:f680:1:1100::830c/80"
+  "fixed-cidr-v6": "2001:db8:1::/64"
 }
 
+
+    Чтобы протестировать доступность вашего домена по ipv6,
+    используйте linux-утилиту ping6. Установите её на
+    свою ВМ, например:
+
+      apt-get install -y iputils-ping
+
+    Проверьте, пингуются ли соседние контейнеры
+
+      ping6 mysql
+
+    Проверьте работоспособность утилиты на google:
+
+      ping6 ipv6.google.com
+
+    и проверьте, есть ли пинг по ipv6 с вашим GitLab-доменом:
+
+      ping6 http://<ваш GitLab-домен>
+
+
+Требуется последний docker-compose, и версия не 3, а 2.*
+  Потому что версия 3 не поддерживает ipv6
+
+  # Посмотреть последнюю версию
+  https://docs.docker.com/compose/install/#master-builds
+  
+  # Удалить
+  sudo rm /usr/local/bin/docker-compose
+
+  # Установить
+  sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose
+  docker-compose --version
+
+
+
+
+
+ip6tables -nL
+
+
+
+
+
+apt-get install -y net-tools
+
+
+
+
+
+
+
+"EnableIPv6": true,
+"IPAM": {
+    "Driver": "default",
+    "Options": null,
+    "Config": [
+        {
+            "Subnet": "172.20.0.0/16",
+            "Gateway": "172.20.0.1"
+        },
+        {
+            "Subnet": "2001:db8:1::/64"
+        }
+    ]
+
+
+"Containers": {
+    "05348c7745908e416ee828f229da82c62450d9899a7aaa1641dcca22e673a2a2": {
+        "Name": "prod_nginx_1",
+        "EndpointID": "14f6e9ad8edb51d5a2812cd3871139291d2486cac7db755ef628520603be67aa",
+        "MacAddress": "02:42:ac:14:00:05",
+        "IPv4Address": "172.20.0.5/16",
+        "IPv6Address": "2001:db8:1::5/64"
+    },
 
