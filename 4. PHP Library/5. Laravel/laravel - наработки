@@ -94,6 +94,7 @@
 
     Г1. Аутентификация
     Г2. Авторизация
+    Г3. Как подписаться на приватный websocket-канал через socket.io (и авторизоваться через Laravel Passport)?
 
 
 ////==========================================================////
@@ -18434,7 +18435,24 @@ git submodule add --name D10013 https://f73f99ac1472e0b5a950ebfec8ebe851627c560b
           @endcannot
 
 
+Г3. Как подписаться на приватный websocket-канал через socket.io (и авторизоваться через Laravel Passport)?
 
+  var options = {
+    auth: {
+        headers: {'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImQxNTMzNzczYTZiOWY5NGVhYTMyOWI5YmJiZTE5OWQwMTM4NzFjYzI1Yzg0MmExNDA2Yjc5MGQxYTJiY2YzYzliNDhkZmE5Y2IyMDFhZWRjIn0.eyJhdWQiOiIxIiwianRpIjoiZDE1MzM3NzNhNmI5Zjk0ZWFhMzI5YjliYmJlMTk5ZDAxMzg3MWNjMjVjODQyYTE0MDZiNzkwZDFhMmJjZjNjOWI0OGRmYTljYjIwMWFlZGMiLCJpYXQiOjE1MzQ3MDgxNTcsIm5iZiI6MTUzNDcwODE1NywiZXhwIjoxNTY2MjQ0MTU3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.4hxxXXM68trLuIa8GeYKFXwe8ZIWpKNhoIzftP77lMmEZ35UDO1_0uOZl9l-27hUfARa7ttqLVA-hPY3NoIM6U5-Iw3fHbrC5G6boS3xw3NYH7CT0PaDG1Q_LB02PoMeb_tGNbE-iHyAL-VgcYPQtAvslKpcBFmVDxXfYy_DzbfXhfDRSEwTPvkHk8r67EeKFJoFcwD9Xpw2KMctNxN7AtWh1m1YXnvUbe0T1FNtQCSBvU1shDtk8HmuTXiOruEN9VD9FUEBLpaPo1Cc6gKoyf5pe1wxB-M1uh4IWzm3C4F2tzBWinXDoLxCtujkfvwTxP5HuUEpvrEKcdPzqoLkB7MDNEMog5U9dbcKT70A-hA4vT09mj03mQLrFcXXL-mICdwPY5QBhZRFWgRmDKZtRSqnoUlm7eDH6fhK-HCQgZtanObHBQSTS_z-9-4UHaQ7w5x1Mxu572Ox6yhxY_f_JHO7yOunmZmM6akmaNKkNEGNFtewTmsEajwt0GRoHc74ZpuEIjPvvBcOD3SJ4Jzkqj49emJuL96UGkc-qvdqss664t2IpDnPcOFg3NatOLn03TWvRAbzequ6A8Trh_yyI_M6FVq5oSPTZ0RdytxPTx78uV7Ozei9GeisPnBpuVsYYp94T4PYhvPOctG39uWxORksZOdaYecYCTYUPmD9UyE'}
+    }
+  };
+
+  var socket = io('https://bubbles.pro:6001', options);
+
+  socket.emit('subscribe', {
+    channel: 'App.Messages.Bubble_1',
+    auth: options.auth
+  }).on('App\\Events\\BroadcastChatMessage', function (channel, data) {
+
+    console.log(data)
+    
+  });
 
 
 
